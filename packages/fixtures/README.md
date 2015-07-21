@@ -1,3 +1,3 @@
-# mantle:models
+# tater:models
 
-This package defines fixtures for the Mantle test suite
+This package defines fixtures for the tater test suite

@@ -1,6 +1,10 @@
 if Meteor.isClient
   FlowLayout.setRoot('body');
 
+FlowRouter.subscriptions = () ->
+  console.log 'subscriptions'
+  @register 'userInfo', Meteor.subscribe 'userInfo'
+
 FlowRouter.route '/',
   name: 'splashPage'
   action: () ->

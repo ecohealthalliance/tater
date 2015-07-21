@@ -1,3 +1,3 @@
-# mantle:controllers
+# tater:controllers
 
-This package defines controllers in mantle. 
+This package defines controllers in tater.

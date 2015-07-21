@@ -26,6 +26,8 @@ if Meteor.isServer
     admin = Meteor.users.findOne { admin: true }
     if admin
       user.admin = false
+      user.group = options.group
     else
       user.admin = true
+      user.group = 'admin'
     user

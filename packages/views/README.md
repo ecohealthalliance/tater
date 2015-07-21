@@ -1,3 +1,3 @@
-# mantle:views
+# tater:views
 
-This package defines all views in mantle. 
+This package defines all views in tater.

@@ -1,6 +1,6 @@
-# mantle:styles
+# tater:styles
 
-This package defines styles for mantle.
+This package defines styles for tater.
 
 ##Style Guide
 - **Framework**: [Bootstrap](http://getbootstrap.com/css/)
