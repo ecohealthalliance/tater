@@ -7,7 +7,7 @@ do ->
     'reset': ->
       Meteor.users.remove({})
       UserProfiles.remove({})
-      Organizations.remove({})
+      Groups.remove({})
 
     'createTestUser': (attributes) ->
       Meteor.users.remove({})
