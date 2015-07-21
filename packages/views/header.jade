@@ -1,0 +1,15 @@
+template(name="header")
+  header
+    nav.navbar
+      .container
+        .navbar-header
+          button.navbar-toggle.collapsed(type="button", data-toggle="collapse" data-target=".navbar-collapse") Menu
+          a.navbar-brand(href="/")
+            h1 Tater
+        .navbar-collapse.collapse
+          ul.nav.navbar-nav.navbar-right
+            li
+              a(href="{{path route='groups'}}")
+                span Groups
+            +accountsHeaderButtons state=accountsState
+  +accountsModal state=accountsState

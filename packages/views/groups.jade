@@ -1,0 +1,23 @@
+template(name="groups")
+  if currentUser
+    .container.view-header
+      h1.inline Groups
+      a.btn.btn-default.new-group-link.header-btn(href="{{path route='newGroup'}}")
+        span Create
+        i.fa.fa-plus
+    table.table.table-striped.groups-table
+      tbody
+        each groups
+          tr.group-wrap
+            .container
+              .row
+                .col-sm-3
+                  td
+                    a.group-name(href="{{path route='groupDetail' params=this}}")= name
+                .col-sm-9
+                  td.group-description {{truncateDescription}}
+  else
+    .container
+      .row
+        .col-sm-12
+          p Please log in or sign up to continue.

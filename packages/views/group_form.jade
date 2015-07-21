@@ -1,0 +1,21 @@
+template(name="groupForm")
+  if currentUser
+    .container
+      h1 Add an Group
+      .row
+        .col-sm-8
+          form#new-group-form
+            .row
+              .col-sm-8
+                label Name
+                  input#group-name.form-control(name="name" type="text")
+            .row
+              .col-sm-12
+                label Description
+                  textarea#group-description.form-control(name="description")
+            input.btn.btn-primary(type="submit" value="Save")
+  else
+    .container
+      .row
+        .col-sm-12
+          p Please log in or sign up to continue.

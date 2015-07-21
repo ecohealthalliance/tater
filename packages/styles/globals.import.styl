@@ -1,0 +1,139 @@
+html
+body
+  height 100%
+
+body
+  font-family inherit
+
+.page-wrap
+  position relative
+  min-height 100%
+
+.content-wrap
+  padding-top 20px
+  padding-bottom $footer-height-actual+10
+
+h2
+  color $primary
+
+h3
+  color $secondary
+
+h4
+  color $body-text
+
+h5
+  font-weight 400
+  color $d-gray
+
+.view-header
+  margin-bottom 15px
+  +below(1)
+    margin-bottom 25px
+  h1
+    margin-bottom 0
+
+a
+button
+.btn
+  transition()
+  &:hover
+    transition()
+
+a
+  color $primary-strong
+  &:hover
+  &:focus
+    color $primary
+  &.with-icon-right
+    .fa
+      margin-left 3px
+  &.with-icon-left
+    .fa
+      margin-right 3px
+
+.btn
+  border-width 2px
+  .fa
+    vAlign()
+    padding 0 0 0 5px
+    font-size 110%
+    line-height 0
+
+.btn-primary
+  makeButton($secondary)
+
+.btn-default
+  makeButton($ll-gray, $body-text, true)
+
+.btn-success
+  makeButton($confirm)
+
+.btn-danger
+  makeButton($primary-strong)
+
+.button-default['disabled']
+.btn['disabled']
+  background lighten($secondary-light, 20%)
+  color $body-text
+  text-shadow none
+
+.header-btn
+  display inline-block
+  margin-left 15px
+  +below(1)
+    display block
+    margin 10px 0
+  .fa
+    color $d-gray
+
+.toast-top-right-custom
+  right 15px
+  top $header-height+20
+  +below(2)
+    right 0
+    bottom $footer-height-actual+10
+    top auto
+    width 100%
+    height $header-height
+
+#toast-container
+  > div
+    +below(2)
+      width 100% !important
+
+.col-sm-0
+  width 0%
+
+.rm-pad
+  padding 0
+
+.rm-pad-top
+  padding-top 0
+
+.rm-pad-btm
+  padding-bottom 0
+
+.rm-margin-top
+  margin-top 0
+
+.rm-margin-btm
+  margin-bottom 0
+
+.inline
+  display inline-block
+  vertical-align middle
+
+for $num in 1 2 3 4 5 6
+  .space-btm-{$num}
+    margin-bottom $num*10px
+
+  .space-top-{$num}
+    margin-top $num*10px
+
+for $num in 1 2 3
+  .border-btm-{$num}
+    addBorder('bottom', $num, $l-gray)
+
+  .border-top-{$num}
+    addBorder('top', $num, $l-gray)
