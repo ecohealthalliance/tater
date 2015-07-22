@@ -11,7 +11,6 @@ if Meteor.isServer
   Meteor.publish 'groups', ->
     user = Meteor.users.findOne { _id: @userId }
     if user?.admin
-      console.log 'is admin'
       Groups.find {}
     else if user
       Groups.find {_id: user.group }
