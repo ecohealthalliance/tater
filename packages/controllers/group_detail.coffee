@@ -6,8 +6,8 @@ if Meteor.isClient
     group: ->
       Groups.findOne(@groupId)
 
-    newDocumentUrl: ->
-      "/groups/#{@groupId}/documents/new"
+    newDocumentParams: ->
+      _id: @groupId
 
 if Meteor.isServer
   Meteor.publish 'groupDetail', (id) ->

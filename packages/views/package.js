@@ -10,7 +10,7 @@ Package.onUse(function(api) {
   api.use('templating');
   api.use('mquandalle:jade@0.4.1');
   api.use('tater:styles');
-  api.use('tater:path');
+  api.use('tater:route-helpers');
 
   api.addFiles('accounts_modal.jade');
   api.addFiles('accounts_header_buttons.jade')

@@ -7,6 +7,6 @@ template(name="groupDetail")
           +paragraphText text=group.description
       .row
         .col-sm-10
-          a.new-document-link.btn.btn-default(href=newDocumentUrl) New Document
+          a.new-document-link.btn.btn-default(href="{{path route='newDocument' params=newDocumentParams}}") New Document
 
   +userForm groupId=group._id

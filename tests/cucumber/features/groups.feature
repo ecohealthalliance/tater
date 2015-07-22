@@ -24,4 +24,5 @@ Feature: Groups
     Then I should not see content "Test Document"
     When I click on the New Document link
     And I fill out the new document form with title "Test Document"
-    Then I should see a "Success" toast
+    Then I should be on the test group page
+    And I should see a "Success" toast

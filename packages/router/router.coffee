@@ -36,12 +36,12 @@ FlowRouter.route '/groups/new',
     FlowLayout.render 'layout',
       main: 'groupForm'
 
-FlowRouter.route '/groups/:_groupId/documents/new',
+FlowRouter.route '/groups/:_id/documents/new',
   name: 'newDocument'
   action: (params) ->
     FlowLayout.render 'layout',
       main: 'documentForm'
-      params: {"groupId": params._groupId}
+      params: {"groupId": params._id}
 
 FlowRouter.route '/groups/:_id',
   name: 'groupDetail'

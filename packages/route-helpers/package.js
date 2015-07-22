@@ -1,5 +1,5 @@
 Package.describe({
-  name: 'tater:path',
+  name: 'tater:route-helpers',
   version: '0.0.1',
   summary: 'Utility for generating URL paths',
   git: ''
@@ -12,6 +12,7 @@ Package.onUse(function(api) {
   api.use('meteorhacks:flow-router@1.9.0');
 
   api.addFiles('helpers.coffee', 'client');
+  api.export('go', 'client');
 });
 
 

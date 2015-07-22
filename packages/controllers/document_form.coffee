@@ -6,18 +6,19 @@ if Meteor.isClient
       fields = {
         name: form.title?.value
         description: form.body?.value
-        groupId: this.groupId
+        groupId: @groupId
       }
       Meteor.call 'createDocument', fields, (error, response) =>
         if error
           toastr.error("Error")
         else
           toastr.success("Success")
+          go "groupDetail", {_id: @groupId}
 
 if Meteor.isServer
   Meteor.methods
     createDocument: (fields) ->
-      if this.userId
+      if @userId
         document = new Document()
         document.set(fields)
         document.save ->

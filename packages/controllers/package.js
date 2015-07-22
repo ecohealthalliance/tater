@@ -12,6 +12,7 @@ Package.onUse(function(api) {
   api.use('reactive-var');
   api.use('tater:models');
   api.use('tater:views');
+  api.use('tater:route-helpers');
   api.use('accounts-password');
   api.use('useraccounts:core');
   api.use('chrismbeckett:toastr');
