@@ -13,6 +13,22 @@ if Meteor.isClient
         else
           toastr.success("Success")
 
+  Template.userForm.events
+    'submit form': (event) ->
+      event.preventDefault()
+      form = event.target
+      fields = {
+        email: form.email.value
+        password: form.password.value
+        groupId: form.groupId.value
+        admin: form.admin.value is 'true'
+      }
+      Meteor.call 'addGroupUser', fields, (error, response) ->
+        if error
+          toastr.error("Error")
+        else
+          toastr.success("Success")
+
 if Meteor.isServer
   Meteor.methods
     createGroup: (fields) ->
@@ -24,3 +40,11 @@ if Meteor.isServer
           group
       else
         throw "Not logged in"
+
+    addGroupUser: (fields) ->
+      if Meteor.user()?.admin
+        Accounts.createUser
+          email : email
+          password : password
+          admin: admin
+          group: groupId
