@@ -1,1 +1,2 @@
-# Tater -- document annotator
+# tater
+Manual annotation interface
