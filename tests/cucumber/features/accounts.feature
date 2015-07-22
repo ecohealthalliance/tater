@@ -1,5 +1,6 @@
 Feature: Accounts
 
+  @accounts
   Scenario: Creating a new account
     When I navigate to "/"
     And I open the account modal
@@ -8,6 +9,7 @@ Feature: Accounts
     And I should see content "Sign Out"
     And I should see content "Profile"
 
+  @accounts
   Scenario: Editing my profile
     When I register an account
     And I navigate to "/profile/edit"
@@ -17,11 +19,13 @@ Feature: Accounts
     When I view my public profile
     And I should see content "Test Name"
 
+  @accounts
   Scenario: Viewing a public profile
     Given there is a profile with ID 'fakeid' where "fullName" is "Test Title"
     When I navigate to "/profiles/fakeid"
     Then I should see content "Test Title"
 
+  @accounts
   Scenario: Hiding/displaying email address on profile page
     When I register an account with email address "test@example.com"
     And I view my public profile

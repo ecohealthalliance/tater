@@ -1,0 +1,20 @@
+template(name="userForm")
+  .container
+    h1 Add a user
+    .row
+      .col-sm-8
+        form#new-user-form
+          input#user-email.form-control(name="email" type="hidden")
+          .row
+            .col-sm-8
+              label Email
+                input#user-email.form-control(name="email" type="text")
+          .row
+            .col-sm-8
+              label Password
+                input#user-password.form-control(name="email" type="password")
+          .row
+            .col-sm-8
+              label Password confirm
+                input#user-password-confirm.form-control(name="email" type="password")
+          input.btn.btn-primary(type="submit" value="Save")

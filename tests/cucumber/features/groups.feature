@@ -3,6 +3,7 @@ Feature: Groups
   Background:
     Given there is a test user in the database
 
+  @groups
   Scenario: Creating a new group
     When I log in as the test user
     When I navigate to "/groups"
