@@ -1,0 +1,8 @@
+template(name="documentForm")
+  .container
+    .row
+      .col-sm-12
+        form#new-document-form
+          input#document-title(type='string' name='title')
+          textarea#document-body(name='body')
+          input(type="submit" value="Save")

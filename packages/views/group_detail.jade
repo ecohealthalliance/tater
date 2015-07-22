@@ -5,5 +5,8 @@ template(name="groupDetail")
       .row
         .col-sm-10
           +paragraphText text=group.description
+      .row
+        .col-sm-10
+          a.new-document-link.btn.btn-default(href=newDocumentUrl) New Document
 
   +userForm groupId=group._id

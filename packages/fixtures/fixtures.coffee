@@ -20,6 +20,7 @@ do ->
       group.set('name', 'test group')
       group.set('description', 'description')
       group.set('createdById', Meteor.users.findOne()._id)
+      group.set('_id', "fakegroupid")
       group.save()
 
     'createProfile': (field, value, id) ->

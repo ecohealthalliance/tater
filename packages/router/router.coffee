@@ -1,5 +1,5 @@
 if Meteor.isClient
-  FlowLayout.setRoot('body');
+  FlowLayout.setRoot('body')
 
 FlowRouter.subscriptions = () ->
   @register 'userInfo', Meteor.subscribe 'userInfo'
@@ -35,6 +35,13 @@ FlowRouter.route '/groups/new',
   action: () ->
     FlowLayout.render 'layout',
       main: 'groupForm'
+
+FlowRouter.route '/groups/:_groupId/documents/new',
+  name: 'newDocument'
+  action: (params) ->
+    FlowLayout.render 'layout',
+      main: 'documentForm'
+      params: {"groupId": params._groupId}
 
 FlowRouter.route '/groups/:_id',
   name: 'groupDetail'

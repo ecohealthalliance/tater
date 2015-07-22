@@ -15,3 +15,13 @@ Feature: Groups
     When I click on the group link
     Then I should be on the "Test Group" detail page
     And I should see content "Test Group"
+
+  @groups
+  Scenario: Adding a document to a group
+    Given there is a test group in the database
+    When I log in as the test user
+    And I navigate to the test group page
+    Then I should not see content "Test Document"
+    When I click on the New Document link
+    And I fill out the new document form with title "Test Document"
+    Then I should see a "Success" toast
