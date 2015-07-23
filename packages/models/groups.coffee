@@ -17,7 +17,7 @@ Group = Astro.Class
       else
         @description
 
-    editableByUserWithGroup: (group) ->
+    viewableByUserWithGroup: (group) ->
       group == 'admin' || group == @_id
 
     documents: ->

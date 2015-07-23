@@ -29,6 +29,16 @@ do ->
         .waitForExist('.sign-out')
         .call(callback)
 
+    @When "I log in as the non-admin test group user", (callback) ->
+      @client
+        .url(url.resolve(process.env.ROOT_URL, '/'))
+        .click('.sign-in', assert.ifError)
+        .setValue('#at-field-email', _nonAdminTestUser.email)
+        .setValue('#at-field-password', _nonAdminTestUser.password)
+        .submitForm('#at-field-email', assert.ifError)
+        .waitForExist('.sign-out')
+        .call(callback)
+
     @When /^I navigate to "([^"]*)"$/, (relativePath, callback) ->
       @client
         .url(url.resolve(process.env.ROOT_URL, relativePath))

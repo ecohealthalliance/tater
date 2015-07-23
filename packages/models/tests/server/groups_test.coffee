@@ -24,17 +24,17 @@ describe 'Group', ->
     group.save
     expect(group.createdById).to.eq('fakeid')
 
-  describe '#editableByUserWithGroup', ->
+  describe '#viewableByUserWithGroup', ->
     it 'returns true if user belongs to group', ->
       group.save
       id = group._id
-      expect(group.editableByUserWithGroup(id)).to.be.ok
+      expect(group.viewableByUserWithGroup(id)).to.be.ok
 
     it 'returns true if user is admin', ->
-      expect(group.editableByUserWithGroup('admin')).to.be.ok
+      expect(group.viewableByUserWithGroup('admin')).to.be.ok
 
     it 'returns false otherwise', ->
-      expect(group.editableByUserWithGroup('fake')).not.to.be.ok
+      expect(group.viewableByUserWithGroup('fake')).not.to.be.ok
 
   describe '#documents', ->
     it 'returns the documents that have been added to the group', ->

@@ -27,3 +27,14 @@ Feature: Groups
     Then I should be on the test group documents page
     And I should see content "Test Document"
     And I should see a "Success" toast
+
+  @groups
+  Scenario: Viewing documents as a non-admin
+    Given there is a test group in the database
+    When I log in as the test user
+    And I navigate to the test group page
+    And I create an user account for "non@admin.com"
+    And I log out
+    And I log in as "non@admin.com"
+    And I click the documents header link
+    Then I should be on the test group documents page

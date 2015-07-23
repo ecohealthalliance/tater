@@ -21,7 +21,7 @@ if Meteor.isServer
       if @userId
         group = Groups.findOne({_id: fields.groupId})
         user = Meteor.user()
-        if group?.editableByUserWithGroup(user.group)
+        if group?.viewableByUserWithGroup(user.group)
           document = new Document()
           document.set(fields)
           document.save ->

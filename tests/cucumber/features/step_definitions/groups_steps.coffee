@@ -17,6 +17,13 @@ do ->
         .waitForExist('#new-group-form')
         .call(callback)
 
+    @When "I click the documents header link", (callback) ->
+      @browser
+        .waitForExist('.header-documents-link', assert.ifError)
+        .click('.header-documents-link', assert.ifError)
+        .waitForExist('.group-documents', assert.ifError)
+        .call(callback)
+
     @When /^I fill out the new group form with name "([^"]*)"$/, (name, callback) ->
       @browser
         .waitForExist('#new-group-form')

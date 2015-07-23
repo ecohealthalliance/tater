@@ -14,12 +14,16 @@ if Meteor.isClient
 
     showNewDocumentLink: ->
       group = Groups.findOne(@groupId)
-      group.editableByUserWithGroup(Meteor.user().group)
+      group.viewableByUserWithGroup(Meteor.user()?.group)
 
 
 if Meteor.isServer
   Meteor.publish 'documents', (id) ->
-    [
-      Groups.find(id)
-      Groups.findOne(id).documents()
-    ]
+    user = Meteor.users.findOne(@userId)
+    group = Groups.findOne(id)
+
+    if group.viewableByUserWithGroup(user?.group)
+      [
+        Groups.find(id)
+        Groups.findOne(id).documents()
+      ]
