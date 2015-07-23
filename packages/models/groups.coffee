@@ -16,3 +16,6 @@ Group = Astro.Class
         splitDescription.slice(0,wordCount).join(' ')+'...'
       else
         @description
+
+    editableByUserWithGroup: (group) ->
+      group == 'admin' || group == @_id

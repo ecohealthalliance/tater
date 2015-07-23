@@ -19,9 +19,14 @@ if Meteor.isServer
   Meteor.methods
     createDocument: (fields) ->
       if @userId
-        document = new Document()
-        document.set(fields)
-        document.save ->
-          document
+        group = Groups.findOne({_id: fields.groupId})
+        user = Meteor.user()
+        if group?.editableByUserWithGroup(user.group)
+          document = new Document()
+          document.set(fields)
+          document.save ->
+            document
+        else
+          throw "Unauthorized"
       else
         throw "Not logged in"

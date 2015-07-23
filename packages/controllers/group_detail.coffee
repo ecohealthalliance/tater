@@ -9,6 +9,11 @@ if Meteor.isClient
     newDocumentParams: ->
       _id: @groupId
 
+    showNewDocumentLink: ->
+      group = Groups.findOne({_id: @groupId})
+      group.editableByUserWithGroup(Meteor.user().group)
+
+
 if Meteor.isServer
   Meteor.publish 'groupDetail', (id) ->
     Groups.find(id)

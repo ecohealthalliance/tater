@@ -13,7 +13,7 @@ Feature: Groups
     When I navigate to "/groups"
     Then I should see content "Test Group"
     When I click on the group link
-    Then I should be on the "Test Group" detail page
+    Then I should be on the test group page
     And I should see content "Test Group"
 
   @groups
