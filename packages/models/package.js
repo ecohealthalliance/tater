@@ -17,8 +17,8 @@ Package.onUse(function(api) {
   api.addFiles('documents.coffee', ['client', 'server']);
   api.addFiles('coding_keywords.coffee', 'client');
   api.export(['UserProfile', 'UserProfiles'], ['client', 'server']);
-  api.export(['Group', 'Groups'], ['client', 'server']);
   api.export(['Document', 'Documents'], ['client', 'server']);
+  api.export(['Group', 'Groups'], ['client', 'server']);
   api.export(['CodingKeywords'], 'client');
 });
 
