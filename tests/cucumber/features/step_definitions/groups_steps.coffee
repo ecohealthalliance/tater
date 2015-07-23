@@ -38,9 +38,15 @@ do ->
         .waitForVisible('.group-detail', assert.ifError)
         .call(callback)
 
+    @When /^I navigate to the test group documents page$/, (callback) ->
+      @browser
+        .url(url.resolve(process.env.ROOT_URL, "/groups/fakegroupid/documents"))
+        .waitForVisible('.group-documents', assert.ifError)
+        .call(callback)
+
     @When /^I click on the New Document link$/, (callback) ->
       @browser
-        .waitForVisible('.group-detail', assert.ifError)
+        .waitForVisible('.new-document-link', assert.ifError)
         .click(".new-document-link", assert.ifError)
         .call(callback)
 
@@ -56,6 +62,14 @@ do ->
       @browser
         .waitForVisible('.group-detail', assert.ifError)
         .getHTML '.group-detail h1', (error, response) ->
+          match = response.toString().match("Test Group")
+          assert.ok(match)
+        .call(callback)
+
+    @Then /^I should be on the test group documents page$/, (callback) ->
+      @browser
+        .waitForVisible('.group-documents', assert.ifError)
+        .getHTML '.group-documents h1', (error, response) ->
           match = response.toString().match("Test Group")
           assert.ok(match)
         .call(callback)

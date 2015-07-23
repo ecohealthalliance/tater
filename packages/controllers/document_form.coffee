@@ -13,7 +13,7 @@ if Meteor.isClient
           toastr.error("Error")
         else
           toastr.success("Success")
-          go "groupDetail", {_id: @groupId}
+          go "documents", {_id: @groupId}
 
 if Meteor.isServer
   Meteor.methods
