@@ -1,0 +1,43 @@
+.coding-keywords
+  h2
+    margin-bottom 15px
+    color $secondary
+
+  h3
+    margin-bottom 10px
+    body-font()
+    font-size 18px
+    color $body-color
+
+  section
+    padding 30px 0 0
+    &:first-of-type
+      padding-top 25px
+    &:nth-child(odd)
+      background $ll-gray
+    &:last-child
+      border 0
+
+  .keywords
+    margin-left 5px
+
+  .sub-heading-wrap
+    display inline-block
+    vertical-align top
+    margin-right 80px
+    min-width 15%
+    max-width 20%
+    margin-bottom 20px
+    &:first-child
+      margin-left 0
+    &:nth-child(4n)
+      margin-right 0
+    +between(2,3)
+      min-width 45%
+      margin-right 5%
+      margin-bottom 30px
+      &:nth-child(2n)
+        margin-right 0
+    +below(1)
+      min-width 100%
+      margin-right 0
