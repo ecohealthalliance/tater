@@ -16,6 +16,9 @@ do ->
     @Given /^there is a test user in the database/, ->
       @server.call('createTestUser', _testUser)
 
+    @Given /^there is a group in the database/, ->
+      @server.call('createTestGroup')
+
     @When "I log in as the test user", (callback) ->
       @client
         .url(url.resolve(process.env.ROOT_URL, '/'))
@@ -29,6 +32,12 @@ do ->
     @When /^I navigate to "([^"]*)"$/, (relativePath, callback) ->
       @client
         .url(url.resolve(process.env.ROOT_URL, relativePath))
+        .call(callback)
+
+    @When 'I navigate to the groups page', (callback) ->
+      @client
+        .waitForExist('[href="/groups"]')
+        .click('[href="/groups"]')
         .call(callback)
 
     @Then /^I should( not)? see a "([^"]*)" toast$/, (noToast, message, callback) ->
