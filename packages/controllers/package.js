@@ -26,5 +26,6 @@ Package.onUse(function(api) {
   api.addFiles('group_form.coffee', ['client', 'server']);
   api.addFiles('group_detail.coffee', ['client', 'server']);
   api.addFiles('paragraph_text.coffee', 'client');
+  api.addFiles('coding_keywords.coffee', 'client');
 });
 

@@ -25,4 +25,5 @@ Package.onUse(function(api) {
   api.addFiles('footer.jade', 'client');
   api.addFiles('layout.jade', 'client');
   api.addFiles('paragraph_text.jade', 'client');
+  api.addFiles('coding_keywords.jade', 'client');
 });
