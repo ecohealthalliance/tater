@@ -1,4 +1,4 @@
-codeCategories =
+codes =
   [
     {
       'heading': 'Human Movement'
@@ -223,5 +223,5 @@ codeCategories =
   ]
 
 CodingKeywords = new Meteor.Collection(null)
-for codeCategory in codeCategories
+for codeCategory in codes
   CodingKeywords.insert codeCategory
