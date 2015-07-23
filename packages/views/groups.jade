@@ -1,10 +1,11 @@
 template(name="groups")
   if currentUser
-    .container.view-header
-      h1.inline Groups
-      a.btn.btn-default.new-group-link.header-btn(href="{{path route='newGroup'}}")
-        span Create
-        i.fa.fa-plus
+    .view-header.primary-bg
+      .container
+        h1.inline Groups
+        a.btn.btn-default.new-group-link.header-btn(href="{{path route='newGroup'}}")
+          span Create
+          i.fa.fa-plus
     table.table.table-striped.groups-table
       tbody
         each groups
