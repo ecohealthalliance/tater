@@ -4,7 +4,7 @@ template(name="userForm")
     .row
       .col-sm-8
         form#new-user-form
-          input#user-email.form-control(name="email" type="hidden")
+          input.form-control(name="group" type="hidden" value=groupId)
           .row
             .col-sm-8
               label Email
@@ -12,9 +12,13 @@ template(name="userForm")
           .row
             .col-sm-8
               label Password
-                input#user-password.form-control(name="email" type="password")
+                input#user-password.form-control(name="password" type="password")
           .row
             .col-sm-8
               label Password confirm
-                input#user-password-confirm.form-control(name="email" type="password")
+                input#user-password-confirm.form-control(name="passwordconfirm" type="password")
+          .checkbox
+            label
+              input(name="admin" type="checkbox")
+              span Is Admin
           input.btn.btn-primary(type="submit" value="Save")

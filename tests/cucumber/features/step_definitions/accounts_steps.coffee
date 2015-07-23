@@ -88,3 +88,33 @@ do ->
           else
             assert(ret.value, 'Not authenticated')
         ).call(callback)
+
+    @When 'I create an user account for "$email"', (email, callback) ->
+      @browser
+        .waitForVisible('#user-email')
+        .setValue('#user-email', email)
+        .setValue('#user-password', 'testuser')
+        .setValue('#user-password-confirm', 'testuser')
+        .submitForm('#user-email', assert.ifError)
+        # This pause is necessairy, I think the waitForVisible function
+        # can't cope with elements that fade in and out.
+        .pause(500)
+        .waitForVisible('.toast-success', assert.ifError)
+        .call(callback)
+
+    @When 'I log out', (callback) ->
+      @browser
+        .click('.dropdown-toggle')
+        .click('.sign-out')
+        .waitForExist('.sign-in')
+        .call(callback)
+
+    @When 'I log in as "$email"', (email, callback) ->
+      @browser
+        .click('.sign-in', assert.ifError)
+        .waitForExist('.accounts-modal.modal.in')
+        .setValue('#at-field-email', email)
+        .setValue('#at-field-password', 'testuser')
+        .submitForm('#at-field-email', assert.ifError)
+        .waitForExist('.sign-out', assert.ifError)
+        .call(callback)

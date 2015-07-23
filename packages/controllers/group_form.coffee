@@ -28,7 +28,7 @@ if Meteor.isServer
     addGroupUser: (fields) ->
       if Meteor.user()?.admin
         Accounts.createUser
-          email : email
-          password : password
-          admin: admin
-          group: groupId
+          email : fields.email
+          password : fields.password
+          admin: fields.admin
+          group: fields.groupId

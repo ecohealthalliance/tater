@@ -15,6 +15,13 @@ do ->
         email: attributes.email
         password: attributes.password
 
+    'createTestGroup': (attributes) ->
+      group = new Group()
+      group.set('name', 'test group')
+      group.set('description', 'description')
+      group.set('createdById', Meteor.users.findOne()._id)
+      group.save()
+
     'createProfile': (field, value, id) ->
       attributes = {}
       attributes[field] = value

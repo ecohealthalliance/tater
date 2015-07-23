@@ -33,3 +33,15 @@ Feature: Accounts
     When I hide my email address from my profile
     And I view my public profile
     Then I should not see content "test@example.com"
+
+  @accounts
+  Scenario: Creating an account for another user
+    Given there is a test user in the database
+    And there is a group in the database
+    When I log in as the test user
+    And I navigate to the groups page
+    And I click on the group link
+    And I create an user account for "mr@potato.head"
+    And I log out
+    And I log in as "mr@potato.head"
+    Then I am logged in
