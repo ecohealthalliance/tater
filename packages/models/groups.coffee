@@ -21,4 +21,4 @@ Group = Astro.Class
       group == 'admin' || group == @_id
 
     documents: ->
-      Documents.find({}, {groupId: @_id})
+      Documents.find({groupId: @_id})
