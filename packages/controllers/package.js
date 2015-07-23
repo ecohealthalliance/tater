@@ -12,9 +12,11 @@ Package.onUse(function(api) {
   api.use('reactive-var');
   api.use('tater:models');
   api.use('tater:views');
+  api.use('tater:accounts');
   api.use('accounts-password');
   api.use('useraccounts:core');
   api.use('chrismbeckett:toastr');
+  api.use('aslagle:reactive-table');
 
   api.addFiles('toastr.coffee', 'client');
   api.addFiles('header.coffee', 'client');
@@ -27,5 +29,6 @@ Package.onUse(function(api) {
   api.addFiles('group_detail.coffee', ['client', 'server']);
   api.addFiles('paragraph_text.coffee', 'client');
   api.addFiles('user_form.coffee', 'client');
+  api.addFiles('user_table.coffee', ['client', 'server']);
 });
 

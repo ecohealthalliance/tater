@@ -1,0 +1,9 @@
+template(name="userTable")
+  section.rm-pad-top
+    .container
+      h1 Group Users
+    .table-wrap.reports-table.container
+      +reactiveTable collection="userInfo" settings=settings filters=filters
+
+template(name="noUsers")
+  h3 No Users Found
