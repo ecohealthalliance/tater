@@ -8,6 +8,7 @@ do ->
       Meteor.users.remove({})
       UserProfiles.remove({})
       Groups.remove({})
+      Documents.remove({})
 
     'createTestUser': (attributes) ->
       Meteor.users.remove({})

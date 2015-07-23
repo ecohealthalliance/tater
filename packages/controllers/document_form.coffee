@@ -4,8 +4,8 @@ if Meteor.isClient
       event.preventDefault()
       form = event.target
       fields = {
-        name: form.title?.value
-        description: form.body?.value
+        title: form.title?.value
+        body: form.body?.value
         groupId: @groupId
       }
       Meteor.call 'createDocument', fields, (error, response) =>

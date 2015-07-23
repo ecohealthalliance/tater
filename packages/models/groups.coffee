@@ -19,3 +19,6 @@ Group = Astro.Class
 
     editableByUserWithGroup: (group) ->
       group == 'admin' || group == @_id
+
+    documents: ->
+      Documents.find({}, {groupId: @_id})

@@ -6,6 +6,9 @@ if Meteor.isClient
     group: ->
       Groups.findOne(@groupId)
 
+    documents: ->
+      Documents.find({}, {groupId: @groupId})
+
     newDocumentParams: ->
       _id: @groupId
 
@@ -16,4 +19,8 @@ if Meteor.isClient
 
 if Meteor.isServer
   Meteor.publish 'groupDetail', (id) ->
-    Groups.find(id)
+    group = Groups.findOne(id)
+    [
+      Groups.find(id)
+      group.documents()
+    ]

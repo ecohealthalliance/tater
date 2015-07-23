@@ -35,3 +35,11 @@ describe 'Group', ->
 
     it 'returns false otherwise', ->
       expect(group.editableByUserWithGroup('fake')).not.to.be.ok
+
+  describe '#documents', ->
+    it 'returns the documents that have been added to the group', ->
+      id = group.save
+      expect(group.documents().count()).to.eq(0)
+      document = new Document({groupId: id})
+      document.save ->
+        expect(group.documents().count()).to.eq(1)
