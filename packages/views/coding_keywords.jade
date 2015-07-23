@@ -1,0 +1,18 @@
+template(name="codingKeywords")
+  .coding-keywords
+    .view-header.primary-bg
+      .container
+        h1 Coding Keywords
+    each codingKeywords
+      section.border-btm-2
+        .container
+          h2= heading
+          .row
+            ul.subHeading
+              each subHeadings
+                .sub-heading-wrap
+                  h3= subHeading
+                  ul.keywords
+                    each keywords
+                      li= this
+

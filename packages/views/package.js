@@ -15,7 +15,7 @@ Package.onUse(function(api) {
   api.use('aslagle:reactive-table');
 
   api.addFiles('accounts_modal.jade');
-  api.addFiles('accounts_header_buttons.jade')
+  api.addFiles('accounts_header_buttons.jade');
   api.addFiles('splash_page.jade', 'client');
   api.addFiles('profile_edit.jade', 'client');
   api.addFiles('profile_detail.jade', 'client');
@@ -31,4 +31,5 @@ Package.onUse(function(api) {
   api.addFiles('layout.jade', 'client');
   api.addFiles('paragraph_text.jade', 'client');
   api.addFiles('documents.jade', 'client');
+  api.addFiles('coding_keywords.jade', 'client');
 });
