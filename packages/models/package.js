@@ -14,8 +14,10 @@ Package.onUse(function(api) {
   api.use('mongo');
   api.addFiles('user_profiles.coffee', ['client', 'server']);
   api.addFiles('groups.coffee', ['client', 'server']);
+  api.addFiles('documents.coffee', ['client', 'server']);
   api.export(['UserProfile', 'UserProfiles'], ['client', 'server']);
   api.export(['Group', 'Groups'], ['client', 'server']);
+  api.export(['Document', 'Documents'], ['client', 'server']);
 });
 
 Package.onTest(function(api) {
@@ -26,4 +28,5 @@ Package.onTest(function(api) {
   api.use('test-helpers');
   api.addFiles('tests/server/user_profiles_test.coffee', 'server');
   api.addFiles('tests/server/groups_test.coffee', 'server');
+  api.addFiles('tests/server/documents_test.coffee', 'server');
 });

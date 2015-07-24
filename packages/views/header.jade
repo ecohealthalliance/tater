@@ -8,9 +8,17 @@ template(name="header")
             h1 Tater
         .navbar-collapse.collapse
           ul.nav.navbar-nav.navbar-right
-            if isAdmin
-              li
-                a(href="{{path route='groups'}}")
-                  span Groups
+            if currentUser
+              if isAdmin
+                li
+                  a.header-documents-link(href="{{path route='documents'}}")
+                    span Documents
+                li
+                  a(href="{{path route='groups'}}")
+                    span Groups
+              else
+                li
+                  a.header-documents-link(href="{{path route='groupDocuments' params=documentsLinkParams}}")
+                    span Documents
             +accountsHeaderButtons state=accountsState
   +accountsModal state=accountsState

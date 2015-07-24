@@ -7,6 +7,9 @@ do ->
 
     url = require('url')
 
+    @Given "there is a test group in the database", ->
+      @server.call('createTestGroup')
+
     @When "I click the new group link", (callback) ->
       @browser
         .waitForExist('.groups-table')
@@ -29,7 +32,16 @@ do ->
         .waitForVisible('.group-detail', assert.ifError)
         .call(callback)
 
-    @Then /^I should be on the "([^"]*)" detail page$/, (name, callback) ->
+    @When /^I navigate to the test group page$/, (callback) ->
+      @browser
+        .url(url.resolve(process.env.ROOT_URL, "/groups/fakegroupid"))
+        .waitForVisible('.group-detail', assert.ifError)
+        .call(callback)
+
+    @Then /^I should be on the test group page$/, (callback) ->
       @browser
         .waitForVisible('.group-detail', assert.ifError)
+        .getHTML '.group-detail h1', (error, response) ->
+          match = response.toString().match("Test Group")
+          assert.ok(match)
         .call(callback)
