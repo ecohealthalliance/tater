@@ -1,8 +1,8 @@
 if Meteor.isClient
-  Template.documents.onCreated ->
-    @subscribe('documents', @data.groupId)
+  Template.groupDocuments.onCreated ->
+    @subscribe('groupDocuments', @data.groupId)
 
-  Template.documents.helpers
+  Template.groupDocuments.helpers
     group: ->
       Groups.findOne(@groupId)
 
@@ -18,11 +18,11 @@ if Meteor.isClient
 
 
 if Meteor.isServer
-  Meteor.publish 'documents', (id) ->
+  Meteor.publish 'groupDocuments', (id) ->
     user = Meteor.users.findOne(@userId)
     group = Groups.findOne(id)
 
-    if group.viewableByUserWithGroup(user?.group)
+    if user and group.viewableByUserWithGroup(user.group)
       [
         Groups.find(id)
         Groups.findOne(id).documents()

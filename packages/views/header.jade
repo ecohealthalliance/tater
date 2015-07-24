@@ -15,7 +15,7 @@ template(name="header")
                     span Groups
               else
                 li
-                  a.header-documents-link(href="{{path route='documents' params=documentsLinkParams}}")
+                  a.header-documents-link(href="{{path route='groupDocuments' params=documentsLinkParams}}")
                     span Documents
             +accountsHeaderButtons state=accountsState
   +accountsModal state=accountsState
