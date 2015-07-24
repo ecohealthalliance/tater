@@ -46,8 +46,8 @@ Feature: Accounts
     And I log in as "mr@potato.head"
     Then I am logged in
 
-  @accounts
-  Scenario: Deleting an account for another user
+  @ignore
+  Scenario: Deleting a user account
     Given there is a test user in the database
     And there is a group in the database
     When I log in as the test user
