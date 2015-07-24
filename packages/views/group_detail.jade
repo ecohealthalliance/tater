@@ -5,4 +5,7 @@ template(name="groupDetail")
       .row
         .col-sm-10
           +paragraphText text=group.description
+      .row
+        .col-sm-10
+          a.group-documents-link.btn.btn-default(href="{{path route='groupDocuments' params=groupDocumentsParams}}") Documents
   +userForm groupId=group._id

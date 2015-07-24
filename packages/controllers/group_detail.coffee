@@ -6,6 +6,9 @@ if Meteor.isClient
     group: ->
       Groups.findOne(@groupId)
 
+    groupDocumentsParams: ->
+      _id: @groupId
+
 if Meteor.isServer
   Meteor.publish 'groupDetail', (id) ->
     Groups.find(id)

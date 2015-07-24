@@ -10,11 +10,21 @@ do ->
     @Given /^there is a test document with title "([^"]*)" in group "([^"]*)"$/, (title, groupId) ->
       @server.call('createTestDocument', {title: title, groupId: groupId})
 
+    @Given /^there is a document with title "([^"]*)" in the test group$/, (title) ->
+      @server.call('createTestDocument', {title: title, groupId: 'fakegroupid'})
+
     @When "I click the documents header link", (callback) ->
       @browser
         .waitForExist('.header-documents-link', assert.ifError)
         .click('.header-documents-link', assert.ifError)
         .waitForExist('.group-documents', assert.ifError)
+        .call(callback)
+
+    @When "I click on the group documents link", (callback) ->
+      @browser
+        .waitForExist('.group-documents-link', assert.ifError)
+        .click('.group-documents-link', assert.ifError)
+        .waitForExist('.documents', assert.ifError)
         .call(callback)
 
     @When /^I navigate to the test group documents page$/, (callback) ->

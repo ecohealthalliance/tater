@@ -34,3 +34,13 @@ Feature: Documents
     And I click the documents header link
     Then I should see content "First Doc"
     And I should see content "Second Doc"
+
+  @documents
+  Scenario: Viewing one group's documents as an admin
+    Given there is a test group in the database
+    And there is a document with title "Test Doc" in the test group
+    When I log in as the test user
+    And I navigate to "/groups"
+    And I click on the group link
+    And I click on the group documents link
+    Then I should see content "Test Doc"
