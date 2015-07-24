@@ -1,0 +1,13 @@
+template(name="groupDocuments")
+  .group-documents.documents
+    .container
+      h1= group.name
+      if showNewDocumentLink
+        .row
+          .col-sm-10
+            a.new-document-link.btn.btn-default(href="{{path route='newDocument' params=newDocumentParams}}") New Document
+
+      .row
+        .col-sm-10
+          each documents
+            p= title

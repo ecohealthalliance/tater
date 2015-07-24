@@ -24,6 +24,12 @@ FlowRouter.route '/profiles/:_id',
       main: 'profileDetail'
       params: {"profileId": params._id}
 
+FlowRouter.route '/documents',
+  name: 'documents'
+  action: () ->
+    FlowLayout.render 'layout',
+      main: 'documents'
+
 FlowRouter.route '/groups',
   name: 'groups'
   action: () ->
@@ -51,8 +57,8 @@ FlowRouter.route '/groups/:_id/documents/new',
       params: {"groupId": params._id}
 
 FlowRouter.route '/groups/:_id/documents',
-  name: 'documents'
+  name: 'groupDocuments'
   action: (params) ->
     FlowLayout.render 'layout',
-      main: 'documents'
+      main: 'groupDocuments'
       params: {"groupId": params._id}

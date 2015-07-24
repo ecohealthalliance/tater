@@ -21,10 +21,11 @@ Package.onUse(function(api) {
   api.addFiles('group_form.jade', 'client');
   api.addFiles('user_form.jade', 'client');
   api.addFiles('group_detail.jade', 'client');
-  api.addFiles('documents.jade', 'client');
+  api.addFiles('group_documents.jade', 'client');
   api.addFiles('document_form.jade', 'client');
   api.addFiles('header.jade', 'client');
   api.addFiles('footer.jade', 'client');
   api.addFiles('layout.jade', 'client');
   api.addFiles('paragraph_text.jade', 'client');
+  api.addFiles('documents.jade', 'client');
 });
