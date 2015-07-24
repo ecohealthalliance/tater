@@ -118,3 +118,14 @@ do ->
         .submitForm('#at-field-email', assert.ifError)
         .waitForExist('.sign-out', assert.ifError)
         .call(callback)
+
+    @When /^I click the remove user link$/, (callback) ->
+      @browser
+        .waitForVisible('.remove-user', assert.ifError)
+        .click(".remove-user", assert.ifError)
+        .call(callback)
+
+    @When /^I accept the alert$/, (callback) ->
+      @browser
+        .alertAccept(assert.ifError)
+        .call(callback)

@@ -29,7 +29,7 @@ if Meteor.isClient
       hideToggle: true
       fn: (val, obj) ->
         new Spacebars.SafeString("""
-          <a class="control remove remove-user" data-id="#{obj._id}" title="Remove">X</a>
+          <a class="control remove remove-user" data-id="#{obj._id}" data-email="#{obj.emails[0].address}" title="Remove">X</a>
         """)
 
     showColumnToggles: true
@@ -43,8 +43,9 @@ if Meteor.isClient
   Template.userTable.events
     'click .remove-user': (evt) ->
       userId = $(evt.target).data("id")
-      reply = prompt('Type "delete" to confirm that this user should be removed.')
-      if reply == "delete"
+      email = $(evt.target).data("email")
+      reply = confirm('Remove user ' + email + '?')
+      if reply
         Meteor.call 'removeUser', userId, (error, response) ->
           if error
             toastr.error("Error")
