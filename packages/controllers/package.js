@@ -30,5 +30,6 @@ Package.onUse(function(api) {
   api.addFiles('user_form.coffee', 'client');
   api.addFiles('group_documents.coffee', ['client', 'server']);
   api.addFiles('document_form.coffee', ['client', 'server']);
+  api.addFiles('documents.coffee', ['client', 'server']);
 });
 

@@ -24,6 +24,12 @@ FlowRouter.route '/profiles/:_id',
       main: 'profileDetail'
       params: {"profileId": params._id}
 
+FlowRouter.route '/documents',
+  name: 'documents'
+  action: () ->
+    FlowLayout.render 'layout',
+      main: 'documents'
+
 FlowRouter.route '/groups',
   name: 'groups'
   action: () ->

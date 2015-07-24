@@ -16,7 +16,7 @@ Feature: Documents
     And I should see a "Success" toast
 
   @documents
-  Scenario: Viewing documents as a non-admin
+  Scenario: Viewing group documents as a non-admin
     Given there is a test group in the database
     When I log in as the test user
     And I navigate to the test group page
@@ -25,3 +25,12 @@ Feature: Documents
     And I log in as "non@admin.com"
     And I click the documents header link
     Then I should be on the test group documents page
+
+  @documents
+  Scenario: Viewing all documents as an admin
+    Given there is a test document with title "First Doc" in group "groupid1"
+    And there is a test document with title "Second Doc" in group "groupid2"
+    When I log in as the test user
+    And I click the documents header link
+    Then I should see content "First Doc"
+    And I should see content "Second Doc"

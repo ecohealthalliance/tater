@@ -7,6 +7,9 @@ do ->
 
     url = require('url')
 
+    @Given /^there is a test document with title "([^"]*)" in group "([^"]*)"$/, (title, groupId) ->
+      @server.call('createTestDocument', {title: title, groupId: groupId})
+
     @When "I click the documents header link", (callback) ->
       @browser
         .waitForExist('.header-documents-link', assert.ifError)
