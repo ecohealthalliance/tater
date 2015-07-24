@@ -23,3 +23,23 @@ describe 'Group', ->
     group.set('createdById', 'fakeid')
     group.save
     expect(group.createdById).to.eq('fakeid')
+
+  describe '#viewableByUserWithGroup', ->
+    it 'returns true if user belongs to group', ->
+      group.save
+      id = group._id
+      expect(group.viewableByUserWithGroup(id)).to.be.ok
+
+    it 'returns true if user is admin', ->
+      expect(group.viewableByUserWithGroup('admin')).to.be.ok
+
+    it 'returns false otherwise', ->
+      expect(group.viewableByUserWithGroup('fake')).not.to.be.ok
+
+  describe '#documents', ->
+    it 'returns the documents that have been added to the group', ->
+      id = group.save
+      expect(group.documents().count()).to.eq(0)
+      document = new Document({groupId: id})
+      document.save ->
+        expect(group.documents().count()).to.eq(1)

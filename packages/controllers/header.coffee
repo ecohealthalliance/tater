@@ -5,6 +5,9 @@ if Meteor.isClient
   Template.header.helpers
     accountsState: -> Template.instance().accountsState
 
+    documentsLinkParams: ->
+      { _id: Meteor.user().group }
+
   Template.header.events
     'click a' : (e) ->
       if $('.navbar-toggle').is(':visible') and $('.navbar-collapse').hasClass('in') and !$(e.currentTarget).hasClass('dropdown-toggle')

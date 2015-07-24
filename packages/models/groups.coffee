@@ -16,3 +16,9 @@ Group = Astro.Class
         splitDescription.slice(0,wordCount).join(' ')+'...'
       else
         @description
+
+    viewableByUserWithGroup: (group) ->
+      group == 'admin' || group == @_id
+
+    documents: ->
+      Documents.find({groupId: @_id})
