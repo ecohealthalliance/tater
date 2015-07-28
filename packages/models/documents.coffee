@@ -7,3 +7,12 @@ Document = Astro.Class
     title: 'string'
     body: 'string'
     groupId: 'string'
+
+  methods:
+    truncatedBody: ->
+      splitText = @body?.split(' ')
+      wordCount = 25
+      if splitText?.length > wordCount
+        splitText.slice(0,wordCount).join(' ')+'...'
+      else
+        @body

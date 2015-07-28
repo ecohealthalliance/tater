@@ -27,7 +27,7 @@ h5
   color $d-gray
 
 .view-header
-  margin-bottom 15px
+  margin-bottom 25px
   +below(1)
     margin-bottom 25px
   h1
@@ -123,6 +123,17 @@ a
 .inline
   display inline-block
   vertical-align middle
+
+.full-width-table
+  border-top 1px solid $l-gray
+  .table-content-wrap
+    border-bottom 1px solid $l-gray
+    .container
+        padding 15px 0
+  td.title
+    font-size 120%
+    font-weight bold
+
 
 for $num in 1 2 3 4 5 6
   .space-btm-{$num}
