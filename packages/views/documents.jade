@@ -7,4 +7,5 @@ template(name="documents")
       .row
         .col-sm-12
           each documents
-            p= title
+            a.group-name(href="{{path route='documentDetail' params=this}}")= title
+            br

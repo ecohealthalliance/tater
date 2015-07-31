@@ -8,6 +8,6 @@ template(name="groupDocuments")
             a.new-document-link.btn.btn-default(href="{{path route='newDocument' params=newDocumentParams}}") New Document
 
       .row
-        .col-sm-10
+        .col-sm-12
           each documents
-            p= title
+            a.group-name(href="{{path route='documentDetail' params=this}}")= title

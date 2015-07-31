@@ -1,0 +1,9 @@
+template(name="documentDetail")
+  .document-detail
+    #documentContainer.container
+      h1#documentTitle Title: #{document.title}
+      .row
+        .col-sm-10
+          #documentBody #{document.body}
+  if showAnnotationForm
+    +annotationForm annotation=none
