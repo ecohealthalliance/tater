@@ -125,7 +125,8 @@ do ->
         .click(".remove-user", assert.ifError)
         .call(callback)
 
-    @When /^I accept the alert$/, (callback) ->
+    @When /^I confirm the deletion$/, (callback) ->
       @browser
-        .alertAccept(assert.ifError)
+        .waitForVisible('.modal', assert.ifError)
+        .click('.confirm-remove-user', assert.ifError)
         .call(callback)

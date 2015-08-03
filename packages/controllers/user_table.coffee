@@ -1,5 +1,9 @@
 if Meteor.isClient
 
+  Template.userTable.onCreated ->
+    @userToDeleteId = new ReactiveVar()
+    @userToDeleteEmail = new ReactiveVar()
+
   Template.userTable.filters = () =>
     filters = []
     filters
@@ -40,17 +44,28 @@ if Meteor.isClient
   Template.userTable.usersCollection = () ->
     Meteor.users.find { group: @groupId }
 
+  Template.userTable.helpers
+    userToDeleteEmail: ->
+      Template.instance().userToDeleteEmail.get()
+
   Template.userTable.events
-    'click .remove-user': (evt) ->
+    'click .remove-user': (evt, instance) ->
       userId = $(evt.target).data("id")
-      email = $(evt.target).data("email")
-      reply = confirm('Remove user ' + email + '?')
-      if reply
-        Meteor.call 'removeUser', userId, (error, response) ->
-          if error
-            toastr.error("Error")
-          else
-            toastr.success("User removed")
+      userEmail = $(evt.target).data("email")
+      instance.userToDeleteId.set(userId)
+      instance.userToDeleteEmail.set(userEmail)
+      $('#remove-user-modal').modal('show')
+
+    'click .confirm-remove-user': (evt, instance) ->
+      userId = instance.userToDeleteId.get()
+      Meteor.call 'removeUser', userId, (error, response) ->
+        if error
+          toastr.error("Error")
+        else
+          toastr.success("User removed")
+        $('#remove-user-modal').modal('hide')
+        instance.userToDeleteId.set(null)
+        instance.userToDeleteEmail.set(null)
 
 if Meteor.isServer
   Meteor.methods

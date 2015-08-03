@@ -46,7 +46,7 @@ Feature: Accounts
     And I log in as "mr@potato.head"
     Then I am logged in
 
-  @ignore
+  @accounts
   Scenario: Deleting a user account
     Given there is a test user in the database
     And there is a group in the database
@@ -56,5 +56,5 @@ Feature: Accounts
     And I create an user account for "mr@potato.head"
     Then I should see content "mr@potato.head"
     When I click the remove user link
-    And I accept the alert
+    And I confirm the deletion
     Then I should not see content "mr@potato.head"
