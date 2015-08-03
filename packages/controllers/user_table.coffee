@@ -70,7 +70,7 @@ if Meteor.isClient
 if Meteor.isServer
   Meteor.methods
     removeUser: (userId) ->
-      if Meter.users.findOne(@userId)?.admin
+      if Meteor.users.findOne(@userId)?.admin
         Meteor.users.remove userId
       else
         throw 'Unauthorized'
