@@ -21,3 +21,13 @@ if Meteor.isClient
         else
           toastr.success("Success")
           form.reset()
+
+if Meteor.isServer
+  Meteor.methods
+    addGroupUser: (fields) ->
+      if Meteor.user()?.admin
+        Accounts.createUser
+          email : fields.email
+          password : fields.password
+          admin: fields.admin
+          group: fields.groupId

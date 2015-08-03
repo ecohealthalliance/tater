@@ -25,7 +25,7 @@ if Meteor.isServer
     profile.save(-> {})
     admin = Meteor.users.findOne { admin: true }
     if admin
-      user.admin = false
+      user.admin = options.admin
       user.group = options.group
     else
       user.admin = true

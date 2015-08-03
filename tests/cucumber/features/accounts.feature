@@ -47,6 +47,19 @@ Feature: Accounts
     Then I am logged in
 
   @accounts
+  Scenario: Creating an account for another admin user
+    Given there is a test user in the database
+    And there is a group in the database
+    When I log in as the test user
+    And I navigate to the groups page
+    And I click on the group link
+    And I create an admin user account for "mr@potato.head"
+    And I log out
+    And I log in as "mr@potato.head"
+    Then I am logged in
+    And I am logged in as an admin user
+
+  @accounts
   Scenario: Deleting a user account
     Given there is a test user in the database
     And there is a group in the database

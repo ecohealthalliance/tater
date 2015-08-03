@@ -89,6 +89,15 @@ do ->
             assert(ret.value, 'Not authenticated')
         ).call(callback)
 
+    @Then 'I am logged in as an admin user', (callback) ->
+      @browser
+        .execute((->
+          Meteor.user().admin
+        ), (err, ret) ->
+          assert.ifError(err)
+          assert.equal(ret.value, true, 'Not admin')
+        ).call(callback)
+
     @When 'I create an user account for "$email"', (email, callback) ->
       @browser
         .waitForVisible('#user-email')
@@ -98,6 +107,18 @@ do ->
         .submitForm('#user-email', assert.ifError)
         # This pause is necessairy, I think the waitForVisible function
         # can't cope with elements that fade in and out.
+        .pause(500)
+        .waitForVisible('.toast-success', assert.ifError)
+        .call(callback)
+
+    @When 'I create an admin user account for "$email"', (email, callback) ->
+      @browser
+        .waitForVisible('#user-email')
+        .setValue('#user-email', email)
+        .setValue('#user-password', 'testuser')
+        .setValue('#user-password-confirm', 'testuser')
+        .click('#user-admin')
+        .submitForm('#user-email', assert.ifError)
         .pause(500)
         .waitForVisible('.toast-success', assert.ifError)
         .call(callback)
