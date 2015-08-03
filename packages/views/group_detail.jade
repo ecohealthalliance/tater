@@ -1,14 +1,16 @@
 template(name="groupDetail")
   if isAdmin
-    .group-detail
+    .group-detail.space-btm-3
+      .view-header
+        .container
+          h1.inline #{group.name}
+          a.group-documents-link.btn.header-btn.btn-default(href="{{path route='groupDocuments' params=groupDocumentsParams}}")
+            span Documents
+            i.fa.fa-files-o
       .container
-        h1 Group: #{group.name}
         .row
           .col-sm-10
             +paragraphText text=group.description
-        .row
-          .col-sm-10
-            a.group-documents-link.btn.btn-default(href="{{path route='groupDocuments' params=groupDocumentsParams}}") Documents
 
     +userTable
 
