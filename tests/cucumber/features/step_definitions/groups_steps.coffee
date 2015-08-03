@@ -27,7 +27,7 @@ do ->
 
     @When /^I click on the group link$/, (callback) ->
       @browser
-        .waitForVisible('.groups-table', assert.ifError)
+        .waitForExist('.groups-table', assert.ifError)
         .click(".groups-table a", assert.ifError)
         .waitForVisible('.group-detail', assert.ifError)
         .call(callback)
@@ -35,7 +35,7 @@ do ->
     @When /^I navigate to the test group page$/, (callback) ->
       @browser
         .url(url.resolve(process.env.ROOT_URL, "/groups/fakegroupid"))
-        .waitForVisible('.group-detail', assert.ifError)
+        .waitForExist('.group-detail', assert.ifError)
         .call(callback)
 
     @Then /^I should be on the test group page$/, (callback) ->

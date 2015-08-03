@@ -1,13 +1,17 @@
 template(name="groupDetail")
-  .group-detail.space-btm-3
-    .view-header
+  if isAdmin
+    .group-detail.space-btm-3
+      .view-header
+        .container
+          h1.inline #{group.name}
+          a.group-documents-link.btn.header-btn.btn-default(href="{{path route='groupDocuments' params=groupDocumentsParams}}")
+            span Documents
+            i.fa.fa-files-o
       .container
-        h1.inline #{group.name}
-        a.group-documents-link.btn.header-btn.btn-default(href="{{path route='groupDocuments' params=groupDocumentsParams}}")
-          span Documents
-          i.fa.fa-files-o
-    .container
-      .row
-        .col-sm-10
-          +paragraphText text=group.description
-  +userForm groupId=group._id
+        .row
+          .col-sm-10
+            +paragraphText text=group.description
+
+    +userTable
+
+    +userForm groupId=group._id

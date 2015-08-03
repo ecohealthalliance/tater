@@ -10,7 +10,9 @@ Package.onUse(function(api) {
   api.use('templating');
   api.use('mquandalle:jade@0.4.1');
   api.use('tater:styles');
+  api.use('tater:accounts');
   api.use('tater:route-helpers');
+  api.use('aslagle:reactive-table');
 
   api.addFiles('accounts_modal.jade');
   api.addFiles('accounts_header_buttons.jade')
@@ -19,6 +21,7 @@ Package.onUse(function(api) {
   api.addFiles('profile_detail.jade', 'client');
   api.addFiles('groups.jade', 'client');
   api.addFiles('group_form.jade', 'client');
+  api.addFiles('user_table.jade', 'client');
   api.addFiles('user_form.jade', 'client');
   api.addFiles('group_detail.jade', 'client');
   api.addFiles('group_documents.jade', 'client');

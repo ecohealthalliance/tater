@@ -5,7 +5,7 @@ if Meteor.isClient
   Template.groups.helpers
     groups: ->
       if Meteor.userId()
-        Groups.find({createdById: Meteor.userId()})
+        Groups.find()
 
 if Meteor.isServer
   Meteor.publish 'groups', ->
