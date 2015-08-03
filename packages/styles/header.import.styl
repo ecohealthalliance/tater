@@ -30,6 +30,17 @@ header
       background white
       outline $primary
       transition()
+    &.new-document
+      float left
+      margin-left 20px
+      margin-top 11px
+      &:hover
+      &:focus
+        color white
+      +below(2)
+        float none
+        width 60%
+        margin 10px auto
 
 .nav
   float right
@@ -95,6 +106,7 @@ header
           transition(background-color)
           background $primary
           @extend .dark-shadow
+          color $body-text
         +below(1)
           float none
           width 50%

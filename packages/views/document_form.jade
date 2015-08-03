@@ -1,13 +1,15 @@
 template(name="documentForm")
   .container
+    h1 New Document
     .row
-      .col-sm-12
-        h1 New Document
-    .row
-      .col-sm-12
+      .col-sm-10
         form#new-document-form
-          label Title
-            input#document-title.form-control(type='string' name='title')
-          label Body
-            textarea#document-body.form-control(name='body')
+          .row
+            .col-sm-6
+              label Title
+                input#document-title.form-control(type='string' name='title')
+          .row
+            .col-sm-10
+              label Body
+              textarea#document-body.form-control(name='body')
           input.btn.btn-primary(type="submit" value="Save")
