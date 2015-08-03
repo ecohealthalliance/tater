@@ -12,8 +12,9 @@ header
   margin-bottom 0
   border 0
   border-radius 0
-  background $header-footer-BG
-  @extend .dark-shadow
+  background $header-BG
+  if $header-text-shadow
+    @extend .dark-shadow
   .btn
   .btn-default
     padding 6px 12px
@@ -70,9 +71,8 @@ header
   > li
     > a
       buttonHover($nav-hover)
-      color white
-      font-size 13px
-      line-height 13px
+      color $header-link-color
+      line-height 14px
       padding 20px 15px
       +below(1)
         padding 12px 30px
@@ -89,6 +89,7 @@ header
       &:focus
         outline 5px auto darken($primary, 10%)
         background $primary
+        color white
       &.navbar-btn
         margin-top 11px
         margin-left 15px
@@ -181,12 +182,14 @@ header
   outline 0
 
 .navbar-brand
-  padding 10px 0
+  display block
+  height $brand-height
+  margin-top $brand-top-margin
+  padding 0
   transition(.2s, color)
   +below(1)
     transition(.2s, color)
-    width 75%
-    padding 9px 0
+    margin-top $brand-top-margin - 2
   &:hover
   &:focus
     span
@@ -197,7 +200,7 @@ header
     vAlign()
     margin 0
     padding-left 3px
-    bg('../../images/tater-logo', 130px, 32px,'png')
+    bg('../../images/tater-logo', $brand-width, $brand-height,'png')
     transition(.2s, color)
     color white
     font-weight 600
@@ -219,10 +222,10 @@ header
   float right
   padding 13px 10px
   margin 10px 0 0 0
-  border 1px solid white
+  border 1px solid $primary
   border-radius 4px
   transition()
-  color white
+  color $primary
   font-size 14px
   line-height 0
   &:hover

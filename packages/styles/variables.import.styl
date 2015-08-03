@@ -1,19 +1,22 @@
 // COLORS
-$primary              = rgba(63, 136, 160, 1)
+$primary              = rgba(133, 95, 69, 1)
 $primary-dark         = darken($primary, 20%)
 $primary-light        = lighten($primary, 20%)
 $primary-trans        = rgba($primary, 0.9)
-$primary-strong       = rgba(232, 95, 64, 1)
+$primary-strong       = rgba(55, 54, 44, 1)
 $primary-strong-light = rgba(248, 237, 230, 1)
 $primary-trans-strong = rgba($primary-strong, 0.9)
 $primary-subtle       = lighten($primary, 90%)
 $primary-dark         = darken($primary, 20%)
 $primary-light        = lighten($primary, 20%)
-$secondary            = rgba(157, 83, 42, 1)
+$secondary            = rgba(70, 178, 126, 1)
 $secondary-subtle     = lighten($secondary, 90%)
 $secondary-dark       = darken($secondary, 20%)
 $secondary-light      = lighten($secondary, 20%)
 $secondary-trans      = rgba($secondary, 0.9)
+
+$background-primary   = rgba(242, 241, 233, 1)
+
 $dd-gray              = #333
 $d-gray               = #999
 $ll-gray              = #f9f9f9
@@ -28,14 +31,22 @@ $confirm              = rgba(103, 169, 104, 1) // Green
 $deny                 = $primary-strong // Red
 $pending              = rgba(239, 172, 86, 1) // Yellow
 
-$header-footer-BG     = $secondary
-$nav-hover            = $primary
+$header-BG            = $background-primary
+$footer-BG            = white
+$footer-value         = 'dark'
+$nav-hover            = $secondary
+$header-link-color    = $primary
 
 $border-gray          = #DDD
 $mapBG                = #CDD2D4
 
 // HEADER & FOOTER
 $header-height                   = 50px
+$brand-width                     = 113px
+$brand-height                    = 40px
+$brand-top-margin                = (($header-height - $brand-height) / 2) + 2
+$header-text-shadow              = false
+
 $footer-height                   = 75px
 $footer-logo-height              = 60px
 $footer-padding                  = ($footer-height - $footer-logo-height) / 2
