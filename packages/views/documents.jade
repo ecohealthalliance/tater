@@ -1,11 +1,16 @@
 template(name="documents")
   .documents
-    .container
-      .row
-        .col-sm-12
-          h1 All Documents
-      .row
-        .col-sm-12
-          each documents
-            a.group-name(href="{{path route='documentDetail' params=this}}")= title
-            br
+    .view-header
+      .container
+        h1 All Documents
+    table.table.table-striped.full-width-table
+      tbody
+        each documents
+          tr.table-content-wrap
+            .container
+              .row
+                .col-sm-3
+                  td
+                    a.title(href="{{path route='documentDetail' params=this}}")= title
+                .col-sm-9
+                  td.document-description {{truncatedBody}}

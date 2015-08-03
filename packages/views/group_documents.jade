@@ -1,13 +1,21 @@
 template(name="groupDocuments")
   .group-documents.documents
-    .container
-      h1= group.name
-      if showNewDocumentLink
-        .row
-          .col-sm-10
-            a.new-document-link.btn.btn-default(href="{{path route='newDocument' params=newDocumentParams}}") New Document
-
-      .row
-        .col-sm-12
-          each documents
-            a.group-name(href="{{path route='documentDetail' params=this}}")= title
+    .view-header
+      .container
+        h1.inline= group.name
+        if isAdmin
+          if showNewDocumentLink
+            a.new-document-link.btn.header-btn.btn-default(href="{{path route='newDocument' params=newDocumentParams}}")
+              span New Document
+              i.fa.fa-file-text-o
+    table.table.table-striped.full-width-table
+      tbody
+        each documents
+          tr.table-content-wrap
+            .container
+              .row
+                .col-sm-3
+                  td.title
+                    a(href="{{path route='documentDetail' params=this}}")= title
+                .col-sm-9
+                  td.document-description {{truncatedBody}}
