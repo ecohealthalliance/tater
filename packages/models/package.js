@@ -14,10 +14,10 @@ Package.onUse(function(api) {
   api.use('mongo');
   api.addFiles('user_profiles.coffee', ['client', 'server']);
   api.addFiles('groups.coffee', ['client', 'server']);
-  api.addFiles('coding_keywords.coffee', 'client');
+  api.addFiles('coding_keywords.coffee', ['client', 'server']);
   api.export(['UserProfile', 'UserProfiles'], ['client', 'server']);
   api.export(['Group', 'Groups'], ['client', 'server']);
-  api.export(['CodingKeywords'], 'client');
+  api.export(['CodingKeywords'], ['client', 'server']);
 });
 
 Package.onTest(function(api) {
