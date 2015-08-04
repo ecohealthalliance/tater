@@ -16,10 +16,12 @@ Package.onUse(function(api) {
   api.addFiles('groups.coffee', ['client', 'server']);
   api.addFiles('documents.coffee', ['client', 'server']);
   api.addFiles('coding_keywords.coffee', ['client', 'server']);
+  api.addFiles('annotations.coffee', ['client', 'server']);
   api.export(['UserProfile', 'UserProfiles'], ['client', 'server']);
   api.export(['Document', 'Documents'], ['client', 'server']);
   api.export(['Group', 'Groups'], ['client', 'server']);
   api.export(['CodingKeywords'], ['client', 'server']);
+  api.export(['Annotation', 'Annotations'], ['client', 'server']);
 });
 
 Package.onTest(function(api) {
@@ -31,4 +33,5 @@ Package.onTest(function(api) {
   api.addFiles('tests/server/user_profiles_test.coffee', 'server');
   api.addFiles('tests/server/groups_test.coffee', 'server');
   api.addFiles('tests/server/documents_test.coffee', 'server');
+  api.addFiles('tests/server/annotations_test.coffee', 'server');
 });
