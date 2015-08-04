@@ -15,9 +15,11 @@ Package.onUse(function(api) {
   api.addFiles('user_profiles.coffee', ['client', 'server']);
   api.addFiles('groups.coffee', ['client', 'server']);
   api.addFiles('documents.coffee', ['client', 'server']);
+  api.addFiles('coding_keywords.coffee', ['client', 'server']);
   api.export(['UserProfile', 'UserProfiles'], ['client', 'server']);
-  api.export(['Group', 'Groups'], ['client', 'server']);
   api.export(['Document', 'Documents'], ['client', 'server']);
+  api.export(['Group', 'Groups'], ['client', 'server']);
+  api.export(['CodingKeywords'], ['client', 'server']);
 });
 
 Package.onTest(function(api) {
