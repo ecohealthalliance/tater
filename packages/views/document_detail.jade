@@ -1,9 +1,11 @@
 template(name="documentDetail")
-  .document-detail
-    #documentContainer.container
-      h1#documentTitle Title: #{document.title}
-      .row
-        .col-sm-10
-          #documentBody #{document.body}
-  if showAnnotationForm
-    +annotationForm annotation=none
+  .container
+    .row
+      .col-sm-3.code-list
+        +codingKeywords
+      .col-sm-6.document-detail
+        #documentContainer.container
+          h1#documentTitle= document.title
+          .row
+            .col-sm-10
+              #documentBody= document.body

@@ -1,19 +1,15 @@
 template(name="codingKeywords")
-  .coding-keywords
-    .view-header.secondary-bg
-      .container
-        h1 Coding Keywords
+  input.code-search.form-control(type="text" placeholder="Search")
+  ul.list-unstyled
     if Template.subscriptionsReady
       each header
-        section.border-btm-2
-          .container
-            h2= this.header
-            .row
-              ul.subHeading
-                each subHeader this.header
-                  .sub-heading-wrap
-                    h3= this.subHeader
-                    ul.keywords
-                      each keywords this.subHeader
-                        li= this.keyword
-
+        li
+          span.code-header(data-id=this._id)= this.header
+          ul.code-sub-headings.list-unstyled
+            each subHeader this.header
+              li
+                span.code-sub-header(data-id=this._id)= this.subHeader
+                ul.code-keywords.list-unstyled
+                  each keywords this.subHeader
+                    li
+                      span.code-keyword(data-id=this._id)= this.keyword
