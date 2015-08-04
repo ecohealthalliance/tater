@@ -9,3 +9,6 @@ template(name="documentDetail")
           .row
             .col-sm-10
               #documentBody= document.body
+      .col-sm-3
+        each annotations
+          p {{startIndex}} - {{endIndex}}

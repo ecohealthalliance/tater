@@ -6,6 +6,6 @@ Annotation = Astro.Class
   fields:
     documentId: 'string'
     userId: 'string'
-    keyword: 'string'
+    codeId: 'string'
     startIndex: 'number'
     endIndex: 'number'
