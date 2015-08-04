@@ -3,13 +3,15 @@ template(name="codingKeywords")
   ul.list-unstyled
     if Template.subscriptionsReady
       each header
-        li
-          span.code-header(data-id=this._id)= this.header
-          ul.code-sub-headings.list-unstyled
+        li.code-header
+          i.fa.fa-caret-down
+          span(data-id=this._id)= this.header
+          ul.code-sub-headers.list-unstyled
             each subHeader this.header
-              li
-                span.code-sub-header(data-id=this._id)= this.subHeader
+              li.code-sub-header
+                i.fa.fa-caret-down
+                span(data-id=this._id)= this.subHeader
                 ul.code-keywords.list-unstyled
                   each keywords this.subHeader
-                    li
-                      span.code-keyword(data-id=this._id)= this.keyword
+                    li.code-keyword
+                      span(data-id=this._id)= this.keyword

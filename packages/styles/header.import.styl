@@ -185,10 +185,11 @@ header
   height $brand-height
   margin-top $brand-top-margin
   padding 0
+  margin-left 0
   transition(.2s, color)
-  +below(1)
+  +below(2)
     transition(.2s, color)
-    margin-top $brand-top-margin - 2
+    margin-top $brand-top-margin - 3
   &:hover
   &:focus
     span
@@ -213,9 +214,14 @@ header
     +below(1)
       font-size 25px
 
+.container > .navbar-header
+.container-fluid > .navbar-header
+  margin-left 0
+  margin-right 0
+
 .navbar > .container .navbar-brand
-  +above(3)
-    margin-left 0
+.navbar > .container-fluid .navbar-brand
+  margin-left 0
 
 .navbar-toggle
   float right

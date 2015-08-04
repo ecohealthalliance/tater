@@ -1,11 +1,12 @@
 template(name="documentDetail")
-  .container
-    .row
-      .col-sm-3.code-list
-        +codingKeywords
-      .col-sm-6.document-detail
-        #documentContainer.container
-          h1#documentTitle= document.title
-          .row
-            .col-sm-10
-              #documentBody= document.body
+  .document-detail-container
+    .coding-container
+      +codingKeywords
+    .document-container
+      #documentContainer
+        .document-title-container
+          h1#documentTitle.dacoument-title= document.title
+        #documentBody.document-body
+          +paragraphText text=document.body
+    .annotation-container
+
