@@ -1,7 +1,7 @@
 template(name="groupDetail")
   if isAdmin
     .group-detail.space-btm-3
-      .view-header
+      .view-header.secondary-bg
         .container
           h1.inline #{group.name}
           a.group-documents-link.btn.header-btn.btn-default(href="{{path route='groupDocuments' params=groupDocumentsParams}}")

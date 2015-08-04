@@ -10,6 +10,7 @@ header
   min-height $header-height
   margin-bottom 0
   border 0
+  border-bottom 2px solid $primary
   border-radius 0
   background $header-BG
   if $header-text-shadow
@@ -90,13 +91,14 @@ header
         background $primary
         color white
       &.navbar-btn
+        @extend .btn-default
         margin-top 11px
         margin-left 15px
         padding 9px 10px
         border-radius 5px
-        background $white-trans
+        background $secondary
         text-align center
-        color #333
+        color white
         text-shadow none
         line-height 100%
         transition(background-color)
@@ -104,8 +106,6 @@ header
         &:focus
           transition(background-color)
           background $primary
-          @extend .dark-shadow
-          color $body-text
         +below(1)
           float none
           width 50%
