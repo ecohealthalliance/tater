@@ -30,11 +30,11 @@ FlowRouter.route '/documents',
     FlowLayout.render 'layout',
       main: 'documents'
 
-FlowRouter.route '/groups',
-  name: 'groups'
+FlowRouter.route '/admin',
+  name: 'admin'
   action: () ->
     FlowLayout.render 'layout',
-      main: 'groups'
+      main: 'admin'
 
 FlowRouter.route '/groups/new',
   name: 'newGroup'

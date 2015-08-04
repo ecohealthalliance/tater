@@ -13,13 +13,13 @@ if Meteor.isClient
     fields = []
 
     fields.push
-      key: 'admin'
-      label: 'Admin'
-      fn:(val, object) ->
+      key: 'group'
+      label: 'Group'
+      fn: (val, object) ->
         if object.admin
-          'Y'
+          'Admins'
         else
-          'N'
+          Groups.findOne(_id: val)?.name
 
     fields.push
       key: 'email'
@@ -42,7 +42,7 @@ if Meteor.isClient
     noDataTmpl: Template.noUsers
 
   Template.userTable.usersCollection = () ->
-    Meteor.users.find { group: @groupId }
+    Meteor.users.find()
 
   Template.userTable.helpers
     userToDeleteEmail: ->

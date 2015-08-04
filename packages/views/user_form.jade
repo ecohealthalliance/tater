@@ -21,4 +21,12 @@ template(name="userForm")
             label
               input#user-admin(name="admin" type="checkbox")
               span Is Admin
+          unless isAdmin
+            label Group
+            #user-group
+              each groups
+                .radio
+                  label
+                    input(type="radio" name="group" value="{{_id}}")
+                    {{name}}
           input.btn.btn-primary(type="submit" value="Save")
