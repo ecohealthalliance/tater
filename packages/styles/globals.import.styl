@@ -27,11 +27,18 @@ h5
   color $d-gray
 
 .view-header
-  margin-bottom 25px
+  margin-top -20px
+  margin-bottom 15px
+  padding 20px 0
   +below(1)
-    margin-bottom 25px
+    margin-bottom 5px
   h1
     margin-bottom 0
+    text-shadow 0 1px 0 rgba(255,255,255,.8)
+  &.primary-bg
+    background lighten(desaturate($primary, 40%), 90%)
+  &.secondary-bg
+    background lighten(desaturate($secondary,40%), 90%)
 
 a
 button
@@ -64,7 +71,7 @@ a
   makeButton($secondary)
 
 .btn-default
-  makeButton($ll-gray, $body-text, true)
+  makeButton($secondary, white, false)
 
 .btn-success
   makeButton($confirm)
@@ -83,9 +90,8 @@ a
   margin-left 15px
   +below(1)
     display block
-    margin 10px 0
-  .fa
-    color $d-gray
+    margin 15px 0 10px 0
+    padding 12px
 
 .toast-top-right-custom
   right 15px
@@ -125,6 +131,9 @@ a
   vertical-align middle
 
 .full-width-table
+  margin-top -15px
+  +below(1)
+    margin-top -5px
   border-top 1px solid $l-gray
   .table-content-wrap
     border-bottom 1px solid $l-gray

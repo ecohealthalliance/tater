@@ -69,3 +69,9 @@ FlowRouter.route '/groups/:_id/documents',
     FlowLayout.render 'layout',
       main: 'groupDocuments'
       params: {"groupId": params._id}
+
+FlowRouter.route '/codingKeywords',
+  name: 'codingKeywords'
+  action: () ->
+    FlowLayout.render 'layout',
+      main: 'codingKeywords'

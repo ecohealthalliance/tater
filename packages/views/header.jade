@@ -15,16 +15,20 @@ template(name="header")
                     span New Document
                     i.fa.fa-file-text-o
           ul.nav.navbar-nav.navbar-right
-            if isAdmin
+            if currentUser
+              if isAdmin
+                li
+                  a.header-documents-link(href="{{path route='documents'}}")
+                    span Documents
+                li
+                  a(href="{{path route='groups'}}")
+                    span Groups
+              else
+                li
+                  a.header-documents-link(href="{{path route='groupDocuments' params=documentsLinkParams}}")
+                    span Documents
               li
-                a.header-documents-link(href="{{path route='documents'}}")
-                  span Documents
-              li
-                a(href="{{path route='groups'}}")
-                  span Groups
-            else
-              li
-                a.header-documents-link(href="{{path route='groupDocuments' params=documentsLinkParams}}")
-                  span Documents
+                a(href="{{path route='codingKeywords'}}")
+                  span Coding Keywords
             +accountsHeaderButtons state=accountsState
   +accountsModal state=accountsState

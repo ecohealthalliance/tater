@@ -1,0 +1,19 @@
+template(name="codingKeywords")
+  .coding-keywords
+    .view-header.secondary-bg
+      .container
+        h1 Coding Keywords
+    if Template.subscriptionsReady
+      each header
+        section.border-btm-2
+          .container
+            h2= this.header
+            .row
+              ul.subHeading
+                each subHeader this.header
+                  .sub-heading-wrap
+                    h3= this.subHeader
+                    ul.keywords
+                      each keywords this.subHeader
+                        li= this.keyword
+

@@ -24,11 +24,3 @@ if Meteor.isServer
           group
       else
         throw "Not logged in"
-
-    addGroupUser: (fields) ->
-      if Meteor.user()?.admin
-        Accounts.createUser
-          email : fields.email
-          password : fields.password
-          admin: fields.admin
-          group: fields.groupId
