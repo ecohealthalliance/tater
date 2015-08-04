@@ -9,4 +9,6 @@ template(name="documentDetail")
         #documentBody.document-body
           +paragraphText text=document.body
     .annotation-container
+      each annotations
+        p {{startIndex}} - {{endIndex}}
 

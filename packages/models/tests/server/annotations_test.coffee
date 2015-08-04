@@ -14,10 +14,10 @@ describe 'Annotation', ->
     annotation.save
     expect(annotation.userId).to.eq('fakeuserid')
 
-  it 'includes keyword', ->
-    annotation.set('keyword', 'Annotation keyword')
+  it 'includes codeId', ->
+    annotation.set('codeId', 'fakecodeid')
     annotation.save
-    expect(annotation.keyword).to.eq('Annotation keyword')
+    expect(annotation.codeId).to.eq('fakecodeid')
 
   it 'includes startIndex', ->
     annotation.set('startIndex', 12)
