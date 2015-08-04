@@ -9,3 +9,13 @@ Annotation = Astro.Class
     codeId: 'string'
     startIndex: 'number'
     endIndex: 'number'
+
+  methods:
+    _codingKeyword: ->
+      CodingKeywords.findOne(@codeId)
+    header: ->
+      @_codingKeyword().header
+    subHeader: ->
+      @_codingKeyword().subHeader
+    keyword: ->
+      @_codingKeyword().keyword

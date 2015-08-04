@@ -17,6 +17,15 @@ if Meteor.isClient
     'showAnnotationForm': ->
       Template.instance().showAnnotationForm.get()
 
+    'header': ->
+      @header()
+
+    'subHeader': ->
+      @subHeader()
+
+    'keyword': ->
+      @keyword()
+
   Template.documentDetail.events
     'mouseup': (event, instance) =>
       selection = window.getSelection()
