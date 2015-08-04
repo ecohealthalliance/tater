@@ -5,13 +5,13 @@ template(name="codingKeywords")
       each header
         li.code-header
           i.fa.fa-caret-down
-          span(data-id=this._id)= this.header
+          span.selectable-code(data-id=this._id)= this.header
           ul.code-sub-headers.list-unstyled
             each subHeader this.header
               li.code-sub-header
                 i.fa.fa-caret-down
-                span(data-id=this._id)= this.subHeader
+                span.selectable-code(data-id=this._id)= this.subHeader
                 ul.code-keywords.list-unstyled
                   each keywords this.subHeader
                     li.code-keyword
-                      span(data-id=this._id)= this.keyword
+                      span.selectable-code(data-id=this._id)= this.keyword

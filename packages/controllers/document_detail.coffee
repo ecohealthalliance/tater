@@ -27,7 +27,10 @@ if Meteor.isClient
       @keyword()
 
   Template.documentDetail.events
-    'mouseup': (event, instance) =>
+    'click .document-detail-container': (event, instance) =>
+      instance.startIndex.set(null)
+      instance.endIndex.set(null)
+
       selection = window.getSelection()
 
       range = selection.getRangeAt(0)
@@ -38,18 +41,14 @@ if Meteor.isClient
         instance.startIndex.set(start)
         instance.endIndex.set(end)
 
-    'click .code-keyword': (event, instance) ->
-      textSelected = instance.startIndex.get() and instance.endIndex.get()
-      if textSelected
+    'click .selectable-code': (event, instance) ->
+      if instance.endIndex.get()
         attributes = {}
         attributes['codeId'] = event.target.getAttribute('data-id')
         attributes['documentId'] = instance.data.documentId
         attributes['startIndex'] = instance.startIndex.get()
         attributes['endIndex'] = instance.endIndex.get()
         Meteor.call('createAnnotation', attributes)
-
-        instance.startIndex.set(null)
-        instance.endIndex.set(null)
 
 if Meteor.isServer
   Meteor.publish 'documentDetail', (id) ->
