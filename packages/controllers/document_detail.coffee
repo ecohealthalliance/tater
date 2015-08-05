@@ -36,8 +36,10 @@ if Meteor.isClient
 
       selection = window.getSelection()
       range = selection.getRangeAt(0)
+      textSelected = selection.anchorNode.parentElement.getAttribute('class') == 'document-text'
+      textHighlighted = range and (range.endOffset > range.startOffset)
 
-      if range
+      if textSelected and textHighlighted
         startOffset = range.startOffset
         endOffset = range.endOffset
 

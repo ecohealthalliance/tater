@@ -7,7 +7,7 @@ template(name="documentDetail")
         .document-heading
           h1.document-title= document.title
         #documentBody.document-body
-          +paragraphText text=document.body
+          pre.document-text= document.body
     .annotation-container
       each annotations
         p {{positionInformation}} : {{header}}, {{subHeader}}, {{keyword}}
