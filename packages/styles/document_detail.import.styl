@@ -1,3 +1,5 @@
+$colors = #730700 #5A1E68 #007878 #00304B #22440C //#811337 #46697F
+
 .document-detail-container
   position absolute
   min-height 100%
@@ -14,14 +16,17 @@
   top 0
   bottom $footer-height
   width 20%
-  padding 20px
   overflow-x scroll
 
 .coding-container
   left 0
   border-right 2px solid $primary
-  li
-    padding .3em 0
+
+.search-container
+  padding 15px
+
+.annotation-container
+  padding 15px
 
 .code-header
 .code-sub-header
@@ -29,27 +34,92 @@
   cursor pointer
 
 .code-header
+.code-sub-header
+  position relative
+  span
+    padding 2px 15px 2px 35px
+  i
+    position absolute
+    left 15px
+    top 2px
+    color $secondary
+    &.down
+    &.up
+      @extend .icon
+    &.down
+      &::before
+        content '\f13a'
+    &.up
+      &::before
+        content '\f139'
+    &:hover
+      color $secondary-dark
+      transition .2s ease-in-out
+
+.code-sub-header > span
+.code-keyword
+  border-top-left-radius 3px
+  border-bottom-left-radius 3px
+
+.code-header
+  margin-bottom 5px
   font-size 18px
   font-weight 800
   color $body-text
+  span
+    display block
+    overflow hidden
+    text-overflow ellipsis
+  for $color, $key in $colors
+    $color = lighten(desaturate($color, 50%), 5%)
+    &:nth-of-type({$key+1}n)
+      > span
+        &:hover
+          background-color $color
+          color white
+      for $sub-header in 1 2 3 4 5 6
+        .code-sub-header
+          padding-left 15px
+          &:nth-of-type({$sub-header}n)
+            $code-bg-color = lighten($color, $sub-header*15%)
+            if ($sub-header > 3)
+              $code-color = $body-text
+            else
+              $code-color = white
+            > span
+              &:hover
+                background-color $code-bg-color
+                color $code-color
+            .code-keyword
+                &:hover
+                  background-color $code-bg-color
+                  color $code-color
+
+.code-sub-headers
+  margin-bottom 3px
 
 .code-sub-header
+  margin-bottom 2px
   font-size 15px
+  span
+    padding-left 32px
+  i
+    left 30px
 
 .code-keyword
   font-size 13px
   font-weight 400
+  margin-bottom 1px
 
-.code-sub-headers
 .code-keywords
-  padding-left 1.25em
+  padding-left 10px
 
-.document-title-container
+.document-heading
+  padding 15px 5% 10px 5%
+  background $background-primary
   h1
-    padding 15px 5% 10px 5%
     font-family $body-font
     font-size 25px
-    background lighten(desaturate($secondary, 20%), 90%)
 
 .document-container
   width 60%
@@ -68,3 +138,4 @@
 .annotation-container
   right 0
   border-left 2px solid $primary
+

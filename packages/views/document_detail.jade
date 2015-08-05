@@ -4,8 +4,8 @@ template(name="documentDetail")
       +codingKeywords
     .document-container
       #documentContainer
-        .document-title-container
-          h1#documentTitle.dacoument-title= document.title
+        .document-heading
+          h1.dacoument-title= document.title
         #documentBody.document-body
           +paragraphText text=document.body
     .annotation-container

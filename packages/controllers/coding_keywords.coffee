@@ -26,6 +26,12 @@ if Meteor.isClient
             'keyword': $exists: true
           ]
 
+  Template.codingKeywords.events
+    'click .code-header > i': (e) ->
+      $(e.target).toggleClass('down up').siblings('.code-sub-headers').toggleClass('hidden')
+    'click .code-sub-header > i': (e) ->
+      $(e.target).toggleClass('down up').siblings('.code-keywords').toggleClass('hidden')
+
 if Meteor.isServer
   Meteor.publish 'codingKeywords', () ->
     CodingKeywords.find()
