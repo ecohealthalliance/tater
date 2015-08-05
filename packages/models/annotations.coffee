@@ -7,8 +7,10 @@ Annotation = Astro.Class
     documentId: 'string'
     userId: 'string'
     codeId: 'string'
-    startIndex: 'number'
-    endIndex: 'number'
+    startOffset: 'number'
+    startParagraph: 'number'
+    endOffset: 'number'
+    endParagraph: 'number'
 
   methods:
     _codingKeyword: ->
