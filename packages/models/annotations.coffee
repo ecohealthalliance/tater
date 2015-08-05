@@ -8,9 +8,7 @@ Annotation = Astro.Class
     userId: 'string'
     codeId: 'string'
     startOffset: 'number'
-    startParagraph: 'number'
     endOffset: 'number'
-    endParagraph: 'number'
 
   methods:
     _codingKeyword: ->

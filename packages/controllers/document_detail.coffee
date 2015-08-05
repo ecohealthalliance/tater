@@ -5,9 +5,7 @@ if Meteor.isClient
     @subscribe('annotations', @data.documentId)
     @showAnnotationForm = new ReactiveVar(false)
     @startOffset = new ReactiveVar()
-    @startParagraph = new ReactiveVar()
     @endOffset = new ReactiveVar()
-    @endParagraph = new ReactiveVar()
 
   Template.documentDetail.helpers
     'document': ->
@@ -20,7 +18,7 @@ if Meteor.isClient
       Template.instance().showAnnotationForm.get()
 
     'positionInformation': ->
-      "#{@startParagraph}:#{@startOffset} - #{@endParagraph}:#{@endOffset}"
+      "#{@startOffset} - #{@endOffset}"
 
     'header': ->
       @header()
@@ -34,23 +32,17 @@ if Meteor.isClient
   Template.documentDetail.events
     'click .document-detail-container': (event, instance) =>
       instance.startOffset.set(null)
-      instance.startParagraph.set(null)
       instance.endOffset.set(null)
-      instance.endParagraph.set(null)
 
       selection = window.getSelection()
       range = selection.getRangeAt(0)
 
       if range
         startOffset = range.startOffset
-        startParagraph = range.startContainer.parentElement.getAttribute('data-index')
         endOffset = range.endOffset
-        endParagraph = range.endContainer.parentElement.getAttribute('data-index')
 
         instance.startOffset.set(startOffset)
-        instance.startParagraph.set(startParagraph)
         instance.endOffset.set(endOffset)
-        instance.endParagraph.set(endParagraph)
 
     'click .selectable-code': (event, instance) ->
       if instance.endOffset.get()
@@ -59,8 +51,6 @@ if Meteor.isClient
         attributes['documentId'] = instance.data.documentId
         attributes['startOffset'] = instance.startOffset.get()
         attributes['endOffset'] = instance.endOffset.get()
-        attributes['startParagraph'] = instance.startParagraph.get()
-        attributes['endParagraph'] = instance.endParagraph.get()
         Meteor.call('createAnnotation', attributes)
 
 if Meteor.isServer
