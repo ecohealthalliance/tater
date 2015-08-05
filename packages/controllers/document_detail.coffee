@@ -29,6 +29,9 @@ if Meteor.isClient
     'keyword': ->
       @keyword()
 
+    'color': ->
+      @color()
+
   Template.documentDetail.events
     'click .document-detail-container': (event, instance) =>
       instance.startOffset.set(null)

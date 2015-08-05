@@ -4,16 +4,12 @@ if Meteor.isClient
 
   Template.codingKeywords.helpers
     header: () ->
-      headers = CodingKeywords.find
+      CodingKeywords.find
         $and:
           [
             'subHeader': $exists: false
             'keywords': $exists: false
           ]
-      _.map headers.fetch(), (header, i) ->
-        name: header.header
-        index: i+1
-
     subHeader: (header) ->
       CodingKeywords.find
         $and:

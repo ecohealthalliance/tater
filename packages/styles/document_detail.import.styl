@@ -1,4 +1,4 @@
-$colors = rgba(222, 164, 89, 1) rgba(246, 122, 115, 1) rgba(105, 191, 158, 1) rgba(123, 173, 210, 1) rgba(173, 160, 183, 1)
+$colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) rgba(134, 180, 216, 1) rgba(173, 160, 183, 1)
 
 .document-detail-container
   position absolute
@@ -31,6 +31,7 @@ $colors = rgba(222, 164, 89, 1) rgba(246, 122, 115, 1) rgba(105, 191, 158, 1) rg
 .code-header
 .code-sub-header
 .code-keyword
+  shadow(255,.2)
   > span
     cursor pointer
 
@@ -43,6 +44,7 @@ $colors = rgba(222, 164, 89, 1) rgba(246, 122, 115, 1) rgba(105, 191, 158, 1) rg
     position absolute
     left 15px
     top 2px
+    cursor pointer
     &.down
     &.up
       @extend .icon
@@ -73,10 +75,13 @@ $colors = rgba(222, 164, 89, 1) rgba(246, 122, 115, 1) rgba(105, 191, 158, 1) rg
     text-overflow ellipsis
   > span
     margin-left 35px
-  for $color, $key in $colors
-    &.code-header-{$key+1}
+  for $color, $index in $colors
+    &.code-header-{$index+1}
       > span
         background-color $color
+        &:hover
+          background-color lighten(@background-color, 20%)
+          transition .2s ease-in-out
       .code-sub-header
         > span
           padding-left 5px
@@ -132,6 +137,8 @@ $colors = rgba(222, 164, 89, 1) rgba(246, 122, 115, 1) rgba(105, 191, 158, 1) rg
   line-height 1.75em
 
 .document-body
+  max-width 900px
+  margin 0 auto
   padding 20px 5%
   pre
     background none
@@ -152,3 +159,28 @@ $colors = rgba(222, 164, 89, 1) rgba(246, 122, 115, 1) rgba(105, 191, 158, 1) rg
   right 0
   border-left 2px solid $background-primary
 
+  for $color, $index in $colors
+    .annotation-color-{$index+1}
+      background-color $color
+      border 2px solid $color
+      border-left 0
+      transition ease-in-out
+      &:hover
+        border 2px solid darken($color, 20%)
+        border-left 0
+
+  .annotations
+    margin 0 0 0 -15px
+    li
+      margin-bottom 10px
+      padding 15px
+      border-top-right-radius 3px
+      border-bottom-right-radius 3px
+      cursor pointer
+      shadow(255,.2)
+    .header
+      font-weight 400
+    .sub-header
+      font-weight 600
+    .keyword
+      font-weight 700

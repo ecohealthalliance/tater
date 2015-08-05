@@ -9,5 +9,12 @@ template(name="documentDetail")
         #documentBody.document-body
           pre.document-text= document.body
     .annotation-container
-      each annotations
-        p {{positionInformation}} : {{header}}, {{subHeader}}, {{keyword}}
+      ul.annotations.list-unstyled
+        each annotations
+          li(class="annotation-color-#{color}")
+            span= positionInformation
+            span.header= header
+            span :
+            span.sub-header= subHeader
+            span :
+            span.keyword= keyword

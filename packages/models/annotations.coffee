@@ -19,3 +19,5 @@ Annotation = Astro.Class
       @_codingKeyword().subHeader
     keyword: ->
       @_codingKeyword().keyword
+    color: ->
+      @_codingKeyword().color
