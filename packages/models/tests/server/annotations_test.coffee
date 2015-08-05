@@ -19,15 +19,25 @@ describe 'Annotation', ->
     annotation.save()
     expect(annotation.codeId).to.eq('fakecodeid')
 
-  it 'includes startIndex', ->
-    annotation.set('startIndex', 12)
+  it 'includes startOffset', ->
+    annotation.set('startOffset', 12)
     annotation.save()
-    expect(annotation.startIndex).to.eq(12)
+    expect(annotation.startOffset).to.eq(12)
 
-  it 'includes endIndex', ->
-    annotation.set('endIndex', 15)
+  it 'includes startParagraph', ->
+    annotation.set('startParagraph', 1)
     annotation.save()
-    expect(annotation.endIndex).to.eq(15)
+    expect(annotation.startParagraph).to.eq(1)
+
+  it 'includes endOffset', ->
+    annotation.set('endOffset', 15)
+    annotation.save()
+    expect(annotation.endOffset).to.eq(15)
+
+  it 'includes endParagraph', ->
+    annotation.set('endParagraph', 3)
+    annotation.save()
+    expect(annotation.endParagraph).to.eq(3)
 
 describe 'Annotation code methods', ->
   annotation = null
