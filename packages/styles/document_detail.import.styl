@@ -1,4 +1,4 @@
-$colors = #730700 #5A1E68 #007878 #00304B #22440C //#811337 #46697F
+$colors = rgba(222, 164, 89, 1) rgba(246, 122, 115, 1) rgba(105, 191, 158, 1) rgba(123, 173, 210, 1) rgba(173, 160, 183, 1)
 
 .document-detail-container
   position absolute
@@ -20,7 +20,7 @@ $colors = #730700 #5A1E68 #007878 #00304B #22440C //#811337 #46697F
 
 .coding-container
   left 0
-  border-right 2px solid $primary
+  border-right 2px solid $background-primary
 
 .search-container
   padding 15px
@@ -37,12 +37,11 @@ $colors = #730700 #5A1E68 #007878 #00304B #22440C //#811337 #46697F
 .code-sub-header
   position relative
   span
-    padding 2px 15px 2px 35px
+    padding 2px 15px 2px 5px
   i
     position absolute
     left 15px
     top 2px
-    color $secondary
     &.down
     &.up
       @extend .icon
@@ -56,6 +55,7 @@ $colors = #730700 #5A1E68 #007878 #00304B #22440C //#811337 #46697F
       color $secondary-dark
       transition .2s ease-in-out
 
+.code-header > span
 .code-sub-header > span
 .code-keyword
   border-top-left-radius 3px
@@ -70,49 +70,51 @@ $colors = #730700 #5A1E68 #007878 #00304B #22440C //#811337 #46697F
     display block
     overflow hidden
     text-overflow ellipsis
+  > span
+    margin-left 35px
   for $color, $key in $colors
-    $color = lighten(desaturate($color, 50%), 5%)
-    &:nth-of-type({$key+1}n)
+    &.code-header-{$key+1}
       > span
-        &:hover
-          background-color $color
-          color white
-      for $sub-header in 1 2 3 4 5 6
-        .code-sub-header
-          padding-left 15px
-          &:nth-of-type({$sub-header}n)
-            $code-bg-color = lighten($color, $sub-header*15%)
-            if ($sub-header > 3)
-              $code-color = $body-text
-            else
-              $code-color = white
-            > span
-              &:hover
-                background-color $code-bg-color
-                color $code-color
-            .code-keyword
-                &:hover
-                  background-color $code-bg-color
-                  color $code-color
+        background-color $color
+      .code-sub-header
+        > span
+          padding-left 5px
+          background-color transparent
+          transition .1s ease-in-out
+          &.showing
+          &:hover
+            background-color lighten($color, 35%)
+          &.showing
+            transition .1s ease-in-out
+        .code-keyword
+          border-bottom 1px solid lighten($color, 80%)
+          transition .1s ease-in-out
+          &:last-of-type
+            border 0
+          &.showing
+          &:hover
+            background-color lighten($color, 55%)
+            transition .1s ease-in-out
 
 .code-sub-headers
-  margin-bottom 3px
+.code-keywords
+  margin 5px 0 15px 0
 
 .code-sub-header
+  padding-left 53px
   margin-bottom 2px
   font-size 15px
   span
-    padding-left 32px
+    padding-left 5px
   i
-    left 30px
+    left 38px
+
+.code-keywords
+  padding-left 10px
 
 .code-keyword
   font-size 13px
   font-weight 400
-  margin-bottom 1px
-
-.code-keywords
-  padding-left 10px
 
 .document-heading
   padding 15px 5% 10px 5%
@@ -137,5 +139,5 @@ $colors = #730700 #5A1E68 #007878 #00304B #22440C //#811337 #46697F
 
 .annotation-container
   right 0
-  border-left 2px solid $primary
+  border-left 2px solid $background-primary
 

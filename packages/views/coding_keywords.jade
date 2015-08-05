@@ -4,11 +4,11 @@ template(name="codingKeywords")
   ul.list-unstyled
     if Template.subscriptionsReady
       each header
-        li.code-header
+        li.code-header(class='code-header-#{index}')
           i.down
-          span.selectable-code(data-id=this._id)= this.header
-          ul.code-sub-headers.list-unstyled.hidden
-            each subHeader this.header
+          span.selectable-code(data-id=this._id)= name
+          ul.code-sub-headers.list-unstyled
+            each subHeader name
               li.code-sub-header
                 i.down
                 span.selectable-code(data-id=this._id)= this.subHeader
