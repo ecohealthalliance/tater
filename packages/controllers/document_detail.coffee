@@ -17,6 +17,30 @@ if Meteor.isClient
     'showAnnotationForm': ->
       Template.instance().showAnnotationForm.get()
 
+    'annotatedText': ->
+      annotations = Annotations.find({documentId: @documentId}, {sort: {startOffset: 1}}).fetch()
+      body = Documents.findOne({ _id: @documentId }).body
+      offsetShift = 0
+      for annotation in annotations
+        startOffset = annotation.startOffset + offsetShift
+        endOffset = annotation.endOffset + offsetShift
+
+        preTagBody = body.slice(0, startOffset)
+        openTag = "<span class='annotation-color-#{annotation.color()}'>"
+        annotatedText = body.slice(startOffset, endOffset)
+        closeTag = "</span>"
+        postTagBody = body.slice(endOffset, body.length)
+
+        offsetShift = offsetShift + openTag.length + closeTag.length
+        body = "#{preTagBody}#{openTag}#{annotatedText}#{closeTag}#{postTagBody}"
+
+      paragraphs = body.split(/\r?\n\n/g)
+      formattedBody = ""
+
+      for paragraph in paragraphs
+        formattedBody = "#{formattedBody}<p>#{paragraph}</p>"
+      Spacebars.SafeString(formattedBody)
+
     'positionInformation': ->
       "#{@startOffset} - #{@endOffset}"
 

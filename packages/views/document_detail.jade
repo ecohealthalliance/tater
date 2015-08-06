@@ -8,6 +8,9 @@ template(name="documentDetail")
           h1.document-title= document.title
         #documentBody.document-body
           pre.document-text= document.body
+        if Template.subscriptionsReady
+          .document-body.document-annotations
+            .document-text= annotatedText
     .annotation-container
       ul.annotations.list-unstyled
         each annotations
