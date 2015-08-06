@@ -28,6 +28,7 @@ Package.onUse(function(api) {
   api.addFiles('document_form.jade', 'client');
   api.addFiles('document_detail.jade', 'client');
   api.addFiles('annotation_form.jade', 'client');
+  api.addFiles('paragraph_text.jade', 'client');
   api.addFiles('header.jade', 'client');
   api.addFiles('footer.jade', 'client');
   api.addFiles('layout.jade', 'client');
