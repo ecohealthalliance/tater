@@ -23,10 +23,11 @@ if Meteor.isClient
       annotatedBody = document.textWithAnnotations(annotations)
       paragraphs = annotatedBody.split(/\r?\n\n/g)
 
-      formattedBody = ""
-
       for paragraph in paragraphs
-        formattedBody = "#{formattedBody}<p>#{paragraph}</p>"
+        if formattedBody
+          formattedBody = "#{formattedBody}<br><br>#{paragraph}"
+        else
+          formattedBody = paragraph
       Spacebars.SafeString(formattedBody)
 
     'positionInformation': ->
