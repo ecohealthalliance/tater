@@ -6,7 +6,9 @@ template(name="codingKeywords")
       each header
         li.code-header(class='code-header-#{this.color}')
           i.up
-          span.selectable-code(data-id=this._id)= this.header
+          span.selectable-code(data-id=this._id)
+            span.icon.fa(class=icon)
+            span.header-name= this.header
           ul.code-sub-headers.list-unstyled
             each subHeader this.header
               li.code-sub-header
