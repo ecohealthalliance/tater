@@ -33,6 +33,9 @@ if Meteor.isClient
       @color()
 
   Template.documentDetail.events
+    'mousedown .coding-container i': (event) ->
+      event.preventDefault()
+
     'click .document-detail-container': (event, instance) =>
       instance.startOffset.set(null)
       instance.endOffset.set(null)
