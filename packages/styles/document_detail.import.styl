@@ -185,33 +185,38 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
   max-width 900px
   margin 0 auto
   padding 20px 5%
+
+  .document-annotations
+  pre
+    white-space pre-wrap
+    word-wrap break-word
+    word-break break-word
+    color rgba(0,0,0,.6)
+
+  .document-annotations
+    position absolute
+    line-height 1.6em
+    font-size 1em
+    top 0
+    z-index -1
+    p
+      margin-bottom: 1.55em
+
+    for $color, $index in $colors
+      .annotation-color-{$index+1}
+        background-color $color
+
   pre
     background none
     border 0
     padding 0
     text-align left
     line-height 1.6em
-    white-space pre-wrap
-    word-wrap break-word
-    word-break break-word
     body-font()
     font-size 1em
     &::selection
       background-color $selection-color
       color $background-primary
-
-.document-annotations
-  position absolute
-  line-height 1.6em
-  font-size 1em
-  top 0
-  z-index -1
-  p
-    margin-bottom: 1.55em
-
-  for $color, $index in $colors
-    .annotation-color-{$index+1}
-      background-color $color
 
 .annotation-container
   right 0
