@@ -222,16 +222,6 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
   right 0
   border-left 2px solid $background-primary
 
-  for $color, $index in $colors
-    .annotation-color-{$index+1}
-      background-color $color
-      border 2px solid $color
-      border-left 0
-      transition ease-in-out
-      &:hover
-        border 2px solid darken($color, 20%)
-        border-left 0
-
   .annotations
     margin 0 0 0 -15px
     li
@@ -247,3 +237,17 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
       font-weight 600
     .keyword
       font-weight 700
+
+for $color, $index in $colors
+  .annotation-color-{$index+1}
+    background-color $color
+    border 2px solid $color
+    border-left 0
+    transition ease-in-out
+    &:hover
+      border 2px solid darken($color, 20%)
+      border-left 0
+  .annotation-highlight-{$index+1}
+    background-color alpha($color, 60%)
+    border-radius 2px
+

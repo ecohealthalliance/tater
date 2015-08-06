@@ -26,7 +26,7 @@ if Meteor.isClient
         endOffset = annotation.endOffset + offsetShift
 
         preTagBody = body.slice(0, startOffset)
-        openTag = "<span class='annotation-color-#{annotation.color()}'>"
+        openTag = "<span class='annotation-highlight-#{annotation.color()}'>"
         annotatedText = body.slice(startOffset, endOffset)
         closeTag = "</span>"
         postTagBody = body.slice(endOffset, body.length)
