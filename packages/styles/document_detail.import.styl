@@ -178,6 +178,9 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
   padding 0
   line-height 1.75em
 
+.document-wrapper
+  position relative
+
 .document-body
   max-width 900px
   margin 0 auto
@@ -196,6 +199,19 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
     &::selection
       background-color $selection-color
       color $background-primary
+
+.document-annotations
+  position absolute
+  line-height 1.6em
+  font-size 1em
+  top 0
+  z-index -1
+  p
+    margin-bottom: 1.55em
+
+  for $color, $index in $colors
+    .annotation-color-{$index+1}
+      background-color $color
 
 .annotation-container
   right 0
