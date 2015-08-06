@@ -55,7 +55,7 @@ if Meteor.isClient
     'click .selectable-code': (event, instance) ->
       if instance.endOffset.get()
         attributes = {}
-        attributes['codeId'] = event.target.getAttribute('data-id')
+        attributes['codeId'] = event.currentTarget.getAttribute('data-id')
         attributes['documentId'] = instance.data.documentId
         attributes['startOffset'] = instance.startOffset.get()
         attributes['endOffset'] = instance.endOffset.get()
