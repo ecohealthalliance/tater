@@ -31,15 +31,23 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
 .code-header
 .code-sub-header
 .code-keyword
+  position relative
   shadow(255,.2)
   > span
     cursor pointer
+  &:hover
+    &:after
+      position absolute
+      right 5px
+      top 3px
+      @extend .icon
+      content '\f058'
 
 .code-header
 .code-sub-header
   position relative
   > span
-    padding 2px 15px 2px 5px
+    padding 2px 20px 2px 5px
   i
     position absolute
     left 15px
@@ -97,6 +105,9 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
         color darken($color, 10%)
         &:hover
           color darken(@color, 10%)
+      &:hover
+        &:after
+          color darken(@color, 30%)
       .code-sub-header
         > span
           padding-left 5px
@@ -107,6 +118,11 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
             background-color lighten($color, 35%)
           &.showing
             transition .1s ease-in-out
+          &:hover
+            &:after
+              color darken(@color, 30%)
+              top 50%
+              transform translate(0, -50%)
         .code-keyword
           border-bottom 1px solid lighten($color, 80%)
           transition .1s ease-in-out
@@ -116,6 +132,10 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
           &:hover
             background-color lighten($color, 55%)
             transition .1s ease-in-out
+            &:after
+              color darken(@color, 30%)
+              top 50%
+              transform translate(0, -50%)
 
 .code-sub-headers
 .code-keywords
@@ -126,7 +146,6 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
   margin-bottom 2px
   font-size 15px
   font-weight 600
-  color #444
   span
     display block
     padding-left 5px
