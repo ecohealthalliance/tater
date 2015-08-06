@@ -12,7 +12,7 @@ if Meteor.isClient
       Documents.findOne({ _id: @documentId })
 
     'annotations': ->
-      Annotations.find({documentId: @documentId})
+      Annotations.find({documentId: @documentId}, {sort: {startOffset: 1}})
 
     'showAnnotationForm': ->
       Template.instance().showAnnotationForm.get()
