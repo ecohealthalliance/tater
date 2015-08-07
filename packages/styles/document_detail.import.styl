@@ -234,19 +234,40 @@ checkMark(center=false)
   border-bottom 0
   border-top 0
 
+.document-wrapper
+  position relative
+
 .document-body
   max-width 900px
   margin 0 auto
   padding 20px 5%
+
+  .document-annotations
+  pre
+    white-space pre-wrap
+    word-wrap break-word
+    word-break break-word
+    color rgba(0,0,0,.6)
+
+  .document-annotations
+    position absolute
+    line-height 1.6em
+    font-size 1em
+    top 0
+    z-index -1
+    p
+      margin-bottom 1.57em
+
+    for $color, $index in $colors
+      .annotation-color-{$index+1}
+        background-color $color
+
   pre
     background none
     border 0
     padding 0
     text-align left
     line-height 1.6em
-    white-space pre-wrap
-    word-wrap break-word
-    word-break break-word
     body-font()
     font-size 1em
     &::selection
@@ -255,16 +276,6 @@ checkMark(center=false)
 
 .annotation-container
   right 0
-
-  for $color, $index in $colors
-    .annotation-color-{$index+1}
-      background-color $color
-      border 2px solid $color
-      border-left 0
-      transition ease-in-out
-      &:hover
-        border 2px solid darken($color, 20%)
-        border-left 0
 
   .annotations
     li
@@ -280,3 +291,17 @@ checkMark(center=false)
       font-weight 600
     .keyword
       font-weight 700
+
+for $color, $index in $colors
+  .annotation-color-{$index+1}
+    background-color $color
+    border 2px solid $color
+    border-left 0
+    transition ease-in-out
+    &:hover
+      border 2px solid darken($color, 20%)
+      border-left 0
+  .annotation-highlight-{$index+1}
+    background-color alpha($color, 60%)
+    border-radius 2px
+

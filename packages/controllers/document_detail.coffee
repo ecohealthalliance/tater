@@ -12,10 +12,23 @@ if Meteor.isClient
       Documents.findOne({ _id: @documentId })
 
     'annotations': ->
-      Annotations.find({documentId: @documentId})
+      Annotations.find({documentId: @documentId}, {sort: {startOffset: 1}})
 
     'showAnnotationForm': ->
       Template.instance().showAnnotationForm.get()
+
+    'annotatedText': ->
+      annotations = Annotations.find({documentId: @documentId}, {sort: {startOffset: 1}}).fetch()
+      document = Documents.findOne({ _id: @documentId })
+      annotatedBody = document.textWithAnnotations(annotations)
+      paragraphs = annotatedBody.split(/\r?\n\n/g)
+
+      for paragraph in paragraphs
+        if formattedBody
+          formattedBody = "#{formattedBody}<br><br>#{paragraph}"
+        else
+          formattedBody = paragraph
+      Spacebars.SafeString(formattedBody)
 
     'positionInformation': ->
       "#{@startOffset} - #{@endOffset}"
@@ -63,15 +76,42 @@ if Meteor.isClient
 
 if Meteor.isServer
   Meteor.publish 'documentDetail', (id) ->
-    Documents.find id
+    document = Documents.findOne(id)
+    if @userId
+      group = Groups.findOne({_id: document.groupId})
+      user = Meteor.users.findOne(@userId)
+      if group?.viewableByUserWithGroup(user.group)
+        Documents.find id
+      else
+        @ready()
+    else
+      @ready()
 
   Meteor.publish 'annotations', (documentId) ->
-    Annotations.find({documentId: documentId})
+    document = Documents.findOne(documentId)
+    if @userId
+      group = Groups.findOne({_id: document.groupId})
+      user = Meteor.users.findOne(@userId)
+      if group?.viewableByUserWithGroup(user.group)
+        Annotations.find({documentId: documentId})
+      else
+        @ready()
+    else
+      @ready()
 
   Meteor.methods
     createAnnotation: (attributes) ->
-      annotation = new Annotation()
-      annotation.set(attributes)
-      annotation.set(userId: @userId)
-      annotation.save ->
-        annotation
+      document = Documents.findOne(attributes.documentId)
+      if @userId
+        group = Groups.findOne({_id: document.groupId})
+        user = Meteor.users.findOne(@userId)
+        if group?.viewableByUserWithGroup(user.group)
+          annotation = new Annotation()
+          annotation.set(attributes)
+          annotation.set(userId: @userId)
+          annotation.save ->
+            annotation
+        else
+          throw 'Unauthorized'
+      else
+        throw 'Unauthorized'

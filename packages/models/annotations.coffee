@@ -14,10 +14,10 @@ Annotation = Astro.Class
     _codingKeyword: ->
       CodingKeywords.findOne(@codeId)
     header: ->
-      @_codingKeyword().header
+      @_codingKeyword()?.header
     subHeader: ->
-      @_codingKeyword().subHeader
+      @_codingKeyword()?.subHeader
     keyword: ->
-      @_codingKeyword().keyword
+      @_codingKeyword()?.keyword
     color: ->
-      @_codingKeyword().color
+      @_codingKeyword()?.color
