@@ -15,6 +15,7 @@ template(name="groupDocuments")
             .container
               .row
                 .col-sm-3
-                  td.title= title
+                  td.title
+                    a(href="{{path route='documentDetail' params=this}}")= title
                 .col-sm-9
                   td.document-description {{truncatedBody}}
