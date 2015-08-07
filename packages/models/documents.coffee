@@ -25,7 +25,7 @@ Document = Astro.Class
         endOffset = annotation.endOffset + offsetShift
 
         preTagBody = body.slice(0, startOffset)
-        openTag = "<span class='annotation-highlight-#{annotation.color()}'>"
+        openTag = "<span data-annotation-id='#{annotation._id}' class='annotation-highlight-#{annotation.color()}'>"
         annotatedText = body.slice(startOffset, endOffset)
         closeTag = "</span>"
         postTagBody = body.slice(endOffset, body.length)

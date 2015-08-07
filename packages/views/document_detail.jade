@@ -16,7 +16,7 @@ template(name="documentDetail")
       .annotation-container
         ul.annotations.list-unstyled
           each annotations
-            li(class="annotation-color-#{color}")
+            li(data-annotation-id=_id class="annotation-color-#{color}")
               span= positionInformation
               span.header= header
               span :

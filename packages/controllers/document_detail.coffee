@@ -49,6 +49,16 @@ if Meteor.isClient
     'mousedown .coding-container i': (event) ->
       event.preventDefault()
 
+    'mouseover .annotations li': (event) ->
+      annotationId = event.target.getAttribute('data-annotation-id')
+      documentAnnotation = $(".document-annotations span[data-annotation-id='#{annotationId}'")
+      documentAnnotation.addClass('highlighted')
+
+    'mouseleave .annotations li': (event) ->
+      annotationId = event.target.getAttribute('data-annotation-id')
+      documentAnnotation = $(".document-annotations span[data-annotation-id='#{annotationId}'")
+      documentAnnotation.removeClass('highlighted')
+
     'click .document-detail-container': (event, instance) =>
       instance.startOffset.set(null)
       instance.endOffset.set(null)
