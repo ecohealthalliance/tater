@@ -1,5 +1,18 @@
 $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) rgba(134, 180, 216, 1) rgba(173, 160, 183, 1)
 
+checkMark(center=false)
+  &:hover
+    &:after
+      position absolute
+      right 5px
+      if center
+        top 50%
+        transform translate(0, -50%)
+      else
+        top 3px
+      @extend .icon
+      content '\f058'
+
 .document-detail-container
   position absolute
   min-height 100%
@@ -13,20 +26,41 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
 .annotation-container
 .document-container
   position absolute
-  top 0
+  top 2px
   bottom $footer-height
   width 22.5%
   overflow-x scroll
 
 .coding-container
   left 0
-  border-right 2px solid $background-primary
 
-.search-container
+.code-search-container
+.annotation-search-container
+  position absolute
+  min-height 65px
+  top 2px
+  width 22.5%
+  background alpha($background-primary, 95%)
   padding 15px
+  z-index 1
+  input
+    margin-bottom 0
 
-.annotation-container
-  padding 15px
+.annotation-search-container
+  right 0
+
+.no-results
+  padding 0 15px
+  text-align center
+  color $m-gray
+  i
+    font-size 250%
+    color lighten($m-gray,10%)
+    margin-bottom 10px
+
+.code-list
+.annotations
+  margin-top 85px
 
 .code-header
 .code-sub-header
@@ -35,13 +69,7 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
   shadow(255,.2)
   > span
     cursor pointer
-  &:hover
-    &:after
-      position absolute
-      right 5px
-      top 3px
-      @extend .icon
-      content '\f058'
+  checkMark()
 
 .code-header
 .code-sub-header
@@ -69,6 +97,7 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
 .code-header > span
 .code-sub-header > span
 .code-keyword
+.filteredCodes li
   border-top-left-radius 3px
   border-bottom-left-radius 3px
 
@@ -165,9 +194,32 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
   span
     padding 0
 
+.filteredCodes
+  li
+    position relative
+    margin-bottom 3px
+    margin-left 15px
+    padding 5px 20px 5px 5px
+    cursor pointer
+    overflow hidden
+    text-overflow ellipsis
+    checkMark(true)
+  for $color, $index in $colors
+    .code-{$index+1}
+      background-color $color
+      &:hover
+        background-color lighten($color, 10%)
+  .header
+    font-size 90%
+  .sub-header
+    font-weight 600
+  .keyword
+    font-weight 700
+
 .document-heading
+  min-height 65px
   padding 15px 5% 10px 5%
-  background $background-primary
+  background alpha($background-primary, 95%)
   h1
     body-font()
     font-size 25px
@@ -175,8 +227,12 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
 .document-container
   width 55%
   left 22.5%
+  z-index 100
   padding 0
   line-height 1.75em
+  border 2px solid lighten($primary-light, 50%)
+  border-bottom 0
+  border-top 0
 
 .document-body
   max-width 900px
@@ -199,7 +255,6 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
 
 .annotation-container
   right 0
-  border-left 2px solid $background-primary
 
   for $color, $index in $colors
     .annotation-color-{$index+1}
@@ -212,7 +267,6 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
         border-left 0
 
   .annotations
-    margin 0 0 0 -15px
     li
       margin-bottom 10px
       padding 15px

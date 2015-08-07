@@ -1,20 +1,32 @@
 template(name="codingKeywords")
-  .search-container
+  .code-search-container
     input.code-search.form-control(type="text" placeholder="Search")
-  ul.list-unstyled
-    if Template.subscriptionsReady
-      each header
-        li.code-header(class='code-header-#{this.color}')
-          i.up
-          span.selectable-code(data-id=this._id)
-            span.icon.fa(class=icon)
-            span.header-name= this.header
-          ul.code-sub-headers.list-unstyled
-            each subHeader this.header
-              li.code-sub-header
-                i.down
-                span.selectable-code(data-id=this._id)= this.subHeader
-                ul.code-keywords.list-unstyled.hidden
-                  each keywords this.subHeader
-                    li.code-keyword
-                      span.selectable-code(data-id=this._id)= this.keyword
+  .coding-container
+    ul.list-unstyled.code-list
+      if Template.subscriptionsReady
+        unless filtering
+          each headers
+            li.code-header(class='code-header-#{color}')
+              i.up
+              span.selectable-code(data-id=_id)
+                span.icon.fa(class=icon)
+                span.header-name= header
+              ul.code-sub-headers.list-unstyled
+                each subHeaders header
+                  li.code-sub-header
+                    i.down
+                    span.selectable-code(data-id=_id)= subHeader
+                    ul.code-keywords.list-unstyled.hidden
+                      each keywords subHeader
+                        li.code-keyword
+                          span.selectable-code(data-id=_id)= keyword
+        else
+          ul.filteredCodes.list-unstyled
+            each filteredCodes
+              li.filter-result(class='code-#{color}')
+                span.selectable-code(data-id=_id)=code
+            else
+              .no-results
+                i.fa.fa-search
+                p Sorry, no codes found
+

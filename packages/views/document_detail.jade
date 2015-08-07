@@ -1,13 +1,13 @@
 template(name="documentDetail")
   .document-detail-container
-    .coding-container
-      +codingKeywords
+    +codingKeywords
     .document-container
       #documentContainer
         .document-heading
           h1.document-title= document.title
         #documentBody.document-body
           pre.document-text= document.body
+    .annotation-search-container
     .annotation-container
       ul.annotations.list-unstyled
         each annotations
