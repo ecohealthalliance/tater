@@ -199,14 +199,8 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
     font-size 1em
     top 0
     z-index -1
-    span.highlighted
-      background-color red
     p
       margin-bottom 1.57em
-
-    for $color, $index in $colors
-      .annotation-color-{$index+1}
-        background-color $color
 
   pre
     background none
@@ -245,11 +239,16 @@ for $color, $index in $colors
     background-color $color
     border 2px solid $color
     border-left 0
-    transition ease-in-out
+    transition .2s ease-in-out
     &:hover
       border 2px solid darken($color, 20%)
       border-left 0
+      background-color lighten(@background-color, 15%)
   .annotation-highlight-{$index+1}
     background-color alpha($color, 60%)
     border-radius 2px
-
+    transition .2s ease-in-out
+    &.highlighted
+      background-color alpha($color, 85%)
+    &.not-highlighted
+      background-color alpha($color, 30%)

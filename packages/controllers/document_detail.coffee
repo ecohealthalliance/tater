@@ -45,18 +45,34 @@ if Meteor.isClient
     'color': ->
       @color()
 
+    'code': ->
+      if @header() and @subHeader() and @keyword()
+        Spacebars.SafeString("<span class='header'>#{@header()}</span> : <span class='sub-header'>#{@subHeader()}</span> : <span class='keyword'>#{@keyword()}</span>")
+      else if @subHeader() and not @keyword()
+        Spacebars.SafeString("<span class='header'>#{@header()}</span> : <span class='sub-header'>#{@subHeader()}</span>")
+      else if @header()
+        Spacebars.SafeString("<span class='header'>"+@header()+"</span>")
+      else
+        ''
+
   Template.documentDetail.events
     'mousedown .coding-container i': (event) ->
       event.preventDefault()
 
     'mouseover .annotations li': (event) ->
-      annotationId = event.target.getAttribute('data-annotation-id')
-      documentAnnotation = $(".document-annotations span[data-annotation-id='#{annotationId}'")
-      documentAnnotation.addClass('highlighted')
+      annotationId = event.currentTarget.getAttribute('data-annotation-id')
+      documentAnnotation = $(".document-annotations span[data-annotation-id='#{annotationId}']")
+      documentAnnotation.addClass('highlighted').removeClass('not-highlighted')
+      $(".document-annotations span").not("[data-annotation-id='#{annotationId}']").addClass('not-highlighted')
+
+    'click .annotations li': (event) ->
+      annotationId = event.currentTarget.getAttribute('data-annotation-id')
+      $('.document-container').animate { scrollTop: ($(".document-annotations span[data-annotation-id='#{annotationId}']").position().top - $("li[data-annotation-id='#{annotationId}']").position().top + ($(".document-annotations span[data-annotation-id='#{annotationId}']").height() / 2) + 40) }, 1200, 'easeInOutQuint'
 
     'mouseleave .annotations li': (event) ->
-      annotationId = event.target.getAttribute('data-annotation-id')
-      documentAnnotation = $(".document-annotations span[data-annotation-id='#{annotationId}'")
+      annotationId = event.currentTarget.getAttribute('data-annotation-id')
+      documentAnnotation = $(".document-annotations")
+      $(".document-annotations span").removeClass('not-highlighted')
       documentAnnotation.removeClass('highlighted')
 
     'click .document-detail-container': (event, instance) =>
