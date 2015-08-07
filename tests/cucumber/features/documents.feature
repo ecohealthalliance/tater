@@ -40,7 +40,7 @@ Feature: Documents
     Given there is a test group in the database
     And there is a document with title "Test Doc" in the test group
     When I log in as the test user
-    And I navigate to "/groups"
+    And I navigate to "/admin"
     And I click on the group link
     And I click on the group documents link
     Then I should see content "Test Doc"

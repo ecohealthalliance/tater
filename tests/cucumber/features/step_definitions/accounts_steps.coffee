@@ -98,7 +98,7 @@ do ->
           assert.equal(ret.value, true, 'Not admin')
         ).call(callback)
 
-    @When 'I create an user account for "$email"', (email, callback) ->
+    @When 'I create a user account for "$email"', (email, callback) ->
       @browser
         .waitForVisible('#user-email')
         .setValue('#user-email', email)
