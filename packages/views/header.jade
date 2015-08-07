@@ -1,7 +1,7 @@
 template(name="header")
   header
     nav.navbar
-      .container
+      .container-fluid
         .navbar-header
           button.navbar-toggle.collapsed(type="button", data-toggle="collapse" data-target=".navbar-collapse") Menu
           a.navbar-brand(href="/")
@@ -27,8 +27,5 @@ template(name="header")
                 li
                   a.header-documents-link(href="{{path route='groupDocuments' params=documentsLinkParams}}")
                     span Documents
-              li
-                a(href="{{path route='codingKeywords'}}")
-                  span Coding Keywords
             +accountsHeaderButtons state=accountsState
   +accountsModal state=accountsState

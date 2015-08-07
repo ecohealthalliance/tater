@@ -30,6 +30,13 @@ FlowRouter.route '/documents',
     FlowLayout.render 'layout',
       main: 'documents'
 
+FlowRouter.route '/documents/:_id',
+  name: 'documentDetail'
+  action: (params) ->
+    FlowLayout.render 'layout',
+      main: 'documentDetail'
+      params: {"documentId": params._id}
+
 FlowRouter.route '/groups',
   name: 'groups'
   action: () ->

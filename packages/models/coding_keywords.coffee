@@ -205,15 +205,20 @@ CodingKeywords = new Mongo.Collection('codingKeywords')
 if Meteor.isServer
   Meteor.startup ->
     unless CodingKeywords.findOne({})
+      i = 0
       for header, subHeaders of codes
+        i++
         CodingKeywords.insert
           'header': header
+          'color': i
         for subHeader, keywords of subHeaders
           CodingKeywords.insert
             'header': header
             'subHeader': subHeader
+            'color': i
           for keyword in keywords
             CodingKeywords.insert
               'header': header
               'subHeader': subHeader
               'keyword': keyword
+              'color': i

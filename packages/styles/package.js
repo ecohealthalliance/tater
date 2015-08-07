@@ -24,7 +24,7 @@ Package.onUse(function(api) {
   api.addFiles('accounts.import.styl');
   api.addFiles('profile.import.styl');
   api.addFiles('groups.import.styl');
-  api.addFiles('coding_keywords.import.styl');
+  api.addFiles('document_detail.import.styl');
 
   api.addFiles('main.styl');
 });

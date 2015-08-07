@@ -1,0 +1,25 @@
+template(name="documentDetail")
+  if document
+    .document-detail-container
+      .coding-container
+        +codingKeywords
+      .document-container
+        #documentContainer
+          .document-heading
+            h1.document-title= document.title
+          #documentBody.document-body
+            .document-wrapper
+              pre.document-text= document.body
+              if Template.subscriptionsReady
+                .document-annotations
+                  .document-text= annotatedText
+      .annotation-container
+        ul.annotations.list-unstyled
+          each annotations
+            li(class="annotation-color-#{color}")
+              span= positionInformation
+              span.header= header
+              span :
+              span.sub-header= subHeader
+              span :
+              span.keyword= keyword

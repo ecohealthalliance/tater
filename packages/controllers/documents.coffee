@@ -8,6 +8,8 @@ if Meteor.isClient
 
 if Meteor.isServer
   Meteor.publish 'documents', ->
-    user = Meteor.users.findOne({_id: @userId, admin: true})
-    if user
+    user = Meteor.users.findOne({_id: @userId})
+    if user?.admin
       Documents.find()
+    else if user
+      Documents.find { groupId: user.group }

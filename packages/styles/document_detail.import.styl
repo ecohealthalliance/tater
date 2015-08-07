@@ -1,0 +1,253 @@
+$colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) rgba(134, 180, 216, 1) rgba(173, 160, 183, 1)
+
+.document-detail-container
+  position absolute
+  min-height 100%
+  height 100%
+  top $header-height
+  bottom 0
+  left 0
+  right 0
+
+.coding-container
+.annotation-container
+.document-container
+  position absolute
+  top 0
+  bottom $footer-height
+  width 22.5%
+  overflow-x scroll
+
+.coding-container
+  left 0
+  border-right 2px solid $background-primary
+
+.search-container
+  padding 15px
+
+.annotation-container
+  padding 15px
+
+.code-header
+.code-sub-header
+.code-keyword
+  position relative
+  shadow(255,.2)
+  > span
+    cursor pointer
+  &:hover
+    &:after
+      position absolute
+      right 5px
+      top 3px
+      @extend .icon
+      content '\f058'
+
+.code-header
+.code-sub-header
+  position relative
+  > span
+    padding 2px 20px 2px 5px
+  i
+    position absolute
+    left 15px
+    top 2px
+    cursor pointer
+    &.down
+    &.up
+      @extend .icon
+    &.down
+      &::before
+        content '\f13a'
+    &.up
+      &::before
+        content '\f139'
+    &:hover
+      color $secondary-dark
+      transition .2s ease-in-out
+
+.code-header > span
+.code-sub-header > span
+.code-keyword
+  border-top-left-radius 3px
+  border-bottom-left-radius 3px
+
+.code-header
+  margin-bottom 5px
+  font-size 18px
+  font-weight 800
+  color $body-text
+  > span
+    display block
+    position relative
+    margin-left 35px
+    overflow hidden
+    text-overflow ellipsis
+  .icon
+    width 25px
+    position absolute
+    left 5px
+    top 5px
+    &::before
+      display block
+      text-align center
+  .header-name
+    display block
+    padding-left 28px
+  for $color, $index in $colors
+    &.code-header-{$index+1}
+      > span
+        background-color $color
+        &:hover
+          background-color lighten(@background-color, 20%)
+          transition .2s ease-in-out
+      i
+        color darken($color, 10%)
+        &:hover
+          color darken(@color, 10%)
+      &:hover
+        &:after
+          color darken(@color, 30%)
+      .code-sub-header
+        > span
+          padding-left 5px
+          background-color transparent
+          transition .1s ease-in-out
+          &.showing
+          &:hover
+            background-color lighten($color, 35%)
+          &.showing
+            transition .1s ease-in-out
+          &:hover
+            &:after
+              color darken(@color, 30%)
+              top 50%
+              transform translate(0, -50%)
+        .code-keyword
+          border-bottom 1px solid lighten($color, 80%)
+          transition .1s ease-in-out
+          &:last-of-type
+            border 0
+          &.showing
+          &:hover
+            background-color lighten($color, 55%)
+            transition .1s ease-in-out
+            &:after
+              color darken(@color, 30%)
+              top 50%
+              transform translate(0, -50%)
+
+.code-sub-headers
+.code-keywords
+  margin 5px 0 15px 0
+
+.code-sub-header
+  padding-left 53px
+  margin-bottom 2px
+  font-size 15px
+  font-weight 600
+  span
+    display block
+    padding-left 5px
+    margin-left 2px
+  i
+    left 38px
+
+.code-keywords
+  padding-left 10px
+
+.code-keyword
+  font-size 13px
+  font-weight 400
+  padding 5px 15px 5px 5px
+  overflow hidden
+  text-overflow ellipsis
+  span
+    padding 0
+
+.document-heading
+  padding 15px 5% 10px 5%
+  background $background-primary
+  h1
+    body-font()
+    font-size 25px
+
+.document-container
+  width 55%
+  left 22.5%
+  padding 0
+  line-height 1.75em
+
+.document-wrapper
+  position relative
+
+.document-body
+  max-width 900px
+  margin 0 auto
+  padding 20px 5%
+
+  .document-annotations
+  pre
+    white-space pre-wrap
+    word-wrap break-word
+    word-break break-word
+    color rgba(0,0,0,.6)
+
+  .document-annotations
+    position absolute
+    line-height 1.6em
+    font-size 1em
+    top 0
+    z-index -1
+    p
+      margin-bottom 1.57em
+
+    for $color, $index in $colors
+      .annotation-color-{$index+1}
+        background-color $color
+
+  pre
+    background none
+    border 0
+    padding 0
+    text-align left
+    line-height 1.6em
+    body-font()
+    font-size 1em
+    &::selection
+      background-color $selection-color
+      color $background-primary
+
+.annotation-container
+  right 0
+  border-left 2px solid $background-primary
+
+  .annotations
+    margin 0 0 0 -15px
+    li
+      margin-bottom 10px
+      padding 15px
+      border-top-right-radius 3px
+      border-bottom-right-radius 3px
+      cursor pointer
+      shadow(255,.2)
+    .header
+      font-weight 400
+    .sub-header
+      font-weight 600
+    .keyword
+      font-weight 700
+
+for $color, $index in $colors
+  .annotation-color-{$index+1}
+    background-color $color
+    border 2px solid $color
+    border-left 0
+    transition ease-in-out
+    &:hover
+      border 2px solid darken($color, 20%)
+      border-left 0
+  .annotation-highlight-{$index+1}
+    background-color alpha($color, 60%)
+    border-radius 2px
+
