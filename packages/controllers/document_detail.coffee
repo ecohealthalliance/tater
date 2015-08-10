@@ -74,9 +74,10 @@ if Meteor.isClient
         attributes['endOffset'] = instance.endOffset.get()
         Meteor.call('createAnnotation', attributes)
 
-    'click .delete-button': (event, instance) ->
-      annotationId = event.target.getAttribute('data-annotation-id')
-      Meteor.call 'deleteAnnotation', annotationId
+    'click .delete-annotation': (event, instance) ->
+      annotationId = event.currentTarget.getAttribute('data-annotation-id')
+      $(event.currentTarget).parent().addClass('deleting')
+      setTimeout (-> Meteor.call 'deleteAnnotation', annotationId), 800
 
 if Meteor.isServer
   Meteor.publish 'documentDetail', (id) ->
