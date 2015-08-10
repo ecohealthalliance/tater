@@ -20,8 +20,6 @@ Document = Astro.Class
     textWithAnnotations: (annotations) ->
       offsetShift = 0
       body = @body
-      console.log("!!!!!!!!!!!!!!!!!")
-      console.log(annotations)
       annotations = _.sortBy(annotations, 'startOffset')
       for annotation in annotations
         startOffset = annotation.startOffset + offsetShift

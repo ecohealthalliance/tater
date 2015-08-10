@@ -272,7 +272,7 @@ checkMark(center=false)
     font-size 1em
     &::selection
       background-color $selection-color
-      color $background-primary
+      color $body-text
 
 .annotation-container
   right 0
@@ -304,7 +304,8 @@ for $color, $index in $colors
   .annotation-highlight-{$index+1}
     background-color alpha($color, 60%)
     border-radius 2px
-  .annotation-highlight-temporary
-    background-color black
-    color white
-    border-radius 2px
+
+.annotation-highlight-temporary
+  background-color $selection-color
+  color $body-text
+  border-radius 2px
