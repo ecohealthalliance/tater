@@ -74,6 +74,10 @@ if Meteor.isClient
         attributes['endOffset'] = instance.endOffset.get()
         Meteor.call('createAnnotation', attributes)
 
+    'click .delete-button': (event, instance) ->
+      annotationId = event.target.getAttribute('data-annotation-id')
+      Meteor.call 'deleteAnnotation', annotationId
+
 if Meteor.isServer
   Meteor.publish 'documentDetail', (id) ->
     document = Documents.findOne(id)
@@ -110,6 +114,20 @@ if Meteor.isServer
           annotation.set(attributes)
           annotation.set(userId: @userId)
           annotation.save ->
+            annotation
+        else
+          throw 'Unauthorized'
+      else
+        throw 'Unauthorized'
+
+    deleteAnnotation: (annotationId) ->
+      annotation = Annotations.findOne(annotationId)
+      document = Documents.findOne(annotation.documentId)
+      if @userId
+        group = Groups.findOne({_id: document.groupId})
+        user = Meteor.users.findOne(@userId)
+        if group?.viewableByUserWithGroup(user.group)
+          annotation.remove() ->
             annotation
         else
           throw 'Unauthorized'
