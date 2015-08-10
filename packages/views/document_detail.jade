@@ -13,6 +13,7 @@ template(name="documentDetail")
                 .document-annotations
                   .document-text= annotatedText
       .annotation-search-container
+        input.annotation-search.form-control(type="text" placeholder="Search Annotations")
       .annotation-container
         ul.annotations.list-unstyled
           each annotations
@@ -23,3 +24,7 @@ template(name="documentDetail")
               span.sub-header= subHeader
               span :
               span.keyword= keyword
+          else
+            .no-results
+              i.fa.fa-search
+              p Sorry, no annotations found

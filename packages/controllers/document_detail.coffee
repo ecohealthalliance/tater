@@ -6,13 +6,32 @@ if Meteor.isClient
     @showAnnotationForm = new ReactiveVar(false)
     @startOffset = new ReactiveVar()
     @endOffset = new ReactiveVar()
+    @annotations = new ReactiveVar()
+    @searchText = new ReactiveVar('')
+
+  Template.documentDetail.onRendered ->
+    instance = Template.instance()
+    @autorun ->
+      if FlowRouter.subsReady()
+        annotations = Annotations.find({documentId: instance.data.documentId})
+        if instance.searchText.get() is ''
+          instance.annotations.set annotations
+        else
+          searchText = instance.searchText.get().split(' ')
+          filteredAnnotations = _.filter annotations.fetch(), (annotation) ->
+            code = CodingKeywords.findOne(annotation.codeId)
+            wordMatches = _.filter searchText, (word) ->
+              word = new RegExp(word, 'i')
+              code.header?.match(word) or code.subHeader?.match(word) or code.keyword?.match(word)
+            wordMatches.length
+          instance.annotations.set _.sortBy filteredAnnotations, 'startOffset'
 
   Template.documentDetail.helpers
     'document': ->
       Documents.findOne({ _id: @documentId })
 
     'annotations': ->
-      Annotations.find({documentId: @documentId}, {sort: {startOffset: 1}})
+      Template.instance().annotations.get()
 
     'showAnnotationForm': ->
       Template.instance().showAnnotationForm.get()
@@ -73,6 +92,9 @@ if Meteor.isClient
         attributes['startOffset'] = instance.startOffset.get()
         attributes['endOffset'] = instance.endOffset.get()
         Meteor.call('createAnnotation', attributes)
+
+    'keyup .annotation-search': _.debounce (e, templateInstance) ->
+      templateInstance.searchText.set e.target.value
 
 if Meteor.isServer
   Meteor.publish 'documentDetail', (id) ->
