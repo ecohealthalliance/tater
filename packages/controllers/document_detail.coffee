@@ -4,10 +4,9 @@ if Meteor.isClient
     @subscribe('documentDetail', @data.documentId)
     @subscribe('annotations', @data.documentId)
     @showAnnotationForm = new ReactiveVar(false)
-    @startOffset = new ReactiveVar()
-    @endOffset = new ReactiveVar()
     @annotations = new ReactiveVar()
     @searchText = new ReactiveVar('')
+    @temporaryAnnotation = new ReactiveVar(new Annotation())
 
   Template.documentDetail.onRendered ->
     instance = Template.instance()
@@ -37,7 +36,10 @@ if Meteor.isClient
       Template.instance().showAnnotationForm.get()
 
     'annotatedText': ->
-      annotations = Annotations.find({documentId: @documentId}, {sort: {startOffset: 1}}).fetch()
+      temporaryAnnotation = Template.instance().temporaryAnnotation.get()
+      annotations = Annotations.find({documentId: @documentId}).fetch()
+      if temporaryAnnotation.startOffset
+        annotations.push(temporaryAnnotation)
       document = Documents.findOne({ _id: @documentId })
       annotatedBody = document.textWithAnnotations(annotations)
       paragraphs = annotatedBody.split(/\r?\n\n/g)
@@ -65,12 +67,10 @@ if Meteor.isClient
       @color()
 
   Template.documentDetail.events
-    'mousedown .coding-container i': (event) ->
-      event.preventDefault()
-
-    'click .document-detail-container': (event, instance) =>
-      instance.startOffset.set(null)
-      instance.endOffset.set(null)
+    'click .document-container': (event, instance) =>
+      temporaryAnnotation = instance.temporaryAnnotation.get()
+      temporaryAnnotation.set({startOffset: null, endOffset: null})
+      instance.temporaryAnnotation.set(temporaryAnnotation)
 
       selection = window.getSelection()
       range = selection.getRangeAt(0)
@@ -81,17 +81,21 @@ if Meteor.isClient
         startOffset = range.startOffset
         endOffset = range.endOffset
 
-        instance.startOffset.set(startOffset)
-        instance.endOffset.set(endOffset)
+        temporaryAnnotation.set({startOffset: startOffset, endOffset: endOffset})
+        instance.temporaryAnnotation.set(temporaryAnnotation)
 
     'click .selectable-code': (event, instance) ->
-      if instance.endOffset.get()
+      temporaryAnnotation = instance.temporaryAnnotation.get()
+      if temporaryAnnotation.startOffset
         attributes = {}
         attributes['codeId'] = event.currentTarget.getAttribute('data-id')
         attributes['documentId'] = instance.data.documentId
-        attributes['startOffset'] = instance.startOffset.get()
-        attributes['endOffset'] = instance.endOffset.get()
+        attributes['startOffset'] = temporaryAnnotation.startOffset
+        attributes['endOffset'] = temporaryAnnotation.endOffset
         Meteor.call('createAnnotation', attributes)
+
+        temporaryAnnotation.set({startOffset: null, endOffset: null})
+        instance.temporaryAnnotation.set(temporaryAnnotation)
 
     'keyup .annotation-search': _.debounce (e, templateInstance) ->
       templateInstance.searchText.set e.target.value
