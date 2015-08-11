@@ -3,6 +3,7 @@ if Meteor.isClient
   Template.documentDetail.onCreated ->
     @subscribe('documentDetail', @data.documentId)
     @subscribe('annotations', @data.documentId)
+    @subscribe('users', @data.documentId)
     @showAnnotationForm = new ReactiveVar(false)
     @startOffset = new ReactiveVar()
     @endOffset = new ReactiveVar()
@@ -13,6 +14,9 @@ if Meteor.isClient
 
     'annotations': ->
       Annotations.find({documentId: @documentId}, {sort: {startOffset: 1}})
+
+    'annotationUserEmail': ->
+      @userEmail()
 
     'showAnnotationForm': ->
       Template.instance().showAnnotationForm.get()
@@ -103,6 +107,14 @@ if Meteor.isServer
         @ready()
     else
       @ready()
+
+  Meteor.publish 'users', (documentId) ->
+    document = Documents.findOne(documentId)
+    group = Groups.findOne({_id: document.groupId})
+    Meteor.users.find
+      group: group._id
+      fields:
+        emails: 1
 
   Meteor.methods
     createAnnotation: (attributes) ->
