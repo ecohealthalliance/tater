@@ -8,6 +8,7 @@ if Meteor.isClient
     @annotations = new ReactiveVar()
     @searchText = new ReactiveVar('')
     @temporaryAnnotation = new ReactiveVar(new Annotation())
+    @overlappingSelection = new ReactiveVar(false)
 
   Template.documentDetail.onRendered ->
     instance = Template.instance()
@@ -70,6 +71,9 @@ if Meteor.isClient
     'color': ->
       @color()
 
+    'overlappingSelection': ->
+      Template.instance().overlappingSelection.get()
+
   Template.documentDetail.events
     'mousedown .document-container': (event, instance) ->
       temporaryAnnotation = instance.temporaryAnnotation.get()
@@ -89,6 +93,8 @@ if Meteor.isClient
           annotation.overlapsWithOffsets(range.startOffset, range.endOffset)
 
         if !overlapping
+          instance.overlappingSelection.set(false)
+
           startOffset = range.startOffset
           endOffset = range.endOffset
 
@@ -96,7 +102,10 @@ if Meteor.isClient
           instance.temporaryAnnotation.set(temporaryAnnotation)
 
         else
-          toastr.error("Invalid Selection")
+          instance.overlappingSelection.set(true)
+
+      else
+        instance.overlappingSelection.set(false)
 
     'click .selectable-code': (event, instance) ->
       temporaryAnnotation = instance.temporaryAnnotation.get()

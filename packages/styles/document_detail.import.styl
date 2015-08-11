@@ -221,6 +221,27 @@ checkMark(center=false)
   .keyword
     font-weight 700
 
+.overlapping
+  position fixed
+  top $header-height + 2
+  left 22.5%
+  right 22.5%
+  padding 18px 5% 10px 5%
+  background-color alpha($deny, 80%)
+  color white
+  text-align right
+  min-height 65px
+  @extend .dark-shadow
+  p
+  i
+    display inline-block
+    vertical-align middle
+  p
+    margin 0
+  i
+    font-size 1.5em
+
+
 .document-heading
   min-height 65px
   padding 15px 5% 10px 5%
