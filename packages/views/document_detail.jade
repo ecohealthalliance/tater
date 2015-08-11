@@ -15,14 +15,16 @@ template(name="documentDetail")
                   .document-text= annotatedText
       .annotation-container
         ul.annotations.list-unstyled
-          each annotations
-            li(class="annotation-color-#{color}")
-              .code
-                span= positionInformation
-                span.header= header
-                span :
-                span.sub-header= subHeader
-                span :
-                span.keyword= keyword
-              .delete-annotation.btn-delete(data-annotation-id=_id)
-                i.fa.fa-times-circle
+          if Template.subscriptionsReady
+            each annotations
+              li(class="annotation-color-#{color}")
+                span.code
+                  span= positionInformation
+                  span.header= header
+                  span :
+                  span.sub-header= subHeader
+                  span :
+                  span.keyword= keyword
+                span.user= annotationUserEmail
+                .delete-annotation.btn-delete(data-annotation-id=_id)
+                  i.fa.fa-times-circle

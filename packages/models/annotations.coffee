@@ -21,3 +21,5 @@ Annotation = Astro.Class
       @_codingKeyword()?.keyword
     color: ->
       @_codingKeyword()?.color
+    user: ->
+      Meteor.users.findOne(@userId)

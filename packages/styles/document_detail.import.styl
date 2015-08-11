@@ -249,11 +249,18 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
       opacity 0
     .btn-delete
       position absolute
-      top 5px
-      right 5px
+      top 2px
+      right 6px
       font-size 1.4em
     .code
-      padding 15px 35px 15px 15px
+      display block
+      padding 25px 35px 25px 15px
+    .user
+      position absolute
+      bottom 5px
+      right 5px
+      font-size .8em
+      color alpha($body-color, 90%)
 
 for $color, $index in $colors
   .annotation-color-{$index+1}
