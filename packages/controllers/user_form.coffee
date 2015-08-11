@@ -4,18 +4,17 @@ if Meteor.isClient
 
   Template.userForm.helpers
     isAdmin: () ->
-      Template.instance().isAdmin.get()
+      Template.instance().data.userType is 'admin'
 
     groups: () ->
       Groups.find()
 
-  Template.userForm.events
-    'change #user-admin': (event, template) ->
-      isAdmin = !template.isAdmin.get()
-      template.isAdmin.set(isAdmin)
-      event.stopImmediatePropagation()
+    group: () ->
+      Template.instance().data.group.get()
 
-    'submit form': (event) ->
+  Template.userForm.events
+
+    'submit form': (event, template) ->
       event.preventDefault()
       event.stopImmediatePropagation()
       form = event.target
@@ -29,15 +28,17 @@ if Meteor.isClient
       fields = {
         email: form.email.value
         password: form.password.value
-        groupId: form.group.value
-        admin: form.admin.checked
+        groupId: form.group?.value
+        admin: template.data.userType is 'admin'
       }
+
       Meteor.call 'addGroupUser', fields, (error, response) ->
         if error
           toastr.error("Error")
         else
           toastr.success("Success")
           form.reset()
+          $('.modal').modal('hide')
 
 if Meteor.isServer
   Meteor.methods

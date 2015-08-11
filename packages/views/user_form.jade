@@ -1,32 +1,15 @@
 template(name="userForm")
-  .container
-    h3 Add a user
-    .row
-      .col-sm-8
-        form#new-user-form
-          input.form-control(name="group" type="hidden" value=groupId)
-          .row
-            .col-sm-8
-              label Email
-                input#user-email.form-control(name="email" type="text")
-          .row
-            .col-sm-8
-              label Password
-                input#user-password.form-control(name="password" type="password")
-          .row
-            .col-sm-8
-              label Password confirm
-                input#user-password-confirm.form-control(name="passwordconfirm" type="password")
-          .checkbox
-            label
-              input#user-admin(name="admin" type="checkbox")
-              span Is Admin
-          unless isAdmin
-            label Group
-            #user-group
-              each groups
-                .radio
-                  label
-                    input(type="radio" name="group" value="{{_id}}")
-                    | {{name}}
-          input.btn.btn-primary(type="submit" value="Save")
+  if isAdmin
+    h4 Create a new Admin User
+  else
+    h4 Add a user to #{group.name}
+  form#new-user-form
+    unless isAdmin
+      input.form-control(name="group" type="hidden" value=group._id)
+    label Email
+      input#user-email.form-control(name="email" type="text")
+    label Password
+      input#user-password.form-control(name="password" type="password")
+    label Password confirm
+      input#user-password-confirm.form-control(name="passwordconfirm" type="password")
+    input.btn.btn-primary(type="submit" value="Add User")

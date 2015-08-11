@@ -1,14 +1,15 @@
 if Meteor.isClient
 
-  Template.userTable.onCreated ->
+  Template.users.onCreated ->
     @userToDeleteId = new ReactiveVar()
     @userToDeleteEmail = new ReactiveVar()
 
-  Template.userTable.filters = () =>
+
+  Template.users.filters = () =>
     filters = []
     filters
 
-  Template.userTable.settings = () =>
+  Template.users.settings = () =>
 
     fields = []
 
@@ -33,25 +34,28 @@ if Meteor.isClient
       hideToggle: true
       fn: (val, obj) ->
         new Spacebars.SafeString("""
-          <a class="control remove remove-user" data-id="#{obj._id}" data-email="#{obj.emails[0].address}" title="Remove">X</a>
+          <a class="control remove remove-user" data-id="#{obj._id}" data-email="#{obj.emails[0].address}" title="Remove">
+            <i class='fa fa-user-times'></>
+          </a>
         """)
 
-    showColumnToggles: true
+    showColumnToggles: false
     showFilter: false
+    showRowCount: true
     fields: fields
     noDataTmpl: Template.noUsers
 
-  Template.userTable.usersCollection = () ->
+  Template.users.usersCollection = () ->
     Meteor.users.find()
 
-  Template.userTable.helpers
+  Template.users.helpers
     userToDeleteEmail: ->
       Template.instance().userToDeleteEmail.get()
 
-  Template.userTable.events
+  Template.users.events
     'click .remove-user': (evt, instance) ->
-      userId = $(evt.target).data("id")
-      userEmail = $(evt.target).data("email")
+      userId = $(evt.currentTarget).data("id")
+      userEmail = $(evt.currentTarget).data("email")
       instance.userToDeleteId.set(userId)
       instance.userToDeleteEmail.set(userEmail)
       $('#remove-user-modal').modal('show')

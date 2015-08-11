@@ -5,7 +5,7 @@ template(name="groups")
         h1.inline Groups
         a.btn.btn-default.new-group-link.header-btn(href="{{path route='newGroup'}}")
           span Create
-          i.fa.fa-plus
+          i.fa.fa-users
     table.table.table-striped.full-width-table.groups-table
       tbody
         each groups
@@ -15,10 +15,19 @@ template(name="groups")
                 .col-sm-3
                   td.title
                     a.group-name(href="{{path route='groupDetail' params=this}}")= name
-                .col-sm-9
+                .col-sm-6
                   td.group-description {{truncateDescription}}
+                .col-sm-3
+                  button.btn.btn-primary.add-user(data-toggle="modal" data-target="#add-group-user-modal")
+                    i.fa.fa-user-plus
+    #add-group-user-modal.modal.fade(tabindex="-1" role="dialog")
+      .modal-dialog
+        .modal-content
+          .modal-body
+            +userForm group=group
   else
     .container
       .row
         .col-sm-12
           p Please log in or sign up to continue.
+

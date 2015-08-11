@@ -1,6 +1,12 @@
 template(name="admin")
-  +groups
-  
-  +userTable
-
-  +userForm groupId=group._id
+  if currentUser
+    if isAdmin
+      .groups-container
+        +groups
+      .users-container
+        +users
+  else
+    .container
+      .row
+        .col-sm-12
+          p Please log in or sign up to continue.
