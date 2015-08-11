@@ -67,10 +67,13 @@ if Meteor.isClient
       @color()
 
   Template.documentDetail.events
-    'click .document-container': (event, instance) =>
+    'mousedown .document-container': (event, instance) ->
       temporaryAnnotation = instance.temporaryAnnotation.get()
       temporaryAnnotation.set({startOffset: null, endOffset: null})
       instance.temporaryAnnotation.set(temporaryAnnotation)
+
+    'click .document-container': (event, instance) =>
+      temporaryAnnotation = instance.temporaryAnnotation.get()
 
       selection = window.getSelection()
       range = selection.getRangeAt(0)
@@ -79,8 +82,7 @@ if Meteor.isClient
 
       if selectionInDocument and textHighlighted
         overlapping = _.find instance.annotations.get().fetch(), (annotation) ->
-          (range.startOffset > annotation.startOffset and range.startOffset < annotation.endOffset) or
-          (range.endOffset > annotation.startOffset and range.endOffset < annotation.endOffset)
+          annotation.overlapsWithOffsets(range.startOffset, range.endOffset)
 
         if !overlapping
           startOffset = range.startOffset

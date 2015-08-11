@@ -49,3 +49,27 @@ describe 'Annotation code methods', ->
 
   it '#keywords retrieves subheader from associated code', ->
     expect(annotation.keyword()).to.eq('Test Keywords')
+
+describe 'Annotation#overlapsWithOffsets', ->
+  annotation = null
+
+  beforeEach ->
+    annotation = new Annotation()
+    annotation.startOffset = 3
+    annotation.endOffset = 5
+    annotation.save()
+
+  it 'returns true if the given startOffset is within the annotation offsets', ->
+    expect(annotation.overlapsWithOffsets(4, 8)).to.be.ok
+
+  it 'returns true if the given endOffset is within the annotation offsets', ->
+    expect(annotation.overlapsWithOffsets(1, 5)).to.be.ok
+
+  it 'returns true if the given offsets surround the annotation', ->
+    expect(annotation.overlapsWithOffsets(1, 7)).to.be.ok
+
+  it 'returns true if the given offsets are within the annotation', ->
+    expect(annotation.overlapsWithOffsets(4, 5)).to.be.ok
+
+  it 'returns false otherwise', ->
+    expect(annotation.overlapsWithOffsets(8, 9)).not.to.be.ok

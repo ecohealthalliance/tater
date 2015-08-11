@@ -21,3 +21,8 @@ Annotation = Astro.Class
       @_codingKeyword()?.keyword
     color: ->
       @_codingKeyword()?.color
+
+    overlapsWithOffsets: (startOffset, endOffset) ->
+      (startOffset >= @startOffset and startOffset <= @endOffset) or
+      (endOffset >= @startOffset and endOffset <= @endOffset) or
+      (startOffset <= @startOffset and endOffset >= @endOffset)
