@@ -14,9 +14,6 @@ if Meteor.isClient
     'click .add-user': (event, template) ->
       template.selectedGroup.set(@)
 
-    'click .add-admin': (event, template) ->
-      template.newUserType.set('admin')
-
 if Meteor.isServer
   Meteor.publish 'groups', ->
     user = Meteor.users.findOne { _id: @userId }

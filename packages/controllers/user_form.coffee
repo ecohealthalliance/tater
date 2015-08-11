@@ -1,9 +1,7 @@
 if Meteor.isClient
-  Template.userForm.onCreated () ->
-    @isAdmin = new ReactiveVar(false)
 
   Template.userForm.helpers
-    isAdmin: () ->
+    typeIsAdmin: () ->
       Template.instance().data.userType is 'admin'
 
     groups: () ->
