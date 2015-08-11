@@ -3,6 +3,7 @@ if Meteor.isClient
   Template.documentDetail.onCreated ->
     @subscribe('documentDetail', @data.documentId)
     @subscribe('annotations', @data.documentId)
+    @subscribe('users', @data.documentId)
     @showAnnotationForm = new ReactiveVar(false)
     @annotations = new ReactiveVar()
     @searchText = new ReactiveVar('')
@@ -31,6 +32,9 @@ if Meteor.isClient
 
     'annotations': ->
       Template.instance().annotations.get()
+
+    'annotationUserEmail': ->
+      @userEmail()
 
     'showAnnotationForm': ->
       Template.instance().showAnnotationForm.get()
@@ -110,6 +114,11 @@ if Meteor.isClient
     'keyup .annotation-search': _.debounce (e, templateInstance) ->
       templateInstance.searchText.set e.target.value
 
+    'click .delete-annotation': (event, instance) ->
+      annotationId = event.currentTarget.getAttribute('data-annotation-id')
+      $(event.currentTarget).parent().addClass('deleting')
+      setTimeout (-> Meteor.call 'deleteAnnotation', annotationId), 800
+
 if Meteor.isServer
   Meteor.publish 'documentDetail', (id) ->
     document = Documents.findOne(id)
@@ -135,6 +144,14 @@ if Meteor.isServer
     else
       @ready()
 
+  Meteor.publish 'users', (documentId) ->
+    document = Documents.findOne(documentId)
+    group = Groups.findOne({_id: document.groupId})
+    Meteor.users.find
+      group: group._id
+      fields:
+        emails: 1
+
   Meteor.methods
     createAnnotation: (attributes) ->
       document = Documents.findOne(attributes.documentId)
@@ -146,6 +163,20 @@ if Meteor.isServer
           annotation.set(attributes)
           annotation.set(userId: @userId)
           annotation.save ->
+            annotation
+        else
+          throw 'Unauthorized'
+      else
+        throw 'Unauthorized'
+
+    deleteAnnotation: (annotationId) ->
+      annotation = Annotations.findOne(annotationId)
+      document = Documents.findOne(annotation.documentId)
+      if @userId
+        group = Groups.findOne({_id: document.groupId})
+        user = Meteor.users.findOne(@userId)
+        if group?.viewableByUserWithGroup(user.group)
+          annotation.remove() ->
             annotation
         else
           throw 'Unauthorized'

@@ -16,15 +16,20 @@ template(name="documentDetail")
         input.annotation-search.form-control(type="text" placeholder="Search Annotations")
       .annotation-container
         ul.annotations.list-unstyled
-          each annotations
-            li(class="annotation-color-#{color}")
-              span= positionInformation
-              span.header= header
-              span :
-              span.sub-header= subHeader
-              span :
-              span.keyword= keyword
-          else
-            .no-results
-              i.fa.fa-search
-              p Sorry, no annotations found
+          if Template.subscriptionsReady
+            each annotations
+              li(class="annotation-color-#{color}")
+                span.code
+                  span= positionInformation
+                  span.header= header
+                  span :
+                  span.sub-header= subHeader
+                  span :
+                  span.keyword= keyword
+                span.user= annotationUserEmail
+                .delete-annotation.btn-delete(data-annotation-id=_id)
+                  i.fa.fa-times-circle
+            else
+              .no-results
+                i.fa.fa-search
+                p Sorry, no annotations found

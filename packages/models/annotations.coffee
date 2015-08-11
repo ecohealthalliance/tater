@@ -26,3 +26,6 @@ Annotation = Astro.Class
       (startOffset >= @startOffset and startOffset <= @endOffset) or
       (endOffset >= @startOffset and endOffset <= @endOffset) or
       (startOffset <= @startOffset and endOffset >= @endOffset)
+
+    userEmail: ->
+      Meteor.users.findOne(@userId)?.emails[0].address
