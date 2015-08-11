@@ -22,6 +22,9 @@ body-font()
 transition($duration = .2s, args...)
   transition $duration args
 
+linkTransition(time=.2s)
+  transition(time, ease-in-out)
+
 vAlign()
   display inline-block
   vertical-align middle
@@ -120,6 +123,12 @@ buttonHover($hoverBG, $bg=none)
 
 centerPosition($h=-50%, $v=-50%)
   transform translate($h, $v)
+
+centerVertically(position=true)
+  if position
+    position absolute
+  top 50%
+  transform translate(0, -50%)
 
 cover()
   position absolute

@@ -107,7 +107,7 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
           color darken(@color, 10%)
       &:hover
         &:after
-          color darken(@color, 30%)
+          color darken($color, 40%)
       .code-sub-header
         > span
           padding-left 5px
@@ -118,24 +118,29 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
             background-color lighten($color, 35%)
           &.showing
             transition .1s ease-in-out
-          &:hover
             &:after
-              color darken(@color, 30%)
-              top 50%
+              color darken($color, 20%)
+              centerVertically()
+        &:hover
+          &:after
+            color darken($color, 20%)
+          > span
+            &:after
+              color darken($color, 30%)
+              top 2px
               transform translate(0, -50%)
         .code-keyword
           border-bottom 1px solid lighten($color, 80%)
           transition .1s ease-in-out
           &:last-of-type
             border 0
-          &.showing
           &:hover
             background-color lighten($color, 55%)
             transition .1s ease-in-out
             &:after
-              color darken(@color, 30%)
-              top 50%
-              transform translate(0, -50%)
+              centerVertically()
+              color darken($color, 20%)
+
 
 .code-sub-headers
 .code-keywords
@@ -225,8 +230,9 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
   .annotations
     margin 0 0 0 -15px
     li
+      position relative
+      max-height 300px
       margin-bottom 10px
-      padding 15px
       border-top-right-radius 3px
       border-bottom-right-radius 3px
       cursor pointer
@@ -237,16 +243,32 @@ $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) r
       font-weight 600
     .keyword
       font-weight 700
+    .deleting
+      linkTransition(.8s)
+      max-height 0
+      opacity 0
+    .btn-delete
+      position absolute
+      top 5px
+      right 5px
+      font-size 1.4em
+    .code
+      padding 15px 35px 15px 15px
 
 for $color, $index in $colors
   .annotation-color-{$index+1}
     background-color $color
     border 2px solid $color
     border-left 0
-    transition ease-in-out
+    linkTransition()
     &:hover
-      border 2px solid darken($color, 20%)
+      border 2px solid darken($color, 40%)
       border-left 0
+    .btn-delete
+      color darken($color, 20%)
+      linkTransition()
+      &:hover
+        color darken(@color, 50%)
   .annotation-highlight-{$index+1}
     background-color alpha($color, 60%)
     border-radius 2px

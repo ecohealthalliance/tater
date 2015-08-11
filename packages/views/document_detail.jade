@@ -17,9 +17,12 @@ template(name="documentDetail")
         ul.annotations.list-unstyled
           each annotations
             li(class="annotation-color-#{color}")
-              span= positionInformation
-              span.header= header
-              span :
-              span.sub-header= subHeader
-              span :
-              span.keyword= keyword
+              .code
+                span= positionInformation
+                span.header= header
+                span :
+                span.sub-header= subHeader
+                span :
+                span.keyword= keyword
+              .delete-annotation.btn-delete(data-annotation-id=_id)
+                i.fa.fa-times-circle
