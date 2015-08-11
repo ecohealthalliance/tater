@@ -91,6 +91,9 @@ if Meteor.isClient
           temporaryAnnotation.set({startOffset: startOffset, endOffset: endOffset})
           instance.temporaryAnnotation.set(temporaryAnnotation)
 
+        else
+          toastr.error("Invalid Selection")
+
     'click .selectable-code': (event, instance) ->
       temporaryAnnotation = instance.temporaryAnnotation.get()
       if temporaryAnnotation.startOffset
