@@ -74,15 +74,20 @@ if Meteor.isClient
 
       selection = window.getSelection()
       range = selection.getRangeAt(0)
-      textSelected = selection.anchorNode.parentElement.getAttribute('class') == 'document-text'
+      selectionInDocument = selection.anchorNode.parentElement.getAttribute('class') == 'document-text'
       textHighlighted = range and (range.endOffset > range.startOffset)
 
-      if textSelected and textHighlighted
-        startOffset = range.startOffset
-        endOffset = range.endOffset
+      if selectionInDocument and textHighlighted
+        overlapping = _.find instance.annotations.get().fetch(), (annotation) ->
+          (range.startOffset > annotation.startOffset and range.startOffset < annotation.endOffset) or
+          (range.endOffset > annotation.startOffset and range.endOffset < annotation.endOffset)
 
-        temporaryAnnotation.set({startOffset: startOffset, endOffset: endOffset})
-        instance.temporaryAnnotation.set(temporaryAnnotation)
+        if !overlapping
+          startOffset = range.startOffset
+          endOffset = range.endOffset
+
+          temporaryAnnotation.set({startOffset: startOffset, endOffset: endOffset})
+          instance.temporaryAnnotation.set(temporaryAnnotation)
 
     'click .selectable-code': (event, instance) ->
       temporaryAnnotation = instance.temporaryAnnotation.get()
