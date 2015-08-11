@@ -16,7 +16,7 @@ if Meteor.isClient
       Annotations.find({documentId: @documentId}, {sort: {startOffset: 1}})
 
     'annotationUserEmail': ->
-      @user().emails?[0].address
+      @userEmail()
 
     'showAnnotationForm': ->
       Template.instance().showAnnotationForm.get()
