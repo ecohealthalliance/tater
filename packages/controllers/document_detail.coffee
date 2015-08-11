@@ -71,7 +71,7 @@ if Meteor.isClient
 
     'click .annotations li': (event) ->
       annotationId = event.currentTarget.getAttribute('data-annotation-id')
-      $('.document-container').animate { scrollTop: ($(".document-annotations span[data-annotation-id='#{annotationId}']").position().top - $("li[data-annotation-id='#{annotationId}']").position().top + ($(".document-annotations span[data-annotation-id='#{annotationId}']").height() / 2) + 40) }, 1200, 'easeInOutQuint'
+      $('.document-container').animate { scrollTop: ($(".document-annotations span[data-annotation-id='#{annotationId}']").position().top - $("li[data-annotation-id='#{annotationId}']").position().top + ($(".document-annotations span[data-annotation-id='#{annotationId}']").height() / 2) + 30) }, 1200, 'easeInOutQuint'
 
     'mouseleave .annotations li': (event) ->
       annotationId = event.currentTarget.getAttribute('data-annotation-id')
