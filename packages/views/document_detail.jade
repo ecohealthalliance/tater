@@ -16,4 +16,8 @@ template(name="documentDetail")
       .annotation-container
         ul.annotations.list-unstyled
           each annotations
-            li(data-annotation-id=_id class="annotation-color-#{color}")= code
+            li(data-annotation-id=_id class="annotation-color-#{color}")
+              span.code= code
+              span.user= annotationUserEmail
+              .delete-annotation.btn-delete(data-annotation-id=_id)
+                i.fa.fa-times-circle
