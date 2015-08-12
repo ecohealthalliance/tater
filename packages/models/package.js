@@ -17,11 +17,13 @@ Package.onUse(function(api) {
   api.addFiles('documents.coffee', ['client', 'server']);
   api.addFiles('coding_keywords.coffee', ['client', 'server']);
   api.addFiles('annotations.coffee', ['client', 'server']);
+  api.addFiles('document_tags.coffee', ['client', 'server']);
   api.export(['UserProfile', 'UserProfiles'], ['client', 'server']);
   api.export(['Document', 'Documents'], ['client', 'server']);
   api.export(['Group', 'Groups'], ['client', 'server']);
   api.export(['CodingKeywords'], ['client', 'server']);
   api.export(['Annotation', 'Annotations'], ['client', 'server']);
+  api.export(['DocumentTag', 'DocumentTags'], ['client', 'server']);
 });
 
 Package.onTest(function(api) {

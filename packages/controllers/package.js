@@ -19,6 +19,7 @@ Package.onUse(function(api) {
   api.use('useraccounts:core');
   api.use('chrismbeckett:toastr');
   api.use('aslagle:reactive-table');
+  api.use('tater:disease-labels');
 
   api.addFiles('toastr.coffee', 'client');
   api.addFiles('header.coffee', 'client');

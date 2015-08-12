@@ -10,6 +10,14 @@ template(name="documentDetail")
         #documentContainer
           .document-heading
             h1.document-title= document.title
+          .document-tags
+            b Tags:
+            each tags
+              span.label.label-info.tag #{tag} | x
+              | &nbsp;
+            a.btn.btn-default.btn-xs.add-tag
+              span Add tag
+              i.fa.fa-plus
           #documentBody.document-body
             .document-wrapper
               pre.document-text= document.body
@@ -37,3 +45,8 @@ template(name="documentDetail")
               .no-results
                 i.fa.fa-search
                 p Sorry, no annotations found
+    .add-tag-modal.modal
+      .modal-dialog
+        .modal-content
+          .modal-body
+            +reactiveTable collection=availableTags settings=tagTableSettings
