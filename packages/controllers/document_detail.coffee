@@ -4,7 +4,9 @@ if Meteor.isClient
     @subscribe('documentDetail', @data.documentId)
     @subscribe('annotations', @data.documentId)
     @subscribe('users', @data.documentId)
-    @showAnnotationForm = new ReactiveVar(false)
+    @startOffset = new ReactiveVar()
+    @endOffset = new ReactiveVar()
+    @selectedAnnotation = new ReactiveVar(null)
     @annotations = new ReactiveVar()
     @searchText = new ReactiveVar('')
     @temporaryAnnotation = new ReactiveVar(new Annotation())
@@ -13,7 +15,7 @@ if Meteor.isClient
   Template.documentDetail.onRendered ->
     instance = Template.instance()
     @autorun ->
-      annotations = Annotations.find({documentId: instance.data.documentId})
+      annotations = Annotations.find({documentId: instance.data.documentId}, sort: startOffset: 1)
       if instance.searchText.get() is ''
         instance.annotations.set annotations
       else
@@ -35,9 +37,6 @@ if Meteor.isClient
 
     'annotationUserEmail': ->
       @userEmail()
-
-    'showAnnotationForm': ->
-      Template.instance().showAnnotationForm.get()
 
     'annotatedText': ->
       temporaryAnnotation = Template.instance().temporaryAnnotation.get()
@@ -70,6 +69,20 @@ if Meteor.isClient
     'color': ->
       @color()
 
+    'code': ->
+      if @header() and @subHeader() and @keyword()
+        Spacebars.SafeString("<span class='header'>#{@header()}</span> : <span class='sub-header'>#{@subHeader()}</span> : <span class='keyword'>#{@keyword()}</span>")
+      else if @subHeader() and not @keyword()
+        Spacebars.SafeString("<span class='header'>#{@header()}</span> : <span class='sub-header'>#{@subHeader()}</span>")
+      else if @header()
+        Spacebars.SafeString("<span class='header'>"+@header()+"</span>")
+      else
+        ''
+
+    'selected': ->
+      if @_id is Template.instance().selectedAnnotation.get()
+        'selected'
+
     'overlappingSelection': ->
       Template.instance().overlappingSelection.get()
 
@@ -78,6 +91,24 @@ if Meteor.isClient
       temporaryAnnotation = instance.temporaryAnnotation.get()
       temporaryAnnotation.set({startOffset: null, endOffset: null})
       instance.temporaryAnnotation.set(temporaryAnnotation)
+
+    'click .annotations li': (event, template) ->
+      annotationId = event.currentTarget.getAttribute('data-annotation-id')
+      documentAnnotation = $(".document-annotations span[data-annotation-id='#{annotationId}']")
+
+      if template.selectedAnnotation.get() is @_id
+        template.selectedAnnotation.set(null)
+        documentAnnotation.removeClass('highlighted')
+        $(".document-annotations span").removeClass('not-highlighted')
+      else
+        template.selectedAnnotation.set(@_id)
+        $(".document-annotations span").addClass('not-highlighted')
+        documentAnnotation.addClass('highlighted').removeClass('not-highlighted')
+        $('.document-container').animate { scrollTop: ($(".document-annotations span[data-annotation-id='#{annotationId}']").position().top - $("li[data-annotation-id='#{annotationId}']").position().top + ($(".document-annotations span[data-annotation-id='#{annotationId}']").height() / 2) + 30) }, 1000, 'easeInOutQuint'
+
+    'click .document-detail-container': (event, instance) =>
+      instance.startOffset.set(null)
+      instance.endOffset.set(null)
 
     'click .document-container': (event, instance) =>
       temporaryAnnotation = instance.temporaryAnnotation.get()
