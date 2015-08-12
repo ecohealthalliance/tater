@@ -13,19 +13,18 @@ if Meteor.isClient
   Template.documentDetail.onRendered ->
     instance = Template.instance()
     @autorun ->
-      if FlowRouter.subsReady()
-        annotations = Annotations.find({documentId: instance.data.documentId})
-        if instance.searchText.get() is ''
-          instance.annotations.set annotations
-        else
-          searchText = instance.searchText.get().split(' ')
-          filteredAnnotations = _.filter annotations.fetch(), (annotation) ->
-            code = CodingKeywords.findOne(annotation.codeId)
-            wordMatches = _.filter searchText, (word) ->
-              word = new RegExp(word, 'i')
-              code.header?.match(word) or code.subHeader?.match(word) or code.keyword?.match(word)
-            wordMatches.length
-          instance.annotations.set _.sortBy filteredAnnotations, 'startOffset'
+      annotations = Annotations.find({documentId: instance.data.documentId})
+      if instance.searchText.get() is ''
+        instance.annotations.set annotations
+      else
+        searchText = instance.searchText.get().split(' ')
+        filteredAnnotations = _.filter annotations.fetch(), (annotation) ->
+          code = CodingKeywords.findOne(annotation.codeId)
+          wordMatches = _.filter searchText, (word) ->
+            word = new RegExp(word, 'i')
+            code.header?.match(word) or code.subHeader?.match(word) or code.keyword?.match(word)
+          wordMatches.length
+        instance.annotations.set _.sortBy filteredAnnotations, 'startOffset'
 
   Template.documentDetail.helpers
     'document': ->
@@ -120,8 +119,7 @@ if Meteor.isClient
         temporaryAnnotation.set({startOffset: null, endOffset: null})
         instance.temporaryAnnotation.set(temporaryAnnotation)
 
-    'keyup .annotation-search': _.debounce (e, templateInstance) ->
-      templateInstance.searchText.set e.target.value
+    'keyup .annotation-search': _.debounce (e, templateInstance) -> templateInstance.searchText.set e.target.value, 200
 
     'click .delete-annotation': (event, instance) ->
       annotationId = event.currentTarget.getAttribute('data-annotation-id')

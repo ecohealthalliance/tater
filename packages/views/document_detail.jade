@@ -2,14 +2,14 @@ template(name="documentDetail")
   if document
     .document-detail-container
       +codingKeywords
+      .document-heading
+        h1.document-title= document.title
+      if overlappingSelection
+        .overlapping
+          i.fa.fa-warning
+          p #[strong Invalid Selection]: Annotations cannot overlap.
       .document-container
-        if overlappingSelection
-          .overlapping
-            i.fa.fa-warning
-            p #[strong Invalid Selection]: Annotations cannot overlap.
         #documentContainer
-          .document-heading
-            h1.document-title= document.title
           #documentBody.document-body
             .document-wrapper
               pre.document-text= document.body

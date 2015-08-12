@@ -1,4 +1,5 @@
 $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) rgba(134, 180, 216, 1) rgba(173, 160, 183, 1)
+$border = 2px solid lighten($primary-light, 50%)
 
 checkMark(center=false)
   &:hover
@@ -14,11 +15,11 @@ checkMark(center=false)
       content '\f058'
 
 .document-detail-container
-  position absolute
+  position fixed
   min-height 100%
   height 100%
   top $header-height
-  bottom 0
+  bottom $footer-height
   left 0
   right 0
 
@@ -27,7 +28,7 @@ checkMark(center=false)
 .document-container
   position absolute
   top 2px
-  bottom $footer-height
+  bottom 142.5px
   width 22.5%
   overflow-x scroll
 
@@ -35,14 +36,15 @@ checkMark(center=false)
   left 0
 
 .code-search-container
+.document-heading
 .annotation-search-container
   position absolute
   min-height 65px
   top 2px
+  z-index $mid-layer
   width 22.5%
   background alpha($background-primary, 95%)
   padding 15px
-  z-index 1
   input
     margin-bottom 0
 
@@ -226,10 +228,11 @@ checkMark(center=false)
   top $header-height + 2
   left 22.5%
   right 22.5%
+  z-index $top-layer
   padding 18px 5% 10px 5%
-  background-color alpha($deny, 80%)
+  background-color alpha($deny, 95%)
   color white
-  text-align right
+  text-align center
   min-height 65px
   @extend .dark-shadow
   p
@@ -241,11 +244,13 @@ checkMark(center=false)
   i
     font-size 1.5em
 
-
 .document-heading
-  min-height 65px
+  width 55%
+  left 22.5%
   padding 15px 5% 10px 5%
   background alpha($background-primary, 95%)
+  border-left $border
+  border-right $border
   h1
     body-font()
     font-size 25px
@@ -253,10 +258,9 @@ checkMark(center=false)
 .document-container
   width 55%
   left 22.5%
-  z-index 100
-  padding 0
+  padding 75px 0 0 0
   line-height 1.75em
-  border 2px solid lighten($primary-light, 50%)
+  border $border
   border-bottom 0
   border-top 0
 
