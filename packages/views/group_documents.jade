@@ -5,7 +5,7 @@ template(name="groupDocuments")
         h1.inline= group.name
         if isAdmin
           if showNewDocumentLink
-            a.new-document-link.btn.header-btn.btn-default(href="{{path route='newDocument' params=newDocumentParams}}")
+            a.new-document-link.btn.header-btn.btn-primary(href="{{path route='newDocument' params=newDocumentParams}}")
               span New Document
               i.fa.fa-file-text-o
     table.table.table-striped.full-width-table

@@ -20,7 +20,7 @@ h3
   color $secondary
 
 h4
-  color $body-text
+  color desaturate($primary, 20%)
 
 h5
   font-weight 400
@@ -71,7 +71,7 @@ a
   makeButton($secondary)
 
 .btn-default
-  makeButton($secondary, white, false)
+  makeButton($m-gray, $body-text, true)
 
 .btn-success
   makeButton($confirm)
@@ -142,6 +142,8 @@ a
   td.title
     font-size 120%
     font-weight bold
+  .controls
+    text-align right
 
 
 for $num in 1 2 3 4 5 6
@@ -221,6 +223,3 @@ for $num in 1 2 3
     margin 0
     text-align center
     font-weight bold
-
-.modal-body
-  padding 25px
