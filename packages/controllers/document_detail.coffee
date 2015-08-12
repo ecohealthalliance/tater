@@ -119,7 +119,7 @@ if Meteor.isClient
         temporaryAnnotation.set({startOffset: null, endOffset: null})
         instance.temporaryAnnotation.set(temporaryAnnotation)
 
-    'keyup .annotation-search': _.debounce (e, templateInstance) -> templateInstance.searchText.set e.target.value, 200
+    'keyup .annotation-search': _.debounce ((e, instance) -> instance.searchText.set e.target.value), 200
 
     'click .delete-annotation': (event, instance) ->
       annotationId = event.currentTarget.getAttribute('data-annotation-id')

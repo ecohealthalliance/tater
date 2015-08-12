@@ -67,7 +67,7 @@ if Meteor.isClient
 
   Template.codingKeywords.events
 
-    'keyup .code-search': _.debounce ((e, templateInstance) ->
+    'keyup .code-search': _.debounce ((e, instance) ->
       e.preventDefault()
       searchText = e.target.value
       if searchText.length > 1 then templateInstance.filtering.set true
