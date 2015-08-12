@@ -302,8 +302,8 @@ checkMark(center=false)
 
 .annotation-container
   right 0
-
   .annotations
+    margin-right 15px
     li
       position relative
       max-height 300px
@@ -345,6 +345,7 @@ for $color, $index in $colors
     border-left 0
     linkTransition()
     &.selected
+      border 2px solid darken($color, 40%)
       &::before
         position absolute
         top 2px
@@ -354,11 +355,14 @@ for $color, $index in $colors
         @extend .icon
     &.selected
     &:hover
-      border 2px solid darken($color, 40%)
       border-left 0
       background-color lighten(@background-color, 25%)
+    &:hover
+      .btn-delete
+        visibility visible
     .btn-delete
       color darken($color, 20%)
+      visibility hidden
       linkTransition()
       &:hover
         color darken(@color, 50%)
