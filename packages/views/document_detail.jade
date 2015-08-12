@@ -1,18 +1,23 @@
 template(name="documentDetail")
   if document
     .document-detail-container
-      .coding-container
-        +codingKeywords
+      +codingKeywords
+      .document-heading
+        h1.document-title= document.title
+      if overlappingSelection
+        .overlapping
+          i.fa.fa-warning
+          p #[strong Invalid Selection]: Annotations cannot overlap.
       .document-container
         #documentContainer
-          .document-heading
-            h1.document-title= document.title
           #documentBody.document-body
             .document-wrapper
               pre.document-text= document.body
               if Template.subscriptionsReady
                 .document-annotations
                   .document-text= annotatedText
+      .annotation-search-container
+        input.annotation-search.form-control(type="text" placeholder="Search Annotations")
       .annotation-container
         ul.annotations.list-unstyled
           if Template.subscriptionsReady
@@ -28,3 +33,7 @@ template(name="documentDetail")
                 span.user= annotationUserEmail
                 .delete-annotation.btn-delete(data-annotation-id=_id)
                   i.fa.fa-times-circle
+            else
+              .no-results
+                i.fa.fa-search
+                p Sorry, no annotations found

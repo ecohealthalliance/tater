@@ -5,15 +5,33 @@ if Meteor.isClient
     @subscribe('annotations', @data.documentId)
     @subscribe('users', @data.documentId)
     @showAnnotationForm = new ReactiveVar(false)
-    @startOffset = new ReactiveVar()
-    @endOffset = new ReactiveVar()
+    @annotations = new ReactiveVar()
+    @searchText = new ReactiveVar('')
+    @temporaryAnnotation = new ReactiveVar(new Annotation())
+    @overlappingSelection = new ReactiveVar(false)
+
+  Template.documentDetail.onRendered ->
+    instance = Template.instance()
+    @autorun ->
+      annotations = Annotations.find({documentId: instance.data.documentId})
+      if instance.searchText.get() is ''
+        instance.annotations.set annotations
+      else
+        searchText = instance.searchText.get().split(' ')
+        filteredAnnotations = _.filter annotations.fetch(), (annotation) ->
+          code = CodingKeywords.findOne(annotation.codeId)
+          wordMatches = _.filter searchText, (word) ->
+            word = new RegExp(word, 'i')
+            code.header?.match(word) or code.subHeader?.match(word) or code.keyword?.match(word)
+          wordMatches.length
+        instance.annotations.set _.sortBy filteredAnnotations, 'startOffset'
 
   Template.documentDetail.helpers
     'document': ->
       Documents.findOne({ _id: @documentId })
 
     'annotations': ->
-      Annotations.find({documentId: @documentId}, {sort: {startOffset: 1}})
+      Template.instance().annotations.get()
 
     'annotationUserEmail': ->
       @userEmail()
@@ -22,7 +40,10 @@ if Meteor.isClient
       Template.instance().showAnnotationForm.get()
 
     'annotatedText': ->
-      annotations = Annotations.find({documentId: @documentId}, {sort: {startOffset: 1}}).fetch()
+      temporaryAnnotation = Template.instance().temporaryAnnotation.get()
+      annotations = Annotations.find({documentId: @documentId}).fetch()
+      if temporaryAnnotation.startOffset
+        annotations.push(temporaryAnnotation)
       document = Documents.findOne({ _id: @documentId })
       annotatedBody = document.textWithAnnotations(annotations)
       paragraphs = annotatedBody.split(/\r?\n\n/g)
@@ -49,34 +70,56 @@ if Meteor.isClient
     'color': ->
       @color()
 
-  Template.documentDetail.events
-    'mousedown .coding-container i': (event) ->
-      event.preventDefault()
+    'overlappingSelection': ->
+      Template.instance().overlappingSelection.get()
 
-    'click .document-detail-container': (event, instance) =>
-      instance.startOffset.set(null)
-      instance.endOffset.set(null)
+  Template.documentDetail.events
+    'mousedown .document-container': (event, instance) ->
+      temporaryAnnotation = instance.temporaryAnnotation.get()
+      temporaryAnnotation.set({startOffset: null, endOffset: null})
+      instance.temporaryAnnotation.set(temporaryAnnotation)
+
+    'click .document-container': (event, instance) =>
+      temporaryAnnotation = instance.temporaryAnnotation.get()
 
       selection = window.getSelection()
       range = selection.getRangeAt(0)
-      textSelected = selection.anchorNode.parentElement.getAttribute('class') == 'document-text'
+      selectionInDocument = selection.anchorNode.parentElement.getAttribute('class') == 'document-text'
       textHighlighted = range and (range.endOffset > range.startOffset)
 
-      if textSelected and textHighlighted
-        startOffset = range.startOffset
-        endOffset = range.endOffset
+      if selectionInDocument and textHighlighted
+        overlapping = _.find instance.annotations.get().fetch(), (annotation) ->
+          annotation.overlapsWithOffsets(range.startOffset, range.endOffset)
 
-        instance.startOffset.set(startOffset)
-        instance.endOffset.set(endOffset)
+        if !overlapping
+          instance.overlappingSelection.set(false)
+
+          startOffset = range.startOffset
+          endOffset = range.endOffset
+
+          temporaryAnnotation.set({startOffset: startOffset, endOffset: endOffset})
+          instance.temporaryAnnotation.set(temporaryAnnotation)
+
+        else
+          instance.overlappingSelection.set(true)
+
+      else
+        instance.overlappingSelection.set(false)
 
     'click .selectable-code': (event, instance) ->
-      if instance.endOffset.get()
+      temporaryAnnotation = instance.temporaryAnnotation.get()
+      if temporaryAnnotation.startOffset
         attributes = {}
         attributes['codeId'] = event.currentTarget.getAttribute('data-id')
         attributes['documentId'] = instance.data.documentId
-        attributes['startOffset'] = instance.startOffset.get()
-        attributes['endOffset'] = instance.endOffset.get()
+        attributes['startOffset'] = temporaryAnnotation.startOffset
+        attributes['endOffset'] = temporaryAnnotation.endOffset
         Meteor.call('createAnnotation', attributes)
+
+        temporaryAnnotation.set({startOffset: null, endOffset: null})
+        instance.temporaryAnnotation.set(temporaryAnnotation)
+
+    'keyup .annotation-search': _.debounce ((e, instance) -> instance.searchText.set e.target.value), 200
 
     'click .delete-annotation': (event, instance) ->
       annotationId = event.currentTarget.getAttribute('data-annotation-id')
