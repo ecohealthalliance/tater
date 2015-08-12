@@ -48,7 +48,6 @@ Feature: Accounts
   @accounts
   Scenario: Creating an account for another admin user
     Given there is a test user in the database
-    And there is a group in the database
     When I log in as the test user
     And I navigate to the admin page
     And I create an admin user account for "mr@potato.head"
