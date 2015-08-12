@@ -16,7 +16,7 @@ template(name="documentDetail")
       .annotation-container
         ul.annotations.list-unstyled
           each annotations
-            li(data-annotation-id=_id class="annotation-color-#{color}")
+            li(data-annotation-id=_id class="annotation-color-#{color} {{selected}}")
               span.code= code
               span.user= annotationUserEmail
               .delete-annotation.btn-delete(data-annotation-id=_id)

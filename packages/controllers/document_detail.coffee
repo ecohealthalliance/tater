@@ -7,6 +7,7 @@ if Meteor.isClient
     @showAnnotationForm = new ReactiveVar(false)
     @startOffset = new ReactiveVar()
     @endOffset = new ReactiveVar()
+    @selectedAnnotation = new ReactiveVar(null)
 
   Template.documentDetail.helpers
     'document': ->
@@ -59,25 +60,27 @@ if Meteor.isClient
       else
         ''
 
+    'selected': ->
+      if @_id is Template.instance().selectedAnnotation.get()
+        'selected'
+
   Template.documentDetail.events
     'mousedown .coding-container i': (event) ->
       event.preventDefault()
 
-    'mouseover .annotations li': (event) ->
+    'click .annotations li': (event, template) ->
       annotationId = event.currentTarget.getAttribute('data-annotation-id')
       documentAnnotation = $(".document-annotations span[data-annotation-id='#{annotationId}']")
-      documentAnnotation.addClass('highlighted').removeClass('not-highlighted')
-      $(".document-annotations span").not("[data-annotation-id='#{annotationId}']").addClass('not-highlighted')
 
-    'click .annotations li': (event) ->
-      annotationId = event.currentTarget.getAttribute('data-annotation-id')
-      $('.document-container').animate { scrollTop: ($(".document-annotations span[data-annotation-id='#{annotationId}']").position().top - $("li[data-annotation-id='#{annotationId}']").position().top + ($(".document-annotations span[data-annotation-id='#{annotationId}']").height() / 2) + 30) }, 1200, 'easeInOutQuint'
-
-    'mouseleave .annotations li': (event) ->
-      annotationId = event.currentTarget.getAttribute('data-annotation-id')
-      documentAnnotation = $(".document-annotations")
-      $(".document-annotations span").removeClass('not-highlighted')
-      documentAnnotation.removeClass('highlighted')
+      if template.selectedAnnotation.get() is @_id
+        template.selectedAnnotation.set(null)
+        documentAnnotation.removeClass('highlighted')
+        $(".document-annotations span").removeClass('not-highlighted')
+      else
+        template.selectedAnnotation.set(@_id)
+        $(".document-annotations span").addClass('not-highlighted')
+        documentAnnotation.addClass('highlighted').removeClass('not-highlighted')
+        $('.document-container').animate { scrollTop: ($(".document-annotations span[data-annotation-id='#{annotationId}']").position().top - $("li[data-annotation-id='#{annotationId}']").position().top + ($(".document-annotations span[data-annotation-id='#{annotationId}']").height() / 2) + 30) }, 1000, 'easeInOutQuint'
 
     'click .document-detail-container': (event, instance) =>
       instance.startOffset.set(null)
