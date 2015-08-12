@@ -39,13 +39,20 @@ do ->
         .click(".new-document-link", assert.ifError)
         .call(callback)
 
-    @When /^I fill out the new document form with title "([^"]*)"$/, (title, callback) ->
-      @browser
-        .waitForExist('#new-document-form', assert.ifError)
-        .setValue('#document-title', title)
-        .setValue('#document-body', 'This is a document.')
-        .submitForm('#new-document-form', assert.ifError)
-        .call(callback)
+    @When /^I fill out the new document form with title "([^"]*)"( and select the test group)?$/, (title, selectGroup) ->
+      if selectGroup
+        @browser
+          .waitForExist('#new-document-form', assert.ifError)
+          .setValue('#document-title', title)
+          .setValue('#document-body', 'This is a document.')
+          .selectByVisibleText('#document-group-id', 'Test Group')
+          .submitForm('#new-document-form', assert.ifError)
+      else
+        @browser
+          .waitForExist('#new-document-form', assert.ifError)
+          .setValue('#document-title', title)
+          .setValue('#document-body', 'This is a document.')
+          .submitForm('#new-document-form', assert.ifError)
 
     @Then /^I should be on the test group documents page$/, (callback) ->
       @browser
@@ -54,3 +61,22 @@ do ->
           match = response.toString().match("Test Group")
           assert.ok(match)
         .call(callback)
+
+    @Then /^I should be on the admin documents page$/, ->
+      @browser
+        .waitForVisible('.documents', assert.ifError)
+
+    @When /^I click on the Add Document link in the header$/, ->
+      @browser
+        .waitForExist('.header-documents-link', assert.ifError)
+        .click('.new-document', assert.ifError)
+        .waitForExist('#new-document-form', assert.ifError)
+
+    @Then "I should see that \"$documentName\" is in the test group", (documentName) ->
+      @browser
+        .waitForVisible('.documents', assert.ifError)
+        .getHTML '.documents table', (error, response) ->
+          matchDocument = response.toString().match(documentName)
+          matchGroup = response.toString().match("Test Group")
+          assert.ok(matchDocument, "Document name not found")
+          assert.ok(matchGroup, "Group not found")

@@ -9,6 +9,9 @@ Document = Astro.Class
     groupId: 'string'
 
   methods:
+    groupName: ->
+      Groups.findOne(@groupId)?.name
+
     truncatedBody: ->
       splitText = @body?.split(' ')
       wordCount = 25

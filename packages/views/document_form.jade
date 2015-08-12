@@ -14,4 +14,11 @@ template(name="documentForm")
             .col-sm-10
               label Body
               textarea#document-body.form-control(name='body')
+          if isAdmin
+            .row
+              .col-sm-10
+                label Group
+                select#document-group-id(name='groupId')
+                  each groups
+                    option(value=_id)= name
           input.btn.btn-primary(type="submit" value="Save")
