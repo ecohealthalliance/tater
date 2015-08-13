@@ -12,5 +12,4 @@ Feature: Groups
     Then I should see a "Success" toast
     And I should see content "Test Group"
     When I click on the group link
-    Then I should be on the test group page
-    And I should see content "Test Group"
+    Then I should see content "Test Group"
