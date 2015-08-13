@@ -163,7 +163,7 @@ if Meteor.isServer
     if @userId
       group = Groups.findOne({_id: document.groupId})
       user = Meteor.users.findOne(@userId)
-      if group?.viewableByUserWithGroup(user.group)
+      if group?.viewableByUser(user)
         Documents.find id
       else
         @ready()
@@ -175,7 +175,7 @@ if Meteor.isServer
     if @userId
       group = Groups.findOne({_id: document.groupId})
       user = Meteor.users.findOne(@userId)
-      if group?.viewableByUserWithGroup(user.group)
+      if group?.viewableByUser(user)
         Annotations.find({documentId: documentId})
       else
         @ready()
@@ -196,7 +196,7 @@ if Meteor.isServer
       if @userId
         group = Groups.findOne({_id: document.groupId})
         user = Meteor.users.findOne(@userId)
-        if group?.viewableByUserWithGroup(user.group)
+        if group?.viewableByUser(user)
           annotation = new Annotation()
           annotation.set(attributes)
           annotation.set(userId: @userId)
@@ -213,7 +213,7 @@ if Meteor.isServer
       if @userId
         group = Groups.findOne({_id: document.groupId})
         user = Meteor.users.findOne(@userId)
-        if group?.viewableByUserWithGroup(user.group)
+        if group?.viewableByUser(user)
           annotation.remove() ->
             annotation
         else

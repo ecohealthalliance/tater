@@ -14,7 +14,7 @@ if Meteor.isClient
 
     showNewDocumentLink: ->
       group = Groups.findOne(@groupId)
-      group.viewableByUserWithGroup(Meteor.user()?.group)
+      group.viewableByUser(Meteor.user())
 
 
 if Meteor.isServer
@@ -22,7 +22,7 @@ if Meteor.isServer
     user = Meteor.users.findOne(@userId)
     group = Groups.findOne(id)
 
-    if user and group.viewableByUserWithGroup(user.group)
+    if user and group.viewableByUser(user)
       [
         Groups.find(id)
         Groups.findOne(id).documents()
