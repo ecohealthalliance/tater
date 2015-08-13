@@ -108,8 +108,8 @@ do ->
         # so this fills them in with jQuery
         .execute ((email) ->
           $('#user-email').val(email)
-          $('#user-password', 'testuser')
-          $('#user-password-confirm', 'testuser')
+          $('#user-password').val('testuser')
+          $('#user-password-confirm').val('testuser')
         ), email
         #.setValue('#user-email', email)
         #.setValue('#user-password', 'testuser')
@@ -130,14 +130,14 @@ do ->
         # setValue isn't working for modal inputs
         # so this fills them in with jQuery
         .execute ((email) ->
-          $('#user-email').val(email)
-          $('#user-password', 'testuser')
-          $('#user-password-confirm', 'testuser')
+          $('#add-admin-modal #user-email').val(email)
+          $('#add-admin-modal #user-password').val('testuser')
+          $('#add-admin-modal #user-password-confirm').val('testuser')
         ), email
         #.setValue('#user-email', email)
         #.setValue('#user-password', 'testuser')
         #.setValue('#user-password-confirm', 'testuser')
-        .submitForm('#user-email', assert.ifError)
+        .submitForm('#add-admin-modal #new-user-form', assert.ifError)
         .pause(500)
         .waitForVisible('.toast-success', assert.ifError)
         .call(callback)
