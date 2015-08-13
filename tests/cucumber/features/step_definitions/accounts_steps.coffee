@@ -98,49 +98,31 @@ do ->
           assert.equal(ret.value, true, 'Not admin')
         ).call(callback)
 
-    @When 'I create a user account for "$email"', (email, callback) ->
+    @When 'I create a user account for "$email"', (email) ->
       @browser
         .waitForVisible('.add-user')
         .click('.add-user')
-        .waitForVisible('.modal', assert.ifError)
-        .waitForEnabled('#user-email', assert.ifError)
-        # setValue isn't working for modal inputs
-        # so this fills them in with jQuery
-        .execute ((email) ->
-          $('#user-email').val(email)
-          $('#user-password').val('testuser')
-          $('#user-password-confirm').val('testuser')
-        ), email
-        #.setValue('#user-email', email)
-        #.setValue('#user-password', 'testuser')
-        #.setValue('#user-password-confirm', 'testuser')
-        .submitForm('#user-email', assert.ifError)
-        # This pause is necessairy, I think the waitForVisible function
-        # can't cope with elements that fade in and out.
+        .waitForVisible('#add-group-user-modal', assert.ifError)
+        .waitForEnabled('#add-group-user-modal .user-email', assert.ifError)
+        .setValue('#add-group-user-modal .user-email', email)
+        .setValue('#add-group-user-modal .user-password', 'testuser')
+        .setValue('#add-group-user-modal .user-password-confirm', 'testuser')
+        .submitForm('#add-group-user-modal .user-email', assert.ifError)
         .pause(500)
         .waitForVisible('.toast-success', assert.ifError)
-        .call(callback)
 
-    @When 'I create an admin user account for "$email"', (email, callback) ->
+    @When 'I create an admin user account for "$email"', (email) ->
       @browser
         .waitForVisible('.add-admin')
         .click('.add-admin')
-        .waitForVisible('.modal', assert.ifError)
-        .waitForEnabled('#user-email', assert.ifError)
-        # setValue isn't working for modal inputs
-        # so this fills them in with jQuery
-        .execute ((email) ->
-          $('#add-admin-modal #user-email').val(email)
-          $('#add-admin-modal #user-password').val('testuser')
-          $('#add-admin-modal #user-password-confirm').val('testuser')
-        ), email
-        #.setValue('#user-email', email)
-        #.setValue('#user-password', 'testuser')
-        #.setValue('#user-password-confirm', 'testuser')
-        .submitForm('#add-admin-modal #new-user-form', assert.ifError)
+        .waitForVisible('#add-admin-modal', assert.ifError)
+        .waitForEnabled('#add-admin-modal .user-email', assert.ifError)
+        .setValue('#add-admin-modal .user-email', email)
+        .setValue('#add-admin-modal .user-password', 'testuser')
+        .setValue('#add-admin-modal .user-password-confirm', 'testuser')
+        .submitForm('#add-admin-modal .user-email', assert.ifError)
         .pause(500)
         .waitForVisible('.toast-success', assert.ifError)
-        .call(callback)
 
     @When 'I log out', (callback) ->
       @browser
