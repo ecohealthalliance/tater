@@ -4,7 +4,7 @@ template(name="groupDocuments")
       .container
         h1.inline Documents
         if showNewDocumentLink
-          a.new-document-link.btn.header-btn.btn-default(href="{{path route='newDocument' params=newDocumentParams}}")
+          a.new-document-link.btn.header-btn.btn-primary(href="{{path route='newDocument' params=newDocumentParams}}")
             span Add Document
             i.fa.fa-file-text-o
         p.group-name
@@ -12,10 +12,10 @@ template(name="groupDocuments")
           | #{group.name}
     .container
       if documents
-        ul.document-list.list-unstyled
+        ul.document-list.list.list-unstyled
           each documents
             li.document
-                a(href="{{path route='documentDetail' params=this}}")
+                a.list-link(href="{{path route='documentDetail' params=this}}")
                   span.document-title= title
       else
         p No documents have been uploaded.

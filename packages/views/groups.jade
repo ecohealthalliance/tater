@@ -6,21 +6,15 @@ template(name="groups")
         a.btn.btn-primary.new-group-link.header-btn(href="{{path route='newGroup'}}")
           span Create
           i.fa.fa-users
-    table.table.table-striped.full-width-table.groups-table
-      tbody
-        each groups
-          tr.table-content-wrap
-            .container
-              .row
-                .col-sm-4
-                  td.title
-                    a.group-name(href="{{path route='groupDetail' params=this}}")= name
-                .col-sm-6
-                  td.group-description {{truncateDescription}}
-                .col-sm-2.controls
-                  button.btn.btn-primary.add-user(data-toggle="modal" data-target="#add-group-user-modal")
-                    sapn Add user
-                    i.fa.fa-user-plus
+    .container.container-list
+      if groups
+        ul.list.group-list.list-unstyled
+          each groups
+            li.group
+                a.list-link(href="{{path route='groupDetail' params=this}}")
+                  span.group-name= name
+                a.add-user.btn-list(data-toggle="modal" data-target="#add-group-user-modal")
+                  i.fa.fa-user-plus
     #add-group-user-modal.modal.fade(tabindex="-1" role="dialog")
       .modal-dialog
         .modal-content
