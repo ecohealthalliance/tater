@@ -39,8 +39,12 @@
     overflow visible
   .reactive-table-navigation
     padding 0 15px
-  thead
-    background $background-primary
+  .table
+    > thead
+      background $background-primary
+      > tr
+        > th
+          padding 12px 8px
   tr
     &:last-of-type
       border-bottom 2px solid $border-gray
