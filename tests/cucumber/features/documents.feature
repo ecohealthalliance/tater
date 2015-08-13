@@ -4,18 +4,6 @@ Feature: Documents
     Given there is a test user in the database
 
   @documents
-  Scenario: Adding a document to a group
-    Given there is a test group in the database
-    When I log in as the test user
-    And I navigate to the test group documents page
-    Then I should not see content "Test Document"
-    When I click on the New Document link
-    And I fill out the new document form with title "Test Document"
-    Then I should be on the test group documents page
-    And I should see content "Test Document"
-    And I should see a "Success" toast
-
-  @documents
   Scenario: Viewing group documents as a non-admin
     Given there is a test group in the database
     When I log in as the test user
@@ -25,6 +13,20 @@ Feature: Documents
     And I log in as "non@admin.com"
     And I click the documents header link
     Then I should be on the test group documents page
+
+  @documents
+  Scenario: Adding a group document as a non-admin
+    Given there is a test group in the database
+    When I log in as the test user
+    And I navigate to the test group page
+    And I create an user account for "non@admin.com"
+    And I log out
+    And I log in as "non@admin.com"
+    And I click on the Add Document link in the header
+    And I fill out the new document form with title "Test Document"
+    Then I should be on the test group documents page
+    And I should see content "Test Document"
+    And I should see a "Success" toast
 
   @documents
   Scenario: Viewing all documents as an admin
@@ -44,3 +46,14 @@ Feature: Documents
     And I click on the group link
     And I click on the group documents link
     Then I should see content "Test Doc"
+
+  @documents
+  Scenario: Adding a document as an admin
+    Given there is a test group in the database
+    When I navigate to "/"
+    When I log in as the test user
+    And I click on the Add Document link in the header
+    And I fill out the new document form with title "Test Document" and select the test group
+    Then I should be on the admin documents page
+    And I should see that "Test Document" is in the test group
+    And I should see a "Success" toast

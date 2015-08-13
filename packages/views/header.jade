@@ -8,12 +8,11 @@ template(name="header")
             h1 Tater
         .navbar-collapse.collapse
           if currentUser
-            unless isAdmin
-              ul.nav.navbar-nav.navbar-left
-                li
-                  a.btn.navbar-btn.new-document(href="{{path route='newDocument' params=documentsLinkParams}}")
-                    span New Document
-                    i.fa.fa-file-text-o
+            ul.nav.navbar-nav.navbar-left
+              li
+                a.btn.navbar-btn.new-document(href="{{path route='newDocument'}}")
+                  span New Document
+                  i.fa.fa-file-text-o
           ul.nav.navbar-nav.navbar-right
             if currentUser
               if isAdmin

@@ -36,3 +36,11 @@ describe 'Document', ->
       document.set('body', "Test body")
       annotatedText = document.textWithAnnotations([annotation1, annotation2])
       expect(annotatedText).to.eq("<span data-annotation-id='#{annotation1._id}' class='annotation-highlight-1'>T</span>es<span data-annotation-id='#{annotation2._id}' class='annotation-highlight-1'>t b</span>ody")
+
+  describe '#groupName', =>
+    it 'returns the name of the group to which the document belongs', ->
+      group = new Group(name: 'Test Group Name')
+      group.save()
+
+      document.set('groupId', group._id)
+      expect(document.groupName()).to.eq('Test Group Name')
