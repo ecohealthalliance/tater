@@ -22,7 +22,7 @@ template(name="documentDetail")
         ul.annotations.list-unstyled
           if Template.subscriptionsReady
             each annotations
-              li(class="annotation-color-#{color}")
+              li(data-annotation-id=_id class="annotation-color-#{color} {{selected}}")
                 span.code
                   span= positionInformation
                   span.header= header

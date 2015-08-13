@@ -29,11 +29,13 @@ describe 'Document', ->
       code = CodingKeywords.findOne()
       code.color = 1
       annotation1 = new Annotation({startOffset: 0, endOffset: 1, codeId: code._id})
+      annotation1.save()
       annotation2 = new Annotation({startOffset: 3, endOffset: 6, codeId: code._id})
+      annotation2.save()
 
       document.set('body', "Test body")
       annotatedText = document.textWithAnnotations([annotation1, annotation2])
-      expect(annotatedText).to.eq("<span class='annotation-highlight-1'>T</span>es<span class='annotation-highlight-1'>t b</span>ody")
+      expect(annotatedText).to.eq("<span data-annotation-id='#{annotation1._id}' class='annotation-highlight-1'>T</span>es<span data-annotation-id='#{annotation2._id}' class='annotation-highlight-1'>t b</span>ody")
 
   describe '#groupName', =>
     it 'returns the name of the group to which the document belongs', ->
