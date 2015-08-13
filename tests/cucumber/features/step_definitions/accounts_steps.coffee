@@ -102,26 +102,28 @@ do ->
       @browser
         .waitForVisible('.add-user')
         .click('.add-user')
+        .pause(500)
         .waitForVisible('#add-group-user-modal', assert.ifError)
         .waitForEnabled('#add-group-user-modal .user-email', assert.ifError)
         .setValue('#add-group-user-modal .user-email', email)
         .setValue('#add-group-user-modal .user-password', 'testuser')
         .setValue('#add-group-user-modal .user-password-confirm', 'testuser')
         .submitForm('#add-group-user-modal .user-email', assert.ifError)
-        .pause(500)
+        .pause(1000)
         .waitForVisible('.toast-success', assert.ifError)
 
     @When 'I create an admin user account for "$email"', (email) ->
       @browser
         .waitForVisible('.add-admin')
         .click('.add-admin')
+        .pause(500)
         .waitForVisible('#add-admin-modal', assert.ifError)
         .waitForEnabled('#add-admin-modal .user-email', assert.ifError)
         .setValue('#add-admin-modal .user-email', email)
         .setValue('#add-admin-modal .user-password', 'testuser')
         .setValue('#add-admin-modal .user-password-confirm', 'testuser')
         .submitForm('#add-admin-modal .user-email', assert.ifError)
-        .pause(500)
+        .pause(1000)
         .waitForVisible('.toast-success', assert.ifError)
 
     @When 'I log out', (callback) ->
