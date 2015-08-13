@@ -51,7 +51,7 @@ do ->
     @Then /^I should be on the test group documents page$/, (callback) ->
       @browser
         .waitForVisible('.group-documents', assert.ifError)
-        .getHTML '.group-documents h1', (error, response) ->
+        .getHTML '.group-documents .group-name', (error, response) ->
           match = response.toString().match("Test Group")
           assert.ok(match)
         .call(callback)
@@ -69,7 +69,7 @@ do ->
     @Then "I should see that \"$documentName\" is in the test group", (documentName) ->
       @browser
         .waitForVisible('.documents', assert.ifError)
-        .getHTML '.documents table', (error, response) ->
+        .getHTML '.document-list', (error, response) ->
           matchDocument = response.toString().match(documentName)
           matchGroup = response.toString().match("Test Group")
           assert.ok(matchDocument, "Document name not found")
