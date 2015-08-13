@@ -15,7 +15,8 @@ $secondary-dark       = darken($secondary, 20%)
 $secondary-light      = lighten($secondary, 20%)
 $secondary-trans      = rgba($secondary, 0.9)
 
-$background-primary   = rgba(244, 239, 235, 1)
+$background-primary   = lighten(desaturate($primary,40%), 90%)
+$background-secondary = lighten(desaturate($secondary,40%), 90%)
 
 $dd-gray              = #333
 $d-gray               = #999
@@ -46,7 +47,7 @@ $selection-color      = rgba(255, 255, 118, 1)
 $header-height                   = 55px
 $brand-width                     = 113px
 $brand-height                    = 40px
-$brand-top-margin                = (($header-height - $brand-height) / 2) + 2
+$brand-top-margin                = (($header-height - $brand-height) / 2) - 1
 $header-text-shadow              = false
 
 $footer-height                   = 75px

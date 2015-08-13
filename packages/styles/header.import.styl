@@ -33,7 +33,8 @@ header
     &.new-document
       float left
       margin-left 20px
-      margin-top 11px
+      margin-top 12px
+      @extend .dark-shadow
       &:hover
       &:focus
         color white
@@ -91,7 +92,6 @@ header
         background $primary
         color white
       &.navbar-btn
-        @extend .btn-default
         margin-top 11px
         margin-left 15px
         padding 9px 10px
@@ -99,7 +99,6 @@ header
         background $secondary
         text-align center
         color white
-        text-shadow none
         line-height 100%
         transition(background-color)
         &:hover,
@@ -189,7 +188,7 @@ header
   transition(.2s, color)
   +below(2)
     transition(.2s, color)
-    margin-top $brand-top-margin - 3
+    margin-top $brand-top-margin - 1
   &:hover
   &:focus
     span
