@@ -16,9 +16,9 @@ template(name="documentForm")
               textarea#document-body.form-control(name='body')
           if isAdmin
             .row
-              .col-sm-10
+              .col-sm-7
                 label Group
-                select#document-group-id(name='groupId')
+                select#document-group-id.form-control(name='groupId')
                   each groups
                     option(value=_id)= name
           input.btn.btn-primary(type="submit" value="Save")
