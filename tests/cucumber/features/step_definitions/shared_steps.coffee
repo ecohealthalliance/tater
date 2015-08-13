@@ -44,10 +44,10 @@ do ->
         .url(url.resolve(process.env.ROOT_URL, relativePath))
         .call(callback)
 
-    @When 'I navigate to the groups page', (callback) ->
+    @When 'I navigate to the admin page', (callback) ->
       @client
-        .waitForExist('[href="/groups"]')
-        .click('[href="/groups"]')
+        .waitForExist('[href="/admin"]')
+        .click('[href="/admin"]')
         .call(callback)
 
     @Then /^I should( not)? see a "([^"]*)" toast$/, (noToast, message, callback) ->

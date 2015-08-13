@@ -1,9 +1,11 @@
 template(name="userTable")
   section.rm-pad-top
     .container
-      h2 Group Users
+      h2 Users
     .table-wrap.reports-table.container
-      +reactiveTable collection=usersCollection settings=settings filters=filters
+      .row
+        .col-sm-8
+          +reactiveTable collection=usersCollection settings=settings filters=filters
   #remove-user-modal.modal.fade(tabindex="-1" role="dialog")
     .modal-dialog
       .modal-content

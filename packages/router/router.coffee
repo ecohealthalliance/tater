@@ -30,6 +30,12 @@ FlowRouter.route '/documents',
     FlowLayout.render 'layout',
       main: 'documents'
 
+FlowRouter.route '/admin',
+  name: 'admin'
+  action: () ->
+    FlowLayout.render 'layout',
+      main: 'admin'
+
 FlowRouter.route '/documents/new',
   name: 'newDocument'
   action: (params) ->
@@ -42,12 +48,6 @@ FlowRouter.route '/documents/:_id',
     FlowLayout.render 'layout',
       main: 'documentDetail'
       params: {"documentId": params._id}
-
-FlowRouter.route '/groups',
-  name: 'groups'
-  action: () ->
-    FlowLayout.render 'layout',
-      main: 'groups'
 
 FlowRouter.route '/groups/new',
   name: 'newGroup'
