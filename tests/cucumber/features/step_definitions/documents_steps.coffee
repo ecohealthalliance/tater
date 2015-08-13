@@ -40,19 +40,13 @@ do ->
         .call(callback)
 
     @When /^I fill out the new document form with title "([^"]*)"( and select the test group)?$/, (title, selectGroup) ->
+      @browser
+        .waitForExist('#new-document-form', assert.ifError)
+        .setValue('#document-title', title)
+        .setValue('#document-body', 'This is a document.')
       if selectGroup
-        @browser
-          .waitForExist('#new-document-form', assert.ifError)
-          .setValue('#document-title', title)
-          .setValue('#document-body', 'This is a document.')
-          .selectByVisibleText('#document-group-id', 'Test Group')
-          .submitForm('#new-document-form', assert.ifError)
-      else
-        @browser
-          .waitForExist('#new-document-form', assert.ifError)
-          .setValue('#document-title', title)
-          .setValue('#document-body', 'This is a document.')
-          .submitForm('#new-document-form', assert.ifError)
+        @browser.selectByVisibleText('#document-group-id', 'Test Group')
+      @browser.submitForm('#new-document-form', assert.ifError)
 
     @Then /^I should be on the test group documents page$/, (callback) ->
       @browser
