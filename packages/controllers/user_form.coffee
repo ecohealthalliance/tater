@@ -23,10 +23,15 @@ if Meteor.isClient
         toastr.error("Password mismatch")
         return
 
+      if template.data.userType is 'admin'
+        groupId = 'admin'
+      else
+        groupId = form.group?.value
+
       fields = {
         email: form.email.value
         password: form.password.value
-        groupId: form.group?.value
+        groupId: groupId
         admin: template.data.userType is 'admin'
       }
 
