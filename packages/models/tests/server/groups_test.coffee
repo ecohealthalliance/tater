@@ -1,5 +1,6 @@
 describe 'Group', ->
   group = null
+  Meteor.users.remove()
 
   beforeEach ->
     group = new Group()
@@ -24,17 +25,23 @@ describe 'Group', ->
     group.save
     expect(group.createdById).to.eq('fakeid')
 
-  describe '#viewableByUserWithGroup', ->
+  describe '#viewableByUser', ->
     it 'returns true if user belongs to group', ->
-      group.save
-      id = group._id
-      expect(group.viewableByUserWithGroup(id)).to.be.ok
+      group.save()
+      userId = Meteor.users.insert(email: 'test@example.com', group: group._id)
+      user = Meteor.users.findOne(userId)
+      expect(group.viewableByUser(user)).to.be.ok
 
     it 'returns true if user is admin', ->
-      expect(group.viewableByUserWithGroup('admin')).to.be.ok
+      userId = Meteor.users.insert(email: 'test@example.com', admin: true)
+      user = Meteor.users.findOne(userId)
+      expect(group.viewableByUser(user)).to.be.ok
 
     it 'returns false otherwise', ->
-      expect(group.viewableByUserWithGroup('fake')).not.to.be.ok
+      group.save()
+      userId = Meteor.users.insert(email: 'test@example.com')
+      user = Meteor.users.findOne(userId)
+      expect(group.viewableByUser(user)).not.to.be.ok
 
   describe '#documents', ->
     it 'returns the documents that have been added to the group', ->

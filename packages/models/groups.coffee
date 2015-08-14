@@ -17,8 +17,8 @@ Group = Astro.Class
       else
         @description
 
-    viewableByUserWithGroup: (group) ->
-      group == 'admin' || group == @_id
+    viewableByUser: (user) ->
+      user.admin or (user.group is @_id)
 
     documents: ->
       Documents.find({groupId: @_id})
