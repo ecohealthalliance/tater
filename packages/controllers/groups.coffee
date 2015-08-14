@@ -6,7 +6,7 @@ if Meteor.isClient
   Template.groups.helpers
     groups: ->
       if Meteor.userId()
-        Groups.find()
+        Groups.find({}, sort: name: 1)
     group: ->
       Template.instance().selectedGroup
 

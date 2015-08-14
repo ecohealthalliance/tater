@@ -14,8 +14,9 @@ template(name="users")
             i.fa.fa-times-circle
         .modal-body
           +userForm userType='admin'
-  .table-wrap.reports-table.container
-    +reactiveTable collection=usersCollection settings=settings filters=filters
+  .table-wrap.reports-table
+    .container.container-list.list-table
+      +reactiveTable collection=usersCollection settings=settings filters=filters
   #remove-user-modal.modal.fade(tabindex="-1" role="dialog")
     .modal-dialog
       .modal-content

@@ -3,12 +3,12 @@ template(name="documents")
     .view-header.secondary-bg
       .container
         h1 All Documents
-    .container
+    .container.container-list
       if documents
-        ul.document-list.list-unstyled
+        ul.list.document-list.list-unstyled
           each documents
             li.document
-                a(href="{{path route='documentDetail' params=this}}")
+                a.list-link(href="{{path route='documentDetail' params=this}}")
                   span.document-title= title
                   span.document-group= groupName
       else

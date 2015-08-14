@@ -44,7 +44,6 @@ Feature: Documents
     When I log in as the test user
     And I navigate to "/admin"
     And I click on the group link
-    And I click on the group documents link
     Then I should see content "Test Doc"
 
   @documents
