@@ -29,7 +29,7 @@ do ->
       @browser
         .waitForExist('.group-list', assert.ifError)
         .click(".group-list a.list-link", assert.ifError)
-        .waitForVisible('.group-detail', assert.ifError)
+        .waitForVisible('.documents', assert.ifError)
         .call(callback)
 
     @When /^I navigate to the test group page$/, (callback) ->
