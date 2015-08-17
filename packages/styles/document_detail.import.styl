@@ -83,17 +83,15 @@ checkMark(center=false)
     left 15px
     top 2px
     cursor pointer
-    &.down
-    &.up
+    font-size 1em
+    &::before
+      content '\f138'
       @extend .icon
-    &.down
-      &::before
-        content '\f13a'
     &.up
-      &::before
-        content '\f139'
+      transition .2s
+      transform rotate(90deg)
     &:hover
-      color $secondary-dark
+      color darken($secondary-dark, 20%)
       transition .2s ease-in-out
 
 .code-header > span
@@ -188,6 +186,8 @@ checkMark(center=false)
     margin-left 2px
   i
     left 38px
+    top 0
+    font-size 1.2em
 
 .code-keywords
   padding-left 10px
