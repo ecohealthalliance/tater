@@ -40,7 +40,7 @@ if Meteor.isClient
     'annotationLayers': ->
       temporaryAnnotation = Template.instance().temporaryAnnotation.get()
       annotations = Annotations.find({documentId: @documentId}).fetch()
-      if temporaryAnnotation.startOffset
+      if temporaryAnnotation.startOffset >= 0
         annotations.push(temporaryAnnotation)
       document = Documents.findOne({ _id: @documentId })
 
@@ -121,7 +121,7 @@ if Meteor.isClient
 
     'click .selectable-code': (event, instance) ->
       temporaryAnnotation = instance.temporaryAnnotation.get()
-      if temporaryAnnotation.startOffset
+      if temporaryAnnotation.startOffset >= 0
         attributes = {}
         attributes['codeId'] = event.currentTarget.getAttribute('data-id')
         attributes['documentId'] = instance.data.documentId
