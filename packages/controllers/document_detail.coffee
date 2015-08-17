@@ -46,13 +46,7 @@ if Meteor.isClient
 
       annotationLayers = _.map annotations, (annotation) =>
         annotatedBody = document.textWithAnnotation(annotation)
-        paragraphs = annotatedBody.split(/\r?\n\n/g)
-
-        for paragraph in paragraphs
-          if formattedBody
-            formattedBody = "#{formattedBody}<br><br>#{paragraph}"
-          else
-            formattedBody = paragraph
+        formattedBody = annotatedBody.replace(/\r/g, "<br><br>").replace(/\n/g, "<br>")
         Spacebars.SafeString(formattedBody)
       annotationLayers
 
