@@ -14,8 +14,9 @@ template(name="documentDetail")
             .document-wrapper
               pre.document-text= document.body
               if Template.subscriptionsReady
-                .document-annotations
-                  .document-text= annotatedText
+                each annotationLayers
+                  .document-annotations
+                    .document-text= this
       .annotation-search-container
         input.annotation-search.form-control(type="text" placeholder="Search Annotations")
       .annotation-container

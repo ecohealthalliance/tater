@@ -10,7 +10,6 @@ if Meteor.isClient
     @annotations = new ReactiveVar()
     @searchText = new ReactiveVar('')
     @temporaryAnnotation = new ReactiveVar(new Annotation())
-    @overlappingSelection = new ReactiveVar(false)
 
   Template.documentDetail.onRendered ->
     instance = Template.instance()
@@ -38,21 +37,24 @@ if Meteor.isClient
     'annotationUserEmail': ->
       @userEmail()
 
-    'annotatedText': ->
+    'annotationLayers': ->
       temporaryAnnotation = Template.instance().temporaryAnnotation.get()
       annotations = Annotations.find({documentId: @documentId}).fetch()
       if temporaryAnnotation.startOffset
         annotations.push(temporaryAnnotation)
       document = Documents.findOne({ _id: @documentId })
-      annotatedBody = document.textWithAnnotations(annotations)
-      paragraphs = annotatedBody.split(/\r?\n\n/g)
 
-      for paragraph in paragraphs
-        if formattedBody
-          formattedBody = "#{formattedBody}<br><br>#{paragraph}"
-        else
-          formattedBody = paragraph
-      Spacebars.SafeString(formattedBody)
+      annotationLayers = _.map annotations, (annotation) =>
+        annotatedBody = document.textWithAnnotation(annotation)
+        paragraphs = annotatedBody.split(/\r?\n\n/g)
+
+        for paragraph in paragraphs
+          if formattedBody
+            formattedBody = "#{formattedBody}<br><br>#{paragraph}"
+          else
+            formattedBody = paragraph
+        Spacebars.SafeString(formattedBody)
+      annotationLayers
 
     'positionInformation': ->
       "#{@startOffset} - #{@endOffset}"
@@ -82,9 +84,6 @@ if Meteor.isClient
     'selected': ->
       if @_id is Template.instance().selectedAnnotation.get()
         'selected'
-
-    'overlappingSelection': ->
-      Template.instance().overlappingSelection.get()
 
   Template.documentDetail.events
     'mousedown .document-container': (event, instance) ->
@@ -119,23 +118,11 @@ if Meteor.isClient
       textHighlighted = range and (range.endOffset > range.startOffset)
 
       if selectionInDocument and textHighlighted
-        overlapping = _.find instance.annotations.get().fetch(), (annotation) ->
-          annotation.overlapsWithOffsets(range.startOffset, range.endOffset)
+        startOffset = range.startOffset
+        endOffset = range.endOffset
 
-        if !overlapping
-          instance.overlappingSelection.set(false)
-
-          startOffset = range.startOffset
-          endOffset = range.endOffset
-
-          temporaryAnnotation.set({startOffset: startOffset, endOffset: endOffset})
-          instance.temporaryAnnotation.set(temporaryAnnotation)
-
-        else
-          instance.overlappingSelection.set(true)
-
-      else
-        instance.overlappingSelection.set(false)
+        temporaryAnnotation.set({startOffset: startOffset, endOffset: endOffset})
+        instance.temporaryAnnotation.set(temporaryAnnotation)
 
     'click .selectable-code': (event, instance) ->
       temporaryAnnotation = instance.temporaryAnnotation.get()

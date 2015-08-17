@@ -20,25 +20,20 @@ Document = Astro.Class
       else
         @body
 
-    textWithAnnotations: (annotations) ->
-      offsetShift = 0
+    textWithAnnotation: (annotation) ->
       body = @body
-      annotations = _.sortBy(annotations, 'startOffset')
-      for annotation in annotations
-        startOffset = annotation.startOffset + offsetShift
-        endOffset = annotation.endOffset + offsetShift
+      startOffset = annotation.startOffset
+      endOffset = annotation.endOffset
 
-        if annotation.codeId
-          color = annotation.color()
-        else
-          color = "temporary"
+      if annotation.codeId
+        color = annotation.color()
+      else
+        color = "temporary"
 
-        preTagBody = body.slice(0, startOffset)
-        openTag = "<span data-annotation-id='#{annotation._id}' class='annotation-highlight-#{color}'>"
-        annotatedText = body.slice(startOffset, endOffset)
-        closeTag = "</span>"
-        postTagBody = body.slice(endOffset, body.length)
+      preTagBody = body.slice(0, startOffset)
+      openTag = "<span data-annotation-id='#{annotation._id}' class='annotation-highlight-#{color}'>"
+      annotatedText = body.slice(startOffset, endOffset)
+      closeTag = "</span>"
+      postTagBody = body.slice(endOffset, body.length)
 
-        offsetShift = offsetShift + openTag.length + closeTag.length
-        body = "#{preTagBody}#{openTag}#{annotatedText}#{closeTag}#{postTagBody}"
-      body
+      "#{preTagBody}#{openTag}#{annotatedText}#{closeTag}#{postTagBody}"
