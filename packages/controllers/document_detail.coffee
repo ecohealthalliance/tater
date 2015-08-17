@@ -117,6 +117,7 @@ if Meteor.isClient
 
         temporaryAnnotation.set({startOffset: startOffset, endOffset: endOffset})
         instance.temporaryAnnotation.set(temporaryAnnotation)
+        selection.empty()
 
     'click .selectable-code': (event, instance) ->
       temporaryAnnotation = instance.temporaryAnnotation.get()
