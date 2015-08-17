@@ -103,7 +103,7 @@ if Meteor.isClient
         template.selectedAnnotation.set(@_id)
         $(".document-annotations span").addClass('not-highlighted')
         documentAnnotation.addClass('highlighted').removeClass('not-highlighted')
-        $('.document-container').animate { scrollTop: ($(".document-annotations span[data-annotation-id='#{annotationId}']").position().top - $("li[data-annotation-id='#{annotationId}']").position().top + ($(".document-annotations span[data-annotation-id='#{annotationId}']").height() / 2) + 30) }, 1000, 'easeInOutQuint'
+        $('.document-container').animate { scrollTop: ($(".document-annotations span[data-annotation-id='#{annotationId}']").position().top - $("li[data-annotation-id='#{annotationId}']").position().top + ($(".document-annotations span[data-annotation-id='#{annotationId}']").height() / 2) + 45) }, 1000, 'easeInOutQuint'
 
     'click .document-detail-container': (event, instance) =>
       instance.startOffset.set(null)
