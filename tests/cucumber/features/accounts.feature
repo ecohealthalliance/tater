@@ -39,9 +39,8 @@ Feature: Accounts
     Given there is a test user in the database
     And there is a group in the database
     When I log in as the test user
-    And I navigate to the groups page
-    And I click on the group link
-    And I create an user account for "mr@potato.head"
+    And I navigate to the admin page
+    And I create a user account for "mr@potato.head"
     And I log out
     And I log in as "mr@potato.head"
     Then I am logged in
@@ -49,10 +48,8 @@ Feature: Accounts
   @accounts
   Scenario: Creating an account for another admin user
     Given there is a test user in the database
-    And there is a group in the database
     When I log in as the test user
-    And I navigate to the groups page
-    And I click on the group link
+    And I navigate to the admin page
     And I create an admin user account for "mr@potato.head"
     And I log out
     And I log in as "mr@potato.head"
@@ -64,9 +61,8 @@ Feature: Accounts
     Given there is a test user in the database
     And there is a group in the database
     When I log in as the test user
-    And I navigate to the groups page
-    And I click on the group link
-    And I create an user account for "mr@potato.head"
+    And I navigate to the admin page
+    And I create a user account for "mr@potato.head"
     Then I should see content "mr@potato.head"
     When I click the remove user link
     And I confirm the deletion

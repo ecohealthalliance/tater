@@ -2,20 +2,20 @@ template(name="groupDocuments")
   .group-documents.documents
     .view-header.secondary-bg
       .container
-        h1.inline= group.name
-        if isAdmin
-          if showNewDocumentLink
-            a.new-document-link.btn.header-btn.btn-default(href="{{path route='newDocument' params=newDocumentParams}}")
-              span New Document
-              i.fa.fa-file-text-o
-    table.table.table-striped.full-width-table
-      tbody
-        each documents
-          tr.table-content-wrap
-            .container
-              .row
-                .col-sm-3
-                  td.title
-                    a(href="{{path route='documentDetail' params=this}}")= title
-                .col-sm-9
-                  td.document-description {{truncatedBody}}
+        h1.inline Documents
+        if showNewDocumentLink
+          a.new-document-link.btn.header-btn.btn-primary(href="{{path route='newDocument' params=newDocumentParams}}")
+            span Add Document
+            i.fa.fa-file-text-o
+        p.group-name
+          span Group:
+          | #{group.name}
+    .container
+      if documents
+        ul.document-list.list.list-unstyled
+          each documents
+            li.document
+                a.list-link(href="{{path route='documentDetail' params=this}}")
+                  span.document-title= title
+      else
+        p No documents have been uploaded.

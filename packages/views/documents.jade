@@ -3,14 +3,13 @@ template(name="documents")
     .view-header.secondary-bg
       .container
         h1 All Documents
-    table.table.table-striped.full-width-table
-      tbody
-        each documents
-          tr.table-content-wrap
-            .container
-              .row
-                .col-sm-3
-                  td
-                    a.title(href="{{path route='documentDetail' params=this}}")= title
-                .col-sm-9
-                  td.document-description {{truncatedBody}}
+    .container.container-list
+      if documents
+        ul.list.document-list.list-unstyled
+          each documents
+            li.document
+                a.list-link(href="{{path route='documentDetail' params=this}}")
+                  span.document-title= title
+                  span.document-group= groupName
+      else
+        p No documents have been uploaded.

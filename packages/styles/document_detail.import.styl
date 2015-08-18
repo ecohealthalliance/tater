@@ -1,4 +1,5 @@
 $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) rgba(134, 180, 216, 1) rgba(173, 160, 183, 1)
+$border = 2px solid lighten($primary-light, 50%)
 
 checkMark(center=false)
   &:hover
@@ -14,11 +15,11 @@ checkMark(center=false)
       content '\f058'
 
 .document-detail-container
-  position absolute
+  position fixed
   min-height 100%
   height 100%
   top $header-height
-  bottom 0
+  bottom $footer-height
   left 0
   right 0
 
@@ -27,7 +28,7 @@ checkMark(center=false)
 .document-container
   position absolute
   top 2px
-  bottom $footer-height
+  bottom 142.5px
   width 22.5%
   overflow-x scroll
 
@@ -35,14 +36,15 @@ checkMark(center=false)
   left 0
 
 .code-search-container
+.document-heading
 .annotation-search-container
   position absolute
   min-height 65px
   top 2px
+  z-index $mid-layer
   width 22.5%
   background alpha($background-primary, 95%)
   padding 15px
-  z-index 1
   input
     margin-bottom 0
 
@@ -81,17 +83,15 @@ checkMark(center=false)
     left 15px
     top 2px
     cursor pointer
-    &.down
-    &.up
+    font-size 1em
+    &::before
+      content '\f138'
       @extend .icon
-    &.down
-      &::before
-        content '\f13a'
     &.up
-      &::before
-        content '\f139'
+      transition .2s
+      transform rotate(90deg)
     &:hover
-      color $secondary-dark
+      color darken($secondary-dark, 20%)
       transition .2s ease-in-out
 
 .code-header > span
@@ -186,6 +186,8 @@ checkMark(center=false)
     margin-left 2px
   i
     left 38px
+    top 0
+    font-size 1.2em
 
 .code-keywords
   padding-left 10px
@@ -226,10 +228,11 @@ checkMark(center=false)
   top $header-height + 2
   left 22.5%
   right 22.5%
+  z-index $top-layer
   padding 18px 5% 10px 5%
-  background-color alpha($deny, 80%)
+  background-color alpha($deny, 95%)
   color white
-  text-align right
+  text-align center
   min-height 65px
   @extend .dark-shadow
   p
@@ -241,11 +244,13 @@ checkMark(center=false)
   i
     font-size 1.5em
 
-
 .document-heading
-  min-height 65px
+  width 55%
+  left 22.5%
   padding 15px 5% 10px 5%
   background alpha($background-primary, 95%)
+  border-left $border
+  border-right $border
   h1
     body-font()
     font-size 25px
@@ -261,10 +266,9 @@ checkMark(center=false)
 .document-container
   width 55%
   left 22.5%
-  z-index 100
-  padding 0
+  padding 75px 0 0 0
   line-height 1.75em
-  border 2px solid lighten($primary-light, 50%)
+  border $border
   border-bottom 0
   border-top 0
 
@@ -276,25 +280,20 @@ checkMark(center=false)
   margin 0 auto
   padding 20px 5%
 
-  .document-annotations
   pre
     white-space pre-wrap
     word-wrap break-word
     word-break break-word
-    color rgba(0,0,0,.6)
 
   .document-annotations
     position absolute
+    color transparent
     line-height 1.6em
     font-size 1em
     top 0
     z-index -1
-    p
-      margin-bottom 1.57em
-
-    for $color, $index in $colors
-      .annotation-color-{$index+1}
-        background-color $color
+    pre
+      color transparent
 
   pre
     background none
@@ -310,8 +309,8 @@ checkMark(center=false)
 
 .annotation-container
   right 0
-
   .annotations
+    margin-right 15px
     li
       position relative
       max-height 300px
@@ -325,7 +324,7 @@ checkMark(center=false)
     .sub-header
       font-weight 600
     .keyword
-      font-weight 700
+      font-weight 800
     .deleting
       linkTransition(.8s)
       max-height 0
@@ -345,25 +344,45 @@ checkMark(center=false)
       font-size .8em
       color alpha($body-color, 90%)
 
+
 for $color, $index in $colors
   .annotation-color-{$index+1}
     background-color $color
     border 2px solid $color
     border-left 0
     linkTransition()
-    &:hover
+    &.selected
       border 2px solid darken($color, 40%)
+      &::before
+        position absolute
+        top 2px
+        left 13px
+        content '\f06e'
+        color darken($color, 30%)
+        @extend .icon
+    &.selected
+    &:hover
       border-left 0
+      background-color lighten(@background-color, 25%)
+    &:hover
+      .btn-delete
+        visibility visible
     .btn-delete
       color darken($color, 20%)
+      visibility hidden
       linkTransition()
       &:hover
         color darken(@color, 50%)
   .annotation-highlight-{$index+1}
     background-color alpha($color, 60%)
     border-radius 2px
+    transition .2s ease-in-out
+    &.highlighted
+      background-color alpha($color, 85%)
+    &.not-highlighted
+      background-color alpha($color, 25%)
 
 .annotation-highlight-temporary
   background-color $selection-color
-  color $body-text
   border-radius 2px
+  padding 2px 0

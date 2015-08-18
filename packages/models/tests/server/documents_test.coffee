@@ -24,13 +24,21 @@ describe 'Document', ->
     document.save
     expect(document.groupId).to.eq('fakeid')
 
-  describe '#textWithAnnotations', =>
+  describe '#textWithAnnotation', =>
     it 'returns the text with the given annotations represented with spans', ->
       code = CodingKeywords.findOne()
       code.color = 1
-      annotation1 = new Annotation({startOffset: 0, endOffset: 1, codeId: code._id})
-      annotation2 = new Annotation({startOffset: 3, endOffset: 6, codeId: code._id})
+      annotation = new Annotation({startOffset: 0, endOffset: 1, codeId: code._id})
+      annotation.save()
 
       document.set('body', "Test body")
-      annotatedText = document.textWithAnnotations([annotation1, annotation2])
-      expect(annotatedText).to.eq("<span class='annotation-highlight-1'>T</span>es<span class='annotation-highlight-1'>t b</span>ody")
+      annotatedText = document.textWithAnnotation(annotation)
+      expect(annotatedText).to.eq("<span data-annotation-id='#{annotation._id}' class='annotation-highlight-1'>T</span>est body")
+
+  describe '#groupName', =>
+    it 'returns the name of the group to which the document belongs', ->
+      group = new Group(name: 'Test Group Name')
+      group.save()
+
+      document.set('groupId', group._id)
+      expect(document.groupName()).to.eq('Test Group Name')

@@ -2,14 +2,10 @@ template(name="documentDetail")
   if document
     .document-detail-container
       +codingKeywords
+      .document-heading
+        h1.document-title= document.title
       .document-container
-        if overlappingSelection
-          .overlapping
-            i.fa.fa-warning
-            p #[strong Invalid Selection]: Annotations cannot overlap.
         #documentContainer
-          .document-heading
-            h1.document-title= document.title
           .document-tags
             b Tags:
             each tags
@@ -22,22 +18,17 @@ template(name="documentDetail")
             .document-wrapper
               pre.document-text= document.body
               if Template.subscriptionsReady
-                .document-annotations
-                  .document-text= annotatedText
+                each annotationLayers
+                  .document-annotations
+                    pre.document-text= this
       .annotation-search-container
         input.annotation-search.form-control(type="text" placeholder="Search Annotations")
       .annotation-container
         ul.annotations.list-unstyled
           if Template.subscriptionsReady
             each annotations
-              li(class="annotation-color-#{color}")
-                span.code
-                  span= positionInformation
-                  span.header= header
-                  span :
-                  span.sub-header= subHeader
-                  span :
-                  span.keyword= keyword
+              li(data-annotation-id=_id class="annotation-color-#{color} {{selected}}")
+                span.code= code
                 span.user= annotationUserEmail
                 .delete-annotation.btn-delete(data-annotation-id=_id)
                   i.fa.fa-times-circle

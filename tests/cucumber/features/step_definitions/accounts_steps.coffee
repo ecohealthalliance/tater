@@ -98,34 +98,38 @@ do ->
           assert.equal(ret.value, true, 'Not admin')
         ).call(callback)
 
-    @When 'I create an user account for "$email"', (email, callback) ->
+    @When 'I create a user account for "$email"', (email) ->
       @browser
-        .waitForVisible('#user-email')
-        .setValue('#user-email', email)
-        .setValue('#user-password', 'testuser')
-        .setValue('#user-password-confirm', 'testuser')
-        .submitForm('#user-email', assert.ifError)
-        # This pause is necessairy, I think the waitForVisible function
-        # can't cope with elements that fade in and out.
+        .waitForVisible('.add-user')
+        .click('.add-user')
         .pause(500)
+        .waitForVisible('#add-group-user-modal', assert.ifError)
+        .waitForEnabled('#add-group-user-modal .user-email', assert.ifError)
+        .setValue('#add-group-user-modal .user-email', email)
+        .setValue('#add-group-user-modal .user-password', 'testuser')
+        .setValue('#add-group-user-modal .user-password-confirm', 'testuser')
+        .submitForm('#add-group-user-modal .user-email', assert.ifError)
+        .pause(1000)
         .waitForVisible('.toast-success', assert.ifError)
-        .call(callback)
 
-    @When 'I create an admin user account for "$email"', (email, callback) ->
+    @When 'I create an admin user account for "$email"', (email) ->
       @browser
-        .waitForVisible('#user-email')
-        .setValue('#user-email', email)
-        .setValue('#user-password', 'testuser')
-        .setValue('#user-password-confirm', 'testuser')
-        .click('#user-admin')
-        .submitForm('#user-email', assert.ifError)
+        .waitForVisible('.add-admin')
+        .click('.add-admin')
         .pause(500)
+        .waitForVisible('#add-admin-modal', assert.ifError)
+        .waitForEnabled('#add-admin-modal .user-email', assert.ifError)
+        .setValue('#add-admin-modal .user-email', email)
+        .setValue('#add-admin-modal .user-password', 'testuser')
+        .setValue('#add-admin-modal .user-password-confirm', 'testuser')
+        .submitForm('#add-admin-modal .user-email', assert.ifError)
+        .pause(1000)
         .waitForVisible('.toast-success', assert.ifError)
-        .call(callback)
 
     @When 'I log out', (callback) ->
       @browser
         .click('.dropdown-toggle')
+        .waitForVisible('.sign-out')
         .click('.sign-out')
         .waitForExist('.sign-in')
         .call(callback)

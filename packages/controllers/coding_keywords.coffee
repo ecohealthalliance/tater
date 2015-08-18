@@ -1,7 +1,6 @@
 if Meteor.isClient
   Template.codingKeywords.onCreated ->
     @subscribe('codingKeywords')
-    @subsReady = new ReactiveVar()
     @searchText = new ReactiveVar('')
     @filtering = new ReactiveVar(false)
     @filteredCodes = new ReactiveVar()
@@ -10,15 +9,14 @@ if Meteor.isClient
     instance = Template.instance()
 
     @autorun ->
-      if FlowRouter.subsReady()
-        query = []
-        searchText = instance.searchText.get().split(' ')
-        _.each searchText, (text) ->
-          text = RegExp(text, 'i')
-          query.push $or: [{'header': text}, {'subHeader': text}, {'keyword': text}]
-        results = CodingKeywords.find({$and: query}, {sort: {header: 1, subHeader: 1, keyword: 1}})
+      query = []
+      searchText = instance.searchText.get().split(' ')
+      _.each searchText, (text) ->
+        text = RegExp(text, 'i')
+        query.push $or: [{'header': text}, {'subHeader': text}, {'keyword': text}]
+      results = CodingKeywords.find({$and: query}, {sort: {header: 1, subHeader: 1, keyword: 1}})
 
-        instance.filteredCodes.set results
+      instance.filteredCodes.set results
 
   Template.codingKeywords.helpers
     filtering: () ->
@@ -69,12 +67,13 @@ if Meteor.isClient
 
   Template.codingKeywords.events
 
-    'keyup .code-search': _.debounce (e, templateInstance) ->
+    'keyup .code-search': _.debounce ((e, instance) ->
       e.preventDefault()
       searchText = e.target.value
-      if searchText.length > 1 then templateInstance.filtering.set true
-      else templateInstance.filtering.set false
-      templateInstance.searchText.set e.target.value
+      if searchText.length > 1 then instance.filtering.set true
+      else instance.filtering.set false
+      instance.searchText.set e.target.value
+      ), 200
 
     'click .code-header > i': (e) ->
       $(e.target).toggleClass('down up').siblings('.code-sub-headers').toggleClass('hidden')
