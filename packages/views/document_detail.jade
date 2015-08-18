@@ -4,10 +4,6 @@ template(name="documentDetail")
       +codingKeywords
       .document-heading
         h1.document-title= document.title
-      if overlappingSelection
-        .overlapping
-          i.fa.fa-warning
-          p #[strong Invalid Selection]: Annotations cannot overlap.
       .document-container
         #documentContainer
           #documentBody.document-body
