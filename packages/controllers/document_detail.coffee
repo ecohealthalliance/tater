@@ -134,9 +134,15 @@ if Meteor.isClient
     'keyup .annotation-search': _.debounce ((e, instance) -> instance.searchText.set e.target.value), 200
 
     'click .delete-annotation': (event, instance) ->
-      annotationId = event.currentTarget.getAttribute('data-annotation-id')
-      $(event.currentTarget).parent().addClass('deleting')
-      setTimeout (-> Meteor.call 'deleteAnnotation', annotationId), 800
+      event.stopPropagation()
+      target = event.currentTarget
+      annotationId = target.getAttribute('data-annotation-id')
+      $(target).parent().addClass('deleting')
+      setTimeout (->
+        Meteor.call 'deleteAnnotation', annotationId
+        if annotationId is instance.selectedAnnotation.get()
+          $(".document-annotations span").removeClass('not-highlighted')
+        ), 800
 
 if Meteor.isServer
   Meteor.publish 'documentDetail', (id) ->
