@@ -194,6 +194,7 @@ if Meteor.isServer
         annotation = new Annotation()
         annotation.set(attributes)
         annotation.set(userId: @userId)
+        annotation.set(accessCode: code)
         annotation.save ->
           annotation
       else
