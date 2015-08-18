@@ -68,7 +68,7 @@ Feature: Accounts
     And I confirm the deletion
     Then I should not see content "mr@potato.head"
 
-  @dev
+  @accounts
   Scenario: Changing my password
     When I register an account
     And I open the change password modal
