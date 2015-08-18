@@ -46,8 +46,7 @@ if Meteor.isClient
 
       annotationLayers = _.map annotations, (annotation) =>
         annotatedBody = document.textWithAnnotation(annotation)
-        formattedBody = annotatedBody.replace(/\r/g, "<br><br>").replace(/\n/g, "<br>")
-        Spacebars.SafeString(formattedBody)
+        Spacebars.SafeString(annotatedBody)
       annotationLayers
 
     'positionInformation': ->

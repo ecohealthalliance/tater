@@ -12,7 +12,7 @@ if Meteor.isClient
       form = event.target
       fields = {
         title: form.title?.value
-        body: form.body?.value?.replace(/\t/g, "    ")
+        body: form.body?.value
       }
       currentUser = Meteor.user()
       if currentUser.admin
