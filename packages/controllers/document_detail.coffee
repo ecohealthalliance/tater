@@ -1,9 +1,9 @@
 if Meteor.isClient
 
   Template.documentDetail.onCreated ->
-    @subscribe('documentDetail', @data.documentId)
-    @subscribe('annotations', @data.documentId)
-    @subscribe('users', @data.documentId)
+    @subscribe('documentDetail', @data.documentId, @data.code)
+    @subscribe('annotations', @data.documentId, @data.code)
+    @subscribe('users', @data.documentId, @data.code)
     @startOffset = new ReactiveVar()
     @endOffset = new ReactiveVar()
     @selectedAnnotation = new ReactiveVar(null)
@@ -126,7 +126,7 @@ if Meteor.isClient
         attributes['documentId'] = instance.data.documentId
         attributes['startOffset'] = temporaryAnnotation.startOffset
         attributes['endOffset'] = temporaryAnnotation.endOffset
-        Meteor.call('createAnnotation', attributes)
+        Meteor.call('createAnnotation', attributes, instance.data.code)
 
         temporaryAnnotation.set({startOffset: null, endOffset: null})
         instance.temporaryAnnotation.set(temporaryAnnotation)
@@ -139,15 +139,17 @@ if Meteor.isClient
       annotationId = target.getAttribute('data-annotation-id')
       $(target).parent().addClass('deleting')
       setTimeout (->
-        Meteor.call 'deleteAnnotation', annotationId
+        Meteor.call 'deleteAnnotation', annotationId, instance.data.code
         if annotationId is instance.selectedAnnotation.get()
           $(".document-annotations span").removeClass('not-highlighted')
         ), 800
 
 if Meteor.isServer
-  Meteor.publish 'documentDetail', (id) ->
+  Meteor.publish 'documentDetail', (id, code) ->
     document = Documents.findOne(id)
-    if @userId
+    if code
+      Documents.find id
+    else if @userId
       group = Groups.findOne({_id: document.groupId})
       user = Meteor.users.findOne(@userId)
       if group?.viewableByUser(user)
@@ -157,9 +159,11 @@ if Meteor.isServer
     else
       @ready()
 
-  Meteor.publish 'annotations', (documentId) ->
+  Meteor.publish 'annotations', (documentId, code) ->
     document = Documents.findOne(documentId)
-    if @userId
+    if code
+      Annotations.find({documentId: documentId})
+    else if @userId
       group = Groups.findOne({_id: document.groupId})
       user = Meteor.users.findOne(@userId)
       if group?.viewableByUser(user)
@@ -169,41 +173,40 @@ if Meteor.isServer
     else
       @ready()
 
-  Meteor.publish 'users', (documentId) ->
-    document = Documents.findOne(documentId)
-    group = Groups.findOne({_id: document.groupId})
-    Meteor.users.find
-      group: group._id
-      fields:
-        emails: 1
+  Meteor.publish 'users', (documentId, code) ->
+    if code
+      @ready()
+    else
+      document = Documents.findOne(documentId)
+      group = Groups.findOne({_id: document.groupId})
+      Meteor.users.find
+        group: group._id
+        fields:
+          emails: 1
 
   Meteor.methods
-    createAnnotation: (attributes) ->
+    createAnnotation: (attributes, code) ->
       document = Documents.findOne(attributes.documentId)
-      if @userId
-        group = Groups.findOne({_id: document.groupId})
-        user = Meteor.users.findOne(@userId)
-        if group?.viewableByUser(user)
-          annotation = new Annotation()
-          annotation.set(attributes)
-          annotation.set(userId: @userId)
-          annotation.save ->
-            annotation
-        else
-          throw 'Unauthorized'
+      group = Groups.findOne({_id: document.groupId})
+      user = Meteor.users.findOne(@userId)
+      accessible = code or (user and group?.viewableByUser(user))
+      if accessible
+        annotation = new Annotation()
+        annotation.set(attributes)
+        annotation.set(userId: @userId)
+        annotation.save ->
+          annotation
       else
         throw 'Unauthorized'
 
-    deleteAnnotation: (annotationId) ->
+    deleteAnnotation: (annotationId, code) ->
       annotation = Annotations.findOne(annotationId)
       document = Documents.findOne(annotation.documentId)
-      if @userId
-        group = Groups.findOne({_id: document.groupId})
-        user = Meteor.users.findOne(@userId)
-        if group?.viewableByUser(user)
-          annotation.remove() ->
-            annotation
-        else
-          throw 'Unauthorized'
+      group = Groups.findOne({_id: document.groupId})
+      user = Meteor.users.findOne(@userId)
+      accessible = code or (user and group?.viewableByUser(user))
+      if accessible
+        annotation.remove() ->
+          annotation
       else
         throw 'Unauthorized'

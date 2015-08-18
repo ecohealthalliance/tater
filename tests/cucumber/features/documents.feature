@@ -56,3 +56,9 @@ Feature: Documents
     Then I should be on the admin documents page
     And I should see that "Test Document" is in the test group
     And I should see a "Success" toast
+
+  @documents
+  Scenario: Viewing a documents as a with an access code
+    Given there is a test document in the database
+    When I navigate to the test document with access code "fakecode"
+    Then I should see content "Test Document"

@@ -30,7 +30,5 @@ do ->
       UserProfiles.insert attributes
 
     'createTestDocument': (attributes) ->
-      Documents.insert
-        title: attributes.title
-        body: "Test Body"
-        groupId: attributes.groupId
+      attributes['body'] = 'Test Body'
+      Documents.insert(attributes)

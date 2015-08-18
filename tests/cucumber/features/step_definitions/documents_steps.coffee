@@ -10,6 +10,9 @@ do ->
     @Given /^there is a test document with title "([^"]*)" in group "([^"]*)"$/, (title, groupId) ->
       @server.call('createTestDocument', {title: title, groupId: groupId})
 
+    @Given /^there is a test document in the database$/, ->
+      @server.call('createTestDocument', {title: "Test Document", groupId: 'fakegroupid', _id: 'fakedocid'})
+
     @Given /^there is a document with title "([^"]*)" in the test group$/, (title) ->
       @server.call('createTestDocument', {title: title, groupId: 'fakegroupid'})
 
@@ -32,6 +35,11 @@ do ->
         .url(url.resolve(process.env.ROOT_URL, "/groups/fakegroupid/documents"))
         .waitForVisible('.group-documents', assert.ifError)
         .call(callback)
+
+    @When "I navigate to the test document with access code \"$code\"", (code) ->
+      @browser
+        .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid?code=#{code}"))
+        .waitForVisible('.document-container', assert.ifError)
 
     @When /^I click on the New Document link$/, (callback) ->
       @browser
