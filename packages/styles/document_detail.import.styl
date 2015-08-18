@@ -272,21 +272,20 @@ checkMark(center=false)
   margin 0 auto
   padding 20px 5%
 
-  .document-annotations
   pre
     white-space pre-wrap
     word-wrap break-word
     word-break break-word
-    color rgba(0,0,0,.6)
 
   .document-annotations
     position absolute
+    color transparent
     line-height 1.6em
     font-size 1em
     top 0
     z-index -1
-    p
-      margin-bottom 1.57em
+    pre
+      color transparent
 
   pre
     background none
@@ -373,9 +372,9 @@ for $color, $index in $colors
     &.highlighted
       background-color alpha($color, 85%)
     &.not-highlighted
-      background-color alpha($color, 30%)
+      background-color alpha($color, 25%)
 
 .annotation-highlight-temporary
   background-color $selection-color
-  color $body-text
   border-radius 2px
+  padding 2px 0

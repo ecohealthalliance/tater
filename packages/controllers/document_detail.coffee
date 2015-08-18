@@ -10,7 +10,6 @@ if Meteor.isClient
     @annotations = new ReactiveVar()
     @searchText = new ReactiveVar('')
     @temporaryAnnotation = new ReactiveVar(new Annotation())
-    @overlappingSelection = new ReactiveVar(false)
 
   Template.documentDetail.onRendered ->
     instance = Template.instance()
@@ -38,21 +37,17 @@ if Meteor.isClient
     'annotationUserEmail': ->
       @userEmail()
 
-    'annotatedText': ->
+    'annotationLayers': ->
       temporaryAnnotation = Template.instance().temporaryAnnotation.get()
       annotations = Annotations.find({documentId: @documentId}).fetch()
-      if temporaryAnnotation.startOffset
+      if temporaryAnnotation.startOffset >= 0
         annotations.push(temporaryAnnotation)
       document = Documents.findOne({ _id: @documentId })
-      annotatedBody = document.textWithAnnotations(annotations)
-      paragraphs = annotatedBody.split(/\r?\n\n/g)
 
-      for paragraph in paragraphs
-        if formattedBody
-          formattedBody = "#{formattedBody}<br><br>#{paragraph}"
-        else
-          formattedBody = paragraph
-      Spacebars.SafeString(formattedBody)
+      annotationLayers = _.map annotations, (annotation) =>
+        annotatedBody = document.textWithAnnotation(annotation)
+        Spacebars.SafeString(annotatedBody)
+      annotationLayers
 
     'positionInformation': ->
       "#{@startOffset} - #{@endOffset}"
@@ -83,9 +78,6 @@ if Meteor.isClient
       if @_id is Template.instance().selectedAnnotation.get()
         'selected'
 
-    'overlappingSelection': ->
-      Template.instance().overlappingSelection.get()
-
   Template.documentDetail.events
     'mousedown .document-container': (event, instance) ->
       temporaryAnnotation = instance.temporaryAnnotation.get()
@@ -104,7 +96,7 @@ if Meteor.isClient
         template.selectedAnnotation.set(@_id)
         $(".document-annotations span").addClass('not-highlighted')
         documentAnnotation.addClass('highlighted').removeClass('not-highlighted')
-        $('.document-container').animate { scrollTop: ($(".document-annotations span[data-annotation-id='#{annotationId}']").position().top - $("li[data-annotation-id='#{annotationId}']").position().top + ($(".document-annotations span[data-annotation-id='#{annotationId}']").height() / 2) + 30) }, 1000, 'easeInOutQuint'
+        $('.document-container').animate { scrollTop: ($(".document-annotations span[data-annotation-id='#{annotationId}']").position().top - $("li[data-annotation-id='#{annotationId}']").position().top + ($(".document-annotations span[data-annotation-id='#{annotationId}']").height() / 2) + 45) }, 1000, 'easeInOutQuint'
 
     'click .document-detail-container': (event, instance) =>
       instance.startOffset.set(null)
@@ -119,27 +111,16 @@ if Meteor.isClient
       textHighlighted = range and (range.endOffset > range.startOffset)
 
       if selectionInDocument and textHighlighted
-        overlapping = _.find instance.annotations.get().fetch(), (annotation) ->
-          annotation.overlapsWithOffsets(range.startOffset, range.endOffset)
+        startOffset = range.startOffset
+        endOffset = range.endOffset
 
-        if !overlapping
-          instance.overlappingSelection.set(false)
-
-          startOffset = range.startOffset
-          endOffset = range.endOffset
-
-          temporaryAnnotation.set({startOffset: startOffset, endOffset: endOffset})
-          instance.temporaryAnnotation.set(temporaryAnnotation)
-
-        else
-          instance.overlappingSelection.set(true)
-
-      else
-        instance.overlappingSelection.set(false)
+        temporaryAnnotation.set({startOffset: startOffset, endOffset: endOffset})
+        instance.temporaryAnnotation.set(temporaryAnnotation)
+        selection.empty()
 
     'click .selectable-code': (event, instance) ->
       temporaryAnnotation = instance.temporaryAnnotation.get()
-      if temporaryAnnotation.startOffset
+      if temporaryAnnotation.startOffset >= 0
         attributes = {}
         attributes['codeId'] = event.currentTarget.getAttribute('data-id')
         attributes['documentId'] = instance.data.documentId
@@ -153,9 +134,15 @@ if Meteor.isClient
     'keyup .annotation-search': _.debounce ((e, instance) -> instance.searchText.set e.target.value), 200
 
     'click .delete-annotation': (event, instance) ->
-      annotationId = event.currentTarget.getAttribute('data-annotation-id')
-      $(event.currentTarget).parent().addClass('deleting')
-      setTimeout (-> Meteor.call 'deleteAnnotation', annotationId), 800
+      event.stopPropagation()
+      target = event.currentTarget
+      annotationId = target.getAttribute('data-annotation-id')
+      $(target).parent().addClass('deleting')
+      setTimeout (->
+        Meteor.call 'deleteAnnotation', annotationId
+        if annotationId is instance.selectedAnnotation.get()
+          $(".document-annotations span").removeClass('not-highlighted')
+        ), 800
 
 if Meteor.isServer
   Meteor.publish 'documentDetail', (id) ->

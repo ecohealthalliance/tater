@@ -4,18 +4,15 @@ template(name="documentDetail")
       +codingKeywords
       .document-heading
         h1.document-title= document.title
-      if overlappingSelection
-        .overlapping
-          i.fa.fa-warning
-          p #[strong Invalid Selection]: Annotations cannot overlap.
       .document-container
         #documentContainer
           #documentBody.document-body
             .document-wrapper
               pre.document-text= document.body
               if Template.subscriptionsReady
-                .document-annotations
-                  .document-text= annotatedText
+                each annotationLayers
+                  .document-annotations
+                    pre.document-text= this
       .annotation-search-container
         input.annotation-search.form-control(type="text" placeholder="Search Annotations")
       .annotation-container
