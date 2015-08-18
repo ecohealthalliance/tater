@@ -155,3 +155,30 @@ do ->
         .waitForVisible('.modal', assert.ifError)
         .click('.confirm-remove-user', assert.ifError)
         .call(callback)
+
+    @When 'I open the change password modal', (callback) ->
+      @browser
+        .click('nav .admin-settings', assert.ifError)
+        .waitForExist('nav .admin-settings .dropdown-menu')
+        .click('.dropdown-menu .change-password', assert.ifError)
+        .waitForExist('.accounts-modal.modal.in')
+        .call(callback)
+
+    @When 'I fill out the change password form', (callback) ->
+      @browser
+        .setValue('#at-field-current_password', 'testuser')
+        .setValue('#at-field-password', 'newPassword')
+        .setValue('#at-field-password_again', 'newPassword')
+        .submitForm('#at-pwd-form', assert.ifError)
+        .pause(1000)
+        .call(callback)
+
+    @When 'I log in with my new password', (callback) ->
+      @browser
+        .click('.sign-in', assert.ifError)
+        .waitForExist('.accounts-modal.modal.in')
+        .setValue('#at-field-email', 'test@user.com')
+        .setValue('#at-field-password', 'newPassword')
+        .submitForm('#at-field-email', assert.ifError)
+        .waitForExist('.sign-out', assert.ifError)
+        .call(callback)

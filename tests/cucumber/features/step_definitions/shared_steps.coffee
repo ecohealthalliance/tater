@@ -54,6 +54,7 @@ do ->
       @browser
         .waitForVisible('body *')
         .getHTML('.toast', (error, response) ->
+          console.log error, response
           match = response?.toString().match(message)
           if noToast
             assert.ok(error or not match)
