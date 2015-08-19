@@ -1,10 +1,16 @@
 AccountsTemplates.configure
   showPlaceholders: false
-  onSubmitHook: (err)->
+  enablePasswordChange: true
+  onSubmitHook: (err, state)->
     unless err
       $('.accounts-modal').modal('hide')
       # sign in fields are cleared so they don't remain populated after a logout
       $('.accounts-modal input').val("")
+      if state is 'changePwd'
+        toastr.success("Success")
+        setTimeout(->
+          AccountsTemplates.clearResult()
+        , 0)
 
 Template.accountsModal.onCreated ->
   @state = Template.currentData()?.state

@@ -14,6 +14,9 @@ if Meteor.isClient
     'click .sign-in' : (evt, instance) ->
       @state.set("signIn")
       $('.accounts-modal').modal('show')
+    'click .change-password' : (evt, instance) ->
+      @state.set("changePwd")
+      $('.accounts-modal').modal('show')
 
 if Meteor.isServer
   Meteor.publish 'currentUserName', (id) ->
