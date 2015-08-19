@@ -162,7 +162,7 @@ if Meteor.isServer
   Meteor.publish 'annotations', (documentId, code) ->
     document = Documents.findOne(documentId)
     if code
-      Annotations.find({documentId: documentId})
+      Annotations.find({documentId: documentId, accessCode: code})
     else if @userId
       group = Groups.findOne({_id: document.groupId})
       user = Meteor.users.findOne(@userId)
