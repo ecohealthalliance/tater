@@ -58,7 +58,9 @@ Feature: Documents
     And I should see a "Success" toast
 
   @documents
-  Scenario: Viewing a documents as a with an access code
-    Given there is a test document in the database
+  Scenario: Viewing a document with an access code
+    Given there is a test document with title "Test Document" in the database
     When I navigate to the test document with access code "fakecode"
     Then I should see content "Test Document"
+    When I click on the Finished Annotating button
+    Then I should see a completion code in a modal

@@ -4,6 +4,7 @@ template(name="documentDetail")
       +codingKeywords
       .document-heading
         h1.document-title= document.title
+        button.finished-annotating.btn.btn-primary(data-toggle="modal" data-target="#completionCodeModal") Finished Annotating
       .document-container
         #documentContainer
           #documentBody.document-body
@@ -34,3 +35,8 @@ template(name="documentDetail")
               .no-results
                 i.fa.fa-search
                 p Sorry, no annotations found
+  #completionCodeModal.modal.fade
+    .modal-dialog
+      .modal-content
+        .modal-body
+          p CompletionCode
