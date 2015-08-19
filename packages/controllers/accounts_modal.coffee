@@ -8,6 +8,9 @@ AccountsTemplates.configure
       $('.accounts-modal input').val("")
       if state is 'changePwd'
         toastr.success("Success")
+        setTimeout(->
+          AccountsTemplates.clearResult()
+        , 0)
 
 Template.accountsModal.onCreated ->
   @state = Template.currentData()?.state
