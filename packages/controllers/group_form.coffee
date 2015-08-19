@@ -12,7 +12,7 @@ if Meteor.isClient
           toastr.error("Error")
         else
           toastr.success("Success")
-          go 'groups'
+          go 'admin'
 
 if Meteor.isServer
   Meteor.methods

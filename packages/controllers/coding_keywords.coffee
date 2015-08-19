@@ -70,9 +70,9 @@ if Meteor.isClient
     'keyup .code-search': _.debounce ((e, instance) ->
       e.preventDefault()
       searchText = e.target.value
-      if searchText.length > 1 then templateInstance.filtering.set true
-      else templateInstance.filtering.set false
-      templateInstance.searchText.set e.target.value
+      if searchText.length > 1 then instance.filtering.set true
+      else instance.filtering.set false
+      instance.searchText.set e.target.value
       ), 200
 
     'click .code-header > i': (e) ->

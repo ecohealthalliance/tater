@@ -17,13 +17,17 @@ Package.onUse(function(api) {
   api.addFiles('extends.import.styl');
   api.addFiles('globals.import.styl');
 
+  api.addFiles('lists.import.styl');
+  api.addFiles('modals.import.styl');
   api.addFiles('forms.import.styl');
   api.addFiles('header.import.styl');
   api.addFiles('footer.import.styl');
 
+  api.addFiles('admin.import.styl');
   api.addFiles('accounts.import.styl');
   api.addFiles('profile.import.styl');
   api.addFiles('groups.import.styl');
+  api.addFiles('documents.import.styl');
   api.addFiles('document_detail.import.styl');
 
   api.addFiles('main.styl');

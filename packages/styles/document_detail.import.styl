@@ -83,17 +83,15 @@ checkMark(center=false)
     left 15px
     top 2px
     cursor pointer
-    &.down
-    &.up
+    font-size 1em
+    &::before
+      content '\f138'
       @extend .icon
-    &.down
-      &::before
-        content '\f13a'
     &.up
-      &::before
-        content '\f139'
+      transition .2s
+      transform rotate(90deg)
     &:hover
-      color $secondary-dark
+      color darken($secondary-dark, 20%)
       transition .2s ease-in-out
 
 .code-header > span
@@ -188,6 +186,8 @@ checkMark(center=false)
     margin-left 2px
   i
     left 38px
+    top 0
+    font-size 1.2em
 
 .code-keywords
   padding-left 10px
@@ -247,7 +247,7 @@ checkMark(center=false)
 .document-heading
   width 55%
   left 22.5%
-  padding 15px 5% 10px 5%
+  padding 15px 20px 10px 20px
   background alpha($background-primary, 95%)
   border-left $border
   border-right $border
@@ -255,10 +255,87 @@ checkMark(center=false)
     body-font()
     font-size 25px
 
+.document-tags-container
+  max-height 0
+  border-bottom 2px solid $background-primary
+  overflow scroll
+  transition .4s ease-in-out
+  .btn
+    makeButton($background-primary, $body-text, true)
+    .fa
+      font-size 90%
+  &.showing
+    max-height 300px
+
+.document-tags-wrap
+  padding 20px
+
+.document-tags
+  width 85%
+  margin-bottom 0
+
+.tag-label-info
+  padding-right 5px
+
+.add-tag
+  float right
+
+.remove-tag
+  padding-left 8px
+  border-left 1px solid darken($background-secondary, 20%)
+  font-size 1.2em
+  cursor pointer
+  color darken($m-gray, 20%)
+  linkTransition()
+  &:hover
+    color $delete
+
+.label
+  display inline-block
+  margin-right 5px
+  margin-bottom 3px
+  padding 5px
+  background-color $background-secondary
+  color $body-text
+
+.show-tags
+  centerVertically()
+  right 0
+  padding 20px
+  cursor pointer
+  font-size 1.5em
+  color $primary
+  hoverState($secondary)
+  &.showing
+    background white
+
+.add-tag-modal
+  .modal-dialog
+    width 50%
+    max-width 1000px
+    +below(2)
+      width 100%
+  .reactive-table
+    table
+      margin-top 10px
+    thead
+      display none
+
+.tag-label
+  position relative
+  &:hover
+    background-color $background-secondary
+    &:after
+      centerVertically()
+      right 15px
+      @extend .icon
+      content '\f055'
+
+
 .document-container
   width 55%
   left 22.5%
-  padding 75px 0 0 0
+  padding 65px 0 0 0
   line-height 1.75em
   border $border
   border-bottom 0
@@ -272,25 +349,20 @@ checkMark(center=false)
   margin 0 auto
   padding 20px 5%
 
-  .document-annotations
   pre
     white-space pre-wrap
     word-wrap break-word
     word-break break-word
-    color rgba(0,0,0,.6)
 
   .document-annotations
     position absolute
+    color transparent
     line-height 1.6em
     font-size 1em
     top 0
     z-index -1
-    p
-      margin-bottom 1.57em
-
-    for $color, $index in $colors
-      .annotation-color-{$index+1}
-        background-color $color
+    pre
+      color transparent
 
   pre
     background none
@@ -306,8 +378,8 @@ checkMark(center=false)
 
 .annotation-container
   right 0
-
   .annotations
+    margin-right 15px
     li
       position relative
       max-height 300px
@@ -321,7 +393,7 @@ checkMark(center=false)
     .sub-header
       font-weight 600
     .keyword
-      font-weight 700
+      font-weight 800
     .deleting
       linkTransition(.8s)
       max-height 0
@@ -341,25 +413,45 @@ checkMark(center=false)
       font-size .8em
       color alpha($body-color, 90%)
 
+
 for $color, $index in $colors
   .annotation-color-{$index+1}
     background-color $color
     border 2px solid $color
     border-left 0
     linkTransition()
-    &:hover
+    &.selected
       border 2px solid darken($color, 40%)
+      &::before
+        position absolute
+        top 2px
+        left 13px
+        content '\f06e'
+        color darken($color, 30%)
+        @extend .icon
+    &.selected
+    &:hover
       border-left 0
+      background-color lighten(@background-color, 25%)
+    &:hover
+      .btn-delete
+        visibility visible
     .btn-delete
       color darken($color, 20%)
+      visibility hidden
       linkTransition()
       &:hover
         color darken(@color, 50%)
   .annotation-highlight-{$index+1}
     background-color alpha($color, 60%)
     border-radius 2px
+    transition .2s ease-in-out
+    &.highlighted
+      background-color alpha($color, 85%)
+    &.not-highlighted
+      background-color alpha($color, 25%)
 
 .annotation-highlight-temporary
   background-color $selection-color
-  color $body-text
   border-radius 2px
+  padding 2px 0

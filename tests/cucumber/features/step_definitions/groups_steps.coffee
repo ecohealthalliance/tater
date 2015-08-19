@@ -27,9 +27,9 @@ do ->
 
     @When /^I click on the group link$/, (callback) ->
       @browser
-        .waitForExist('.groups-table', assert.ifError)
-        .click(".groups-table a", assert.ifError)
-        .waitForVisible('.group-detail', assert.ifError)
+        .waitForExist('.group-list', assert.ifError)
+        .click(".group-list a.list-link", assert.ifError)
+        .waitForVisible('.documents', assert.ifError)
         .call(callback)
 
     @When /^I navigate to the test group page$/, (callback) ->

@@ -3,22 +3,29 @@ template(name="groups")
     .view-header.secondary-bg
       .container
         h1.inline Groups
-        a.btn.btn-default.new-group-link.header-btn(href="{{path route='newGroup'}}")
+        a.btn.btn-primary.new-group-link.header-btn(href="{{path route='newGroup'}}")
           span Create
-          i.fa.fa-plus
-    table.table.table-striped.full-width-table.groups-table
-      tbody
-        each groups
-          tr.table-content-wrap
-            .container
-              .row
-                .col-sm-3
-                  td.title
-                    a.group-name(href="{{path route='groupDetail' params=this}}")= name
-                .col-sm-9
-                  td.group-description {{truncateDescription}}
+          i.fa.fa-users
+    .container.container-list
+      if groups
+        ul.list.group-list.list-unstyled
+          each groups
+            li.group
+                a.list-link(href="{{path route='groupDocuments' params=this}}")
+                  span.group-name= name
+                a.add-user.btn-list(data-toggle="modal" data-target="#add-group-user-modal")
+                  i.fa.fa-user-plus
+    #add-group-user-modal.modal.fade(tabindex="-1" role="dialog")
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+              i.fa.fa-times-circle
+          .modal-body
+            +userForm group=group
   else
     .container
       .row
         .col-sm-12
           p Please log in or sign up to continue.
+
