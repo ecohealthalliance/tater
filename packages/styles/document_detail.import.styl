@@ -256,12 +256,19 @@ checkMark(center=false)
     font-size 25px
 
 .document-tags-container
-  padding 10px 20px 20px
+  max-height 0
   border-bottom 2px solid $background-primary
+  overflow scroll
+  transition .4s ease-in-out
   .btn
     makeButton($background-primary, $body-text, true)
     .fa
       font-size 90%
+  &.showing
+    max-height 300px
+
+.document-tags-wrap
+  padding 20px
 
 .document-tags
   width 85%
@@ -328,7 +335,7 @@ checkMark(center=false)
 .document-container
   width 55%
   left 22.5%
-  padding 75px 0 0 0
+  padding 65px 0 0 0
   line-height 1.75em
   border $border
   border-bottom 0

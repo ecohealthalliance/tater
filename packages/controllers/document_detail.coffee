@@ -84,14 +84,13 @@ if Meteor.isClient
       DocumentTags.find({documentId: @documentId})
 
     'showTags': (area) ->
-      unless Template.instance().showTags.get()
-        if area is 'container'
-          'hidden'
-      else if area is 'button'
+      if Template.instance().showTags.get()
         'showing'
 
     'availableTags': ->
-      DiseaseLabels
+      currentTags = _.pluck DocumentTags.find({documentId: @documentId}).fetch(), 'tag'
+      _.filter DiseaseLabels, (label) ->
+        label.label not in currentTags
 
     'tagTableSettings': ->
       showColumnToggles: false
@@ -104,7 +103,6 @@ if Meteor.isClient
           tmpl: Template.tagCell
         }
       ]
-
 
   Template.documentDetail.events
     'mousedown .document-container': (event, instance) ->
