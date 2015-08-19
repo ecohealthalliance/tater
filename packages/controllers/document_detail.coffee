@@ -11,6 +11,7 @@ if Meteor.isClient
     @annotations = new ReactiveVar()
     @searchText = new ReactiveVar('')
     @temporaryAnnotation = new ReactiveVar(new Annotation())
+    @showTags = new ReactiveVar(false)
 
   Template.documentDetail.onRendered ->
     instance = Template.instance()
@@ -80,8 +81,14 @@ if Meteor.isClient
         'selected'
 
     'tags': ->
-      console.log DocumentTags.find({documentId: @documentId}).fetch()
-      DocumentTags.find({documentId: @documentId}).fetch()
+      DocumentTags.find({documentId: @documentId})
+
+    'showTags': (area) ->
+      unless Template.instance().showTags.get()
+        if area is 'container'
+          'hidden'
+      else if area is 'button'
+        'showing'
 
     'availableTags': ->
       DiseaseLabels
@@ -94,16 +101,10 @@ if Meteor.isClient
           key: "label"
           cellClass: "tag-label"
           label: "Tag"
-        },
-        {
-          key: "controls"
-          label: ""
-          fn: (val, obj) ->
-            new Spacebars.SafeString("""
-              <a class="btn btn-default btn-success add-tag-in-row" data-tag="#{obj.label}" title="Add Tag">Add Tag</a>
-            """)
+          tmpl: Template.tagCell
         }
       ]
+
 
   Template.documentDetail.events
     'mousedown .document-container': (event, instance) ->
@@ -173,15 +174,15 @@ if Meteor.isClient
     'click .add-tag': ->
       $('.add-tag-modal').modal('show')
 
-    'click .tag': (evt, instance)->
+    'click .remove-tag': (event, instance)->
         Meteor.call('deleteTag', {
           tag: @tag
           documentId: instance.data.documentId
         })
 
-    'click .add-tag-in-row': (evt, instance)->
+    'click .tag-label': (event, instance)->
       Meteor.call('createTag', {
-        tag: $(evt.target).data('tag')
+        tag: $(event.target).text()
         documentId: instance.data.documentId
       }, (error)->
         if error
@@ -190,6 +191,10 @@ if Meteor.isClient
         else
           toastr.success("Tag Added")
       )
+
+    'click .show-tags': (event, instance) ->
+      showTags = instance.showTags
+      if showTags.get() then showTags.set(false) else showTags.set(true)
 
 if Meteor.isServer
   Meteor.publish 'documentDetail', (id) ->
@@ -280,7 +285,6 @@ if Meteor.isServer
             tag.set(attributes)
             tag.set(userId: @userId)
             tag.save()
-            console.log tag
         else
           throw new Meteor.Error('Unauthorized')
       else

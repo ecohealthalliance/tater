@@ -247,7 +247,7 @@ checkMark(center=false)
 .document-heading
   width 55%
   left 22.5%
-  padding 15px 5% 10px 5%
+  padding 15px 20px 10px 20px
   background alpha($background-primary, 95%)
   border-left $border
   border-right $border
@@ -255,13 +255,75 @@ checkMark(center=false)
     body-font()
     font-size 25px
 
+.document-tags-container
+  padding 10px 20px 20px
+  border-bottom 2px solid $background-primary
+  .btn
+    makeButton($background-primary, $body-text, true)
+    .fa
+      font-size 90%
+
 .document-tags
-  margin 10px 5% 10px 5%
-  border-bottom 1px solid gray
-  height 40px
-  .add-tag
-    float right
-    margin 2px
+  width 85%
+  margin-bottom 0
+
+.tag-label-info
+  padding-right 5px
+
+.add-tag
+  float right
+
+.remove-tag
+  padding-left 8px
+  border-left 1px solid darken($background-secondary, 20%)
+  font-size 1.2em
+  cursor pointer
+  color darken($m-gray, 20%)
+  linkTransition()
+  &:hover
+    color $delete
+
+.label
+  display inline-block
+  margin-right 5px
+  margin-bottom 3px
+  padding 5px
+  background-color $background-secondary
+  color $body-text
+
+.show-tags
+  centerVertically()
+  right 0
+  padding 20px
+  cursor pointer
+  font-size 1.5em
+  color $primary
+  hoverState($secondary)
+  &.showing
+    background white
+
+.add-tag-modal
+  .modal-dialog
+    width 50%
+    max-width 1000px
+    +below(2)
+      width 100%
+  .reactive-table
+    table
+      margin-top 10px
+    thead
+      display none
+
+.tag-label
+  position relative
+  &:hover
+    background-color $background-secondary
+    &:after
+      centerVertically()
+      right 15px
+      @extend .icon
+      content '\f055'
+
 
 .document-container
   width 55%

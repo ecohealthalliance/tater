@@ -4,16 +4,26 @@ template(name="documentDetail")
       +codingKeywords
       .document-heading
         h1.document-title= document.title
+        .show-tags(class="{{showTags 'button'}}")
+          i.fa.fa-tag
       .document-container
         #documentContainer
-          .document-tags
-            b Tags:
-            each tags
-              span.label.label-info.tag #{tag} | x
-              | &nbsp;
-            a.btn.btn-default.btn-xs.add-tag
-              span Add tag
-              i.fa.fa-plus
+          .document-tags-container.clearfix(class="{{showTags 'container'}}")
+            if tags
+              ul.document-tags.list-unstyled.pull-left
+                each tags
+                  li.label
+                    span.tag-label-info.tag #{tag}
+                    span.remove-tag
+                      i.fa.fa-times-circle
+              a.btn.btn-default.btn-xs.add-tag.pull-right
+                span Add tag
+                i.fa.fa-plus
+            else
+              a.btn.btn-default.btn-xs.add-tag.pull-left
+                span Add tag
+                i.fa.fa-plus
+
           #documentBody.document-body
             .document-wrapper
               pre.document-text= document.body
@@ -41,3 +51,7 @@ template(name="documentDetail")
         .modal-content
           .modal-body
             +reactiveTable collection=availableTags settings=tagTableSettings
+
+template(name="tagCell")
+  span= label
+
