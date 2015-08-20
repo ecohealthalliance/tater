@@ -5,7 +5,9 @@ template(name="documentDetail")
       .document-heading
         h1.document-title= document.title
         if accessCode
-          button.finished-annotating.btn.btn-primary(data-toggle="modal" data-target="#completionCodeModal") Finished Annotating
+          button.finished-annotating.btn.btn-primary(data-toggle="modal" data-target="#completionCodeModal")
+            i.fa.fa-check-circle.icon-left
+            span Finished Annotating
       .document-container
         #documentContainer
           #documentBody.document-body
@@ -40,4 +42,6 @@ template(name="documentDetail")
     .modal-dialog
       .modal-content
         .modal-body
-          p Code: {{accessCode}}
+          p.instructions
+          h5.completion-code Code:
+            span {{accessCode}}

@@ -247,13 +247,24 @@ checkMark(center=false)
 .document-heading
   width 55%
   left 22.5%
-  padding 15px 5% 10px 5%
+  padding 15px 200px 10px 20px
   background alpha($background-primary, 95%)
   border-left $border
   border-right $border
   h1
+    centerVertically()
     body-font()
     font-size 25px
+
+.finished-annotating
+  centerVertically()
+  right 20px
+
+.completion-code
+  color $d-gray
+  span
+    color darken($secondary, 10%)
+    letter-spacing .05em
 
 .document-container
   width 55%

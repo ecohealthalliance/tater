@@ -16,8 +16,8 @@ template(name="header")
               ul.nav.navbar-nav.navbar-left
                 li
                   a.btn.navbar-btn.new-document(href="{{path route='newDocument'}}")
+                    i.fa.fa-file-text-o.icon-left
                     span New Document
-                    i.fa.fa-file-text-o
             ul.nav.navbar-nav.navbar-right
               if currentUser
                 if isAdmin
