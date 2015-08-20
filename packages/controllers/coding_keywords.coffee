@@ -35,28 +35,19 @@ if Meteor.isClient
 
     headers: () ->
       CodingKeywords.find
-        $and:
-          [
-            'subHeader': $exists: false
-            'keywords': $exists: false
-          ]
+        'subHeader': $exists: false
+        'keywords': $exists: false
 
     subHeaders: (header) ->
       CodingKeywords.find
-        $and:
-          [
-            'header': header
-            'subHeader': $exists: true
-            'keyword': $exists: false
-          ]
+        'header': header
+        'subHeader': $exists: true
+        'keyword': $exists: false
 
     keywords: (subHeader) ->
       CodingKeywords.find
-        $and:
-          [
-            'subHeader': subHeader
-            'keyword': $exists: true
-          ]
+        'subHeader': subHeader
+        'keyword': $exists: true
 
     icon: () ->
       if @header is 'Human Movement' then 'fa-bus'
@@ -64,6 +55,7 @@ if Meteor.isClient
       else if @header is 'Biosecurity in Human Environments' then 'fa-lock'
       else if @header is 'Illness Medical Care/Treatment and Death' then 'fa-medkit'
       else if @header is 'Human Animal Contact' then 'fa-paw'
+      else 'fa-ellipsis-h'
 
   Template.codingKeywords.events
 

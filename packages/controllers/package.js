@@ -39,4 +39,5 @@ Package.onUse(function(api) {
   api.addFiles('documents.coffee', ['client', 'server']);
   api.addFiles('user_form.coffee', 'client');
   api.addFiles('coding_keywords.coffee', ['client', 'server']);
+  api.addFiles('edit_coding_keywords.coffee', ['client', 'server']);
 });
