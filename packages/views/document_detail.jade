@@ -4,7 +4,8 @@ template(name="documentDetail")
       +codingKeywords
       .document-heading
         h1.document-title= document.title
-        button.finished-annotating.btn.btn-primary(data-toggle="modal" data-target="#completionCodeModal") Finished Annotating
+        if accessCode
+          button.finished-annotating.btn.btn-primary(data-toggle="modal" data-target="#completionCodeModal") Finished Annotating
       .document-container
         #documentContainer
           #documentBody.document-body
