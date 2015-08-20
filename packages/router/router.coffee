@@ -47,7 +47,7 @@ FlowRouter.route '/documents/:_id',
   action: (params, query) ->
     FlowLayout.render 'layout',
       main: 'documentDetail'
-      params: {"documentId": params._id, "code": query.code}
+      params: {"documentId": params._id, "generateCode": query.generateCode}
 
 FlowRouter.route '/groups/new',
   name: 'newGroup'

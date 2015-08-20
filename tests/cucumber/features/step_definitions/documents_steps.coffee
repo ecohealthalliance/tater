@@ -36,9 +36,9 @@ do ->
         .waitForVisible('.group-documents', assert.ifError)
         .call(callback)
 
-    @When "I navigate to the test document with access code \"$code\"", (code) ->
+    @When "I navigate to the test document with an access code", ->
       @browser
-        .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid?code=#{code}"))
+        .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid?generateCode=true"))
         .waitForExist('.document-container', assert.ifError)
 
     @When /^I click on the New Document link$/, (callback) ->
@@ -81,11 +81,11 @@ do ->
         .pause(10000)
         .waitForVisible('.modal.in', assert.ifError)
 
-    @Then "I should see a completion code in a modal", ->
+    @Then "I should see an access code in a modal", ->
       @browser
         .getHTML '#completionCodeModal', (error, response) ->
           assert.notOk(error)
-          assert.ok(response.toString().match("CompletionCode"))
+          assert.ok(response.toString().match("Code:"))
 
     @Then "I should see that \"$documentName\" is in the test group", (documentName) ->
       @browser

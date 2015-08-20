@@ -60,7 +60,7 @@ Feature: Documents
   @documents
   Scenario: Viewing a document with an access code
     Given there is a test document with title "Test Document" in the database
-    When I navigate to the test document with access code "fakecode"
+    When I navigate to the test document with an access code
     Then I should see content "Test Document"
     When I click on the Finished Annotating button
-    Then I should see a completion code in a modal
+    Then I should see an access code in a modal

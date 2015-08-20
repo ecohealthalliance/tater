@@ -1,9 +1,11 @@
 if Meteor.isClient
 
   Template.documentDetail.onCreated ->
-    @subscribe('documentDetail', @data.documentId, @data.code)
-    @subscribe('annotations', @data.documentId, @data.code)
-    @subscribe('users', @data.documentId, @data.code)
+    if @data.generateCode
+      @accessCode = "adsf"
+    @subscribe('documentDetail', @data.documentId, @accessCode)
+    @subscribe('annotations', @data.documentId, @accessCode)
+    @subscribe('users', @data.documentId, @accessCode)
     @startOffset = new ReactiveVar()
     @endOffset = new ReactiveVar()
     @selectedAnnotation = new ReactiveVar(null)
@@ -33,6 +35,9 @@ if Meteor.isClient
 
     'annotations': ->
       Template.instance().annotations.get()
+
+    'accessCode': ->
+      Template.instance().accessCode
 
     'annotationUserEmail': ->
       @userEmail()
@@ -126,7 +131,7 @@ if Meteor.isClient
         attributes['documentId'] = instance.data.documentId
         attributes['startOffset'] = temporaryAnnotation.startOffset
         attributes['endOffset'] = temporaryAnnotation.endOffset
-        Meteor.call('createAnnotation', attributes, instance.data.code)
+        Meteor.call('createAnnotation', attributes, instance.accessCode)
 
         temporaryAnnotation.set({startOffset: null, endOffset: null})
         instance.temporaryAnnotation.set(temporaryAnnotation)
@@ -139,7 +144,7 @@ if Meteor.isClient
       annotationId = target.getAttribute('data-annotation-id')
       $(target).parent().addClass('deleting')
       setTimeout (->
-        Meteor.call 'deleteAnnotation', annotationId, instance.data.code
+        Meteor.call 'deleteAnnotation', annotationId, instance.accessCode
         if annotationId is instance.selectedAnnotation.get()
           $(".document-annotations span").removeClass('not-highlighted')
         ), 800
