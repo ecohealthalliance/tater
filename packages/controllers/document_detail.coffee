@@ -2,7 +2,7 @@ if Meteor.isClient
 
   Template.documentDetail.onCreated ->
     if @data.generateCode
-      @accessCode = "adsf"
+      @accessCode = Date.now()
     @subscribe('documentDetail', @data.documentId, @accessCode)
     @subscribe('annotations', @data.documentId, @accessCode)
     @subscribe('users', @data.documentId, @accessCode)
