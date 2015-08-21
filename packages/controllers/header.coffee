@@ -6,7 +6,7 @@ if Meteor.isClient
     accountsState: -> Template.instance().accountsState
 
     usingAccessCode: ->
-      window.location.search.match('code=')
+      window.location.search.match('generateCode=')
 
     documentsLinkParams: ->
       { _id: Meteor.user().group }
