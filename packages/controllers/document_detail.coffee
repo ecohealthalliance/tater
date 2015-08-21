@@ -210,8 +210,9 @@ if Meteor.isServer
       document = Documents.findOne(annotation.documentId)
       group = Groups.findOne({_id: document.groupId})
       user = Meteor.users.findOne(@userId)
-      accessible = code or (user and group?.viewableByUser(user))
-      if accessible
+      accessibleViaCode = (code and code is annotation.accessCode)
+      accessibleViaUser = (user and group?.viewableByUser(user))
+      if accessibleViaCode or accessibleViaUser
         annotation.remove() ->
           annotation
       else
