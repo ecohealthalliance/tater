@@ -80,6 +80,9 @@ if Meteor.isClient
       if @_id is Template.instance().selectedAnnotation.get()
         'selected'
 
+    'hasTags': ->
+      DocumentTags.find({documentId: @documentId}).count()
+
     'tags': ->
       DocumentTags.find({documentId: @documentId})
 

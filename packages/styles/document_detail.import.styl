@@ -1,6 +1,8 @@
 $colors = rgba(222, 178, 116, 1) rgba(249, 134, 127, 1) rgba(117, 198, 167, 1) rgba(134, 180, 216, 1) rgba(173, 160, 183, 1)
 $border = 2px solid lighten($primary-light, 50%)
 
+$heading-height = 65px
+
 checkMark(center=false)
   &:hover
     &:after
@@ -39,7 +41,7 @@ checkMark(center=false)
 .document-heading
 .annotation-search-container
   position absolute
-  min-height 65px
+  min-height $heading-height
   top 2px
   z-index $mid-layer
   width 22.5%
@@ -245,21 +247,23 @@ checkMark(center=false)
     font-size 1.5em
 
 .document-heading
+  min-height $heading-height - 2
   width 55%
   left 22.5%
   padding 15px 20px 10px 20px
   background alpha($background-primary, 95%)
   border-left $border
   border-right $border
-  h1
-    body-font()
-    font-size 25px
+.document-title
+  width 90%
+  body-font()
+  font-size 25px
 
 .document-tags-container
   max-height 0
-  border-bottom 2px solid $background-primary
   overflow scroll
-  transition .4s ease-in-out
+  transition max-height .4s ease-in-out
+  border-bottom 2px solid $background-primary
   .btn
     makeButton($background-primary, $body-text, true)
     .fa
@@ -335,7 +339,7 @@ checkMark(center=false)
 .document-container
   width 55%
   left 22.5%
-  padding 65px 0 0 0
+  padding ($heading-height - 2) 0 0 0
   line-height 1.75em
   border $border
   border-bottom 0

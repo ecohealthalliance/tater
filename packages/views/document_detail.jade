@@ -10,7 +10,7 @@ template(name="documentDetail")
         #documentContainer
           .document-tags-container(class="{{showTags}}")
             .document-tags-wrap.clearfix
-              if tags
+              if hasTags
                 ul.document-tags.list-unstyled.pull-left
                   each tags
                     li.label
