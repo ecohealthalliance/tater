@@ -92,7 +92,6 @@ if Meteor.isClient
     'click .annotations li': (event, template) ->
       annotationId = event.currentTarget.getAttribute('data-annotation-id')
       documentAnnotation = $(".document-annotations span[data-annotation-id='#{annotationId}']")
-
       if template.selectedAnnotation.get() is @_id
         template.selectedAnnotation.set(null)
         documentAnnotation.removeClass('highlighted')
@@ -125,7 +124,7 @@ if Meteor.isClient
 
     'click .selectable-code': (event, instance) ->
       temporaryAnnotation = instance.temporaryAnnotation.get()
-      if temporaryAnnotation.startOffset >= 0
+      if temporaryAnnotation.startOffset != null
         attributes = {}
         attributes['codeId'] = event.currentTarget.getAttribute('data-id')
         attributes['documentId'] = instance.data.documentId
@@ -139,7 +138,7 @@ if Meteor.isClient
     'keyup .annotation-search': _.debounce ((e, instance) -> instance.searchText.set e.target.value), 200
 
     'click .delete-annotation': (event, instance) ->
-      event.stopPropagation()
+      event.stopImmediatePropagation()
       target = event.currentTarget
       annotationId = target.getAttribute('data-annotation-id')
       $(target).parent().addClass('deleting')

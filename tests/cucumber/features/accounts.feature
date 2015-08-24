@@ -67,3 +67,13 @@ Feature: Accounts
     When I click the remove user link
     And I confirm the deletion
     Then I should not see content "mr@potato.head"
+
+  @accounts
+  Scenario: Changing my password
+    When I register an account
+    And I open the change password modal
+    And I fill out the change password form
+    Then I should see a "Success" toast
+    And I log out
+    And I log in with my new password
+    Then I am logged in

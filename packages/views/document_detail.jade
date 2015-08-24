@@ -25,13 +25,7 @@ template(name="documentDetail")
             each annotations
               li(data-annotation-id=_id class="annotation-color-#{color} {{selected}}")
                 unless accessCode
-                  span.code
-                    span= positionInformation
-                    span.header= header
-                    span :
-                    span.sub-header= subHeader
-                    span :
-                    span.keyword= keyword
+                  span.code= code
                 else
                   span.code
                     span= positionInformation
