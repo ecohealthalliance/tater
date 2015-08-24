@@ -6,20 +6,24 @@ template(name="codingKeywords")
       if Template.subscriptionsReady
         unless filtering
           each headers
-            li.code-header(class='code-header-#{color}')
-              i.up
-              span.selectable-code(data-id=_id)
-                span.icon.fa(class=icon)
-                span.header-name= header
-              ul.code-sub-headers.list-unstyled
-                each subHeaders header
-                  li.code-sub-header
-                    i.down
-                    span.selectable-code(data-id=_id)= subHeader
-                    ul.code-keywords.list-unstyled.hidden
-                      each keywords subHeader
-                        li.code-keyword
-                          span.selectable-code(data-id=_id)= keyword
+            unless ../accessCode
+              li.code-header(class='code-header-#{color}')
+                i.up
+                span.selectable-code(data-id=_id)
+                  span.icon.fa(class=icon)
+                  span.header-name= header
+                ul.code-sub-headers.list-unstyled
+                  each subHeaders header
+                    li.code-sub-header
+                      i.down
+                      span.selectable-code(data-id=_id)= subHeader
+                      ul.code-keywords.list-unstyled.hidden
+                        each keywords subHeader
+                          li.code-keyword
+                            span.selectable-code(data-id=_id)= keyword
+            else
+              li.code-header.count(class='code-header-#{color}')
+                span.header-name.selectable-code(data-id=_id)= header
         else
           ul.filteredCodes.list-unstyled
             each filteredCodes
