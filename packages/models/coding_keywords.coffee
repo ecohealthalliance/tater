@@ -199,6 +199,11 @@ codes =
       'feasts/holy days'
     ]
 
+caseCountCodes = [
+  'Case count'
+  'Death count'
+]
+
 CodingKeywords = new Mongo.Collection('codingKeywords')
 
 
@@ -222,3 +227,11 @@ if Meteor.isServer
               'subHeader': subHeader
               'keyword': keyword
               'color': i
+    i = 0
+    for header in caseCountCodes
+      unless CodingKeywords.findOne({header: header})
+        i++
+        CodingKeywords.insert
+          'header': header
+          'color': i
+          'caseCount': true
