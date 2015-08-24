@@ -4,8 +4,26 @@ template(name="documentDetail")
       +codingKeywords
       .document-heading
         h1.document-title= document.title
+        .show-tags(class="{{showTags}}")
+          i.fa.fa-tag
       .document-container
         #documentContainer
+          .document-tags-container(class="{{showTags}}")
+            .document-tags-wrap.clearfix
+              if hasTags
+                ul.document-tags.list-unstyled.pull-left
+                  each tags
+                    li.label
+                      span.tag-label-info.tag #{tag}
+                      span.remove-tag
+                        i.fa.fa-times-circle
+                a.btn.btn-default.btn-xs.add-tag.pull-right
+                  span Add tag
+                  i.fa.fa-plus
+              else
+                a.btn.btn-default.btn-xs.add-tag.pull-left
+                  span Add tag
+                  i.fa.fa-plus
           #documentBody.document-body
             .document-wrapper
               pre.document-text= document.body
@@ -28,3 +46,12 @@ template(name="documentDetail")
               .no-results
                 i.fa.fa-search
                 p Sorry, no annotations found
+    .add-tag-modal.modal
+      .modal-dialog
+        .modal-content
+          .modal-body
+            +reactiveTable collection=availableTags settings=tagTableSettings
+
+template(name="tagCell")
+  span= label
+

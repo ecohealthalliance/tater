@@ -4,12 +4,14 @@ if Meteor.isClient
     @subscribe('documentDetail', @data.documentId)
     @subscribe('annotations', @data.documentId)
     @subscribe('users', @data.documentId)
+    @subscribe('documentTags', @data.documentId)
     @startOffset = new ReactiveVar()
     @endOffset = new ReactiveVar()
     @selectedAnnotation = new ReactiveVar(null)
     @annotations = new ReactiveVar()
     @searchText = new ReactiveVar('')
     @temporaryAnnotation = new ReactiveVar(new Annotation())
+    @showTags = new ReactiveVar(false)
 
   Template.documentDetail.onRendered ->
     instance = Template.instance()
@@ -78,6 +80,33 @@ if Meteor.isClient
       if @_id is Template.instance().selectedAnnotation.get()
         'selected'
 
+    'hasTags': ->
+      DocumentTags.find({documentId: @documentId}).count()
+
+    'tags': ->
+      DocumentTags.find({documentId: @documentId})
+
+    'showTags': (area) ->
+      if Template.instance().showTags.get()
+        'showing'
+
+    'availableTags': ->
+      currentTags = _.pluck DocumentTags.find({documentId: @documentId}).fetch(), 'tag'
+      _.filter DiseaseLabels, (label) ->
+        label.label not in currentTags
+
+    'tagTableSettings': ->
+      showColumnToggles: false
+      showFilter: true
+      fields: [
+        {
+          key: "label"
+          cellClass: "tag-label"
+          label: "Tag"
+          tmpl: Template.tagCell
+        }
+      ]
+
   Template.documentDetail.events
     'mousedown .document-container': (event, instance) ->
       temporaryAnnotation = instance.temporaryAnnotation.get()
@@ -143,6 +172,31 @@ if Meteor.isClient
           $(".document-annotations span").removeClass('not-highlighted')
         ), 800
 
+    'click .add-tag': ->
+      $('.add-tag-modal').modal('show')
+
+    'click .remove-tag': (event, instance)->
+        Meteor.call('deleteTag', {
+          tag: @tag
+          documentId: instance.data.documentId
+        })
+
+    'click .tag-label': (event, instance)->
+      Meteor.call('createTag', {
+        tag: $(event.target).text()
+        documentId: instance.data.documentId
+      }, (error)->
+        if error
+          console.log error
+          toastr.error("Error:" + error.message)
+        else
+          toastr.success("Tag Added")
+      )
+
+    'click .show-tags': (event, instance) ->
+      showTags = instance.showTags
+      if showTags.get() then showTags.set(false) else showTags.set(true)
+
 if Meteor.isServer
   Meteor.publish 'documentDetail', (id) ->
     document = Documents.findOne(id)
@@ -163,6 +217,18 @@ if Meteor.isServer
       user = Meteor.users.findOne(@userId)
       if group?.viewableByUser(user)
         Annotations.find({documentId: documentId})
+      else
+        @ready()
+    else
+      @ready()
+
+  Meteor.publish 'documentTags', (documentId) ->
+    document = Documents.findOne(documentId)
+    if @userId
+      group = Groups.findOne({_id: document.groupId})
+      user = Meteor.users.findOne(@userId)
+      if group?.viewableByUser(user)
+        DocumentTags.find({documentId: documentId})
       else
         @ready()
     else
@@ -206,3 +272,37 @@ if Meteor.isServer
           throw 'Unauthorized'
       else
         throw 'Unauthorized'
+
+    createTag: (attributes)->
+      document = Documents.findOne(attributes.documentId)
+      if @userId
+        group = Groups.findOne({_id: document.groupId})
+        user = Meteor.users.findOne(@userId)
+        if group?.viewableByUser(user)
+          if DocumentTags.findOne(attributes)
+            throw new Meteor.Error('Tag already exists')
+          else
+            tag = new DocumentTag()
+            tag.set(attributes)
+            tag.set(userId: @userId)
+            tag.save()
+        else
+          throw new Meteor.Error('Unauthorized')
+      else
+        throw new Meteor.Error('Unauthorized')
+
+    deleteTag: (attributes)->
+      tag = DocumentTags.findOne(attributes)
+      document = Documents.findOne(attributes.documentId)
+      if @userId
+        group = Groups.findOne({_id: document.groupId})
+        user = Meteor.users.findOne(@userId)
+        if group?.viewableByUser(user)
+          if tag.userId == @userId
+            tag.remove()
+          else
+            throw new Meteor.Error('Unauthorized')
+        else
+          throw new Meteor.Error('Unauthorized')
+      else
+        throw new Meteor.Error('Unauthorized')
