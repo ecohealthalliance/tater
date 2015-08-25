@@ -180,13 +180,15 @@ if Meteor.isServer
   Meteor.publish 'users', (documentId, code) ->
     if code
       @ready()
-    else
+    else if @userId
       document = Documents.findOne(documentId)
       group = Groups.findOne({_id: document.groupId})
       Meteor.users.find
         group: group._id
         fields:
           emails: 1
+    else
+      @ready()
 
   Meteor.methods
     createAnnotation: (attributes, code) ->
