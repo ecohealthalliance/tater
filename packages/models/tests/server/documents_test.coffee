@@ -24,6 +24,17 @@ describe 'Document', ->
     document.save
     expect(document.groupId).to.eq('fakeid')
 
+  describe '#codeAccessible', =>
+    it 'returns the value of codeAccessible for the group of the document', ->
+      group = new Group(codeAccessible: true)
+      group.save()
+      document = new Document(groupId: group._id)
+      expect(document.codeAccessible()).to.eq(true)
+
+      group.set(codeAccessible: false)
+      group.save()
+      expect(document.codeAccessible()).to.eq(false)
+
   describe '#textWithAnnotation', =>
     it 'returns the text with the given annotations represented with spans', ->
       code = CodingKeywords.findOne()

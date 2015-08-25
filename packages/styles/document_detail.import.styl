@@ -18,7 +18,7 @@ checkMark(center=false)
   position fixed
   min-height 100%
   height 100%
-  top $header-height
+  top $header-height - 2
   bottom $footer-height
   left 0
   right 0
@@ -70,7 +70,7 @@ checkMark(center=false)
   position relative
   shadow(255,.2)
   > span
-    cursor pointer
+    pointer()
   checkMark()
 
 .code-header
@@ -82,7 +82,7 @@ checkMark(center=false)
     position absolute
     left 15px
     top 2px
-    cursor pointer
+    pointer()
     font-size 1em
     &::before
       content '\f138'
@@ -106,6 +106,11 @@ checkMark(center=false)
   font-size 18px
   font-weight 800
   color $body-text
+  pointer()
+  &.count
+    > span
+      margin-left 15px
+      padding-left 10px
   > span
     display block
     position relative
@@ -207,7 +212,7 @@ checkMark(center=false)
     margin-bottom 3px
     margin-left 15px
     padding 5px 20px 5px 5px
-    cursor pointer
+    pointer()
     overflow hidden
     text-overflow ellipsis
     checkMark(true)
@@ -247,13 +252,24 @@ checkMark(center=false)
 .document-heading
   width 55%
   left 22.5%
-  padding 15px 5% 10px 5%
+  padding 15px 200px 10px 20px
   background alpha($background-primary, 95%)
   border-left $border
   border-right $border
   h1
+    centerVertically()
     body-font()
     font-size 25px
+
+.finished-annotating
+  centerVertically()
+  right 20px
+
+.completion-code
+  color $d-gray
+  span
+    color darken($secondary, 10%)
+    letter-spacing .05em
 
 .document-container
   width 55%
@@ -309,7 +325,7 @@ checkMark(center=false)
       margin-bottom 10px
       border-top-right-radius 3px
       border-bottom-right-radius 3px
-      cursor pointer
+      pointer()
       shadow(255,.2)
     .header
       font-weight 400

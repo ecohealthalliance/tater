@@ -7,8 +7,8 @@ do ->
 
     url = require('url')
 
-    @Given "there is a test group in the database", ->
-      @server.call('createTestGroup')
+    @Given /^there is a( code-accessible)? test group in the database$/, (codeAccessible) ->
+      @server.call('createTestGroup', codeAccessible)
 
     @When "I click the new group link", (callback) ->
       @browser
@@ -17,13 +17,14 @@ do ->
         .waitForExist('#new-group-form')
         .call(callback)
 
-    @When /^I fill out the new group form with name "([^"]*)"$/, (name, callback) ->
+    @When /^I fill out the new group form with name "([^"]*)"( and make it code-accessible)?$/, (name, codeAccessible) ->
       @browser
         .waitForExist('#new-group-form')
         .setValue('#group-name', name)
         .setValue('#group-description', 'This is an group.')
-        .submitForm('#new-group-form', assert.ifError)
-        .call(callback)
+      if codeAccessible
+        @browser.click('#group-code-accessible')
+      @browser.submitForm('#new-group-form', assert.ifError)
 
     @When /^I click on the group link$/, (callback) ->
       @browser

@@ -16,12 +16,13 @@ do ->
         email: attributes.email
         password: attributes.password
 
-    'createTestGroup': ->
+    'createTestGroup': (codeAccessible) ->
       Groups.insert
         name: "Test Group"
         description: "Test Description"
         createdById: Meteor.users.findOne()._id
         _id: "fakegroupid"
+        codeAccessible: codeAccessible
 
     'createProfile': (field, value, id) ->
       attributes = {}
@@ -30,7 +31,5 @@ do ->
       UserProfiles.insert attributes
 
     'createTestDocument': (attributes) ->
-      Documents.insert
-        title: attributes.title
-        body: "Test Body"
-        groupId: attributes.groupId
+      attributes['body'] = 'Test Body'
+      Documents.insert(attributes)

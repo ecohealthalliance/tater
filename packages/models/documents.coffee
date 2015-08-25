@@ -20,6 +20,9 @@ Document = Astro.Class
       else
         @body
 
+    codeAccessible: ->
+      Groups.findOne(@groupId)?.codeAccessible
+
     textWithAnnotation: (annotation) ->
       body = @body
       startOffset = annotation.startOffset

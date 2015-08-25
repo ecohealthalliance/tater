@@ -53,20 +53,19 @@ a
   &:hover
   &:focus
     color $primary
-  &.with-icon-right
-    .fa
-      margin-left 3px
-  &.with-icon-left
-    .fa
-      margin-right 3px
 
 .btn
   border-width 2px
   .fa
     vAlign()
-    padding 0 0 0 5px
     font-size 110%
     line-height 0
+
+.fa
+  &.icon-right
+    margin-left 3px
+  &.icon-left
+    margin-right 3px
 
 .btn-primary
   makeButton($secondary)
