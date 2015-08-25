@@ -151,7 +151,7 @@ if Meteor.isClient
 if Meteor.isServer
   Meteor.publish 'documentDetail', (id, code) ->
     document = Documents.findOne(id)
-    if code
+    if code && document.codeAccessible()
       Documents.find id
     else if @userId
       group = Groups.findOne({_id: document.groupId})
@@ -165,7 +165,7 @@ if Meteor.isServer
 
   Meteor.publish 'annotations', (documentId, code) ->
     document = Documents.findOne(documentId)
-    if code
+    if code && document.codeAccessible()
       Annotations.find({documentId: documentId, accessCode: code})
     else if @userId
       group = Groups.findOne({_id: document.groupId})
@@ -193,7 +193,7 @@ if Meteor.isServer
       document = Documents.findOne(attributes.documentId)
       group = Groups.findOne({_id: document.groupId})
       user = Meteor.users.findOne(@userId)
-      accessible = code or (user and group?.viewableByUser(user))
+      accessible = (code and document.codeAccessible()) or (user and group?.viewableByUser(user))
       if accessible
         annotation = new Annotation()
         annotation.set(attributes)
@@ -209,7 +209,7 @@ if Meteor.isServer
       document = Documents.findOne(annotation.documentId)
       group = Groups.findOne({_id: document.groupId})
       user = Meteor.users.findOne(@userId)
-      accessibleViaCode = (code and code is annotation.accessCode)
+      accessibleViaCode = (code and document.codeAccessible() and (code is annotation.accessCode))
       accessibleViaUser = (user and group?.viewableByUser(user))
       if accessibleViaCode or accessibleViaUser
         annotation.remove() ->

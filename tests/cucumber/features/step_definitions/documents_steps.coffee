@@ -14,7 +14,7 @@ do ->
       @server.call('createTestDocument', {title: title, groupId: 'fakegroupid', _id: 'fakedocid'})
 
     @Given /^there is a document with title "([^"]*)" in the test group$/, (title) ->
-      @server.call('createTestDocument', {title: title, groupId: 'fakegroupid'})
+      @server.call('createTestDocument', {title: title, groupId: 'fakegroupid', _id: 'fakedocid'})
 
     @When "I click the documents header link", (callback) ->
       @browser
