@@ -26,12 +26,11 @@ if Meteor.isClient
       selectedCodes = Template.instance().selectedCodes.find()
      
     docsWithCodeId: (codeKeyword) ->
-      Template.instance().docsFound = []
+      docsFound = []
 
-      #All annotations we have access too, subscribed too dynamically based on all selected codeIds
-      colAnnotations = Annotations.find().fetch(); 
-
-      #All documents with all annotations we are (dynamically) subscribed too
+      colAnnotations = Annotations.find({codeId: codeKeyword._id }).fetch(); 
+      
+      #All documents with annotation keywords we are (dynamically) subscribed too
       uniqueDocsWithAnnotations = _.unique _.pluck(colAnnotations, 'documentId')
 
       #Only show the document if it actually has an annotation with this codeID associated with it
@@ -41,9 +40,9 @@ if Meteor.isClient
         #annotations on this document with the current selected codeId
         annosFound = Annotations.find({documentId: uniqueDocId, codeId: codeKeyword._id }).count()
         if annosFound > 0
-          Template.instance().docsFound .push docFound
+          docsFound .push docFound
 
-      Template.instance().docsFound
+      docsFound
 
     codesSelected: () ->
       #Are any codeId's selected?
