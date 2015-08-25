@@ -10,21 +10,20 @@ template(name="documents")
       if codesSelected
         .annotations-selected-container
           ul.annotation-list.search-list-result
-            each searchResults
+            each selectedCodes
               li
-                b
-                  span.label.label-default
-                    span= code.codeKeyword.header
-                    span= code.codeKeyword.subHeader
-                    span= code.codeKeyword.keyword
-                    span.badge.dismiss-selected(data-id='#{code.codeKeyword._id}') X
-                ul.annotation-result-list
-                  each this.docs
+                span.label.label-default
+                  span= codeKeyword.header
+                  span= codeKeyword.subHeader
+                  span= codeKeyword.keyword
+                  span.badge.dismiss-selected(data-id='#{codeKeyword._id}') X
+                ul.annotation-list.search-list-result
+                  each docsWithCodeId this.codeKeyword
                     li
                       a(href="{{path route='documentDetail' params=this}}")
                         span.document-title= title
-                      ul.annotation-result-list
-                        each annosInDoc this ../codeId
+                      ul.annotation-list.search-list-result
+                        each annotationsInDoc this ../codeKeyword
                           li
                             span [
                             span= startOffset
@@ -32,7 +31,7 @@ template(name="documents")
                             span= endOffset
                             span ]
                             span= annoText
-
+                            
       else if documents
         ul.document-list.list-unstyled
           each documents
@@ -42,3 +41,6 @@ template(name="documents")
                   span.document-group= groupName
       else
         p No documents have been uploaded.
+
+            
+     
