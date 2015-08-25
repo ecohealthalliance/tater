@@ -2,7 +2,7 @@ if Meteor.isClient
 
   Template.documentDetail.onCreated ->
     @subscribe('documentDetail', @data.documentId)
-    @subscribe('annotations', @data.documentId)
+    @subscribe('docAnnotations', @data.documentId)
     @subscribe('users', @data.documentId)
     @startOffset = new ReactiveVar()
     @endOffset = new ReactiveVar()
@@ -156,7 +156,7 @@ if Meteor.isServer
     else
       @ready()
 
-  Meteor.publish 'annotations', (documentId) ->
+  Meteor.publish 'docAnnotations', (documentId) ->
     document = Documents.findOne(documentId)
     if @userId
       group = Groups.findOne({_id: document.groupId})

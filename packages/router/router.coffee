@@ -74,3 +74,9 @@ FlowRouter.route '/codingKeywords',
   action: () ->
     FlowLayout.render 'layout',
       main: 'codingKeywords'
+
+FlowRouter.route '/annotations',
+  name: 'annotations'
+  action: () ->
+    FlowLayout.render 'layout',
+      main: 'annotations'

@@ -1,0 +1,18 @@
+template(name="annotations")
+  .document-detail-container
+    +codingKeywords page='annotations'
+    .annotation-list-heading
+      h1 Annotations
+    .annotations-list-container
+      each annotationsByCode
+        .annotation-group
+          h3 #{code.header} : #{code.subHeader} : #{code.keyword}
+          ul.list-unstyled
+            each annotations
+              li
+                p= annotatedText
+                .details
+                  span= documentTitle
+                  spna=user
+      else
+        p No annotations

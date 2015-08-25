@@ -29,6 +29,7 @@ Package.onUse(function(api) {
   api.addFiles('groups.import.styl');
   api.addFiles('documents.import.styl');
   api.addFiles('document_detail.import.styl');
+  api.addFiles('annotations.import.styl');
 
   api.addFiles('main.styl');
 });
