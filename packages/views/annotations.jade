@@ -1,15 +1,15 @@
 template(name="annotations")
   .document-detail-container
-    +codingKeywords page='annotations'
+    +codingKeywords action='listing' selectedCodes=selectedCodes annotations=annotations
     .annotation-list-heading
       h1 Annotations
     .annotations-list-container
       each annotationsByCode
-        .annotation-group
-          h3 #{code.header} : #{code.subHeader} : #{code.keyword}
+        .annotation-group(class="color-#{code.color}")
+          h3=codeString
           ul.list-unstyled
             each annotations
-              li
+              li.annotation-detail
                 p= annotatedText
                 .details
                   span= documentTitle

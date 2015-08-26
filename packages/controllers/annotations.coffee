@@ -36,19 +36,30 @@ if Meteor.isClient
   Template.annotations.helpers
     annotationsByCode: ->
       Template.instance().annotations.get()
+    codeString: ->
+      if @code.header and @code.subHeader and @code.keyword
+        Spacebars.SafeString("<span class='header'>#{@code.header}</span> : <span class='sub-header'>#{@code.subHeader}</span> : <span class='keyword'>#{@code.keyword}</span>")
+      else if @code.subHeader and not @code.keyword
+        Spacebars.SafeString("<span class='header'>#{@code.header}</span> : <span class='sub-header'>#{@code.subHeader}</span>")
+      else if @code.header
+        Spacebars.SafeString("<span class='header'>"+@code.header+"</span>")
+      else
+        ''
+    selectedCodes: ->
+      Template.instance().selectedCodes
 
   Template.annotations.events
     'click .selectable-code': (event, template) ->
       selectedId  = event.currentTarget.getAttribute('data-id')
       codeKeyword = CodingKeywords.findOne { _id: selectedId }
-      console.log codeKeyword
       selected = Template.instance().selectedCodes.findOne { "codeKeyword._id": selectedId }
       hasAnnotation = Annotations.findOne({codeId: codeKeyword._id})
       if not selected and hasAnnotation
         Template.instance().selectedCodes.insert({ codeKeyword })
+        # $(event.currentTarget).addClass('selected')
       else
         Template.instance().selectedCodes.remove({ codeKeyword })
-      console.log "After",Template.instance().selectedCodes.find({}).fetch()
+        # $(event.currentTarget).removeClass('selected')
 
     'click .dismiss-selected': (event, template) ->
       selectedId  = event.currentTarget.getAttribute('data-id')
@@ -56,12 +67,6 @@ if Meteor.isClient
       Template.instance().selectedCodes.remove selectedDoc._id;
 
 if Meteor.isServer
-  Meteor.publish 'documents', ->
-    user = Meteor.users.findOne({_id: @userId})
-    if user?.admin
-      Documents.find()
-    else if user
-      Documents.find { groupId: user.group }
 
   Meteor.publish 'annotations', ->
     user = Meteor.users.findOne({_id: @userId})

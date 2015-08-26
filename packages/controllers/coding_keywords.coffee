@@ -58,12 +58,26 @@ if Meteor.isClient
             'keyword': $exists: true
           ]
 
-    icon: () ->
+    icon: ->
       if @header is 'Human Movement' then 'fa-bus'
       else if @header is 'Socioeconomics' then 'fa-money'
       else if @header is 'Biosecurity in Human Environments' then 'fa-lock'
       else if @header is 'Illness Medical Care/Treatment and Death' then 'fa-medkit'
       else if @header is 'Human Animal Contact' then 'fa-paw'
+
+    coding: ->
+      Template.instance().data.action is 'coding'
+
+    selectable: (selectedId, element, filtered) ->
+      if Annotations.findOne({codeId: selectedId}) and element is 'code'
+        'selectable-code'
+      else if Annotations.findOne({codeId: selectedId})
+        'selectable'
+
+    selected: (codeId) ->
+      if Template.instance().data.selectedCodes.findOne({ "codeKeyword._id": @_id })
+        'selected'
+
 
   Template.codingKeywords.events
 

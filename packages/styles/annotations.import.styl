@@ -5,10 +5,35 @@
   width 77.5%
   left 22.5%
   overflow-x scroll
-  padding-top 75px
+  padding-top 85px
   border-left 2px solid lighten($primary-light, 50%)
 
 .annotation-list-heading
   @extend .document-heading
   width 77.5%
   border-right 0
+
+.annotation-group
+  width 80%
+  +below(3)
+    width 100%
+  h3
+    body-font()
+    padding-left 15px
+    font-size 1.5em
+  for $color, $index in $annotation-colors
+    &.color-{$index+1}
+      h3
+        color darken($color, 5%)
+      .annotation-detail
+        background-color lighten($color,80%)
+
+.annotation-detail
+  padding 15px 35px 15px 15px
+  margin-bottom 10px
+  border-top-right-radius 4px
+  border-bottom-right-radius 4px
+  p
+    margin-bottom 10px
+  .details
+    font-size 90%

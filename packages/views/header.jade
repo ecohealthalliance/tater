@@ -26,5 +26,9 @@ template(name="header")
                 li
                   a.header-documents-link(href="{{path route='groupDocuments' params=documentsLinkParams}}")
                     span Documents
+              li
+                a.header-documents-link(href="{{path route='annotations'}}")
+                  span Annotations
+
             +accountsHeaderButtons state=accountsState
   +accountsModal state=accountsState
