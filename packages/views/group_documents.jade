@@ -10,6 +10,8 @@ template(name="groupDocuments")
         p.group-name
           span Group:
           | #{group.name}
+          if group.codeAccessible
+            | (Code Accessible)
     .container
       if documents
         ul.document-list.list.list-unstyled
