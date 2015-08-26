@@ -1,14 +1,30 @@
+checkMark(center=false)
+  &:hover
+    &:after
+      position absolute
+      right 5px
+      if center
+        top 50%
+        transform translate(0, -50%)
+      else
+        top 3px
+      @extend .icon
+      content '\f058'
+
 .code-header
 .code-sub-header
 .code-keyword
   position relative
   shadow(255,.2)
-  &.coding
-  &.listing
-    > span
-      cursor pointer
-  &.coding
+
+.coding
+  .code-header
+  .code-sub-header
     checkMark()
+
+.coding
+  .code-keyword
+    checkMark(true)
 
 .code-header
 .code-sub-header
@@ -40,6 +56,14 @@
   &:not(.selectable-code)
     color $m-gray
 
+.clear-codes-container
+  margin 15px
+  button
+    makeButton(darken($background-secondary, 10%), black, true, true)
+
+.selectable-code
+  cursor pointer
+
 .code-header
   margin-bottom 5px
   font-size 18px
@@ -64,14 +88,15 @@
     padding-left 28px
   for $color, $index in $annotation-colors
     &.code-header-{$index+1}
+      &.highlighted
+        > span
+          background-color $color
       &.selectable
         > span
           &.selectable-code
-            &:not(.highlighted)
-              background none
-              &:hover
-                background-color $highlight-color
-                transition .2s ease-in-out
+            &:hover
+              background-color $color
+              transition .2s ease-in-out
             &.selected
               background-color $color
       i
@@ -83,18 +108,19 @@
           color darken($color, 40%)
       .code-sub-header
         &.selectable
-          &.showing
-            transition .1s ease-in-out
-            &:after
-              color darken($color, 20%)
-              centerVertically()
           > span
             padding-left 5px
             background-color transparent
             transition .1s ease-in-out
             &.selectable-code
+              &.showing
+                transition .1s ease-in-out
+                background lighten($color, 10%)
+                &:after
+                  color darken($color, 20%)
+                  centerVertically()
               &:hover
-                background-color $highlight-color
+                background-color $color
                 transition .2s ease-in-out
             &.selected
               background-color $color
@@ -113,14 +139,16 @@
           &.selectable
             > span
               &:hover
-                background-color $highlight-color
+                background-color lighten($color, 20%)
                 transition .1s ease-in-out
-              &:after
-                centerVertically()
-                color darken($color, 20%)
               &.selected
                 background-color $color
                 font-weight bold
+            &:hover
+              &::after
+                centerVertically()
+                color darken($color, 20%)
+
 
 .code-sub-headers
 .code-keywords
@@ -172,8 +200,8 @@
           background-color $color
         &:hover
           background-color lighten($color, 10%)
-.header
-    font-size 90%
+  .header
+      font-size 90%
   .sub-header
     font-weight 600
   .keyword

@@ -4,15 +4,18 @@ template(name="annotations")
     .annotation-list-heading
       h1 Annotations
     .annotations-list-container
-      each annotationsByCode
-        .annotation-group(class="color-#{code.color}")
-          h3=codeString
-          ul.list-unstyled
-            each annotations
-              li.annotation-detail
-                p= annotatedText
-                .details
-                  span= documentTitle
-                  spna=user
+      if Template.subscriptionsReady
+        each annotationsByCode
+          .annotation-group(class="color-#{code.color}")
+            h3
+              span.icon.fa(class=icon)
+              | #{codeString}
+            ul.list-unstyled
+              each annotations
+                li.annotation-detail
+                  p= annotatedText
+                  .details.clearfix
+                    span.document-title= documentTitle
+                    spna.user-email= user
       else
-        p No annotations
+        .loading

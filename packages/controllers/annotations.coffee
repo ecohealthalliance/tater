@@ -21,7 +21,7 @@ if Meteor.isClient
       annotations = _.map Annotations.find(query).fetch(), (annotation) ->
         doc = Documents.findOne({_id: annotation.documentId})
         annotatedText: Spacebars.SafeString doc.body.substring(annotation.startOffset, annotation.endOffset)
-        user: annotation.userId
+        user: Meteor.users.findOne(annotation.userId).emails[0].address
         documentTitle: doc.title
         documentId: doc._id
         groupId: doc.groupId
@@ -31,7 +31,7 @@ if Meteor.isClient
         code: CodingKeywords.findOne({_id: codeId})
         annotations: annotations
 
-      instance.annotations.set(annotationsByCode)
+      instance.annotations.set(_.sortBy annotationsByCode, (annotation) -> annotation.code.header)
 
   Template.annotations.helpers
     annotationsByCode: ->
@@ -47,6 +47,13 @@ if Meteor.isClient
         ''
     selectedCodes: ->
       Template.instance().selectedCodes
+
+    icon: ->
+      if @code.header is 'Human Movement' then 'fa-bus'
+      else if @code.header is 'Socioeconomics' then 'fa-money'
+      else if @code.header is 'Biosecurity in Human Environments' then 'fa-lock'
+      else if @code.header is 'Illness Medical Care/Treatment and Death' then 'fa-medkit'
+      else if @code.header is 'Human Animal Contact' then 'fa-paw'
 
   Template.annotations.events
     'click .selectable-code': (event, template) ->

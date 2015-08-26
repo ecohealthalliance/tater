@@ -78,6 +78,8 @@ if Meteor.isClient
       if Template.instance().data.selectedCodes.findOne({ "codeKeyword._id": @_id })
         'selected'
 
+    selectedCodes: ->
+      Template.instance().data.selectedCodes.find().count()
 
   Template.codingKeywords.events
 
@@ -94,6 +96,9 @@ if Meteor.isClient
 
     'click .code-sub-header > i': (e) ->
       $(e.target).toggleClass('down up').siblings('.code-keywords').toggleClass('hidden').siblings('span').toggleClass('showing')
+
+    'click .clear-selected-codes': (e, instance) ->
+      instance.data.selectedCodes.remove({})
 
 if Meteor.isServer
   Meteor.publish 'codingKeywords', () ->

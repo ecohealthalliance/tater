@@ -2,12 +2,15 @@ template(name="codingKeywords")
   .code-search-container
     input.code-search.form-control(type="text" placeholder="Search Code Keywords")
   .coding-container
-    ul.list-unstyled.code-list
+    ul.list-unstyled.code-list(class=action)
+      if selectedCodes
+        .clear-codes-container
+          button.btn.btn-block.btn-default.btn-sm.clear-selected-codes Clear Selected Codes
       if Template.subscriptionsReady
         unless filtering
           if coding
             each headers
-              li.code-header.coding.selectable(class='code-header-#{color}')
+              li.code-header.coding.highlighted.selectable(class='code-header-#{color}')
                 i.up
                 span.selectable-code(data-id=_id class="{{highlightHeading}}")
                   span.icon.fa(class=icon)
@@ -41,9 +44,10 @@ template(name="codingKeywords")
           ul.filteredCodes.list-unstyled
             each filteredCodes
               li.filter-result(class="code-#{color} {{selectable _id 'heading'}}")
-                span(data-id=_id class="{{selectable _id 'code'}}")=code
+                span(data-id=_id class="{{selectable _id 'code'}}  {{selected}}")=code
             else
               .no-results
                 i.fa.fa-search
                 p Sorry, no codes found
-
+      else
+        .loading

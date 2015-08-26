@@ -21,12 +21,15 @@
     body-font()
     padding-left 15px
     font-size 1.5em
+    font-weight 600
   for $color, $index in $annotation-colors
     &.color-{$index+1}
       h3
-        color darken($color, 5%)
+        color darken($color, 15%)
       .annotation-detail
         background-color lighten($color,80%)
+      .details
+        color darken($color, 10%)
 
 .annotation-detail
   padding 15px 35px 15px 15px
@@ -37,3 +40,7 @@
     margin-bottom 10px
   .details
     font-size 90%
+  .document-title
+    float left
+  .user-email
+    float right
