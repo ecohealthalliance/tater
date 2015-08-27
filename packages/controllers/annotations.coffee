@@ -34,8 +34,8 @@ if Meteor.isClient
 
       sortedAnnotations =
         _.chain(annotationsByCode)
-          .sortBy((annotation) -> annotation.code.subheader)
-          .sortBy((annotation) -> annotation.code.header)
+          .sortBy((annotation) -> annotation.code?.subheader)
+          .sortBy((annotation) -> annotation.code?.header)
           .value()
 
       instance.annotations.set(sortedAnnotations)
@@ -85,9 +85,9 @@ if Meteor.isClient
       if not currentlySelected
         if codeKeywords
           _.each codeKeywords, (codeKeyword) ->
-            Template.instance().selectedCodes.insert(codeKeyword)
+            Template.instance().selectedCodes.upsert({_id: codeKeyword._id}, codeKeyword)
         else
-          Template.instance().selectedCodes.insert(codeKeyword)
+          Template.instance().selectedCodes.upsert({_id: codeKeyword._id}, codeKeyword)
       else
         if codeKeywords
           _.each codeKeywords, (codeKeyword) ->
