@@ -63,10 +63,8 @@ if Meteor.isClient
       hasAnnotation = Annotations.findOne({codeId: codeKeyword._id})
       if not selected and hasAnnotation
         Template.instance().selectedCodes.insert({ codeKeyword })
-        # $(event.currentTarget).addClass('selected')
       else
         Template.instance().selectedCodes.remove({ codeKeyword })
-        # $(event.currentTarget).removeClass('selected')
 
     'click .dismiss-selected': (event, template) ->
       selectedId  = event.currentTarget.getAttribute('data-id')
