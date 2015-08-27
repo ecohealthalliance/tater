@@ -16,6 +16,10 @@ checkMark(center=false)
 .code-keyword
   position relative
   shadow(255,.2)
+  i
+    color $m-gray
+    &:hover
+      color $m-gray
 
 .coding
   .code-header
@@ -25,6 +29,10 @@ checkMark(center=false)
 .coding
   .code-keyword
     checkMark(true)
+
+.listing
+  .showing
+    background none !important
 
 .code-header
 .code-sub-header
@@ -99,10 +107,10 @@ checkMark(center=false)
               transition .2s ease-in-out
             &.selected
               background-color $color
-      i
-        color darken($color, 10%)
-        &:hover
-          color darken(@color, 10%)
+        > i
+          color darken($color, 10%)
+          &:hover
+            color darken(@color, 10%)
       &:hover
         &:after
           color darken($color, 40%)
@@ -124,6 +132,10 @@ checkMark(center=false)
                 transition .2s ease-in-out
             &.selected
               background-color $color
+          > i
+            color darken($color, 10%)
+            &:hover
+              color darken(@color, 10%)
         &:hover
           &:after
             color darken($color, 20%)

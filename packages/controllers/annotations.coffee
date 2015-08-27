@@ -34,8 +34,8 @@ if Meteor.isClient
 
       sortedAnnotations =
         _.chain(annotationsByCode)
-          .sortBy((annotation) -> annotation.code?.header)
-          .sortBy((annotation) -> annotation.code?.subHeader)
+          .sortBy((annotation) -> annotation.code.subheader)
+          .sortBy((annotation) -> annotation.code.header)
           .value()
 
       instance.annotations.set(sortedAnnotations)
