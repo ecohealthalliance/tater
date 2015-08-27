@@ -26,25 +26,25 @@ template(name="codingKeywords")
                             span.selectable-code(data-id=_id)= keyword
           else
             each headers
-              li.code-header(class="code-header-#{color} {{selectable _id 'heading'}}" )
+              li.code-header(class="code-header-#{color} {{selectable 'heading' 'header'}}" )
                 i.up
-                span(data-id=_id class="{{selectable _id 'code'}} {{selected}}")
+                span(data-id=_id class="{{selectable 'code' 'header'}} {{selected}}")
                   span.icon.fa(class=icon)
                   span.header-name= header
                 ul.code-sub-headers.list-unstyled
                   each subHeaders header
-                    li.code-sub-header(class="{{selectable _id 'heading'}}")
+                    li.code-sub-header(class="{{selectable 'heading' 'subHeader'}}")
                       i.up
-                      span(data-id=_id class="{{selectable _id 'code' }} {{selected}}")= subHeader
+                      span(data-id=_id class="{{selectable 'code' 'subHeader'}} {{selected}}")= subHeader
                       ul.code-keywords.list-unstyled
                         each keywords subHeader
-                          li.code-keyword(class="{{selectable _id 'heading'}}")
-                            span(data-id=_id class="{{selectable _id 'code'}} {{selected}}")= keyword
+                          li.code-keyword(class="{{selectable 'heading' 'keyword'}}")
+                            span(data-id=_id class="{{selectable 'code' 'keyword'}} {{selected}}")= keyword
         else
           ul.filteredCodes.list-unstyled
             each filteredCodes
-              li.filter-result(class="code-#{color} {{selectable _id 'heading'}}")
-                span(data-id=_id class="{{selectable _id 'code'}}  {{selected}}")=code
+              li.filter-result(class="code-#{color} {{selectable 'heading'}}")
+                span(data-id=_id class="{{selectable 'code'}}  {{selected}}")=code
             else
               .no-results
                 i.fa.fa-search

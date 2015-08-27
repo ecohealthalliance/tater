@@ -68,18 +68,34 @@ if Meteor.isClient
     coding: ->
       Template.instance().data.action is 'coding'
 
-    selectable: (selectedId, element, filtered) ->
-      if Annotations.findOne({codeId: selectedId}) and element is 'code'
-        'selectable-code'
-      else if Annotations.findOne({codeId: selectedId})
-        'selectable'
+    selectable: (element, level) ->
+      keyword = Annotations.findOne({codeId:CodingKeywords.findOne({keyword:@keyword})._id})
+      if element is 'code'
+        selectable(level, 'selectable-code', @header, @subHeader, keyword)
+      else
+        selectable(level, 'selectable', @header, @subHeader, keyword)
 
     selected: (codeId) ->
-      if Template.instance().data.selectedCodes.findOne({ "codeKeyword._id": @_id })
+      if Template.instance().data.selectedCodes.findOne(@_id)
         'selected'
 
     selectedCodes: ->
       Template.instance().data.selectedCodes.find().count()
+
+  selectable = (level, className, header, subHeader, keyword) ->
+    if level is 'header'
+      if checkCode({header:header}).length
+        className
+    else if level is 'subHeader'
+      if checkCode({subHeader:subHeader}).length
+        className
+    else
+      if keyword
+        className
+
+  checkCode = (query) ->
+    _.filter CodingKeywords.find(query).fetch(), (code) ->
+      Annotations.findOne({codeId:code._id})
 
   Template.codingKeywords.events
 

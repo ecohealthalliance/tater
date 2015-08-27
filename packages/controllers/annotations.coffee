@@ -10,66 +10,90 @@ if Meteor.isClient
     instance = Template.instance()
     @autorun ->
       selectedCodes = instance.selectedCodes.find().fetch()
-
       if selectedCodes.length
         query = _.map selectedCodes, (code) ->
-          {codeId: code.codeKeyword._id}
+          {codeId: code._id}
         query = {$or:query}
       else
         query = {}
 
-      annotations = _.map Annotations.find(query).fetch(), (annotation) ->
-        doc = Documents.findOne({_id: annotation.documentId})
-        annotatedText: Spacebars.SafeString doc.body.substring(annotation.startOffset, annotation.endOffset)
-        user: Meteor.users.findOne(annotation.userId).emails[0].address
-        documentTitle: doc.title
-        documentId: doc._id
-        groupId: doc.groupId
-        codeId: annotation.codeId
+      annotations =
+        _.map Annotations.find(query).fetch(), (annotation) ->
+          doc = Documents.findOne({_id: annotation.documentId})
+          annotatedText: Spacebars.SafeString doc.body.substring(annotation.startOffset, annotation.endOffset)
+          user: Meteor.users.findOne(annotation.userId).emails[0].address
+          documentTitle: doc.title
+          documentId: doc._id
+          groupId: doc.groupId
+          codeId: annotation.codeId
 
-      annotationsByCode = _.map _.groupBy(annotations, 'codeId'), (annotations, codeId) ->
-        code: CodingKeywords.findOne({_id: codeId})
-        annotations: annotations
+      annotationsByCode =
+        _.map _.groupBy(annotations, 'codeId'), (annotations, codeId) ->
+          code: CodingKeywords.findOne({_id: codeId})
+          annotations: annotations
 
-      instance.annotations.set(_.sortBy annotationsByCode, (annotation) -> annotation.code.header)
+      sortedAnnotations =
+        _.chain(annotationsByCode)
+          .sortBy((annotation) -> annotation.code?.header)
+          .sortBy((annotation) -> annotation.code?.subHeader)
+          .value()
+
+      instance.annotations.set(sortedAnnotations)
 
   Template.annotations.helpers
     annotationsByCode: ->
       Template.instance().annotations.get()
     codeString: ->
-      if @code.header and @code.subHeader and @code.keyword
-        Spacebars.SafeString("<span class='header'>#{@code.header}</span> : <span class='sub-header'>#{@code.subHeader}</span> : <span class='keyword'>#{@code.keyword}</span>")
-      else if @code.subHeader and not @code.keyword
-        Spacebars.SafeString("<span class='header'>#{@code.header}</span> : <span class='sub-header'>#{@code.subHeader}</span>")
-      else if @code.header
-        Spacebars.SafeString("<span class='header'>"+@code.header+"</span>")
+      header = @code?.header
+      subHeader = @code?.subHeader
+      keyword = @code?.keyword
+      if header and subHeader and keyword
+        Spacebars.SafeString("<span class='header'>#{header}</span> : <span class='sub-header'>#{subHeader}</span> : <span class='keyword'>#{keyword}</span>")
+      else if subHeader and not keyword
+        Spacebars.SafeString("<span class='header'>#{header}</span> : <span class='sub-header'>#{subHeader}</span>")
+      else if header
+        Spacebars.SafeString("<span class='header'>"+header+"</span>")
       else
         ''
     selectedCodes: ->
       Template.instance().selectedCodes
 
     icon: ->
-      if @code.header is 'Human Movement' then 'fa-bus'
-      else if @code.header is 'Socioeconomics' then 'fa-money'
-      else if @code.header is 'Biosecurity in Human Environments' then 'fa-lock'
-      else if @code.header is 'Illness Medical Care/Treatment and Death' then 'fa-medkit'
-      else if @code.header is 'Human Animal Contact' then 'fa-paw'
+      header = @code?.header
+      if header is 'Human Movement' then 'fa-bus'
+      else if header is 'Socioeconomics' then 'fa-money'
+      else if header is 'Biosecurity in Human Environments' then 'fa-lock'
+      else if header is 'Illness Medical Care/Treatment and Death' then 'fa-medkit'
+      else if header is 'Human Animal Contact' then 'fa-paw'
 
   Template.annotations.events
     'click .selectable-code': (event, template) ->
-      selectedId  = event.currentTarget.getAttribute('data-id')
-      codeKeyword = CodingKeywords.findOne { _id: selectedId }
-      selected = Template.instance().selectedCodes.findOne { "codeKeyword._id": selectedId }
-      hasAnnotation = Annotations.findOne({codeId: codeKeyword._id})
-      if not selected and hasAnnotation
-        Template.instance().selectedCodes.insert({ codeKeyword })
-      else
-        Template.instance().selectedCodes.remove({ codeKeyword })
+      selectedCodeKeywordId  = event.currentTarget.getAttribute('data-id')
+      selectedCodeKeyword = CodingKeywords.findOne(selectedCodeKeywordId)
+      currentlySelected = Template.instance().selectedCodes.findOne(selectedCodeKeywordId)
+      header = selectedCodeKeyword.header
+      subHeader = selectedCodeKeyword.subHeader
+      keyword = selectedCodeKeyword.keyword
 
-    'click .dismiss-selected': (event, template) ->
-      selectedId  = event.currentTarget.getAttribute('data-id')
-      selectedDoc = Template.instance().selectedCodes.findOne { "codeKeyword._id": selectedId }
-      Template.instance().selectedCodes.remove selectedDoc._id;
+      if not subHeader and not keyword
+        codeKeywords = CodingKeywords.find({ header: header }).fetch()
+      else if not keyword
+        codeKeywords = CodingKeywords.find({ $and: [{header: header},{subHeader: subHeader}] }).fetch()
+      else
+        codeKeyword = CodingKeywords.findOne(selectedCodeKeywordId)
+
+      if not currentlySelected
+        if codeKeywords
+          _.each codeKeywords, (codeKeyword) ->
+            Template.instance().selectedCodes.insert(codeKeyword)
+        else
+          Template.instance().selectedCodes.insert(codeKeyword)
+      else
+        if codeKeywords
+          _.each codeKeywords, (codeKeyword) ->
+            Template.instance().selectedCodes.remove(codeKeyword)
+        else
+          Template.instance().selectedCodes.remove(codeKeyword)
 
 if Meteor.isServer
 
