@@ -1,6 +1,7 @@
 template(name="codingKeywords")
   .code-search-container
     input.code-search.form-control(type="text" placeholder="Search Code Keywords")
+    i.fa.fa-times-circle.clear-search
   .coding-container
     ul.list-unstyled.code-list(class=action)
       if selectedCodes
@@ -39,8 +40,8 @@ template(name="codingKeywords")
                       span(data-id=_id class="{{selectable 'code' 'subHeader'}} {{selected}}")= subHeader
                       ul.code-keywords.list-unstyled(class="{{showList 'subHeader'}}")
                         each keywords subHeader
-                          li.code-keyword(class="{{selectable 'heading' 'keyword'}}")
-                            span(data-id=_id class="{{selectable 'code' 'keyword'}} {{selected}}")= keyword
+                          li.code-keyword(class="{{selectable 'heading' 'keyword' }}")
+                            span(data-id=_id class="{{selectable 'code' 'keyword' }} {{selected}}")= keyword
         else
           ul.filteredCodes.list-unstyled
             each filteredCodes

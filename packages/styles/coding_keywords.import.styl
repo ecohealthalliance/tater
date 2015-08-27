@@ -11,6 +11,17 @@ checkMark(center=false)
       @extend .icon
       content '\f058'
 
+.clear-search
+  position absolute
+  right 25px
+  top 50%
+  transform translate(0,-50%)
+  color $d-gray
+  pointer()
+  linkTransition()
+  &:hover
+    color $delete
+
 .code-header
 .code-sub-header
 .code-keyword
@@ -218,3 +229,4 @@ checkMark(center=false)
     font-weight 600
   .keyword
     font-weight 700
+

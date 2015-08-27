@@ -71,12 +71,11 @@ if Meteor.isClient
     coding: ->
       Template.instance().data.action is 'coding'
 
-    selectable: (element, level) ->
-      keyword = Annotations.findOne({codeId:CodingKeywords.findOne({keyword:@keyword})._id})
+    selectable: (element, level, id) ->
       if element is 'code'
-        selectable(level, 'selectable-code', @header, @subHeader, keyword)
+        selectable(level, 'selectable-code', @header, @subHeader, @keyword, @_id)
       else
-        selectable(level, 'selectable', @header, @subHeader, keyword)
+        selectable(level, 'selectable', @header, @subHeader, @keyword, @_id)
 
     selected: (codeId) ->
       if Template.instance().data.selectedCodes.findOne(@_id)
@@ -101,15 +100,18 @@ if Meteor.isClient
     else if level is 'subHeader'
       checkCode({subHeader:subHeader}).length
 
-  selectable = (level, className, header, subHeader, keyword) ->
+  selectable = (level, className, header, subHeader, keyword, id) ->
     if level is 'header'
       if checkCode({header:header}).length
         className
     else if level is 'subHeader'
       if checkCode({subHeader:subHeader}).length
         className
+    else if level is 'keyword'
+      if Annotations.findOne({codeId:CodingKeywords.findOne({keyword:keyword})._id})
+        className
     else
-      if keyword
+      if checkCode({_id: id}).length
         className
 
   checkCode = (query) ->
@@ -126,6 +128,11 @@ if Meteor.isClient
       instance.searchText.set e.target.value
       ), 200
 
+    'click .clear-search': (e, instance) ->
+      instance.filtering.set false
+      instance.searchText.set ''
+      $('.code-search').val('')
+
     'click .code-header > i': (e) ->
       $(e.target).toggleClass('down up').siblings('.code-sub-headers').toggleClass('hidden')
 
@@ -134,6 +141,7 @@ if Meteor.isClient
 
     'click .clear-selected-codes': (e, instance) ->
       instance.data.selectedCodes.remove({})
+
 
 if Meteor.isServer
   Meteor.publish 'codingKeywords', () ->
