@@ -10,20 +10,21 @@ template(name="codingKeywords")
         unless filtering
           if coding
             each headers
-              li.code-header.coding.highlighted.selectable(class='code-header-#{color}')
-                i.up
-                span.selectable-code(data-id=_id class="{{highlightHeading}}")
-                  span.icon.fa(class=icon)
-                  span.header-name= header
-                ul.code-sub-headers.coding.list-unstyled
-                  each subHeaders header
-                    li.code-sub-header.selectable
-                      i.down
-                      span.selectable-code(data-id=_id)= subHeader
-                      ul.code-keywords.list-unstyled.hidden
-                        each keywords subHeader
-                          li.code-keyword.coding.selectable
-                            span.selectable-code(data-id=_id)= keyword
+              unless ../accessCode
+                li.code-header.coding.highlighted.selectable(class='code-header-#{color}')
+                  i.up
+                  span.selectable-code(data-id=_id class="{{highlightHeading}}")
+                    span.icon.fa(class=icon)
+                    span.header-name= header
+                  ul.code-sub-headers.coding.list-unstyled
+                    each subHeaders header
+                      li.code-sub-header.selectable
+                        i.down
+                        span.selectable-code(data-id=_id)= subHeader
+                        ul.code-keywords.list-unstyled.hidden
+                          each keywords subHeader
+                            li.code-keyword.coding.selectable
+                              span.selectable-code(data-id=_id)= keyword
           else
             each headers
               li.code-header(class="code-header-#{color} {{selectable 'heading' 'header'}}" )

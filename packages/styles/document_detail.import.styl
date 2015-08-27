@@ -2,7 +2,7 @@
   position fixed
   min-height 100%
   height 100%
-  top $header-height
+  top $header-height - 2
   bottom $footer-height
   left 0
   right 0
@@ -84,13 +84,24 @@
 .document-heading
   width 55%
   left 22.5%
-  padding 15px 5% 10px 5%
+  padding 15px 200px 10px 20px
   background alpha($background-primary, 95%)
   border-left $border
   border-right $border
   h1
+    centerVertically()
     body-font()
     font-size 25px
+
+.finished-annotating
+  centerVertically()
+  right 20px
+
+.completion-code
+  color $d-gray
+  span
+    color darken($secondary, 10%)
+    letter-spacing .05em
 
 .document-container
   width 55%
@@ -146,7 +157,7 @@
       margin-bottom 10px
       border-top-right-radius 3px
       border-bottom-right-radius 3px
-      cursor pointer
+      pointer()
       shadow(255,.2)
     .header
       font-weight 400

@@ -3,33 +3,38 @@ template(name="header")
     nav.navbar
       .container-fluid
         .navbar-header
-          button.navbar-toggle.collapsed(type="button", data-toggle="collapse" data-target=".navbar-collapse") Menu
-          a.navbar-brand(href="/")
-            h1 Tater
-        .navbar-collapse.collapse
-          if currentUser
-            ul.nav.navbar-nav.navbar-left
-              li
-                a.btn.navbar-btn.new-document(href="{{path route='newDocument'}}")
-                  span New Document
-                  i.fa.fa-file-text-o
-          ul.nav.navbar-nav.navbar-right
+          if usingAccessCode
+            a.navbar-brand
+              h1 Tater
+          else
+            button.navbar-toggle.collapsed(type="button", data-toggle="collapse" data-target=".navbar-collapse") Menu
+            a.navbar-brand(href="/")
+              h1 Tater
+        unless usingAccessCode
+          .navbar-collapse.collapse
             if currentUser
-              if isAdmin
+              ul.nav.navbar-nav.navbar-left
                 li
-                  a.header-documents-link(href="{{path route='documents'}}")
-                    span Documents
-              else
+                  a.btn.navbar-btn.new-document(href="{{path route='newDocument'}}")
+                    i.fa.fa-file-text-o.icon-left
+                    span New Document
+            ul.nav.navbar-nav.navbar-right
+              if currentUser
+                if isAdmin
+                  li
+                    a.header-documents-link(href="{{path route='documents'}}")
+                      span Documents
+                else
+                  li
+                    a.header-documents-link(href="{{path route='groupDocuments' params=documentsLinkParams}}")
+                      span Documents
                 li
-                  a.header-documents-link(href="{{path route='groupDocuments' params=documentsLinkParams}}")
-                    span Documents
-              li
-                a.header-documents-link(href="{{path route='annotations'}}")
-                  span Annotations
-              if isAdmin
-                li
-                  a(href="{{path route='admin'}}")
-                    span Admin
+                  a.header-documents-link(href="{{path route='annotations'}}")
+                    span Annotations
+                if isAdmin
+                  li
+                    a(href="{{path route='admin'}}")
+                      span Admin
 
-            +accountsHeaderButtons state=accountsState
+              +accountsHeaderButtons state=accountsState
   +accountsModal state=accountsState

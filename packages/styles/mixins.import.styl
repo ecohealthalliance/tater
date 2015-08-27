@@ -41,10 +41,10 @@ makeButton($color, $text = white, $dark = false, $noOutline = false, $hoverColor
   color $text
   &:hover
   &:focus
+  &:active
     border-color darken($color, 30%)
     background darken($color, 20%)
     color $text
-  &:active
     background darken($color, 20%)
   transition()
   if $noOutline
@@ -159,3 +159,6 @@ truncateString()
   white-space nowrap
   overflow hidden
   text-overflow ellipsis
+
+pointer()
+  cursor pointer

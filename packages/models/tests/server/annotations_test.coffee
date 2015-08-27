@@ -29,6 +29,11 @@ describe 'Annotation', ->
     annotation.save()
     expect(annotation.endOffset).to.eq(15)
 
+  it 'includes accessCode', ->
+    annotation.set('accessCode', "fakecode")
+    annotation.save()
+    expect(annotation.accessCode).to.eq("fakecode")
+
 describe 'Annotation code methods', ->
   annotation = null
 

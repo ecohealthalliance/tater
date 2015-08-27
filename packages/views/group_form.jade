@@ -15,6 +15,10 @@ template(name="groupForm")
               .col-sm-12
                 label Description
                   textarea#group-description.form-control(name="description")
+            .row
+              .col-sm-12
+                label Code-accessible (for Mechanical Turk, etc.)
+                  input#group-code-accessible.form-control(name="codeAccessible" type="checkbox")
             input.btn.btn-primary(type="submit" value="Save")
   else
     .container

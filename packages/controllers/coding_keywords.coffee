@@ -1,6 +1,9 @@
 if Meteor.isClient
   Template.codingKeywords.onCreated ->
-    @subscribe('codingKeywords')
+    if @data.accessCode
+      @subscribe('caseCountCodingKeywords')
+    else
+      @subscribe('codingKeywords')
     @searchText = new ReactiveVar('')
     @filtering = new ReactiveVar(false)
     @filteredCodes = new ReactiveVar()
@@ -80,7 +83,7 @@ if Meteor.isClient
         'selected'
 
     selectedCodes: ->
-      Template.instance().data.selectedCodes.find().count()
+      Template.instance().data.selectedCodes?.find().count()
 
     showList: (level) ->
       unless hasAnnotations(level, @header, @subHeader)
@@ -134,4 +137,6 @@ if Meteor.isClient
 
 if Meteor.isServer
   Meteor.publish 'codingKeywords', () ->
-    CodingKeywords.find()
+    CodingKeywords.find(caseCount: {$ne: true})
+  Meteor.publish 'caseCountCodingKeywords', () ->
+    CodingKeywords.find(caseCount: true)

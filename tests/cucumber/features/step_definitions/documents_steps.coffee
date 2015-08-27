@@ -10,8 +10,11 @@ do ->
     @Given /^there is a test document with title "([^"]*)" in group "([^"]*)"$/, (title, groupId) ->
       @server.call('createTestDocument', {title: title, groupId: groupId})
 
+    @Given "there is a test document with title \"$title\" in the database", (title) ->
+      @server.call('createTestDocument', {title: title, groupId: 'fakegroupid', _id: 'fakedocid'})
+
     @Given /^there is a document with title "([^"]*)" in the test group$/, (title) ->
-      @server.call('createTestDocument', {title: title, groupId: 'fakegroupid'})
+      @server.call('createTestDocument', {title: title, groupId: 'fakegroupid', _id: 'fakedocid'})
 
     @When "I click the documents header link", (callback) ->
       @browser
@@ -32,6 +35,11 @@ do ->
         .url(url.resolve(process.env.ROOT_URL, "/groups/fakegroupid/documents"))
         .waitForVisible('.group-documents', assert.ifError)
         .call(callback)
+
+    @When "I navigate to the test document with an access code", ->
+      @browser
+        .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid?generateCode=true"))
+        .waitForExist('.document-container', assert.ifError)
 
     @When /^I click on the New Document link$/, (callback) ->
       @browser
@@ -65,6 +73,19 @@ do ->
         .waitForExist('.header-documents-link', assert.ifError)
         .click('.new-document', assert.ifError)
         .waitForExist('#new-document-form', assert.ifError)
+
+    @When "I click on the Finished Annotating button", ->
+      @browser
+        .waitForExist('.finished-annotating', assert.ifError)
+        .click('.finished-annotating', assert.ifError)
+        .pause(10000)
+        .waitForVisible('.modal.in', assert.ifError)
+
+    @Then "I should see an access code in a modal", ->
+      @browser
+        .getHTML '#completionCodeModal', (error, response) ->
+          assert.notOk(error)
+          assert.ok(response.toString().match("Code:"))
 
     @Then "I should see that \"$documentName\" is in the test group", (documentName) ->
       @browser
