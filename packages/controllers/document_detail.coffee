@@ -124,7 +124,7 @@ if Meteor.isClient
 
     'click .selectable-code': (event, instance) ->
       temporaryAnnotation = instance.temporaryAnnotation.get()
-      if temporaryAnnotation.startOffset && temporaryAnnotation.startOffset != null
+      if temporaryAnnotation.startOffset?
         attributes = {}
         attributes['codeId'] = event.currentTarget.getAttribute('data-id')
         attributes['documentId'] = instance.data.documentId
