@@ -87,7 +87,7 @@ if Meteor.isClient
     'invokeAfterDocLoad': ->
       location = Template.instance().annotationLoc.get()
       Meteor.defer ->
-        annotationSpanTop  = $(".document-annotations span[data-annotation-id='#{location}']").position().top
+        annotationSpanTop  = $(".document-annotations span[data-annotation-id='#{location}']").position()?.top
         $('.document-container').animate { scrollTop: annotationSpanTop }, 1000, 'easeInOutQuint'
 
   Template.documentDetail.events
