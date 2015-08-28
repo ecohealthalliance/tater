@@ -13,9 +13,9 @@ if Meteor.isClient
       if selectedCodes.length
         query = _.map selectedCodes, (code) ->
           {codeId: code._id}
-        query = {$or:query}
+        query = {$and: [{$or:query}, {accessCode: null}] }
       else
-        query = {}
+        query = {accessCode: null}
 
       annotations =
         _.map Annotations.find(query).fetch(), (annotation) ->
