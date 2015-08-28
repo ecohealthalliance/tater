@@ -26,6 +26,9 @@ template(name="codingKeywords")
                           each keywords subHeader
                             li.code-keyword.coding.selectable
                               span.selectable-code(data-id=_id)= keyword
+              else
+                li.code-header.count.highlighted.selectable(class='code-header-#{color}')
+                  span.header-name.selectable-code(data-id=_id)= header
           else
             each headers
               li.code-header(class="code-header-#{color} {{selectable 'heading' 'header'}}" )
