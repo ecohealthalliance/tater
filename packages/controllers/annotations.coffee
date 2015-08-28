@@ -26,6 +26,7 @@ if Meteor.isClient
           documentId: doc._id
           groupId: doc.groupId
           codeId: annotation.codeId
+          annotationId: annotation._id
 
       annotationsByCode =
         _.map _.groupBy(annotations, 'codeId'), (annotations, codeId) ->
@@ -67,6 +68,11 @@ if Meteor.isClient
       else if header is 'Human Animal Contact' then 'fa-paw'
 
   Template.annotations.events
+    'click .annotation-detail': (event, template) ->
+      annotationId  = event.currentTarget.getAttribute('data-annotation-id')
+      documentId    = event.currentTarget.getAttribute('data-doc-id')
+      go "documentDetailWithAnnotation", {"_id": documentId, "annotationId" : annotationId}
+
     'click .selectable-code': (event, template) ->
       selectedCodeKeywordId  = event.currentTarget.getAttribute('data-id')
       selectedCodeKeyword = CodingKeywords.findOne(selectedCodeKeywordId)

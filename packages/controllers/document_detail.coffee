@@ -12,6 +12,7 @@ if Meteor.isClient
     @annotations = new ReactiveVar()
     @searchText = new ReactiveVar('')
     @temporaryAnnotation = new ReactiveVar(new Annotation())
+    @annotationLoc = new ReactiveVar(@data.annotationId)
 
   Template.documentDetail.onRendered ->
     instance = Template.instance()
@@ -82,6 +83,12 @@ if Meteor.isClient
     'selected': ->
       if @_id is Template.instance().selectedAnnotation.get()
         'selected'
+    
+    'invokeAfterDocLoad': ->
+      location = Template.instance().annotationLoc.get()
+      Meteor.defer ->
+        annotationSpanTop  = $(".document-annotations span[data-annotation-id='#{location}']").position().top
+        $('.document-container').animate { scrollTop: annotationSpanTop }, 1000, 'easeInOutQuint'
 
   Template.documentDetail.events
     'mousedown .document-container': (event, instance) ->

@@ -13,7 +13,7 @@ template(name="annotations")
                 | #{codeString}
               ul.list-unstyled
                 each annotations
-                  li.annotation-detail
+                  li.annotation-detail(data-annotation-id= annotationId, data-doc-id= documentId)
                     p= annotatedText
                     .details.clearfix
                       span.document-title= documentTitle
