@@ -21,7 +21,7 @@ if Meteor.isClient
         _.map Annotations.find(query).fetch(), (annotation) ->
           doc = Documents.findOne({_id: annotation.documentId})
           annotatedText: Spacebars.SafeString doc.body.substring(annotation.startOffset, annotation.endOffset)
-          user: Meteor.users.findOne(annotation.userId).emails[0].address
+          user: annotation.userEmail()
           documentTitle: doc.title
           documentId: doc._id
           groupId: doc.groupId

@@ -28,6 +28,13 @@
         color darken($color, 20%)
       .annotation-detail
         background-color lighten($color,80%)
+        border 2px solid transparent
+        border-left 0
+        linkTransition()
+        &:hover
+          background-color darken(@background-color, 5%)
+          border 2px solid darken($color, 10%)
+          border-left 0
       .details
         color darken($color, 10%)
 
