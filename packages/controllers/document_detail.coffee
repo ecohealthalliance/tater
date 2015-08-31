@@ -148,6 +148,12 @@ if Meteor.isClient
           $(".document-annotations span").removeClass('not-highlighted')
         ), 800
 
+    'click .toggle-flag': (event, instance) ->
+      event.stopImmediatePropagation()
+      target = event.currentTarget
+      annotationId = target.getAttribute('data-annotation-id')
+      Meteor.call('toggleAnnotationFlag', annotationId)
+
 if Meteor.isServer
   Meteor.publish 'documentDetail', (id, code) ->
     document = Documents.findOne(id)
@@ -218,3 +224,11 @@ if Meteor.isServer
           annotation
       else
         throw 'Unauthorized'
+
+    toggleAnnotationFlag: (annotationId) ->
+      annotation = Annotations.findOne(annotationId)
+      if annotation.flagged
+        annotation.set(flagged: false)
+      else
+        annotation.set(flagged: true)
+      annotation.save()
