@@ -1,5 +1,27 @@
 if Meteor.isClient
 
+  $annotationSpanElement = (annotationId) ->
+    $(".document-text span[data-annotation-id='#{annotationId}']")
+
+  highlightText = (annotationId) ->
+    $(".document-text span").addClass('not-highlighted')
+    $annotationSpanElement(annotationId).addClass('highlighted').removeClass('not-highlighted')
+
+  unHighlightText = (annotationId) ->
+    $annotationSpanElement(annotationId).removeClass('highlighted')
+    $(".document-annotations span").removeClass('not-highlighted')
+
+  scrollToAnnotation = (annotationId, scrollList) ->
+    $annotationText = $(".document-text span[data-annotation-id='#{annotationId}']")
+    $annotationInList = $("ul.annotations li[data-annotation-id='#{annotationId}']")
+    unless scrollList
+      $('.document-container').animate { scrollTop: ($annotationText.position().top - $annotationInList.position().top + ($annotationText.height() / 2) + 45) }, 1000, 'easeInOutQuint'
+    else
+      annotationDocTop  = $annotationSpanElement(annotationId).position()?.top + 10
+      annotationListTop = $annotationInList.position()?.top - 85
+      $('.document-container').animate { scrollTop: annotationDocTop }, 1000, 'easeInOutQuint'
+      $('.annotation-container').animate { scrollTop: annotationListTop }, 1000, 'easeInOutQuint'
+
   Template.documentDetail.onCreated ->
     if @data.generateCode
       @accessCode = Date.now()
@@ -31,13 +53,13 @@ if Meteor.isClient
         instance.annotations.set _.sortBy filteredAnnotations, 'startOffset'
 
     @autorun ->
-      location = instance.annotationLoc.get()
+      annotationId = instance.annotationLoc.get()
       if instance.subscriptionsReady() and location
-        Meteor.defer ->
-          annotationDocTop  = $(".document-annotations span[data-annotation-id='#{location}']").position()?.top
-          annotationListTop = $("ul.annotations li[data-annotation-id='#{location}']").position()?.top - 75
-          $('.document-container').animate { scrollTop: annotationDocTop }, 1000, 'easeInOutQuint'
-          $('.annotation-container').animate { scrollTop: annotationListTop }, 1000, 'easeInOutQuint'
+        setTimeout (->
+          instance.selectedAnnotation.set(annotationId)
+          scrollToAnnotation(annotationId, true)
+          highlightText(annotationId)
+          ), 400
 
   Template.documentDetail.helpers
     'document': ->
@@ -92,6 +114,8 @@ if Meteor.isClient
     'selected': ->
       if @_id is Template.instance().selectedAnnotation.get()
         'selected'
+      else if Template.instance().selectedAnnotation.get()
+        'not-selected'
 
   Template.documentDetail.events
     'mousedown .document-container': (event, instance) ->
@@ -101,16 +125,13 @@ if Meteor.isClient
 
     'click .annotations li': (event, template) ->
       annotationId = event.currentTarget.getAttribute('data-annotation-id')
-      documentAnnotation = $(".document-annotations span[data-annotation-id='#{annotationId}']")
       if template.selectedAnnotation.get() is @_id
         template.selectedAnnotation.set(null)
-        documentAnnotation.removeClass('highlighted')
-        $(".document-annotations span").removeClass('not-highlighted')
+        unHighlightText(annotationId)
       else
         template.selectedAnnotation.set(@_id)
-        $(".document-annotations span").addClass('not-highlighted')
-        documentAnnotation.addClass('highlighted').removeClass('not-highlighted')
-        $('.document-container').animate { scrollTop: ($(".document-annotations span[data-annotation-id='#{annotationId}']").position().top - $("li[data-annotation-id='#{annotationId}']").position().top + ($(".document-annotations span[data-annotation-id='#{annotationId}']").height() / 2) + 45) }, 1000, 'easeInOutQuint'
+        highlightText(@_id)
+        scrollToAnnotation(@_id, false)
 
     'click .document-detail-container': (event, instance) =>
       instance.startOffset.set(null)
