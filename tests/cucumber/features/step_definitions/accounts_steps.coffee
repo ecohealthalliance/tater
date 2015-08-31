@@ -39,17 +39,6 @@ do ->
         .waitForExist('.accounts-modal.modal.in')
         .call(callback)
 
-    @When 'I fill out the new account form', (callback) ->
-      @browser
-        .click('#at-signUp')
-        .waitForExist('#at-field-password_again')
-        .setValue('#at-field-email', 'test@user.com')
-        .setValue('#at-field-password', 'testuser')
-        .setValue('#at-field-password_again', 'testuser')
-        .submitForm('#at-field-email', assert.ifError)
-        .waitForExist('.sign-out')
-        .call(callback)
-
     @When "I hide my email address from my profile", (callback) ->
       @browser
         .url(url.resolve(process.env.ROOT_URL, '/profile/edit'))
@@ -166,7 +155,7 @@ do ->
 
     @When 'I fill out the change password form', (callback) ->
       @browser
-        .setValue('#at-field-current_password', 'testuser')
+        .setValue('#at-field-current_password', 'password')
         .setValue('#at-field-password', 'newPassword')
         .setValue('#at-field-password_again', 'newPassword')
         .submitForm('#at-pwd-form', assert.ifError)
@@ -177,7 +166,7 @@ do ->
       @browser
         .click('.sign-in', assert.ifError)
         .waitForExist('.accounts-modal.modal.in')
-        .setValue('#at-field-email', 'test@user.com')
+        .setValue('#at-field-email', 'test@example.com')
         .setValue('#at-field-password', 'newPassword')
         .submitForm('#at-field-email', assert.ifError)
         .waitForExist('.sign-out', assert.ifError)

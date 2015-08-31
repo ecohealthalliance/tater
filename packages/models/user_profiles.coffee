@@ -23,11 +23,6 @@ if Meteor.isServer
     profile = new UserProfile()
     profile.set({userId: user._id, emailAddress: user.emails[0].address})
     profile.save(-> {})
-    admin = Meteor.users.findOne { admin: true }
-    if admin
-      user.admin = options.admin
-      user.group = options.group
-    else
-      user.admin = true
-      user.group = 'admin'
+    user.admin = options.admin
+    user.group = options.group
     user
