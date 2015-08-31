@@ -12,9 +12,10 @@ do ->
 
     'createTestUser': (attributes) ->
       Meteor.users.remove({})
-      Accounts.createUser
+      account = Accounts.createUser
         email: attributes.email
         password: attributes.password
+      Meteor.users.update({_id: account}, {$set: {admin: true}})
 
     'createTestGroup': (codeAccessible) ->
       Groups.insert
