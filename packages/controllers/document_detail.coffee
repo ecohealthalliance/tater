@@ -30,6 +30,15 @@ if Meteor.isClient
           wordMatches.length
         instance.annotations.set _.sortBy filteredAnnotations, 'startOffset'
 
+    @autorun ->
+      location = instance.annotationLoc.get()
+      if instance.subscriptionsReady() and location
+        Meteor.defer ->
+          annotationDocTop  = $(".document-annotations span[data-annotation-id='#{location}']").position()?.top
+          annotationListTop = $("ul.annotations li[data-annotation-id='#{location}']").position()?.top - 75
+          $('.document-container').animate { scrollTop: annotationDocTop }, 1000, 'easeInOutQuint'
+          $('.annotation-container').animate { scrollTop: annotationListTop }, 1000, 'easeInOutQuint'
+
   Template.documentDetail.helpers
     'document': ->
       Documents.findOne({ _id: @documentId })
@@ -83,15 +92,7 @@ if Meteor.isClient
     'selected': ->
       if @_id is Template.instance().selectedAnnotation.get()
         'selected'
-    
-    'invokeAfterDocLoad': ->
-      location = Template.instance().annotationLoc.get()
-      Meteor.defer ->
-        annotationDocTop  = $(".document-annotations span[data-annotation-id='#{location}']").position()?.top
-        annotationListTop = $("ul.annotations li[data-annotation-id='#{location}']").position()?.top - 75
-        $('.document-container').animate { scrollTop: annotationDocTop }, 1000, 'easeInOutQuint'
-        $('.annotation-container').animate { scrollTop: annotationListTop }, 1000, 'easeInOutQuint'
-        
+
   Template.documentDetail.events
     'mousedown .document-container': (event, instance) ->
       temporaryAnnotation = instance.temporaryAnnotation.get()
