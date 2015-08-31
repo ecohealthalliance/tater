@@ -1,6 +1,7 @@
 AccountsTemplates.configure
   showPlaceholders: false
   enablePasswordChange: true
+  hideSignUpLink: true
   onSubmitHook: (err, state)->
     unless err
       $('.accounts-modal').modal('hide')
