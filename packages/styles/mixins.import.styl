@@ -19,11 +19,11 @@ header-font()
 body-font()
   font-family $body-font
 
-transition($duration = .2s, args...)
-  transition $duration args
+transition($prop=all, $duration = .2s, $args...)
+  transition $prop $duration $args
 
-linkTransition(time=.2s)
-  transition(time, ease-in-out)
+linkTransition($prop=all, $time=.2s)
+  transition($prop, $time, ease-in-out)
 
 vAlign()
   display inline-block
