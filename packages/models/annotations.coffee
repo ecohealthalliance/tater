@@ -31,3 +31,9 @@ Annotation = Astro.Class
 
     userEmail: ->
       Meteor.users.findOne(@userId)?.emails[0].address
+
+    document: ->
+      Documents.findOne({_id: @documentId})
+
+    text: ->
+      Spacebars.SafeString @document().body.substring(@startOffset, @endOffset)

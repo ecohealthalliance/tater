@@ -51,20 +51,23 @@ makeButton($color, $text = white, $dark = false, $noOutline = false, $hoverColor
     &:focus
       outline 0
 
-loading($positioned=false)
-  @extend .icons
-  animate(2s)
+loading($positioned=true)
+  @extend .icon
+  animate(1s)
   if $positioned
     centerPosition()
     position absolute
     top 50%
-    left 45%
+    left 50%
     z-index $top-layer
   opacity 1
-  font-size 200px
+  font-size 5em
+  color $m-gray
+  &::before
+    content '\f1ce'
 
 animate($speed)
-  animation spin $speed infinite linear
+  animation spin $speed infinite ease-in-out
 
 @keyframes spin
   from

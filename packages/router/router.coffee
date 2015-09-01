@@ -49,6 +49,13 @@ FlowRouter.route '/documents/:_id',
       main: 'documentDetail'
       params: {"documentId": params._id, "generateCode": query.generateCode}
 
+FlowRouter.route '/documents/:_id/:annotationId',
+  name: 'documentDetailWithAnnotation'
+  action: (params) ->
+    FlowLayout.render 'layout',
+      main: 'documentDetail'
+      params: {"documentId": params._id, "annotationId" : params.annotationId}
+
 FlowRouter.route '/groups/new',
   name: 'newGroup'
   action: () ->
@@ -74,3 +81,9 @@ FlowRouter.route '/codingKeywords',
   action: () ->
     FlowLayout.render 'layout',
       main: 'codingKeywords'
+
+FlowRouter.route '/annotations',
+  name: 'annotations'
+  action: () ->
+    FlowLayout.render 'layout',
+      main: 'annotations'

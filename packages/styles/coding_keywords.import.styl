@@ -1,0 +1,232 @@
+checkMark(center=false)
+  &:hover
+    &:after
+      position absolute
+      right 5px
+      if center
+        top 50%
+        transform translate(0, -50%)
+      else
+        top 3px
+      @extend .icon
+      content '\f058'
+
+.clear-search
+  position absolute
+  right 25px
+  top 50%
+  transform translate(0,-50%)
+  color $d-gray
+  pointer()
+  linkTransition()
+  &:hover
+    color $delete
+
+.code-header
+.code-sub-header
+.code-keyword
+  position relative
+  shadow(255,.2)
+  i
+    color $m-gray
+    &:hover
+      color $m-gray
+
+.coding
+  .code-header
+  .code-sub-header
+    checkMark()
+
+.coding
+  .code-keyword
+    checkMark(true)
+
+.listing
+  .showing
+    background none !important
+
+.code-header
+.code-sub-header
+  position relative
+  > span
+    padding 2px 20px 2px 5px
+  i
+    position absolute
+    left 15px
+    top 2px
+    cursor pointer
+    font-size 1em
+    &::before
+      content '\f138'
+      @extend .icon
+    &.up
+      transition .2s
+      transform rotate(90deg)
+    &:hover
+      color darken($secondary-dark, 20%)
+      transition .2s ease-in-out
+
+.code-header > span
+.code-sub-header > span
+.code-keyword > span
+.filteredCodes > span
+  border-top-left-radius 3px
+  border-bottom-left-radius 3px
+  &:not(.selectable-code)
+    color $m-gray
+
+.clear-codes-container
+  margin 15px
+  button
+    makeButton(darken($background-secondary, 10%), black, true, true)
+
+.selectable-code
+  cursor pointer
+
+.code-header
+  margin-bottom 5px
+  font-size 18px
+  font-weight 800
+  color $body-text
+  > span
+    display block
+    position relative
+    margin-left 35px
+    overflow hidden
+    text-overflow ellipsis
+  .icon
+    width 25px
+    position absolute
+    left 5px
+    top 5px
+    &::before
+      display block
+      text-align center
+  .header-name
+    display block
+    padding-left 28px
+  for $color, $index in $annotation-colors
+    &.code-header-{$index+1}
+      &.highlighted
+        > span
+          background-color $color
+      &.selectable
+        > span
+          &.selectable-code
+            &:hover
+              background-color $color
+              transition .2s ease-in-out
+            &.selected
+              background-color $color
+        > i
+          color darken($color, 10%)
+          &:hover
+            color darken(@color, 10%)
+      &:hover
+        &:after
+          color darken($color, 40%)
+      .code-sub-header
+        &.selectable
+          > span
+            padding-left 5px
+            background-color transparent
+            transition .1s ease-in-out
+            &.selectable-code
+              &.showing
+                transition .1s ease-in-out
+                background lighten($color, 10%)
+                &:after
+                  color darken($color, 20%)
+                  centerVertically()
+              &:hover
+                background-color $color
+                transition .2s ease-in-out
+            &.selected
+              background-color $color
+          > i
+            color darken($color, 10%)
+            &:hover
+              color darken(@color, 10%)
+        &:hover
+          &:after
+            color darken($color, 20%)
+          > span
+            &:after
+              color darken($color, 30%)
+              top 2px
+              transform translate(0, -50%)
+        .code-keyword
+          > span
+            border-bottom 1px solid lighten($color, 80%)
+            transition .1s ease-in-out
+          &.selectable
+            > span
+              &:hover
+                background-color lighten($color, 20%)
+                transition .1s ease-in-out
+              &.selected
+                background-color $color
+                font-weight bold
+            &:hover
+              &::after
+                centerVertically()
+                color darken($color, 20%)
+
+
+.code-sub-headers
+.code-keywords
+  margin 5px 0 15px 0
+
+.code-sub-header
+  padding-left 53px
+  margin-bottom 2px
+  font-size 15px
+  font-weight 600
+  span
+    display block
+    padding-left 5px
+    margin-left 2px
+  i
+    left 38px
+    top 0
+    font-size 1.2em
+
+.code-keywords
+  padding-left 10px
+
+.code-keyword
+  font-size 13px
+  font-weight 400
+  overflow hidden
+  text-overflow ellipsis
+  span
+    padding 0
+    padding 5px 15px 5px 5px
+
+.filteredCodes
+  li
+    position relative
+    margin-left 15px
+    cursor pointer
+    overflow hidden
+    text-overflow ellipsis
+    border-bottom 1px solid $border-color
+    > span
+      display block
+      padding 5px 20px 5px 5px
+      &:not(.selectable-code)
+        color $m-gray
+  .selectable
+    for $color, $index in $annotation-colors
+      &.code-{$index+1}
+        .selected
+          background-color $color
+        &:hover
+          background-color lighten($color, 10%)
+  .header
+      font-size 90%
+  .sub-header
+    font-weight 600
+  .keyword
+    font-weight 700
+

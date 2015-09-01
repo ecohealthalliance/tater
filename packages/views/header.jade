@@ -24,12 +24,17 @@ template(name="header")
                   li
                     a.header-documents-link(href="{{path route='documents'}}")
                       span Documents
-                  li
-                    a(href="{{path route='admin'}}")
-                      span Admin
                 else
                   li
                     a.header-documents-link(href="{{path route='groupDocuments' params=documentsLinkParams}}")
                       span Documents
+                li
+                  a.header-documents-link(href="{{path route='annotations'}}")
+                    span Search Annotations
+                if isAdmin
+                  li
+                    a(href="{{path route='admin'}}")
+                      span Admin
+
               +accountsHeaderButtons state=accountsState
   +accountsModal state=accountsState

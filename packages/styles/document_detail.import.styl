@@ -22,6 +22,12 @@ checkMark(center=false)
   bottom $footer-height
   left 0
   right 0
+  .loading
+    loading(false)
+    position absolute
+    top 100px
+    transform translate(-50%, 0)
+    left 40%
 
 .coding-container
 .annotation-container
@@ -48,6 +54,12 @@ checkMark(center=false)
   input
     margin-bottom 0
 
+.annotations-selected-container
+  background alpha($background-primary, 55%)
+  padding 10px 10px 10px 10px
+  position relative
+  top -10px
+
 .annotation-search-container
   right 0
 
@@ -64,6 +76,7 @@ checkMark(center=false)
 .annotations
   margin-top 85px
 
+<<<<<<< HEAD
 .code-header
 .code-sub-header
 .code-keyword
@@ -328,6 +341,10 @@ checkMark(center=false)
       margin-bottom 10px
       border-top-right-radius 3px
       border-bottom-right-radius 3px
+      background-color $l-gray
+      border 2px solid $m-gray
+      border-left 0
+      transition background-color .2s
       pointer()
       shadow(255,.2)
     .header
@@ -354,6 +371,39 @@ checkMark(center=false)
       right 5px
       font-size .8em
       color alpha($body-color, 90%)
+    for $color, $index in $annotation-colors
+      .annotation-color-{$index+1}
+        background-color $color
+        border-color $color
+        transition .2s opacity ease-in-out
+        &.selected
+          border 2px solid darken($color, 40%)
+          &::before
+            position absolute
+            top 2px
+            left 13px
+            content '\f06e'
+            color darken($color, 30%)
+            @extend .icon
+        &.not-selected
+          opacity .7
+          background-color $color
+          &:hover
+            opacity 1
+            background-color $color
+        &.selected
+        &:hover
+          border-left 0
+          background-color lighten(@background-color, 25%)
+        &:hover
+          .btn-delete
+            visibility visible
+        .btn-delete
+          color darken($color, 20%)
+          visibility hidden
+          linkTransition()
+          &:hover
+            color darken(@color, 50%)
 
 for $color, $index in $colors
   .annotation-color-{$index+1}
