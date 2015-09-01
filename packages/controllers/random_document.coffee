@@ -4,7 +4,7 @@ if Meteor.isClient
     Meteor.autorun ->
       if subscription.ready()
         document = Documents.findOne()
-        go 'documentDetail', document
+        go 'documentDetail', {_id: document._id}, {generateCode: true}
 
 if Meteor.isServer
   Meteor.publish 'randomDocument', (groupId) ->
