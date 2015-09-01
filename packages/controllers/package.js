@@ -40,4 +40,5 @@ Package.onUse(function(api) {
   api.addFiles('user_form.coffee', 'client');
   api.addFiles('coding_keywords.coffee', ['client', 'server']);
   api.addFiles('annotations.coffee', ['client', 'server']);
+  api.addFiles('random_document.coffee', ['client', 'server']);
 });

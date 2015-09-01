@@ -69,6 +69,13 @@ FlowRouter.route '/groups/:_id',
       main: 'groupDetail'
       params: {"groupId": params._id}
 
+FlowRouter.route '/groups/:_id/randomDocument',
+  name: 'randomDocument'
+  action: (params) ->
+    FlowLayout.render 'layout',
+      main: 'randomDocument'
+      params: {"groupId": params._id}
+
 FlowRouter.route '/groups/:_id/documents',
   name: 'groupDocuments'
   action: (params) ->
