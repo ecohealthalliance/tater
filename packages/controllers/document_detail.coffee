@@ -7,10 +7,6 @@ if Meteor.isClient
     $(".document-text span").addClass('not-highlighted')
     $annotationSpanElement(annotationId).addClass('highlighted').removeClass('not-highlighted')
 
-  unHighlightText = (annotationId) ->
-    $annotationSpanElement(annotationId).removeClass('highlighted')
-    $(".document-annotations span").removeClass('not-highlighted')
-
   scrollToAnnotation = (annotationId, scrollList) ->
     $annotationText = $(".document-text span[data-annotation-id='#{annotationId}']")
     $annotationInList = $("ul.annotations li[data-annotation-id='#{annotationId}']")
@@ -134,6 +130,8 @@ if Meteor.isClient
         selectedAnnotation.set({id: annotationId})
       else
         selectedAnnotation.set({id: null})
+        $annotationSpanElement(annotationId).removeClass('highlighted')
+        $(".document-annotations span").removeClass('not-highlighted')
 
     'click .document-detail-container': (event, instance) =>
       instance.startOffset.set(null)
