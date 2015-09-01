@@ -30,11 +30,10 @@ if Meteor.isClient
     @subscribe('users', @data.documentId, @accessCode)
     @startOffset = new ReactiveVar()
     @endOffset = new ReactiveVar()
-    @selectedAnnotation = new ReactiveVar(null)
     @annotations = new ReactiveVar()
     @searchText = new ReactiveVar('')
     @temporaryAnnotation = new ReactiveVar(new Annotation())
-    @annotationLoc = new ReactiveVar(@data.annotationId)
+    @selectedAnnotation = new ReactiveVar({id: @data.annotationId, onLoad: true})
 
   Template.documentDetail.onRendered ->
     instance = Template.instance()
@@ -53,13 +52,17 @@ if Meteor.isClient
         instance.annotations.set _.sortBy filteredAnnotations, 'startOffset'
 
     @autorun ->
-      annotationId = instance.annotationLoc.get()
-      if instance.subscriptionsReady() and location
-        setTimeout (->
-          instance.selectedAnnotation.set(annotationId)
-          scrollToAnnotation(annotationId, true)
-          highlightText(annotationId)
-          ), 400
+      selectedAnnotation = instance.selectedAnnotation.get()
+      id = selectedAnnotation.id
+      if id
+        if selectedAnnotation.onLoad
+          setTimeout (->
+            scrollToAnnotation(id, true)
+            highlightText(id)
+            ), 400
+        else
+          highlightText(id)
+          scrollToAnnotation(id, false)
 
   Template.documentDetail.helpers
     'document': ->
@@ -112,9 +115,10 @@ if Meteor.isClient
         ''
 
     'selected': ->
-      if @_id is Template.instance().selectedAnnotation.get()
+      id = Template.instance().selectedAnnotation.get()?.id
+      if @_id is id
         'selected'
-      else if Template.instance().selectedAnnotation.get()
+      else if id
         'not-selected'
 
   Template.documentDetail.events
@@ -125,13 +129,11 @@ if Meteor.isClient
 
     'click .annotations li': (event, template) ->
       annotationId = event.currentTarget.getAttribute('data-annotation-id')
-      if template.selectedAnnotation.get() is @_id
-        template.selectedAnnotation.set(null)
-        unHighlightText(annotationId)
+      selectedAnnotation = template.selectedAnnotation
+      unless selectedAnnotation.get().id is annotationId
+        selectedAnnotation.set({id: annotationId})
       else
-        template.selectedAnnotation.set(@_id)
-        highlightText(@_id)
-        scrollToAnnotation(@_id, false)
+        selectedAnnotation.set({id: null})
 
     'click .document-detail-container': (event, instance) =>
       instance.startOffset.set(null)

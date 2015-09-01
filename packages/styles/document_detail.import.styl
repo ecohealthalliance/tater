@@ -191,6 +191,7 @@
       .annotation-color-{$index+1}
         background-color $color
         border-color $color
+        transition .2s opacity ease-in-out
         &.selected
           border 2px solid darken($color, 40%)
           &::before
@@ -201,8 +202,7 @@
             color darken($color, 30%)
             @extend .icon
         &.not-selected
-          opacity .5
-          transition opacity .2s
+          opacity .7
           background-color $color
           &:hover
             opacity 1
