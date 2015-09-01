@@ -1,0 +1,25 @@
+template(name="annotations")
+  .document-detail-container
+    if currentUser
+      +codingKeywords action='listing' selectedCodes=selectedCodes annotations=annotations
+      .annotation-list-heading
+        h1 Annotations
+      .annotations-list-container
+        if Template.subscriptionsReady
+          each annotationsByCode
+            .annotation-group(class="color-#{code.color}")
+              h3
+                span.icon.fa(class=icon)
+                | #{codeString}
+              ul.list-unstyled
+                each annotations
+                  li.annotation-detail(data-annotation-id= annotationId, data-doc-id= documentId)
+                    p= annotatedText
+                    .details.clearfix
+                      span.document-title= documentTitle
+                      spna.user-email= user
+        else
+          .loading
+    else
+      .container.space-top-2
+        p Please log in or sign up to continue.

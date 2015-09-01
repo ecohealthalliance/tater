@@ -1,7 +1,7 @@
 template(name="documentDetail")
   if document
     .document-detail-container
-      +codingKeywords accessCode=accessCode
+      +codingKeywords action='coding' accessCode=accessCode
       .document-heading
         h1.document-title= document.title
         if accessCode
@@ -28,7 +28,6 @@ template(name="documentDetail")
                   span.code= code
                 else
                   span.code
-                    span= positionInformation
                     span.header= header
                 span.user= annotationUserEmail
                 .delete-annotation.btn-delete(data-annotation-id=_id)
@@ -37,6 +36,8 @@ template(name="documentDetail")
               .no-results
                 i.fa.fa-search
                 p Sorry, no annotations found
+          else
+            .loading
   #completionCodeModal.modal.fade
     .modal-dialog
       .modal-content
