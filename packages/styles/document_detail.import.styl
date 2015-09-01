@@ -191,8 +191,9 @@ checkMark(center=false)
     margin-left 2px
   i
     left 38px
-    top 0
+    top 3px
     font-size 1.2em
+    line-height 100%
 
 .code-keywords
   padding-left 10px
@@ -352,13 +353,12 @@ checkMark(center=false)
       font-size .8em
       color alpha($body-color, 90%)
 
-
 for $color, $index in $colors
   .annotation-color-{$index+1}
     background-color $color
     border 2px solid $color
     border-left 0
-    linkTransition()
+    transition .2s background-color ease-in-out
     &.selected
       border 2px solid darken($color, 40%)
       &::before
@@ -374,6 +374,7 @@ for $color, $index in $colors
       background-color lighten(@background-color, 25%)
     &:hover
       .btn-delete
+      .toggle-flag
         visibility visible
     .btn-delete
       color darken($color, 20%)
@@ -381,6 +382,20 @@ for $color, $index in $colors
       linkTransition()
       &:hover
         color darken(@color, 50%)
+    .toggle-flag
+      position absolute
+      z-index $bottom-layer
+      bottom 4px
+      left 13px
+      color darken($color, 40%)
+      visibility hidden
+      linkTransition()
+      &.flagged
+        visibility visible
+        color darken($color, 30%)
+      &:hover
+        color darken($color, 80%)
+
   .annotation-highlight-{$index+1}
     background-color alpha($color, 60%)
     border-radius 2px
@@ -389,6 +404,7 @@ for $color, $index in $colors
       background-color alpha($color, 85%)
     &.not-highlighted
       background-color alpha($color, 25%)
+
 
 .annotation-highlight-temporary
   background-color $selection-color

@@ -31,9 +31,9 @@ template(name="documentDetail")
                     span= positionInformation
                     span.header= header
                 if flagged
-                  span.toggle-flag.glyphicon.glyphicon-flag(data-annotation-id=_id)
+                  span.toggle-flag.flagged.fa.fa-flag(data-annotation-id=_id)
                 else
-                  span.toggle-flag(data-annotation-id=_id) FLAG
+                  span.toggle-flag.fa.fa-flag-o(data-annotation-id=_id)
                 span.user= annotationUserEmail
                 .delete-annotation.btn-delete(data-annotation-id=_id)
                   i.fa.fa-times-circle
