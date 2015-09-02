@@ -34,7 +34,7 @@ if Meteor.isClient
   Template.documentDetail.onRendered ->
     instance = Template.instance()
     @autorun ->
-      annotations = Annotations.find({documentId: instance.data.documentId}, sort: startOffset: 1)
+      annotations = Annotations.find({documentId: instance.data.documentId}, sort: {startOffset: 1, _id: 0})
       if instance.searchText.get() is ''
         instance.annotations.set annotations
       else
