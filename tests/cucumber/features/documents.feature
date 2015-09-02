@@ -54,8 +54,11 @@ Feature: Documents
     And I click on the Add Document link in the header
     And I fill out the new document form with title "Test Document" and select the test group
     Then I should be on the admin documents page
-    And I should see that "Test Document" is in the test group
+    And I should see content "Test Document"
     And I should see a "Success" toast
+    When I navigate to "/admin"
+    And I click on the group link
+    Then I should see content "Test Document"
 
   @documents
   Scenario: Viewing a document with an access code
