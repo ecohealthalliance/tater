@@ -34,6 +34,11 @@ describe 'Annotation', ->
     annotation.save()
     expect(annotation.accessCode).to.eq("fakecode")
 
+  it 'includes flagged', ->
+    annotation.set('flagged', true)
+    annotation.save()
+    expect(annotation.flagged).to.eq(true)
+
 describe 'Annotation code methods', ->
   annotation = null
 

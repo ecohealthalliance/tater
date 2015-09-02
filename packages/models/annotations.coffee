@@ -10,6 +10,7 @@ Annotation = Astro.Class
     startOffset: 'number'
     endOffset: 'number'
     accessCode: 'string'
+    flagged: 'boolean'
 
   methods:
     _codingKeyword: ->

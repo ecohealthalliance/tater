@@ -34,7 +34,7 @@ if Meteor.isClient
   Template.documentDetail.onRendered ->
     instance = Template.instance()
     @autorun ->
-      annotations = Annotations.find({documentId: instance.data.documentId}, sort: startOffset: 1)
+      annotations = Annotations.find({documentId: instance.data.documentId}, sort: {startOffset: 1, _id: 0})
       if instance.searchText.get() is ''
         instance.annotations.set annotations
       else
@@ -179,6 +179,12 @@ if Meteor.isClient
           $(".document-annotations span").removeClass('not-highlighted')
         ), 800
 
+    'click .toggle-flag': (event, instance) ->
+      event.stopImmediatePropagation()
+      target = event.currentTarget
+      annotationId = target.getAttribute('data-annotation-id')
+      Meteor.call('toggleAnnotationFlag', annotationId)
+
 if Meteor.isServer
   Meteor.publish 'documentDetail', (id, code) ->
     document = Documents.findOne(id)
@@ -249,3 +255,11 @@ if Meteor.isServer
           annotation
       else
         throw 'Unauthorized'
+
+    toggleAnnotationFlag: (annotationId) ->
+      annotation = Annotations.findOne(annotationId)
+      if annotation.flagged
+        annotation.set(flagged: false)
+      else
+        annotation.set(flagged: true)
+      annotation.save()
