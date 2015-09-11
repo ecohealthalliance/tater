@@ -23,10 +23,10 @@ codes =
       'Business'
     ]
     'Travel': [
-      'Traveling to Shop/buy/sell/trade'
+      'Traveling to shop/buy/sell/trade'
       'Hunting trips'
       'Transporting  animals'
-      'Transportation: Walking, biking, cart, truck, Plane boat, trains'
+      'Transportation: walking, biking, cart, truck, plane, boat, trains'
       'Overnight trips'
       'Reasons for travel'
       'Travel destinations'
@@ -68,7 +68,7 @@ codes =
       'Large purchases'
       'Income'
       'Purchases for event/holiday'
-      'Social standing (compared to Neighbors/others)'
+      'Social standing (compared to neighbors/others)'
       'Expenses'
       'Number of jobs/activities'
     ]
@@ -99,7 +99,7 @@ codes =
       'Leave shoes/footwear outside'
     ]
   'Illness Medical Care/Treatment and Death':
-    'Household illness/Wellness': [
+    'Household illness/wellness': [
       'Sick relatives'
       'Caretaking of sick'
       'Types of sickness'
@@ -108,7 +108,7 @@ codes =
       'Ebola'
       'SARS'
       'MERS'
-      '(Other endemic zoonotic diseases)'
+      'Other endemic zoonotic diseases'
       'Dispensaries/medication'
       'Births'
     ]
@@ -117,7 +117,7 @@ codes =
     ]
     'Medical Care and Treatment': [
       'Doctor/clinic visit'
-      'Medicine/Treatment'
+      'Medicine/treatment'
       'Cost of medicine/doctor/treatment'
       'Professionals (doctor, nurse, religious leader, healthcare worker, etc.)'
       'Traditional medicine'
@@ -191,12 +191,12 @@ codes =
     'Perceptions and knowledge': [
       'Exotic or expensive animals'
       'Wildlife consumption'
-      'Regulations/laws regarding animals (e.g. Hunting, eating, poaching regulations)'
+      'Regulations/laws regarding animals (e.g. hunting, eating, poaching regulations)'
       'Danger from animals'
       'Conservation'
       'Taboos'
       'Special occasions/holidays'
-      'feasts/holy days'
+      'Feasts/holy days'
     ]
 
 caseCountCodes = [
