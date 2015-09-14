@@ -16,6 +16,11 @@ if Meteor.isClient
       group = Groups.findOne(@groupId)
       group.viewableByUser(Meteor.user())
 
+  Template.groupDocuments.events
+    'click .delete-document-button': (event) ->
+      if confirm("Delete this document?")
+        Meteor.call 'deleteDocument', event.target.getAttribute('data-document-id'), ->
+          toastr.success("Success")
 
 if Meteor.isServer
   Meteor.publish 'groupDocuments', (id) ->
@@ -27,3 +32,7 @@ if Meteor.isServer
         Groups.find(id)
         Groups.findOne(id).documents()
       ]
+
+  Meteor.methods
+    deleteDocument: (documentId) ->
+      Documents.remove({_id: documentId})

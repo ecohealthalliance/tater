@@ -47,6 +47,14 @@ do ->
         .click(".new-document-link", assert.ifError)
         .call(callback)
 
+    @When /^I click on the Delete Document button$/, ->
+      @browser
+        .waitForVisible('.delete-document-button', assert.ifError)
+        .click(".delete-document-button", assert.ifError)
+
+    @When /^I accept the alert$/, ->
+      @browser.alertAccept()
+
     @When /^I fill out the new document form with title "([^"]*)"( and select the test group)?$/, (title, selectGroup) ->
       @browser
         .waitForExist('#new-document-form', assert.ifError)

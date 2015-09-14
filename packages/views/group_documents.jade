@@ -19,5 +19,6 @@ template(name="groupDocuments")
             li.document
                 a.list-link(href="{{path route='documentDetail' params=this}}")
                   span.document-title= title
+                button.btn.btn-primary.delete-document-button(data-document-id=_id) Delete Document
       else
         p No documents have been uploaded.
