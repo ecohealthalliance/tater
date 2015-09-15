@@ -52,8 +52,10 @@ do ->
         .waitForVisible('.delete-document-button', assert.ifError)
         .click(".delete-document-button", assert.ifError)
 
-    @When /^I accept the alert$/, ->
-      @browser.alertAccept()
+    @When /^I confirm the deletion/, ->
+      @browser
+        .waitForExist('#confirm-delete-document-modal', assert.ifError)
+        .click("#confirm-delete-document", assert.ifError)
 
     @When /^I fill out the new document form with title "([^"]*)"( and select the test group)?$/, (title, selectGroup) ->
       @browser
