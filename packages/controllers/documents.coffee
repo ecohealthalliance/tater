@@ -16,10 +16,10 @@ if Meteor.isServer
     if user?.admin
       [
         Documents.find(),
-        Groups.find({}, {field: {name: true}})
+        Groups.find({}, {fields: {name: 1}})
       ]
     else if user
       [
-        Documents.find({ groupId: user.group }),
-        Groups.find({_id: user.group }, {field: {name: true}})
+        Documents.find({groupId: user.group}),
+        Groups.find({_id: user.group}, {fields: {name: 1}})
       ]
