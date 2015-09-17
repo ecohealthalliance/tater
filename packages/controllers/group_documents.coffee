@@ -24,7 +24,7 @@ if Meteor.isClient
       documentId = event.target.getAttribute('data-document-id')
       Meteor.call 'deleteDocument', documentId, (error) ->
         if error
-          taostr.error("Server Error")
+          toastr.error("Server Error")
           console.log error
         else
           toastr.success("Success")
