@@ -22,8 +22,12 @@ if Meteor.isClient
 
     'click #confirm-delete-document': (event) ->
       documentId = event.target.getAttribute('data-document-id')
-      Meteor.call 'deleteDocument', documentId, ->
-        toastr.success("Success")
+      Meteor.call 'deleteDocument', documentId, (error) ->
+        if error
+          taostr.error("Server Error")
+          console.log error
+        else
+          toastr.success("Success")
 
 if Meteor.isServer
   Meteor.publish 'groupDocuments', (id) ->

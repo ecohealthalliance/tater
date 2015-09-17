@@ -69,7 +69,7 @@ Feature: Documents
     When I click on the Finished Annotating button
     Then I should see an access code in a modal
 
-  @dev
+  @documents
   Scenario: Deleting a document
     Given there is a code-accessible test group in the database
     And there is a document with title "Test Document" in the test group
