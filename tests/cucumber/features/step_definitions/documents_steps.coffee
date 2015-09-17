@@ -50,7 +50,7 @@ do ->
     @When /^I click on the Delete Document button$/, ->
       @browser
         .waitForVisible('.delete-document-button', assert.ifError)
-        .click(".delete-document-button", assert.ifError)
+        .click(".delete-document-button i", assert.ifError)
 
     @When /^I confirm the deletion/, ->
       @browser

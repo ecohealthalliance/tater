@@ -18,7 +18,7 @@ if Meteor.isClient
 
   Template.groupDocuments.events
     'click .delete-document-button': (event) ->
-      $('#confirm-delete-document').attr("data-document-id", event.target.getAttribute("data-document-id"))
+      $('#confirm-delete-document').attr("data-document-id", event.target.parentElement.getAttribute("data-document-id"))
 
     'click #confirm-delete-document': (event) ->
       documentId = event.target.getAttribute('data-document-id')
