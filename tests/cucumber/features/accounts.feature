@@ -58,7 +58,7 @@ Feature: Accounts
     And I create a user account for "mr@potato.head"
     Then I should see content "mr@potato.head"
     When I click the remove user link
-    And I confirm the deletion
+    And I confirm the account deletion
     Then I should not see content "mr@potato.head"
 
   @accounts

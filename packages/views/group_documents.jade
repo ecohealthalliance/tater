@@ -19,5 +19,19 @@ template(name="groupDocuments")
             li.document
                 a.list-link(href="{{path route='documentDetail' params=this}}")
                   span.document-title= title
+                button.btn-plain.delete-document-button(data-toggle="modal" data-document-id=_id data-target="#confirm-delete-document-modal" )
+                  i.fa.fa-trash-o
+          #confirm-delete-document-modal.modal.fade
+            .modal-dialog
+              .modal-content
+                .modal-header
+                  button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+                    i.fa.fa-times-circle
+                .modal-body
+                  h3#myModalLabel Confirmation
+                  p Delete document?
+                .modal-footer
+                  button.btn.btn-default(data-dismiss='modal' aria-hidden='true') Close
+                  button.btn.btn-danger#confirm-delete-document(data-dismiss='modal' aria-hidden='true') Delete
       else
         p No documents have been uploaded.

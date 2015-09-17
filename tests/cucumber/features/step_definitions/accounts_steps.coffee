@@ -139,7 +139,7 @@ do ->
         .click(".remove-user", assert.ifError)
         .call(callback)
 
-    @When /^I confirm the deletion$/, (callback) ->
+    @When /^I confirm the account deletion$/, (callback) ->
       @browser
         .waitForVisible('.modal', assert.ifError)
         .click('.confirm-remove-user', assert.ifError)

@@ -68,3 +68,16 @@ Feature: Documents
     Then I should see content "Test Document"
     When I click on the Finished Annotating button
     Then I should see an access code in a modal
+
+  @documents
+  Scenario: Deleting a document
+    Given there is a code-accessible test group in the database
+    And there is a document with title "Test Document" in the test group
+    When I log in as the test user
+    When I navigate to "/admin"
+    And I click on the group link
+    Then I should see content "Test Document"
+    When I click on the Delete Document button
+    And I confirm the document deletion
+    Then I should see a "Success" toast
+    And I should not see content "Test Document"
