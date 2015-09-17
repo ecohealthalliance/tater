@@ -52,7 +52,7 @@ do ->
         .waitForVisible('.delete-document-button', assert.ifError)
         .click(".delete-document-button i", assert.ifError)
 
-    @When /^I confirm the deletion/, ->
+    @When /^I confirm the document deletion/, ->
       @browser
         .waitForExist('#confirm-delete-document-modal', assert.ifError)
         .click("#confirm-delete-document", assert.ifError)

@@ -78,6 +78,6 @@ Feature: Documents
     And I click on the group link
     Then I should see content "Test Document"
     When I click on the Delete Document button
-    And I confirm the deletion
+    And I confirm the document deletion
     Then I should see a "Success" toast
     And I should not see content "Test Document"
