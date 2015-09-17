@@ -34,7 +34,7 @@ if Meteor.isServer
     user = Meteor.users.findOne(@userId)
     group = Groups.findOne(id)
 
-    if user and group.viewableByUser(user)
+    if user and group?.viewableByUser(user)
       [
         Groups.find(id)
         Groups.findOne(id).documents()
@@ -43,8 +43,9 @@ if Meteor.isServer
   Meteor.methods
     deleteDocument: (documentId) ->
       document = Documents.findOne(documentId)
-      group = Groups.findOne({_id: document.groupId})
-      user = Meteor.users.findOne(@userId)
-      accessible = (user and group?.viewableByUser(user))
-      if accessible
-        Documents.remove({_id: documentId})
+      if document
+        group = Groups.findOne({_id: document.groupId})
+        user = Meteor.users.findOne(@userId)
+        accessible = (user and group?.viewableByUser(user))
+        if accessible
+          Documents.remove({_id: documentId})
