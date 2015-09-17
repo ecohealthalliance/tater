@@ -77,7 +77,15 @@ a
   makeButton($confirm)
 
 .btn-danger
-  makeButton($primary-strong)
+  makeButton($delete, white, false)
+
+.btn-plain
+  background none
+  border 0
+  padding 0
+  &:focus
+    outline 0
+    box-shadow none
 
 .button-default['disabled']
 .btn['disabled']
