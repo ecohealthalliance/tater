@@ -74,18 +74,18 @@ if Meteor.isClient
       else if header is 'Human Animal Contact' then 'fa-paw'
 
   Template.annotations.events
-    'click .show-flagged': (event) ->
-      Template.instance().showFlagged.set(!Template.instance().showFlagged.get())
+    'click .show-flagged': (event, instance) ->
+      instance.showFlagged.set(!instance.showFlagged.get())
 
-    'click .annotation-detail': (event, template) ->
+    'click .annotation-detail': (event, instance) ->
       annotationId  = event.currentTarget.getAttribute('data-annotation-id')
       documentId    = event.currentTarget.getAttribute('data-doc-id')
       go "documentDetailWithAnnotation", {"_id": documentId, "annotationId" : annotationId}
 
-    'click .selectable-code': (event, template) ->
+    'click .selectable-code': (event, instance) ->
       selectedCodeKeywordId  = event.currentTarget.getAttribute('data-id')
       selectedCodeKeyword = CodingKeywords.findOne(selectedCodeKeywordId)
-      currentlySelected = Template.instance().selectedCodes.findOne(selectedCodeKeywordId)
+      currentlySelected = instance.selectedCodes.findOne(selectedCodeKeywordId)
       header = selectedCodeKeyword.header
       subHeader = selectedCodeKeyword.subHeader
       keyword = selectedCodeKeyword.keyword
@@ -100,15 +100,15 @@ if Meteor.isClient
       if not currentlySelected
         if codeKeywords
           _.each codeKeywords, (codeKeyword) ->
-            Template.instance().selectedCodes.upsert({_id: codeKeyword._id}, codeKeyword)
+            instance.selectedCodes.upsert({_id: codeKeyword._id}, codeKeyword)
         else
-          Template.instance().selectedCodes.upsert({_id: codeKeyword._id}, codeKeyword)
+          instance.selectedCodes.upsert({_id: codeKeyword._id}, codeKeyword)
       else
         if codeKeywords
           _.each codeKeywords, (codeKeyword) ->
-            Template.instance().selectedCodes.remove(codeKeyword)
+            instance.selectedCodes.remove(codeKeyword)
         else
-          Template.instance().selectedCodes.remove(codeKeyword)
+          instance.selectedCodes.remove(codeKeyword)
 
 if Meteor.isServer
 
