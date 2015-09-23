@@ -1,7 +1,6 @@
 if Meteor.isClient
   Template.annotations.onCreated ->
-    @subscribe('documents')
-    @subscribe('annotations')
+    @subscribe('annotationsAndDocuments')
     @subscribe('CodingKeywords')
     @selectedCodes  = new Meteor.Collection(null)
     @annotations = new ReactiveVar()
@@ -103,11 +102,15 @@ if Meteor.isClient
 
 if Meteor.isServer
 
-  Meteor.publish 'annotations', ->
+  Meteor.publish 'annotationsAndDocuments', ->
     user = Meteor.users.findOne({_id: @userId})
     if user?.admin
-      documents = Documents.find({}, {_id: 1}).fetch()
+      documents = Documents.find({})
     else if user
-      documents = Documents.find({ groupId: user.group }, {_id: 1}).fetch()
-    docIds = _.pluck documents, '_id'
-    Annotations.find({documentId: $in:docIds})
+      documents = Documents.find({ groupId: user.group })
+    docIds = documents.map((d)-> d._id)
+    [
+      documents
+      Annotations.find
+        documentId: {$in: docIds}
+    ]
