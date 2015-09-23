@@ -4,6 +4,7 @@ if Meteor.isClient
     @subscribe('CodingKeywords')
     @selectedCodes  = new Meteor.Collection(null)
     @annotations = new ReactiveVar()
+    @showFlagged = new ReactiveVar(false)
 
   Template.annotations.onRendered ->
     instance = Template.instance()
@@ -15,6 +16,9 @@ if Meteor.isClient
         query = {$and: [{$or:query}, {accessCode: null}] }
       else
         query = {accessCode: null}
+
+      if instance.showFlagged.get()
+        query.flagged = true
 
       annotations =
         _.map Annotations.find(query).fetch(), (annotation) ->
@@ -58,6 +62,9 @@ if Meteor.isClient
     selectedCodes: ->
       Template.instance().selectedCodes
 
+    showFlagged: ->
+      Template.instance().showFlagged.get()
+
     icon: ->
       header = @code?.header
       if header is 'Human Movement' then 'fa-bus'
@@ -67,6 +74,9 @@ if Meteor.isClient
       else if header is 'Human Animal Contact' then 'fa-paw'
 
   Template.annotations.events
+    'click .show-flagged': (event) ->
+      Template.instance().showFlagged.set(!Template.instance().showFlagged.get())
+
     'click .annotation-detail': (event, template) ->
       annotationId  = event.currentTarget.getAttribute('data-annotation-id')
       documentId    = event.currentTarget.getAttribute('data-doc-id')

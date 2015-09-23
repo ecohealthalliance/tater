@@ -4,6 +4,10 @@ template(name="annotations")
       +codingKeywords action='listing' selectedCodes=selectedCodes annotations=annotations
       .annotation-list-heading
         h1 Annotations
+        .show-flagged
+          input(type="checkbox", checked=showFlagged)
+          | Only Show Flagged
+          i.fa.fa-flag-o
       .annotations-list-container
         if Template.subscriptionsReady
           each annotationsByCode
