@@ -1,22 +1,8 @@
-.annotations-list-container
-  position absolute
-  top 2px
-  bottom 142.5px
-  width 77.5%
-  left 22.5%
-  overflow-x scroll
-  padding-top 85px
-  border-left 2px solid lighten($primary-light, 50%)
-
 .annotation-list-heading
-  @extend .document-heading
-  width 77.5%
-  border-right 0
+  width 55%
+  padding-right 20px
 
 .annotation-group
-  width 80%
-  +below(3)
-    width 100%
   h3
     body-font()
     padding-left 15px
@@ -28,13 +14,12 @@
         color darken($color, 20%)
       .annotation-detail
         background-color lighten($color,80%)
-        border 2px solid transparent
-        border-left 0
+        border-top 2px solid transparent
+        border-bottom 2px solid transparent
         linkTransition()
         &:hover
           background-color darken(@background-color, 5%)
-          border 2px solid darken($color, 10%)
-          border-left 0
+          border-color darken($color, 10%)
       .details
         color darken($color, 10%)
 
@@ -42,8 +27,6 @@
   cursor pointer
   padding 15px 35px 15px 15px
   margin-bottom 10px
-  border-top-right-radius 4px
-  border-bottom-right-radius 4px
   p
     margin-bottom 10px
   .details
@@ -58,3 +41,31 @@
   line-height 36px
   i
     margin-left 4px
+
+.document-list-container
+  margin-top -20px
+  li
+    padding 15px
+    border-bottom 1px solid lighten($primary-light, 60%)
+    position relative
+    pointer()
+    &:hover
+      background-color $ll-gray
+    &.selected
+      background-color lighten($primary-light, 80%)
+      &::after
+        @extend .icon
+        centerVertically()
+        right 15px
+        content '\f06e'
+        color $primary-light
+
+.document-list-heading
+  h2
+    body-font()
+    font-size 18px
+
+.doc-group
+  display block
+  color $d-gray
+  font-size 80%

@@ -1,19 +1,14 @@
 template(name="annotations")
-  .documents
-    each documents
-      label
-        input.document-checkbox(type='checkbox' name='documents' value=_id)
-        | #{title}
-  .document-detail-container
-    if currentUser
+  if currentUser
+    .document-detail-container
       +codingKeywords action='listing' selectedCodes=selectedCodes annotations=annotations
-      .annotation-list-heading
+      .annotation-list-heading.pane-head.pane-head-m
         h1 Annotations
         .show-flagged
           input(type="checkbox", checked=showFlagged)
-          | Only Show Flagged
+          | View Flagged
           i.fa.fa-flag-o
-      .annotations-list-container
+      .annotations-list-container.pane.pane-m
         if Template.subscriptionsReady
           each annotationsByCode
             .annotation-group(class="color-#{code.color}")
@@ -29,6 +24,18 @@ template(name="annotations")
                       spna.user-email= user
         else
           .loading
-    else
-      .container.space-top-2
-        p Please log in or sign up to continue.
+      .document-list-heading.pane-head.pane-head-r
+        h2 Filter by Document
+      .document-list-container.pane.pane-r
+        if Template.subscriptionsReady
+          ul.list-unstyled
+            each documents
+              li.document-selector(data-id=_id)
+                span.doc-title #{title}
+                if isAdmin
+                  span.doc-group=docGroup
+        else
+          .loading
+  else
+    .container.space-top-2
+      p Please log in or sign up to continue.

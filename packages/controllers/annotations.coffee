@@ -2,6 +2,7 @@ if Meteor.isClient
   Template.annotations.onCreated ->
     @subscribe('annotationsAndDocuments')
     @subscribe('CodingKeywords')
+    @subscribe('groups')
     @selectedCodes  = new Meteor.Collection(null)
     @annotations = new ReactiveVar()
     @showFlagged = new ReactiveVar(false)
@@ -82,6 +83,9 @@ if Meteor.isClient
       else if header is 'Illness Medical Care/Treatment and Death' then 'fa-medkit'
       else if header is 'Human Animal Contact' then 'fa-paw'
 
+    docGroup: ->
+      @groupName()
+
   Template.annotations.events
     'click .show-flagged': (event, instance) ->
       instance.showFlagged.set(!instance.showFlagged.get())
@@ -91,9 +95,10 @@ if Meteor.isClient
       documentId    = event.currentTarget.getAttribute('data-doc-id')
       go "documentDetailWithAnnotation", {"_id": documentId, "annotationId" : annotationId}
 
-    'change .document-checkbox': (event, instance) ->
-      selectedDocumentIds = _.map $('.document-checkbox:checked'), (checkbox)->
-        checkbox.value
+    'click .document-selector': (event, instance) ->
+      $(event.currentTarget).toggleClass('selected')
+      selectedDocumentIds = _.map $('.document-selector.selected'), (selectedDoc)->
+        $(selectedDoc).data('id')
       instance.documents.set(selectedDocumentIds)
 
     'click .selectable-code': (event, instance) ->

@@ -2,13 +2,13 @@ template(name="documentDetail")
   if document
     .document-detail-container
       +codingKeywords action='coding' accessCode=accessCode
-      .document-heading
+      .document-heading.pane-head.pane-head-m
         h1.document-title= document.title
         if accessCode
           button.finished-annotating.btn.btn-primary(data-toggle="modal" data-target="#completionCodeModal")
             i.fa.fa-check-circle.icon-left
             span Finished Annotating
-      .document-container
+      .document-container.pane.pane-middle
         #documentContainer
           #documentBody.document-body
             .document-wrapper
@@ -17,9 +17,9 @@ template(name="documentDetail")
                 each annotationLayers
                   .document-annotations
                     pre.document-text= this
-      .annotation-search-container
+      .annotation-search-container.pane-head.pane-head-r
         input.annotation-search.form-control(type="text" placeholder="Search Annotations")
-      .annotation-container
+      .annotation-container.pane.pane-right
         ul.annotations.list-unstyled
           if Template.subscriptionsReady
             each annotations
