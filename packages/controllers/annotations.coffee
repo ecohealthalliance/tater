@@ -5,11 +5,13 @@ if Meteor.isClient
     @selectedCodes  = new Meteor.Collection(null)
     @annotations = new ReactiveVar()
     @showFlagged = new ReactiveVar(false)
+    @documents = new ReactiveVar([])
 
   Template.annotations.onRendered ->
     instance = Template.instance()
     @autorun ->
       selectedCodes = instance.selectedCodes.find().fetch()
+      query = {}
       if selectedCodes.length
         query = _.map selectedCodes, (code) ->
           {codeId: code._id}
@@ -19,6 +21,10 @@ if Meteor.isClient
 
       if instance.showFlagged.get()
         query.flagged = true
+
+      documents = instance.documents.get()
+      if documents.length
+        query.documentId = {$in: documents}
 
       annotations =
         _.map Annotations.find(query).fetch(), (annotation) ->
@@ -59,6 +65,9 @@ if Meteor.isClient
         Spacebars.SafeString("<span class='header'>"+header+"</span>")
       else
         ''
+    documents: ->
+      Documents.find()
+
     selectedCodes: ->
       Template.instance().selectedCodes
 
@@ -81,6 +90,11 @@ if Meteor.isClient
       annotationId  = event.currentTarget.getAttribute('data-annotation-id')
       documentId    = event.currentTarget.getAttribute('data-doc-id')
       go "documentDetailWithAnnotation", {"_id": documentId, "annotationId" : annotationId}
+
+    'change .document-checkbox': (event, instance) ->
+      selectedDocumentIds = _.map $('.document-checkbox:checked'), (checkbox)->
+        checkbox.value
+      instance.documents.set(selectedDocumentIds)
 
     'click .selectable-code': (event, instance) ->
       selectedCodeKeywordId  = event.currentTarget.getAttribute('data-id')

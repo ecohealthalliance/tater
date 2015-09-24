@@ -1,4 +1,9 @@
 template(name="annotations")
+  .documents
+    each documents
+      label
+        input.document-checkbox(type='checkbox' name='documents' value=_id)
+        | #{title}
   .document-detail-container
     if currentUser
       +codingKeywords action='listing' selectedCodes=selectedCodes annotations=annotations
