@@ -49,7 +49,7 @@ template(name="codingKeywords")
           ul.filteredCodes.list-unstyled
             each filteredCodes
               li.filter-result(class="code-#{color} {{selectable 'heading' 'filtered'}}")
-                span(data-id=_id class="{{selectable 'code' 'filtered'}}  {{selected}}")=code
+                span(data-id=_id class="{{selectable 'code' 'filtered'}}")=code
             else
               .no-results
                 i.fa.fa-search

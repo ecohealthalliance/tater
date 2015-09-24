@@ -72,7 +72,9 @@ if Meteor.isClient
       Template.instance().data.action is 'coding'
 
     selectable: (element, level, id) ->
-      if element is 'code'
+      if level is 'filtered'
+        'selectable-code'
+      else if element is 'code'
         selectable(level, 'selectable-code', @header, @subHeader, @keyword, @_id)
       else
         selectable(level, 'selectable', @header, @subHeader, @keyword, @_id)
@@ -126,7 +128,7 @@ if Meteor.isClient
       if searchText.length > 1 then instance.filtering.set true
       else instance.filtering.set false
       instance.searchText.set e.target.value
-      ), 200
+      ), 100
 
     'click .clear-search': (e, instance) ->
       instance.filtering.set false
