@@ -24,8 +24,7 @@ Feature: Documents
     And I log in as "non@admin.com"
     And I click on the Add Document link in the header
     And I fill out the new document form with title "Test Document"
-    Then I should be on the test group documents page
-    And I should see content "Test Document"
+    Then I should see content "Test Document"
     And I should see a "Success" toast
 
   @documents
