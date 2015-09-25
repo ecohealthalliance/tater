@@ -251,7 +251,7 @@ if Meteor.isServer
       accessibleViaCode = (code and document.codeAccessible() and (code is annotation.accessCode))
       accessibleViaUser = (user and group?.viewableByUser(user))
       if accessibleViaCode or accessibleViaUser
-        annotation.remove() ->
+        annotation.remove ->
           annotation
       else
         throw 'Unauthorized'

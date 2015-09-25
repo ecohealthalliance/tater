@@ -25,7 +25,7 @@ if Meteor.isClient
           toastr.error("Error")
         else
           toastr.success("Success")
-          go 'groupDocuments', {_id: fields.groupId}
+          go 'documentDetail', {_id: response}
 
 if Meteor.isServer
   Meteor.methods
