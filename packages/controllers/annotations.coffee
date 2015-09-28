@@ -6,7 +6,7 @@ if Meteor.isClient
     @selectedCodes  = new Meteor.Collection(null)
     @annotations = new ReactiveVar()
     @showFlagged = new ReactiveVar(false)
-    @documents = new ReactiveVar(new Meteor.Collection(null))
+    @documents = new Meteor.Collection(null)
 
   Template.annotations.onRendered ->
     instance = Template.instance()
@@ -23,7 +23,7 @@ if Meteor.isClient
       if instance.showFlagged.get()
         query.flagged = true
 
-      documents = _.pluck(instance.documents.get().find().fetch(), 'docID')
+      documents = _.pluck(instance.documents.find().fetch(), 'docID')
       if documents.length
         query.documentId = {$in: documents}
 
@@ -87,14 +87,14 @@ if Meteor.isClient
       @groupName()
 
     selectionState: (attr) ->
-      if Template.instance().documents.get().find().count() is 0
+      if Template.instance().documents.find().count() is 0
         if attr is 'class'
           'muted'
         else
           true
 
     selected: ->
-      if Template.instance().documents.get().find({docID:@_id}).count()
+      if Template.instance().documents.find({docID:@_id}).count()
         'selected'
 
   Template.annotations.events
@@ -108,13 +108,12 @@ if Meteor.isClient
 
     'click .document-selector': (event, instance) ->
       selectedDocID = $(event.currentTarget).data('id')
-      documents = instance.documents.get(documents)
+      documents = instance.documents
       docQuery = {docID:selectedDocID}
       unless documents.find(docQuery).count()
         documents.insert(docQuery)
       else
         documents.remove(docQuery)
-      instance.documents.set(documents)
 
     'click .selectable-code': (event, instance) ->
       selectedCodeKeywordId  = event.currentTarget.getAttribute('data-id')
@@ -145,7 +144,7 @@ if Meteor.isClient
           instance.selectedCodes.remove(codeKeyword)
 
     'click .clear-filters': (event, instance) ->
-      instance.documents.get().remove({})
+      instance.documents.remove({})
 
 
 if Meteor.isServer
