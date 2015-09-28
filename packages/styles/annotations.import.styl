@@ -53,17 +53,29 @@
       background-color $ll-gray
     &.selected
       background-color lighten($primary-light, 80%)
+    &.selected
+    &.selected-muted
       &::after
         @extend .icon
         centerVertically()
         right 15px
         content '\f06e'
         color $primary-light
+    &.selected-muted
+      background-color none
+      &::after
+        color lighten($primary-light, 60%)
 
 .document-list-heading
   h2
     body-font()
     font-size 18px
+  .clear-filters
+    color $primary-light
+    centerVertically()
+    right 15px
+    &:hover
+      color darken($primary-light, 20%)
 
 .doc-group
   display block

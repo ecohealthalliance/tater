@@ -6,7 +6,7 @@ if Meteor.isClient
     @selectedCodes  = new Meteor.Collection(null)
     @annotations = new ReactiveVar()
     @showFlagged = new ReactiveVar(false)
-    @documents = new ReactiveVar([])
+    @documents = new ReactiveVar(new Meteor.Collection(null))
 
   Template.annotations.onRendered ->
     instance = Template.instance()
@@ -23,7 +23,7 @@ if Meteor.isClient
       if instance.showFlagged.get()
         query.flagged = true
 
-      documents = instance.documents.get()
+      documents = _.pluck(instance.documents.get().find().fetch(), 'docID')
       if documents.length
         query.documentId = {$in: documents}
 
@@ -86,6 +86,16 @@ if Meteor.isClient
     docGroup: ->
       @groupName()
 
+    allSelected: ->
+      if Template.instance().documents.get().find().count() is 0
+        'selected-muted'
+      else
+        false
+
+    selected: ->
+      if Template.instance().documents.get().find({docID:@_id}).count()
+        'selected'
+
   Template.annotations.events
     'click .show-flagged': (event, instance) ->
       instance.showFlagged.set(!instance.showFlagged.get())
@@ -96,10 +106,14 @@ if Meteor.isClient
       go "documentDetailWithAnnotation", {"_id": documentId, "annotationId" : annotationId}
 
     'click .document-selector': (event, instance) ->
-      $(event.currentTarget).toggleClass('selected')
-      selectedDocumentIds = _.map $('.document-selector.selected'), (selectedDoc)->
-        $(selectedDoc).data('id')
-      instance.documents.set(selectedDocumentIds)
+      selectedDocID = $(event.currentTarget).data('id')
+      documents = instance.documents.get(documents)
+      doc = {'docID':selectedDocID}
+      unless documents.find({docID: selectedDocID}).count()
+        documents.insert(doc)
+      else
+        documents.remove({docID:selectedDocID})
+      instance.documents.set(documents)
 
     'click .selectable-code': (event, instance) ->
       selectedCodeKeywordId  = event.currentTarget.getAttribute('data-id')
@@ -128,6 +142,9 @@ if Meteor.isClient
             instance.selectedCodes.remove(codeKeyword)
         else
           instance.selectedCodes.remove(codeKeyword)
+
+      'click .clear-filters': (event, instance) ->
+
 
 if Meteor.isServer
 
