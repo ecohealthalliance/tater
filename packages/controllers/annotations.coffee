@@ -110,10 +110,10 @@ if Meteor.isClient
       selectedDocID = $(event.currentTarget).data('id')
       documents = instance.documents
       docQuery = {docID:selectedDocID}
-      unless documents.find(docQuery).count()
-        documents.insert(docQuery)
-      else
+      if documents.find(docQuery).count()
         documents.remove(docQuery)
+      else
+        documents.insert(docQuery)
 
     'click .selectable-code': (event, instance) ->
       selectedCodeKeywordId  = event.currentTarget.getAttribute('data-id')

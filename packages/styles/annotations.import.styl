@@ -45,7 +45,7 @@
 .document-list-container
   margin-top -20px
   li
-    padding 10px 15px
+    padding 10px 35px 10px 15px
     border-bottom 1px solid lighten($primary-light, 80%)
     position relative
     pointer()
@@ -70,14 +70,21 @@
   h2
     body-font()
     font-size 18px
+    width 50%
+    +below(1000px)
+      font-size 16px
   .clear-filters
     centerVertically()
     color $primary-light
     right 15px
     i
       font-size 13px
+      +below(1000px)
+        font-size 20px
     span
       font-size 12px
+      +below(1000px)
+        display none
     &:hover
       color darken($primary-light, 20%)
     &.muted
