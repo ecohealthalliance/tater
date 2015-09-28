@@ -2,14 +2,17 @@ if Meteor.isClient
   Template.annotations.onCreated ->
     @subscribe('annotationsAndDocuments')
     @subscribe('CodingKeywords')
+    @subscribe('groups')
     @selectedCodes  = new Meteor.Collection(null)
     @annotations = new ReactiveVar()
     @showFlagged = new ReactiveVar(false)
+    @documents = new Meteor.Collection(null)
 
   Template.annotations.onRendered ->
     instance = Template.instance()
     @autorun ->
       selectedCodes = instance.selectedCodes.find().fetch()
+      query = {}
       if selectedCodes.length
         query = _.map selectedCodes, (code) ->
           {codeId: code._id}
@@ -19,6 +22,10 @@ if Meteor.isClient
 
       if instance.showFlagged.get()
         query.flagged = true
+
+      documents = _.pluck(instance.documents.find().fetch(), 'docID')
+      if documents.length
+        query.documentId = {$in: documents}
 
       annotations =
         _.map Annotations.find(query).fetch(), (annotation) ->
@@ -59,6 +66,9 @@ if Meteor.isClient
         Spacebars.SafeString("<span class='header'>"+header+"</span>")
       else
         ''
+    documents: ->
+      Documents.find()
+
     selectedCodes: ->
       Template.instance().selectedCodes
 
@@ -73,6 +83,20 @@ if Meteor.isClient
       else if header is 'Illness Medical Care/Treatment and Death' then 'fa-medkit'
       else if header is 'Human Animal Contact' then 'fa-paw'
 
+    docGroup: ->
+      @groupName()
+
+    selectionState: (attr) ->
+      if Template.instance().documents.find().count() is 0
+        if attr is 'class'
+          'muted'
+        else
+          true
+
+    selected: ->
+      if Template.instance().documents.find({docID:@_id}).count()
+        'selected'
+
   Template.annotations.events
     'click .show-flagged': (event, instance) ->
       instance.showFlagged.set(!instance.showFlagged.get())
@@ -81,6 +105,15 @@ if Meteor.isClient
       annotationId  = event.currentTarget.getAttribute('data-annotation-id')
       documentId    = event.currentTarget.getAttribute('data-doc-id')
       go "documentDetailWithAnnotation", {"_id": documentId, "annotationId" : annotationId}
+
+    'click .document-selector': (event, instance) ->
+      selectedDocID = $(event.currentTarget).data('id')
+      documents = instance.documents
+      docQuery = {docID:selectedDocID}
+      if documents.find(docQuery).count()
+        documents.remove(docQuery)
+      else
+        documents.insert(docQuery)
 
     'click .selectable-code': (event, instance) ->
       selectedCodeKeywordId  = event.currentTarget.getAttribute('data-id')
@@ -109,6 +142,10 @@ if Meteor.isClient
             instance.selectedCodes.remove(codeKeyword)
         else
           instance.selectedCodes.remove(codeKeyword)
+
+    'click .clear-filters': (event, instance) ->
+      instance.documents.remove({})
+
 
 if Meteor.isServer
 

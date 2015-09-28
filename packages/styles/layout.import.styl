@@ -1,0 +1,57 @@
+.pane
+  position absolute
+  top 2px
+  bottom 142.5px
+  width 22.5%
+  padding-top 85px
+  overflow-x scroll
+
+.pane-l
+  left 0
+
+.pane-m
+  position absolute
+  top 2px
+  bottom 142.5px
+  width 55%
+  left 22.5%
+  overflow-x scroll
+  border-left 2px solid lighten($primary-light, 50%)
+  border-right 2px solid lighten($primary-light, 50%)
+
+.pane-r
+  right 0
+
+.pane-head
+  position absolute
+  min-height 65px
+  max-height 65px
+  overflow hidden
+  top 2px
+  z-index $mid-layer
+  width 22.5%
+  background lighten(desaturate(alpha($background-primary, 95%),100%),20%)
+  padding 15px
+  border-bottom 1px solid lighten($primary-light, 60%)
+  input
+    margin-bottom 0
+  h1
+  h2
+    centerVertically()
+    body-font()
+    font-size 25px
+  h2
+    font-size 20px
+
+.pane-head-l
+  left 0
+
+.pane-head-m
+  width 55%
+  left 22.5%
+  padding 15px 200px 10px 20px
+  border-left $border
+  border-right $border
+
+.pane-head-r
+  right 0

@@ -14,39 +14,11 @@
     transform translate(-50%, 0)
     left 40%
 
-.coding-container
-.annotation-container
-.document-container
-  position absolute
-  top 2px
-  bottom 142.5px
-  width 22.5%
-  overflow-x scroll
-
-.coding-container
-  left 0
-
-.code-search-container
-.document-heading
-.annotation-search-container
-  position absolute
-  min-height 65px
-  top 2px
-  z-index $mid-layer
-  width 22.5%
-  background alpha($background-primary, 95%)
-  padding 15px
-  input
-    margin-bottom 0
-
 .annotations-selected-container
   background alpha($background-primary, 55%)
   padding 10px 10px 10px 10px
   position relative
   top -10px
-
-.annotation-search-container
-  right 0
 
 .no-results
   padding 0 15px
@@ -56,10 +28,6 @@
     font-size 250%
     color lighten($m-gray,10%)
     margin-bottom 10px
-
-.code-list
-.annotations
-  margin-top 85px
 
 .overlapping
   position fixed
@@ -81,18 +49,6 @@
     margin 0
   i
     font-size 1.5em
-
-.document-heading
-  width 55%
-  left 22.5%
-  padding 15px 200px 10px 20px
-  background alpha($background-primary, 95%)
-  border-left $border
-  border-right $border
-  h1
-    centerVertically()
-    body-font()
-    font-size 25px
 
 .finished-annotating
   centerVertically()
@@ -133,6 +89,7 @@
     font-size 1em
     top 0
     z-index -1
+    text-shadow none
     pre
       color transparent
 
