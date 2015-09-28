@@ -26,15 +26,15 @@ template(name="annotations")
           .loading
       .document-list-heading.pane-head.pane-head-r
         h2 Filter by Document
-        unless allSelected
-          button.btn-plain.clear-filters
-            i.fa.fa-times-circle
+        button.btn-plain.clear-filters(class="{{selectionState 'class'}}" disabled="{{selectionState 'disabled'}}")
+          i.fa.fa-times-circle
+          span Clear selection
 
       .document-list-container.pane.pane-r
         if Template.subscriptionsReady
           ul.list-unstyled
             each documents
-              li.document-selector(data-id=_id class="{{selected}} {{allSelected}}")
+              li.document-selector(data-id=_id class="{{selected}} {{selectionState 'class'}}")
                 span.doc-title #{title}
                 if isAdmin
                   span.doc-group=docGroup

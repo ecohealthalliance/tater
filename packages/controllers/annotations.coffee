@@ -86,11 +86,12 @@ if Meteor.isClient
     docGroup: ->
       @groupName()
 
-    allSelected: ->
+    selectionState: (attr) ->
       if Template.instance().documents.get().find().count() is 0
-        'selected-muted'
-      else
-        false
+        if attr is 'class'
+          'muted'
+        else
+          true
 
     selected: ->
       if Template.instance().documents.get().find({docID:@_id}).count()
@@ -108,11 +109,11 @@ if Meteor.isClient
     'click .document-selector': (event, instance) ->
       selectedDocID = $(event.currentTarget).data('id')
       documents = instance.documents.get(documents)
-      doc = {'docID':selectedDocID}
-      unless documents.find({docID: selectedDocID}).count()
-        documents.insert(doc)
+      docQuery = {docID:selectedDocID}
+      unless documents.find(docQuery).count()
+        documents.insert(docQuery)
       else
-        documents.remove({docID:selectedDocID})
+        documents.remove(docQuery)
       instance.documents.set(documents)
 
     'click .selectable-code': (event, instance) ->
@@ -143,7 +144,8 @@ if Meteor.isClient
         else
           instance.selectedCodes.remove(codeKeyword)
 
-      'click .clear-filters': (event, instance) ->
+    'click .clear-filters': (event, instance) ->
+      instance.documents.get().remove({})
 
 
 if Meteor.isServer
