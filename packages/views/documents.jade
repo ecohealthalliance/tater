@@ -8,7 +8,7 @@ template(name="documents")
         ul.list.document-list.list-unstyled
           each documents
             li.document
-                a.list-link(href="{{path route='documentDetail' params=this}}")
+                a.list-link.clearfix(href="{{path route='documentDetail' params=this}}")
                   span.document-title= title
                   span.document-group= groupName
       else
