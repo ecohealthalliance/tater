@@ -34,16 +34,20 @@
       text-decoration none
 
   .document-title
-    padding-right 22%
+  .document-group
+    truncateString()
+
+  .document-title
+    width 55%
     font-size 1.1em
+    float left
 
   .document-group
-    centerVertically()
-    right 15px
-    width 20%
-    truncateString()
+    width 40%
+    float right
     text-align right
     color darken($m-gray, 10%)
+    font-size 95%
     font-style italic
 
 .delete-document-button
