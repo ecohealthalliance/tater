@@ -24,8 +24,7 @@ if Meteor.isClient
         query.flagged = true
 
       documents = _.pluck(instance.documents.find().fetch(), 'docID')
-      if documents.length
-        query.documentId = {$in: documents}
+      query.documentId = {$in: documents}
 
       annotations =
         _.map Annotations.find(query).fetch(), (annotation) ->
