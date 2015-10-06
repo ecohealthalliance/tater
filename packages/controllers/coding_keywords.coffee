@@ -96,6 +96,9 @@ if Meteor.isClient
       else
         'down'
 
+    position: () ->
+      if @location is 'right' then 'r' else 'l'
+
   hasAnnotations = (level, header, subHeader) ->
     if level is 'header'
       checkCode({header:header}).length
@@ -119,6 +122,7 @@ if Meteor.isClient
   checkCode = (query) ->
     _.filter CodingKeywords.find(query).fetch(), (code) ->
       Annotations.findOne({codeId:code._id})
+
 
   Template.codingKeywords.events
 
