@@ -31,25 +31,25 @@ template(name="codingKeywords")
                   span.header-name.selectable-code(data-id=_id)= header
           else
             each headers
-              li.code-header(class="code-header-#{color} {{selectable 'heading' 'header'}}" )
+              li.code-header.selectable.selectable-code(class="code-header-#{color}" )
                 i(class="{{toggleDirection 'header'}}")
-                span(data-id=_id class="{{selectable 'code' 'header'}} {{selected}}")
+                span.selectable.selectable-code(data-id=_id class="{{selected}}")
                   span.icon.fa(class=icon)
                   span.header-name= header
                 ul.code-sub-headers.list-unstyled(class="{{showList 'header'}}")
                   each subHeaders header
-                    li.code-sub-header(class="{{selectable 'heading' 'subHeader'}}")
+                    li.code-sub-header.selectable.selectable-code
                       i(class="{{toggleDirection 'subHeader'}}")
-                      span(data-id=_id class="{{selectable 'code' 'subHeader'}} {{selected}}")= subHeader
+                      span.selectable.selectable-code(data-id=_id class="{{selected}}")= subHeader
                       ul.code-keywords.list-unstyled(class="{{showList 'subHeader'}}")
                         each keywords subHeader
-                          li.code-keyword(class="{{selectable 'heading' 'keyword' }}")
-                            span(data-id=_id class="{{selectable 'code' 'keyword' }} {{selected}}")= keyword
+                          li.code-keyword.selectable.selectable-code
+                            span.selectable.selectable-code(data-id=_id class="{{selected}}")= keyword
         else
           ul.filteredCodes.list-unstyled
             each filteredCodes
-              li.filter-result(class="code-#{color} {{selectable 'heading' 'filtered'}}")
-                span(data-id=_id class="{{selectable 'code' 'filtered'}}")=code
+              li.filter-result.selectable.selectable-code(class="code-#{color}")
+                span.selectable.selectable-code(data-id=_id)=code
             else
               .no-results
                 i.fa.fa-search

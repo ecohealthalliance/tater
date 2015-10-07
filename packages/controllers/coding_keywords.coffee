@@ -71,14 +71,6 @@ if Meteor.isClient
     coding: ->
       Template.instance().data.action is 'coding'
 
-    selectable: (element, level, id) ->
-      if level is 'filtered'
-        'selectable-code'
-      else if element is 'code'
-        selectable(level, 'selectable-code', @header, @subHeader, @keyword, @_id)
-      else
-        selectable(level, 'selectable', @header, @subHeader, @keyword, @_id)
-
     selected: (codeId) ->
       if Template.instance().data.selectedCodes.findOne(@_id)
         'selected'
