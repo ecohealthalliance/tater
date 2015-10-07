@@ -2,7 +2,7 @@ template(name="annotations")
   if currentUser
     .document-detail-container
       .document-list-heading.pane-head.pane-head-l
-        h2 Filter by Document
+        h2 Documents
         button.btn-plain.clear-filters(class="{{selectionState 'class'}}" disabled="{{selectionState 'disabled'}}")
           i.fa.fa-times-circle
           span Clear selection
@@ -25,23 +25,26 @@ template(name="annotations")
           | View Flagged
           i.fa.fa-flag-o
       .annotations-list-container.pane.pane-m
-        if Template.subscriptionsReady
-          each annotationsByCode
-            .annotation-group(class="color-#{code.color}")
-              h3
-                span.icon.fa(class=icon)
-                | #{codeString}
-              ul.list-unstyled
-                each annotations
-                  li.annotation-detail(data-annotation-id= annotationId, data-doc-id= documentId)
-                    p= annotatedText
-                    .details.clearfix
-                      span.document-title= documentTitle
-                      spna.user-email= user
+        if subscribed
+          if annotationsByCode
+            each annotationsByCode
+              .annotation-group(class="color-#{code.color}")
+                h3
+                  span.icon.fa(class=icon)
+                  | #{codeString}
+                ul.list-unstyled
+                  each annotations
+                    li.annotation-detail(data-annotation-id= annotationId, data-doc-id= documentId)
+                      p= annotatedText
+                      .details.clearfix
+                        span.document-title= documentTitle
+                        spna.user-email= user
+          else
+            p.text-center Select a document to view annotations
         else
           .loading
 
-      +codingKeywords action='listing' selectedCodes=selectedCodes annotations=annotations location='r'
+      +codingKeywords action='listing' selectedCodes=selectedCodes annotations=annotations location='right'
 
   else
     .container.space-top-2

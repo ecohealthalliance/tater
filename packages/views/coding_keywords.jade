@@ -1,14 +1,23 @@
 template(name="codingKeywords")
-  .code-search-container.pane-head(class="pane-head-{{location}}")
+  .code-search-container.pane-head(class="pane-head-{{position}}")
     input.code-search.form-control(type="text" placeholder="Search Code Keywords")
     i.fa.fa-times-circle.clear-search
-  .coding-container.pane(class="pane-{{location}}")
+  .coding-container.pane(class="pane-{{position}}")
     ul.list-unstyled.code-list(class=action)
       if selectedCodes
         .clear-codes-container
           button.btn.btn-block.btn-default.btn-sm.clear-selected-codes Clear Selected Codes
       if Template.subscriptionsReady
-        unless filtering
+        if filtering
+          ul.filteredCodes.list-unstyled
+            each filteredCodes
+              li.filter-result(class="code-#{color} {{selectable 'heading' 'filtered'}}")
+                span(data-id=_id class="{{selectable 'code' 'filtered'}}")=code
+            else
+              .no-results
+                i.fa.fa-search
+                p Sorry, no codes found
+        else
           if coding
             each headers
               unless ../accessCode
@@ -45,16 +54,8 @@ template(name="codingKeywords")
                         each keywords subHeader
                           li.code-keyword(class="{{selectable 'heading' 'keyword' }}")
                             span(data-id=_id class="{{selectable 'code' 'keyword' }} {{selected}}")= keyword
-        else
-          ul.filteredCodes.list-unstyled
-            each filteredCodes
-              li.filter-result(class="code-#{color} {{selectable 'heading' 'filtered'}}")
-                span(data-id=_id class="{{selectable 'code' 'filtered'}}")=code
-            else
-              .no-results
-                i.fa.fa-search
-                p Sorry, no codes found
         .text-center
           a(href="mailto:hagan@ecohealthalliance.org?subject=Tater%20Coding%20Keyword%20Suggestion") Suggest new coding keyword
+
       else
         .loading
