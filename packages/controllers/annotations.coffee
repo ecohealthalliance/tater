@@ -163,4 +163,10 @@ if Meteor.isServer
     documents
 
   Meteor.publish 'annotationsForDocuments', (docIds) ->
-    Annotations.find(documentId: {$in: docIds})
+    user = Meteor.users.findOne({_id: @userId})
+    if user?.admin
+      Annotations.find(documentId: {$in: docIds})
+    else if user
+      Annotations.find(groupId: user.group, documentId: {$in: docIds})
+    else
+      @ready()
