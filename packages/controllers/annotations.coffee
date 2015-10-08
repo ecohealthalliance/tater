@@ -67,7 +67,19 @@ if Meteor.isClient
       else
         ''
     documents: ->
-      Documents.find()
+      Documents.find().fetch().sort((a,b)->
+        if a.groupName() > b.groupName()
+          1
+        else if a.groupName() < b.groupName()
+          -1
+        else
+          if a.title > b.title
+            1
+          else if a.title == b.title
+            0
+          else
+            -1
+      )
 
     selectedCodes: ->
       Template.instance().selectedCodes
