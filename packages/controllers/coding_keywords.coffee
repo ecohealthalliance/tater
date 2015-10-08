@@ -12,6 +12,7 @@ if Meteor.isClient
     instance = Template.instance()
 
     @autorun ->
+      annotatedCodeIds = Session.get('annotatedCodeIds')
       query = []
       searchText = instance.searchText.get().split(' ')
       _.each searchText, (text) ->
@@ -120,9 +121,8 @@ if Meteor.isClient
         className
 
   checkCode = (query) ->
-    _.filter CodingKeywords.find(query).fetch(), (code) ->
-      Annotations.findOne({codeId:code._id})
-
+    query._id = {$in: Session.get('annotatedCodeIds')}
+    CodingKeywords.find(query).fetch()
 
   Template.codingKeywords.events
 

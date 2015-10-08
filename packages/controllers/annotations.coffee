@@ -1,6 +1,6 @@
 if Meteor.isClient
   Template.annotations.onCreated ->
-    @subscribe('allDocuments')
+    @subscribe('annotationsAndDocuments')
     @subscribe('CodingKeywords')
     @subscribe('groups')
     @selectedCodes  = new Meteor.Collection(null)
@@ -25,7 +25,6 @@ if Meteor.isClient
         query.flagged = true
 
       documents = _.pluck(instance.documents.find().fetch(), 'docID')
-      Meteor.subscribe('annotationsForDocuments', documents, -> instance.subscribing.set(false))
       query.documentId = {$in: documents}
 
       annotations =
@@ -51,6 +50,9 @@ if Meteor.isClient
           .value()
 
       instance.annotations.set(sortedAnnotations)
+      annotatedCodeIds = _.pluck(_.pluck(sortedAnnotations, 'code'), '_id')
+      Session.set('annotatedCodeIds', annotatedCodeIds)
+      instance.subscribing.set(false)
 
   Template.annotations.helpers
     annotationsByCode: ->
@@ -154,19 +156,15 @@ if Meteor.isClient
 
 if Meteor.isServer
 
-  Meteor.publish 'allDocuments', ->
+  Meteor.publish 'annotationsAndDocuments', ->
     user = Meteor.users.findOne({_id: @userId})
     if user?.admin
       documents = Documents.find({})
     else if user
       documents = Documents.find({ groupId: user.group })
-    documents
-
-  Meteor.publish 'annotationsForDocuments', (docIds) ->
-    user = Meteor.users.findOne({_id: @userId})
-    if user?.admin
-      Annotations.find(documentId: {$in: docIds})
-    else if user
-      Annotations.find(groupId: user.group, documentId: {$in: docIds})
-    else
-      @ready()
+    docIds = documents.map((d)-> d._id)
+    [
+      documents
+      Annotations.find
+        documentId: {$in: docIds}
+    ]
