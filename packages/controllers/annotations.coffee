@@ -5,6 +5,7 @@ if Meteor.isClient
     @subscribe('groups')
     @selectedCodes  = new Meteor.Collection(null)
     @annotations = new ReactiveVar()
+    @selectableCodeIds = new ReactiveVar()
     @showFlagged = new ReactiveVar(false)
     @documents = new Meteor.Collection(null)
     @subscribing = new ReactiveVar(false)
@@ -51,12 +52,14 @@ if Meteor.isClient
 
       instance.annotations.set(sortedAnnotations)
       annotatedCodeIds = _.pluck(_.pluck(sortedAnnotations, 'code'), '_id')
-      Session.set('annotatedCodeIds', annotatedCodeIds)
+      instance.selectableCodeIds.set(annotatedCodeIds)
       instance.subscribing.set(false)
 
   Template.annotations.helpers
     annotationsByCode: ->
       Template.instance().annotations.get()
+    selectableCodeIds: ->
+      Template.instance().selectableCodeIds
     codeString: ->
       header = @code?.header
       subHeader = @code?.subHeader

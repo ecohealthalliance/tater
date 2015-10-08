@@ -7,12 +7,12 @@ if Meteor.isClient
     @searchText = new ReactiveVar('')
     @filtering = new ReactiveVar(false)
     @filteredCodes = new ReactiveVar()
+    @selectableCodeIds = @data.selectableCodeIds
 
   Template.codingKeywords.onRendered ->
     instance = Template.instance()
 
     @autorun ->
-      annotatedCodeIds = Session.get('annotatedCodeIds')
       query = []
       searchText = instance.searchText.get().split(' ')
       _.each searchText, (text) ->
@@ -121,7 +121,7 @@ if Meteor.isClient
         className
 
   checkCode = (query) ->
-    query._id = {$in: Session.get('annotatedCodeIds')}
+    query._id = {$in: Template.instance().selectableCodeIds.get()}
     CodingKeywords.find(query).fetch()
 
   Template.codingKeywords.events
