@@ -174,7 +174,9 @@ if Meteor.isServer
   Meteor.publish 'annotationsAndDocuments', ->
     user = Meteor.users.findOne({_id: @userId})
     if user?.admin
-      documents = Documents.find({})
+      codeAccessibleGroups = Groups.find({codeAccessible: true}).fetch()
+      codeAccessibleGroupIds = _.pluck(codeAccessibleGroups, '_id')
+      documents = Documents.find({groupId: {$nin: codeAccessibleGroupIds}})
     else if user
       documents = Documents.find({ groupId: user.group })
     docIds = documents.map((d)-> d._id)
