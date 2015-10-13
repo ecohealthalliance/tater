@@ -6,7 +6,7 @@ if Meteor.isClient
       fields = {
         name: form.name?.value
         description: form.description?.value
-        codeAccessible: form.codeAccessible?.value
+        codeAccessible: form.codeAccessible?.checked
       }
       Meteor.call 'createGroup', fields, (error, response) ->
         if error
