@@ -1,7 +1,7 @@
 template(name="documentDetail")
   if document
     .document-detail-container
-      +codingKeywords action='coding' accessCode=accessCode
+      +codingKeywords action='coding' accessCode=accessCode location='left'
       .document-heading.pane-head.pane-head-m
         h1.document-title= document.title
         if accessCode
@@ -19,7 +19,7 @@ template(name="documentDetail")
                     pre.document-text= this
       .annotation-search-container.pane-head.pane-head-r
         input.annotation-search.form-control(type="text" placeholder="Search Annotations")
-      .annotation-container.pane.pane-right
+      .annotation-container.pane.pane-r
         ul.annotations.list-unstyled
           if Template.subscriptionsReady
             each annotations

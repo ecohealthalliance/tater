@@ -7,6 +7,7 @@ if Meteor.isClient
     @searchText = new ReactiveVar('')
     @filtering = new ReactiveVar(false)
     @filteredCodes = new ReactiveVar()
+    @selectableCodeIds = @data.selectableCodeIds
 
   Template.codingKeywords.onRendered ->
     instance = Template.instance()
@@ -96,6 +97,9 @@ if Meteor.isClient
       else
         'down'
 
+    position: () ->
+      if @location is 'right' then 'r' else 'l'
+
   hasAnnotations = (level, header, subHeader) ->
     if level is 'header'
       checkCode({header:header}).length
@@ -117,8 +121,8 @@ if Meteor.isClient
         className
 
   checkCode = (query) ->
-    _.filter CodingKeywords.find(query).fetch(), (code) ->
-      Annotations.findOne({codeId:code._id})
+    query._id = {$in: Template.instance().selectableCodeIds.get()}
+    CodingKeywords.find(query).fetch()
 
   Template.codingKeywords.events
 

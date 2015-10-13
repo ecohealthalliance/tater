@@ -5,8 +5,10 @@ if Meteor.isClient
     @subscribe('groups')
     @selectedCodes  = new Meteor.Collection(null)
     @annotations = new ReactiveVar()
+    @selectableCodeIds = new ReactiveVar()
     @showFlagged = new ReactiveVar(false)
     @documents = new Meteor.Collection(null)
+    @subscribing = new ReactiveVar(false)
 
   Template.annotations.onRendered ->
     instance = Template.instance()
@@ -24,8 +26,7 @@ if Meteor.isClient
         query.flagged = true
 
       documents = _.pluck(instance.documents.find().fetch(), 'docID')
-      if documents.length
-        query.documentId = {$in: documents}
+      query.documentId = {$in: documents}
 
       annotations =
         _.map Annotations.find(query).fetch(), (annotation) ->
@@ -50,10 +51,15 @@ if Meteor.isClient
           .value()
 
       instance.annotations.set(sortedAnnotations)
+      annotatedCodeIds = _.pluck(_.pluck(sortedAnnotations, 'code'), '_id')
+      instance.selectableCodeIds.set(annotatedCodeIds)
+      instance.subscribing.set(false)
 
   Template.annotations.helpers
     annotationsByCode: ->
       Template.instance().annotations.get()
+    selectableCodeIds: ->
+      Template.instance().selectableCodeIds
     codeString: ->
       header = @code?.header
       subHeader = @code?.subHeader
@@ -109,6 +115,9 @@ if Meteor.isClient
       if Template.instance().documents.find({docID:@_id}).count()
         'selected'
 
+    subscribed: ->
+      Template.instance().subscriptionsReady() and not Template.instance().subscribing.get()
+
   Template.annotations.events
     'click .show-flagged': (event, instance) ->
       instance.showFlagged.set(!instance.showFlagged.get())
@@ -122,6 +131,7 @@ if Meteor.isClient
       selectedDocID = $(event.currentTarget).data('id')
       documents = instance.documents
       docQuery = {docID:selectedDocID}
+      instance.subscribing.set(true)
       if documents.find(docQuery).count()
         documents.remove(docQuery)
       else
