@@ -9,7 +9,6 @@ if Meteor.isClient
     @showFlagged = new ReactiveVar(false)
     @documents = new Meteor.Collection(null)
     @selectedGroups = new Meteor.Collection(null)
-    @selection = new ReactiveVar()
 
   Template.annotations.onRendered ->
     instance = Template.instance()
