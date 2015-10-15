@@ -9,6 +9,7 @@ if Meteor.isClient
     @showFlagged = new ReactiveVar(false)
     @documents = new Meteor.Collection(null)
     @selectedGroups = new Meteor.Collection(null)
+    @selection = new ReactiveVar()
 
   Template.annotations.onRendered ->
     instance = Template.instance()
@@ -124,6 +125,10 @@ if Meteor.isClient
     groupDocuments: ->
       Documents.find({groupId: @_id}, {sort: {title: 1}})
 
+    allSelected: ->
+      if Template.instance().documents.find().count() == Documents.find().count()
+        true
+
   Template.annotations.events
     'click .show-flagged': (event, instance) ->
       instance.showFlagged.set(!instance.showFlagged.get())
@@ -194,6 +199,15 @@ if Meteor.isClient
 
     'click .group-selector i': (event, instance) ->
       $(event.target).toggleClass('down up').parent().siblings('.group-docs').toggleClass('hidden')
+
+    'click .select-all': (event, instance) ->
+      _.each Documents.find().fetch(), (doc) ->
+        docQuery = {docID:doc._id}
+        unless instance.documents.find(docQuery).count()
+          instance.documents.insert(docQuery)
+      _.each Groups.find().fetch(), (group) ->
+        unless instance.selectedGroups.find({id:group._id}).count()
+          instance.selectedGroups.insert({id:group._id})
 
 if Meteor.isServer
 

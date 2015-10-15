@@ -3,14 +3,18 @@ template(name="annotations")
     .document-detail-container
       .document-list-heading.pane-head.pane-head-l
         h2 Documents
-        button.btn-plain.clear-filters(class="{{selectionState 'class'}}" disabled="{{selectionState 'disabled'}}")
-          i.fa.fa-times-circle
-          span Clear selection
+        .actions
+          button.btn-plain.select-all(disabled="{{allSelected}}")
+            i.fa.fa-eye
+            span Select all
+          button.btn-plain.clear-filters(class="{{selectionState 'class'}}" disabled="{{selectionState 'disabled'}}")
+            i.fa.fa-times-circle
+            span Clear selection
 
       .document-list-container.pane.pane-l
         if Template.subscriptionsReady
           if isAdmin
-            ul.list-unstyled
+            ul.all-docs-list.list-unstyled
               each groups
                 li.group-selector-wrap
                   .group-selector(data-group=_id)
@@ -21,7 +25,7 @@ template(name="annotations")
                       li.document-selector(data-id=_id class="{{selectedDoc}}")
                         span.doc-title #{title}
           else
-            ul.list-unstyled
+            ul.group-docs-list.list-unstyled
               each documents
                 li.document-selector(data-id=_id class="{{selectedDoc}}")
                   span.doc-title #{title}
