@@ -53,7 +53,6 @@ makeButton($color, $text = white, $dark = false, $noOutline = false, $hoverColor
 
 loading($positioned=true)
   @extend .icon
-  animate(1s)
   if $positioned
     centerPosition()
     position absolute
@@ -64,6 +63,7 @@ loading($positioned=true)
   font-size 5em
   color $m-gray
   &::before
+    animate(1s)
     content '\f1ce'
 
 animate($speed)

@@ -17,7 +17,7 @@ template(name="annotations")
             ul.all-docs-list.list-unstyled
               each groups
                 li.group-selector-wrap
-                  .group-selector(data-group=_id)
+                  .group-selector(data-group=_id class="{{toggleEnabled}}")
                     i.down
                     span(class="{{selectedGroup}}")=name
                   ul.group-docs.list-unstyled.hidden

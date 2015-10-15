@@ -115,7 +115,7 @@ if Meteor.isClient
         'selected'
 
     selectedGroup: ->
-      if Template.instance().selectedGroups.find({id:@_id}).count()
+      if Template.instance().selectedGroups.find({id:@_id}).count() and Documents.find({groupId:@_id}).count()
         'selected'
 
     groups: ->
@@ -127,6 +127,12 @@ if Meteor.isClient
     allSelected: ->
       if Template.instance().documents.find().count() == Documents.find().count()
         true
+
+    toggleEnabled: ->
+      if Documents.find({groupId: @_id}).count()
+        'enabled'
+      else
+        'disabled'
 
   Template.annotations.events
     'click .show-flagged': (event, instance) ->
@@ -178,7 +184,7 @@ if Meteor.isClient
       instance.documents.remove({})
       instance.selectedGroups.remove({})
 
-    'click .group-selector span': (event, instance) ->
+    'click .group-selector.enabled span': (event, instance) ->
       groupId = $(event.currentTarget).parent().data('group')
       selectedDocs = instance.documents
       selectedGroups = instance.selectedGroups
@@ -196,7 +202,7 @@ if Meteor.isClient
         else
           selectedDocs.remove(docQuery)
 
-    'click .group-selector i': (event, instance) ->
+    'click .group-selector.enabled i': (event, instance) ->
       $(event.target).toggleClass('down up').parent().siblings('.group-docs').toggleClass('hidden')
 
     'click .select-all': (event, instance) ->

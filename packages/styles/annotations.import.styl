@@ -71,6 +71,18 @@ selectedBG()
         background-color lighten($primary-light, 90%)
       &.selected
         selectedBG()
+    &.disabled
+      i
+        color lighten($primary-light, 70%)
+        cursor auto
+        &:hover
+          color @color
+      > span
+        color $d-gray
+        cursor auto
+        &:hover
+          background none
+
   .document-selector
     pointer()
     linkTransition()
