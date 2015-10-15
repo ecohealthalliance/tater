@@ -8,7 +8,7 @@ if Meteor.isClient
     @selectableCodeIds = new ReactiveVar()
     @showFlagged = new ReactiveVar(false)
     @documents = new Meteor.Collection(null)
-    @subscribing = new ReactiveVar(false)
+    @selectedGroups = new Meteor.Collection(null)
 
   Template.annotations.onRendered ->
     instance = Template.instance()
@@ -53,7 +53,6 @@ if Meteor.isClient
       instance.annotations.set(sortedAnnotations)
       annotatedCodeIds = _.pluck(_.pluck(sortedAnnotations, 'code'), '_id')
       instance.selectableCodeIds.set(annotatedCodeIds)
-      instance.subscribing.set(false)
 
   Template.annotations.helpers
     annotationsByCode: ->
@@ -111,12 +110,13 @@ if Meteor.isClient
         else
           true
 
-    selected: ->
+    selectedDoc: ->
       if Template.instance().documents.find({docID:@_id}).count()
         'selected'
 
-    subscribed: ->
-      Template.instance().subscriptionsReady() and not Template.instance().subscribing.get()
+    selectedGroup: ->
+      if Template.instance().selectedGroups.find({id:@_id}).count()
+        'selected'
 
     groups: ->
       Groups.find({}, {sort: {name: 1}})
@@ -137,7 +137,6 @@ if Meteor.isClient
       selectedDocID = $(event.currentTarget).data('id')
       documents = instance.documents
       docQuery = {docID:selectedDocID}
-      instance.subscribing.set(true)
       if documents.find(docQuery).count()
         documents.remove(docQuery)
       else
@@ -173,7 +172,28 @@ if Meteor.isClient
 
     'click .clear-filters': (event, instance) ->
       instance.documents.remove({})
+      instance.selectedGroups.remove({})
 
+    'click .group-selector span': (event, instance) ->
+      groupId = $(event.currentTarget).parent().data('group')
+      selectedDocs = instance.documents
+      selectedGroups = instance.selectedGroups
+      groupDocs = Documents.find({groupId: groupId})
+      if selectedGroups.find({id: groupId}).count()
+        selectedGroups.remove({id: groupId})
+      else
+        selectedGroups.insert({id: groupId})
+        showGroup = true
+
+      _.each groupDocs.fetch(), (doc) ->
+        docQuery = {docID:doc._id}
+        if showGroup
+          selectedDocs.insert(docQuery)
+        else
+          selectedDocs.remove(docQuery)
+
+    'click .group-selector i': (event, instance) ->
+      $(event.target).toggleClass('down up').parent().siblings('.group-docs').toggleClass('hidden')
 
 if Meteor.isServer
 
