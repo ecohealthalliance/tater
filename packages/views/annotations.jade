@@ -9,12 +9,25 @@ template(name="annotations")
 
       .document-list-container.pane.pane-l
         if Template.subscriptionsReady
-          ul.list-unstyled
-            each documents
-              li.document-selector(data-id=_id class="{{selected}} {{selectionState 'class'}}")
-                span.doc-title #{title}
-                if isAdmin
-                  span.doc-group=docGroup
+          if isAdmin
+            ul.list-unstyled
+              each groups
+                li.group-selector-wrap
+                  .group-selector
+                    i.down
+                    span=name
+                  ul.group-docs.list-unstyled
+                    each groupDocuments
+                      li.document-selector(data-id=_id class="{{selected}} {{selectionState 'class'}}")
+                        span.doc-title #{title}
+          else
+            ul.list-unstyled
+              each documents
+                li.document-selector(data-id=_id class="{{selected}} {{selectionState 'class'}}")
+                  span.doc-title #{title}
+                  if isAdmin
+                    span.doc-group=docGroup
+
         else
           .loading
 

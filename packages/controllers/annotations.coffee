@@ -118,6 +118,12 @@ if Meteor.isClient
     subscribed: ->
       Template.instance().subscriptionsReady() and not Template.instance().subscribing.get()
 
+    groups: ->
+      Groups.find({}, {sort: {name: 1}})
+
+    groupDocuments: ->
+      Documents.find({groupId: @_id}, {sort: {title: 1}})
+
   Template.annotations.events
     'click .show-flagged': (event, instance) ->
       instance.showFlagged.set(!instance.showFlagged.get())
