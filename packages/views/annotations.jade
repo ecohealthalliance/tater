@@ -3,18 +3,34 @@ template(name="annotations")
     .document-detail-container
       .document-list-heading.pane-head.pane-head-l
         h2 Documents
-        button.btn-plain.clear-filters(class="{{selectionState 'class'}}" disabled="{{selectionState 'disabled'}}")
-          i.fa.fa-times-circle
-          span Clear selection
+        .actions
+          button.btn-plain.select-all(disabled="{{allSelected}}")
+            i.fa.fa-eye
+            span Select all
+          button.btn-plain.clear-filters(class="{{selectionState 'class'}}" disabled="{{selectionState 'disabled'}}")
+            i.fa.fa-times-circle
+            span Clear selection
 
       .document-list-container.pane.pane-l
         if Template.subscriptionsReady
-          ul.list-unstyled
-            each documents
-              li.document-selector(data-id=_id class="{{selected}} {{selectionState 'class'}}")
-                span.doc-title #{title}
-                if isAdmin
-                  span.doc-group=docGroup
+          if isAdmin
+            ul.all-docs-list.list-unstyled
+              each groups
+                li.group-selector-wrap
+                  .group-selector(data-group=_id class="{{toggleEnabled}}")
+                    i.down
+                    span(class="{{selectedGroup}}")=name
+                  ul.group-docs.list-unstyled.hidden
+                    each groupDocuments
+                      li.document-selector(data-id=_id class="{{selectedDoc}}")
+                        span.doc-title #{title}
+          else
+            ul.group-docs-list.list-unstyled
+              each documents
+                li.document-selector(data-id=_id class="{{selectedDoc}}")
+                  span.doc-title #{title}
+                  if isAdmin
+                    span.doc-group=docGroup
         else
           .loading
 
@@ -25,24 +41,21 @@ template(name="annotations")
           | View Flagged
           i.fa.fa-flag-o
       .annotations-list-container.pane.pane-m
-        if subscribed
-          if annotationsByCode
-            each annotationsByCode
-              .annotation-group(class="color-#{code.color}")
-                h3
-                  span.icon.fa(class=icon)
-                  | #{codeString}
-                ul.list-unstyled
-                  each annotations
-                    li.annotation-detail(data-annotation-id= annotationId, data-doc-id= documentId)
-                      p= annotatedText
-                      .details.clearfix
-                        span.document-title= documentTitle
-                        spna.user-email= user
-          else
-            p.text-center Select a document to view annotations
+        if annotationsByCode
+          each annotationsByCode
+            .annotation-group(class="color-#{code.color}")
+              h3
+                span.icon.fa(class=icon)
+                | #{codeString}
+              ul.list-unstyled
+                each annotations
+                  li.annotation-detail(data-annotation-id= annotationId, data-doc-id= documentId)
+                    p= annotatedText
+                    .details.clearfix
+                      span.document-title= documentTitle
+                      spna.user-email= user
         else
-          .loading
+          p.text-center Select a document to view annotations
 
       +codingKeywords action='listing' selectedCodes=selectedCodes annotations=annotations selectableCodeIds=selectableCodeIds location='right'
 

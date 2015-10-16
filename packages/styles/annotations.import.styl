@@ -1,3 +1,6 @@
+selectedBG()
+  background-color lighten($primary-light, 85%)
+
 .annotation-list-heading
   width 55%
   padding-right 20px
@@ -43,28 +46,69 @@
     margin-left 4px
 
 .document-list-container
-  margin-top -20px
-  li
-    padding 10px 35px 10px 15px
+  margin-top -10px
+  .group-docs-list
+    margin-top -10px
+  .group-docs
+    margin-left 40px
+    margin-bottom 15px
+    li
+      &:last-child
+        border 0
+  .group-selector
+    @extend .code-header
+    position relative
+    i
+      top 5px
+      color $primary-light
+      &:hover
+        color $primary-dark
+    > span
+      pointer()
+      padding 5px
+      borderRadius(4px, 0, 0, 4px)
+      &:hover
+        background-color lighten($primary-light, 90%)
+      &.selected
+        selectedBG()
+    &.disabled
+      i
+        color lighten($primary-light, 70%)
+        cursor auto
+        &:hover
+          color @color
+      > span
+        color $d-gray
+        cursor auto
+        &:hover
+          background none
+
+  .document-selector
+    pointer()
+    linkTransition()
+    padding 7px 35px 7px 15px
     border-bottom 1px solid lighten($primary-light, 80%)
     position relative
-    pointer()
     &:hover
-      background-color $ll-gray
     &.selected
-      background-color lighten($primary-light, 80%)
+      selectedBG()
+      borderRadius(2px, 0, 0, 2px)
       border-bottom 1px solid lighten($primary-light, 50%)
+    &:hover
+      background-color lighten($primary-light, 95%)
+  .group-selector span
+  .document-selector
     &.selected
-    &.muted
       &::after
         @extend .icon
         centerVertically()
         right 15px
         content '\f06e'
-        color $primary-light
-    &.muted
+        color lighten($primary-light,30%)
+  .group-selector span
+    &.selected
       &::after
-        color lighten($primary-light, 60%)
+        right 13px
 
 .document-list-heading
   h2
@@ -73,10 +117,17 @@
     width 50%
     +below(1000px)
       font-size 16px
-  .clear-filters
+  .actions
     centerVertically()
-    color $primary-light
     right 15px
+    button
+      margin 0
+      line-height 1
+      color $primary-light
+      &:hover
+        color darken($primary-light, 40%)
+      &:disabled
+        color desaturate(lighten($primary-light, 70%), 20%)
     i
       font-size 13px
       +below(1000px)
@@ -85,10 +136,12 @@
       font-size 12px
       +below(1000px)
         display none
-    &:hover
-      color darken($primary-light, 20%)
-    &.muted
-      color desaturate(lighten($primary-light, 60%), 20%)
+
++below(1000px)
+  .clear-filters
+    i
+      &:before
+        margin-left 1px
 
 .doc-group
   display block
