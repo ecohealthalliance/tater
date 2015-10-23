@@ -27,7 +27,6 @@ if Meteor.isClient
       documents = _.pluck(instance.documents.find().fetch(), 'docID')
       query.documentId = {$in: documents}
 
-      console.log query
       instance.selectableCodeIds.set _.pluck(Annotations.find({documentId: query.documentId}).fetch(), 'codeId')
 
       annotations =
