@@ -87,8 +87,11 @@ if Meteor.isClient
     selectedCodes: ->
       Template.instance().data.selectedCodes?.find().count()
 
-    showList: (level) ->
-      unless hasAnnotations(level, @header, @subHeader)
+    showList: (level, showClass) ->
+      if hasAnnotations(level, @header, @subHeader)
+        if showClass
+          'showing'
+      else
         'hidden'
 
     toggleDirection: (level) ->
