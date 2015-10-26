@@ -54,7 +54,6 @@ do ->
         .setValue('#profile-fullname', fullName)
         .setValue('#profile-jobtitle', 'User Tester')
         .setValue('#profile-bio', 'I am a test user')
-        .click("#profile-email-hidden")
         .submitForm('#profile-fullname', assert.ifError)
         .call(callback)
 

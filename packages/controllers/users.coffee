@@ -3,6 +3,7 @@ if Meteor.isClient
   Template.users.onCreated ->
     @userToDeleteId = new ReactiveVar()
     @userToDeleteEmail = new ReactiveVar()
+    @subscribe('userProfiles')
 
 
   Template.users.filters = () =>
@@ -25,8 +26,12 @@ if Meteor.isClient
     fields.push
       key: 'email'
       label: 'Email'
-      fn:(val, object) ->
-        object.emails[0].address
+      fn: (val, object) ->
+        new Spacebars.SafeString("""
+          <a class="user-email" data-id="#{object._id}">
+            #{object.emails[0].address}
+          </a>
+        """)
 
     fields.push
       key: "controls"
@@ -60,6 +65,11 @@ if Meteor.isClient
       instance.userToDeleteEmail.set(userEmail)
       $('#remove-user-modal').modal('show')
 
+    'click .user-email': (event, instance) ->
+      userId = $(event.currentTarget).data("id")
+      profileId = UserProfiles.findOne({userId: userId})._id
+      go 'profileDetail', {_id: profileId}
+
     'click .confirm-remove-user': (evt, instance) ->
       userId = instance.userToDeleteId.get()
       Meteor.call 'removeUser', userId, (error, response) ->
@@ -78,3 +88,6 @@ if Meteor.isServer
         Meteor.users.remove userId
       else
         throw 'Unauthorized'
+
+  Meteor.publish 'userProfiles', ->
+    UserProfiles.find()
