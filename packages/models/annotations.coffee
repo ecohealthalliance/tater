@@ -11,6 +11,7 @@ Annotation = Astro.Class
     endOffset: 'number'
     accessCode: 'string'
     flagged: 'boolean'
+  behaviors: ['timestamp']
 
   methods:
     _codingKeyword: ->

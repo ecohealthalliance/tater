@@ -39,6 +39,14 @@ describe 'Annotation', ->
     annotation.save()
     expect(annotation.flagged).to.eq(true)
 
+  it 'includes createdAt', ->
+    annotation.save
+    expect(annotation.createdAt).not.to.be.an('undefined')
+
+  it 'includes updatedAt', ->
+    annotation.save
+    expect(annotation.updatedAt).not.to.be.an('undefined')
+
 describe 'Annotation code methods', ->
   annotation = null
 

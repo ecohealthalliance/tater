@@ -7,6 +7,7 @@ Document = Astro.Class
     title: 'string'
     body: 'string'
     groupId: 'string'
+  behaviors: ['timestamp']
 
   methods:
     groupName: ->

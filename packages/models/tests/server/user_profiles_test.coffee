@@ -34,6 +34,14 @@ describe 'UserProfile attributes', ->
     profile.save
     expect(profile.emailAddress).to.eq("test@example.com")
 
+  it 'includes createdAt', ->
+    profile.save
+    expect(profile.createdAt).not.to.be.an('undefined')
+
+  it 'includes updatedAt', ->
+    profile.save
+    expect(profile.updatedAt).not.to.be.an('undefined')
+
 describe 'UserProfile#update', ->
   profile = null
 
