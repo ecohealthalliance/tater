@@ -27,6 +27,8 @@ if Meteor.isClient
       documents = _.pluck(instance.documents.find().fetch(), 'docID')
       query.documentId = {$in: documents}
 
+      instance.selectableCodeIds.set _.pluck(Annotations.find({documentId: query.documentId}).fetch(), 'codeId')
+
       annotations =
         _.map Annotations.find(query).fetch(), (annotation) ->
           doc = annotation.document()
@@ -50,8 +52,6 @@ if Meteor.isClient
           .value()
 
       instance.annotations.set(sortedAnnotations)
-      annotatedCodeIds = _.pluck(_.pluck(sortedAnnotations, 'code'), '_id')
-      instance.selectableCodeIds.set(annotatedCodeIds)
 
   Template.annotations.helpers
     annotationsByCode: ->
