@@ -8,6 +8,7 @@ Group = Astro.Class
     description: 'string'
     createdById: 'string'
     codeAccessible: 'boolean'
+  behaviors: ['timestamp']
 
   methods:
     truncateDescription: ->

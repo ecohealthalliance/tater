@@ -24,6 +24,14 @@ describe 'Document', ->
     document.save
     expect(document.groupId).to.eq('fakeid')
 
+  it 'includes createdAt', ->
+    document.save
+    expect(document.createdAt).not.to.be.an('undefined')
+
+  it 'includes updatedAt', ->
+    document.save
+    expect(document.updatedAt).not.to.be.an('undefined')
+
   describe '#codeAccessible', =>
     it 'returns the value of codeAccessible for the group of the document', ->
       group = new Group(codeAccessible: true)

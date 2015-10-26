@@ -10,6 +10,7 @@ UserProfile = Astro.Class
     emailHidden: 'boolean'
     userId: 'string'
     emailAddress: 'string'
+  behaviors: ['timestamp']
 
   methods:
     update: (fields, callback) ->
