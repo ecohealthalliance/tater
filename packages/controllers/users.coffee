@@ -27,11 +27,7 @@ if Meteor.isClient
       key: 'email'
       label: 'Email'
       fn: (val, object) ->
-        new Spacebars.SafeString("""
-          <a class="user-email" data-id="#{object._id}">
-            #{object.emails[0].address}
-          </a>
-        """)
+        object.emails[0].address
 
     fields.push
       key: "controls"
@@ -65,11 +61,6 @@ if Meteor.isClient
       instance.userToDeleteEmail.set(userEmail)
       $('#remove-user-modal').modal('show')
 
-    'click .user-email': (event, instance) ->
-      userId = $(event.currentTarget).data("id")
-      profileId = UserProfiles.findOne({userId: userId})._id
-      go 'profileDetail', {_id: profileId}
-
     'click .confirm-remove-user': (evt, instance) ->
       userId = instance.userToDeleteId.get()
       Meteor.call 'removeUser', userId, (error, response) ->
@@ -80,6 +71,10 @@ if Meteor.isClient
         $('#remove-user-modal').modal('hide')
         instance.userToDeleteId.set(null)
         instance.userToDeleteEmail.set(null)
+
+    'click .users-table .reactive-table tr': ->
+      profileId = UserProfiles.findOne({userId: @_id})._id
+      go 'profileDetail', {_id: profileId}
 
 if Meteor.isServer
   Meteor.methods

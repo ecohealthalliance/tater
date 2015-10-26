@@ -10,7 +10,7 @@ do ->
     @When "I click on the test user", ->
       @browser
         .waitForVisible('.users-table', assert.ifError)
-        .click('.users-table .user-email', assert.ifError)
+        .click('.users-table .reactive-table tr', assert.ifError)
 
     @Then "I should be on the user profile page", ->
       @browser
