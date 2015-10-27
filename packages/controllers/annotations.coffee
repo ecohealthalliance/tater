@@ -135,6 +135,11 @@ if Meteor.isClient
       else
         'disabled'
 
+  resetKeywords = ->
+    instance = Template.instance()
+    instance.filtering.set(false)
+    instance.selectedCodes.remove({})
+
   Template.annotations.events
     'click .show-flagged': (event, instance) ->
       instance.showFlagged.set(!instance.showFlagged.get())
@@ -145,7 +150,7 @@ if Meteor.isClient
       go "documentDetailWithAnnotation", {"_id": documentId, "annotationId" : annotationId}
 
     'click .document-selector': (event, instance) ->
-      instance.filtering.set(false)
+      resetKeywords()
       selectedDocID = $(event.currentTarget).data('id')
       documents = instance.documents
       docQuery = {docID:selectedDocID}
@@ -153,6 +158,37 @@ if Meteor.isClient
         documents.remove(docQuery)
       else
         documents.insert(docQuery)
+
+    'click .group-selector.enabled span': (event, instance) ->
+      resetKeywords()
+      groupId = $(event.currentTarget).parent().data('group')
+      selectedDocs = instance.documents
+      selectedGroups = instance.selectedGroups
+      groupDocs = Documents.find({groupId: groupId})
+      if selectedGroups.find({id: groupId}).count()
+        selectedGroups.remove({id: groupId})
+      else
+        selectedGroups.insert({id: groupId})
+        showGroup = true
+
+      _.each groupDocs.fetch(), (doc) ->
+        docQuery = {docID:doc._id}
+        if showGroup
+          selectedDocs.insert(docQuery)
+        else
+          selectedDocs.remove(docQuery)
+
+    'click .group-selector.enabled i': (event, instance) ->
+      $(event.target).toggleClass('down up').parent().siblings('.group-docs').toggleClass('hidden')
+
+    'click .select-all': (event, instance) ->
+      _.each Documents.find().fetch(), (doc) ->
+        docQuery = {docID:doc._id}
+        unless instance.documents.find(docQuery).count()
+          instance.documents.insert(docQuery)
+      _.each Groups.find().fetch(), (group) ->
+        unless instance.selectedGroups.find({id:group._id}).count()
+          instance.selectedGroups.insert({id:group._id})
 
     'click .selectable-code': (event, instance) ->
       selectedCodeKeywordId  = event.currentTarget.getAttribute('data-id')
@@ -188,36 +224,6 @@ if Meteor.isClient
       instance.documents.remove({})
       instance.selectedGroups.remove({})
 
-    'click .group-selector.enabled span': (event, instance) ->
-      instance.filtering.set(false)
-      groupId = $(event.currentTarget).parent().data('group')
-      selectedDocs = instance.documents
-      selectedGroups = instance.selectedGroups
-      groupDocs = Documents.find({groupId: groupId})
-      if selectedGroups.find({id: groupId}).count()
-        selectedGroups.remove({id: groupId})
-      else
-        selectedGroups.insert({id: groupId})
-        showGroup = true
-
-      _.each groupDocs.fetch(), (doc) ->
-        docQuery = {docID:doc._id}
-        if showGroup
-          selectedDocs.insert(docQuery)
-        else
-          selectedDocs.remove(docQuery)
-
-    'click .group-selector.enabled i': (event, instance) ->
-      $(event.target).toggleClass('down up').parent().siblings('.group-docs').toggleClass('hidden')
-
-    'click .select-all': (event, instance) ->
-      _.each Documents.find().fetch(), (doc) ->
-        docQuery = {docID:doc._id}
-        unless instance.documents.find(docQuery).count()
-          instance.documents.insert(docQuery)
-      _.each Groups.find().fetch(), (group) ->
-        unless instance.selectedGroups.find({id:group._id}).count()
-          instance.selectedGroups.insert({id:group._id})
 
 if Meteor.isServer
 
