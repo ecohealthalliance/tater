@@ -14,4 +14,4 @@ do ->
 
     @Then "I should be on the user profile page", ->
       @browser
-        .waitForVisible('.profile-detail', assert.ifError)
+        .waitForExist('.profile-detail', assert.ifError)

@@ -2,7 +2,6 @@ UserProfiles = new Mongo.Collection('userProfile')
 UserProfile = Astro.Class
   name: 'UserProfile'
   collection: UserProfiles
-  transform: true
   fields:
     fullName: 'string'
     jobTitle: 'string'
