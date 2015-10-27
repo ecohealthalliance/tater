@@ -62,6 +62,37 @@ if Meteor.isClient
             'keyword': $exists: true
           ]
 
+    selHeaders: () ->
+      headers = _.uniq _.pluck Template.instance().selectableCodeIds.get(), 'header'
+      CodingKeywords.find
+        $and:
+          [
+            'subHeader': $exists: false
+            'keyword': $exists: false
+            'header': $in: headers
+          ]
+
+    selSubHeaders: (header) ->
+      subHeaders = _.uniq _.pluck Template.instance().selectableCodeIds.get(), 'subHeader'
+      CodingKeywords.find
+        $and:
+          [
+            'header': header
+            'subHeader': $exists: true
+            'keyword': $exists: false
+            'subHeader': $in: subHeaders
+          ]
+
+    selKeywords: (subHeader) ->
+      keywords = _.pluck _.filter(Template.instance().selectableCodeIds.get(), (code) -> code.subHeader == subHeader), 'keyword'
+      CodingKeywords.find
+        $and:
+          [
+            'subHeader': subHeader
+            'keyword': $exists: true
+            'keyword': $in: keywords
+          ]
+
     icon: ->
       if @header is 'Human Movement' then 'fa-bus'
       else if @header is 'Socioeconomics' then 'fa-money'

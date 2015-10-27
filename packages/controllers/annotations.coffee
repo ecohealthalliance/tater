@@ -27,7 +27,8 @@ if Meteor.isClient
       documents = _.pluck(instance.documents.find().fetch(), 'docID')
       query.documentId = {$in: documents}
 
-      instance.selectableCodeIds.set _.pluck(Annotations.find({documentId: query.documentId}).fetch(), 'codeId')
+      codeIds = _.pluck(Annotations.find({documentId: query.documentId}).fetch(), 'codeId')
+      instance.selectableCodeIds.set _.map codeIds, (id) -> CodingKeywords.findOne({_id: id})
 
       annotations =
         _.map Annotations.find(query).fetch(), (annotation) ->
