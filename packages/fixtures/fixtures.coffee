@@ -32,5 +32,6 @@ do ->
       UserProfiles.insert attributes
 
     'createTestDocument': (attributes) ->
-      attributes['body'] = 'Test Body'
+      attributes['body'] ?= 'Test Body'
+      attributes['groupId'] ?= 'fakegroupid'
       Documents.insert(attributes)
