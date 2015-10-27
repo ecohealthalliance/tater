@@ -5,9 +5,9 @@ if Meteor.isClient
     else
       @subscribe('codingKeywords')
     @searchText = new ReactiveVar('')
-    @filtering = new ReactiveVar(false)
+    @searching = new ReactiveVar(false)
     @filteredCodes = new ReactiveVar()
-    @selectableCodeIds = @data.selectableCodeIds
+    @selectableCodes = @data.selectableCodes
 
   Template.codingKeywords.onRendered ->
     instance = Template.instance()
@@ -23,8 +23,8 @@ if Meteor.isClient
       instance.filteredCodes.set results
 
   Template.codingKeywords.helpers
-    filtering: () ->
-      Template.instance().filtering.get()
+    searching: () ->
+      Template.instance().searching.get()
 
     filteredCodes: () ->
       Template.instance().filteredCodes.get()
@@ -62,19 +62,21 @@ if Meteor.isClient
             'keyword': $exists: true
           ]
 
-    selHeaders: () ->
-      headers = _.uniq _.pluck Template.instance().selectableCodeIds.get(), 'header'
-      CodingKeywords.find
+    selectableHeaders: () ->
+      headers = _.uniq _.pluck Template.instance().selectableCodes.get(), 'header'
+      headers = CodingKeywords.find
         $and:
           [
             'subHeader': $exists: false
             'keyword': $exists: false
             'header': $in: headers
           ]
+      if headers.count()
+        headers
 
-    selSubHeaders: (header) ->
-      subHeaders = _.uniq _.pluck Template.instance().selectableCodeIds.get(), 'subHeader'
-      CodingKeywords.find
+    selectableSubHeaders: (header) ->
+      subHeaders = _.uniq _.pluck _.filter(Template.instance().selectableCodes.get(), (code) -> code.header == header and code.subHeader), 'subHeader'
+      subHeaders = CodingKeywords.find
         $and:
           [
             'header': header
@@ -82,16 +84,18 @@ if Meteor.isClient
             'keyword': $exists: false
             'subHeader': $in: subHeaders
           ]
+      if subHeaders.count()
+        subHeaders
 
-    selKeywords: (subHeader) ->
-      keywords = _.pluck _.filter(Template.instance().selectableCodeIds.get(), (code) -> code.subHeader == subHeader), 'keyword'
-      CodingKeywords.find
+    selectableKeywords: (subHeader) ->
+      keywords = _.pluck _.filter(Template.instance().selectableCodes.get(), (code) -> code.subHeader == subHeader and code.keyword), '_id'
+      keywords = CodingKeywords.find
         $and:
           [
-            'subHeader': subHeader
-            'keyword': $exists: true
-            'keyword': $in: keywords
+            '_id': $in: keywords
           ]
+      if keywords.count()
+        keywords
 
     icon: ->
       if @header is 'Human Movement' then 'fa-bus'
@@ -103,14 +107,6 @@ if Meteor.isClient
     coding: ->
       Template.instance().data.action is 'coding'
 
-    selectable: (element, level, id) ->
-      if level is 'filtered'
-        'selectable-code'
-      else if element is 'code'
-        selectable(level, 'selectable-code', @header, @subHeader, @keyword, @_id)
-      else
-        selectable(level, 'selectable', @header, @subHeader, @keyword, @_id)
-
     selected: (codeId) ->
       if Template.instance().data.selectedCodes.findOne(@_id)
         'selected'
@@ -118,58 +114,21 @@ if Meteor.isClient
     selectedCodes: ->
       Template.instance().data.selectedCodes?.find().count()
 
-    showList: (level, showClass) ->
-      if hasAnnotations(level, @header, @subHeader)
-        if showClass
-          'showing'
-      else
-        'hidden'
-
-    toggleDirection: (level) ->
-      if hasAnnotations(level, @header, @subHeader)
-        'up'
-      else
-        'down'
-
     position: () ->
       if @location is 'right' then 'r' else 'l'
-
-  hasAnnotations = (level, header, subHeader) ->
-    if level is 'header'
-      checkCode({header:header}).length
-    else if level is 'subHeader'
-      checkCode({subHeader:subHeader}).length
-
-  selectable = (level, className, header, subHeader, keyword, id) ->
-    if level is 'header'
-      if checkCode({header:header}).length
-        className
-    else if level is 'subHeader'
-      if checkCode({subHeader:subHeader}).length
-        className
-    else if level is 'keyword'
-      if Annotations.findOne({codeId:CodingKeywords.findOne({keyword:keyword})._id})
-        className
-    else
-      if checkCode({_id: id}).length
-        className
-
-  checkCode = (query) ->
-    query._id = {$in: Template.instance().selectableCodeIds.get()}
-    CodingKeywords.find(query).fetch()
 
   Template.codingKeywords.events
 
     'keyup .code-search': _.debounce ((e, instance) ->
       e.preventDefault()
       searchText = e.target.value
-      if searchText.length > 1 then instance.filtering.set true
-      else instance.filtering.set false
+      if searchText.length > 1 then instance.searching.set true
+      else instance.searching.set false
       instance.searchText.set e.target.value
       ), 100
 
     'click .clear-search': (e, instance) ->
-      instance.filtering.set false
+      instance.searching.set false
       instance.searchText.set ''
       $('.code-search').val('')
 

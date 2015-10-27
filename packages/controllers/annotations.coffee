@@ -4,8 +4,9 @@ if Meteor.isClient
     @subscribe('CodingKeywords')
     @selectedCodes  = new Meteor.Collection(null)
     @annotations = new ReactiveVar()
-    @selectableCodeIds = new ReactiveVar()
+    @selectableCodes = new ReactiveVar()
     @showFlagged = new ReactiveVar(false)
+    @filtering = new ReactiveVar(false)
     @documents = new Meteor.Collection(null)
     @selectedGroups = new Meteor.Collection(null)
 
@@ -27,8 +28,9 @@ if Meteor.isClient
       documents = _.pluck(instance.documents.find().fetch(), 'docID')
       query.documentId = {$in: documents}
 
-      codeIds = _.pluck(Annotations.find({documentId: query.documentId}).fetch(), 'codeId')
-      instance.selectableCodeIds.set _.map codeIds, (id) -> CodingKeywords.findOne({_id: id})
+      unless instance.filtering.get()
+        codeIds = _.pluck(Annotations.find({documentId: query.documentId}).fetch(), 'codeId')
+        instance.selectableCodes.set _.map codeIds, (id) -> CodingKeywords.findOne({_id: id})
 
       annotations =
         _.map Annotations.find(query).fetch(), (annotation) ->
@@ -51,14 +53,13 @@ if Meteor.isClient
           .sortBy((annotation) -> annotation.code?.subheader)
           .sortBy((annotation) -> annotation.code?.header)
           .value()
-
       instance.annotations.set(sortedAnnotations)
 
   Template.annotations.helpers
     annotationsByCode: ->
       Template.instance().annotations.get()
-    selectableCodeIds: ->
-      Template.instance().selectableCodeIds
+    selectableCodes: ->
+      Template.instance().selectableCodes
     codeString: ->
       header = @code?.header
       subHeader = @code?.subHeader
@@ -144,6 +145,7 @@ if Meteor.isClient
       go "documentDetailWithAnnotation", {"_id": documentId, "annotationId" : annotationId}
 
     'click .document-selector': (event, instance) ->
+      instance.filtering.set(false)
       selectedDocID = $(event.currentTarget).data('id')
       documents = instance.documents
       docQuery = {docID:selectedDocID}
@@ -159,6 +161,8 @@ if Meteor.isClient
       header = selectedCodeKeyword.header
       subHeader = selectedCodeKeyword.subHeader
       keyword = selectedCodeKeyword.keyword
+
+      instance.filtering.set(true)
 
       if not subHeader and not keyword
         codeKeywords = CodingKeywords.find({ header: header }).fetch()
@@ -185,6 +189,7 @@ if Meteor.isClient
       instance.selectedGroups.remove({})
 
     'click .group-selector.enabled span': (event, instance) ->
+      instance.filtering.set(false)
       groupId = $(event.currentTarget).parent().data('group')
       selectedDocs = instance.documents
       selectedGroups = instance.selectedGroups
