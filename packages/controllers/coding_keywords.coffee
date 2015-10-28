@@ -67,18 +67,38 @@ if Meteor.isClient
           ]
 
     selectableHeaders: () ->
-      headers = _.sortBy(_.uniq(_.filter(Template.instance().selectableCodes.get(), (code) -> code.header and not code.subHeader and not code.keyword), (code) -> code.header), 'color')
-      if headers.length
+      headerNames = _.uniq _.pluck Template.instance().selectableCodes.get(), 'header'
+      headers = CodingKeywords.find
+        $and:
+          [
+            'subHeader': $exists: false
+            'keyword': $exists: false
+            'header': $in: headerNames
+          ]
+      if headers.count()
         headers
 
     selectableSubHeaders: (header) ->
-      subHeaders = _.uniq(_.filter(Template.instance().selectableCodes.get(), (code) -> code.header == header and code.subHeader), (code) -> code.subHeader)
-      if subHeaders.length
+      subHeaderNames = _.uniq _.pluck _.filter(Template.instance().selectableCodes.get(), (code) -> code.header == header and code.subHeader), 'subHeader'
+      subHeaders = CodingKeywords.find
+        $and:
+          [
+            'header': header
+            'subHeader': $exists: true
+            'keyword': $exists: false
+            'subHeader': $in: subHeaderNames
+          ]
+      if subHeaders.count()
         subHeaders
 
-    selectableKeywords: (header, subHeader) ->
-      keywords = _.uniq(_.filter(Template.instance().selectableCodes.get(), (code) -> code.header == header and code.subHeader == subHeader and code.keyword), (code) -> code._id)
-      if keywords.length
+    selectableKeywords: (subHeader) ->
+      keywordIds = _.pluck _.filter(Template.instance().selectableCodes.get(), (code) -> code.subHeader == subHeader and code.keyword), '_id'
+      keywords = CodingKeywords.find
+        $and:
+          [
+            '_id': $in: keywordIds
+          ]
+      if keywords.count()
         keywords
 
     icon: ->

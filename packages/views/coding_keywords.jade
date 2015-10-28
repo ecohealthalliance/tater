@@ -50,10 +50,10 @@ template(name="codingKeywords")
                     each selectableSubHeaders header
                       li.code-sub-header.selectable(class="subHeader")
                         span.selectable-code(data-id=_id class="{{selected}}")= subHeader
-                        if selectableKeywords header subHeader
+                        if selectableKeywords subHeader
                           i.up
                           ul.code-keywords.list-unstyled
-                            each selectableKeywords header subHeader
+                            each selectableKeywords subHeader
                               li.code-keyword.selectable(class="")
                                 span.selectable-code(data-id=_id class="{{selected}}")= keyword
         .text-center
