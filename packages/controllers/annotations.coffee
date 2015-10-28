@@ -191,14 +191,13 @@ if Meteor.isClient
           instance.selectedGroups.insert({id:group._id})
 
     'click .selectable-code': (event, instance) ->
+      instance.filtering.set(true)
       selectedCodeKeywordId  = event.currentTarget.getAttribute('data-id')
       selectedCodeKeyword = CodingKeywords.findOne(selectedCodeKeywordId)
       currentlySelected = instance.selectedCodes.findOne(selectedCodeKeywordId)
       header = selectedCodeKeyword?.header
       subHeader = selectedCodeKeyword?.subHeader
       keyword = selectedCodeKeyword?.keyword
-
-      instance.filtering.set(true)
 
       if not subHeader and not keyword
         codeKeywords = CodingKeywords.find({ header: header }).fetch()

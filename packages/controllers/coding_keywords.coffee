@@ -67,36 +67,38 @@ if Meteor.isClient
           ]
 
     selectableHeaders: () ->
-      headers = _.uniq _.pluck Template.instance().selectableCodes.get(), 'header'
+      headerNames = _.uniq _.pluck Template.instance().selectableCodes.get(), 'header'
       headers = CodingKeywords.find
         $and:
           [
             'subHeader': $exists: false
             'keyword': $exists: false
-            'header': $in: headers
+            'header': $in: headerNames
           ]
       if headers.count()
         headers
 
     selectableSubHeaders: (header) ->
-      subHeaders = _.uniq _.pluck _.filter(Template.instance().selectableCodes.get(), (code) -> code.header == header and code.subHeader), 'subHeader'
+      subHeaderNames = _.uniq _.pluck _.filter(Template.instance().selectableCodes.get(), (code) -> code.header == header and code.subHeader), 'subHeader'
       subHeaders = CodingKeywords.find
         $and:
           [
             'header': header
             'subHeader': $exists: true
             'keyword': $exists: false
-            'subHeader': $in: subHeaders
+            'subHeader': $in: subHeaderNames
           ]
       if subHeaders.count()
         subHeaders
 
-    selectableKeywords: (subHeader) ->
-      keywords = _.pluck _.filter(Template.instance().selectableCodes.get(), (code) -> code.subHeader == subHeader and code.keyword), '_id'
+    selectableKeywords: (header, subHeader) ->
+      keywordIds = _.pluck _.filter(Template.instance().selectableCodes.get(), (code) -> code.subHeader == subHeader and code.keyword), '_id'
       keywords = CodingKeywords.find
         $and:
           [
-            '_id': $in: keywords
+            'header': header
+            'subHeader': subHeader
+            '_id': $in: keywordIds
           ]
       if keywords.count()
         keywords
