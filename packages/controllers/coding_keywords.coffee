@@ -19,11 +19,11 @@ if Meteor.isClient
         text = RegExp(text, 'i')
         query.push $or: [{'header': text}, {'subHeader': text}, {'keyword': text}]
 
-      if instance.selectableCodes
-        results = CodingKeywords.find({$and: query}, {sort: {header: 1, subHeader: 1, keyword: 1}})
-      else
-        results = CodingKeywords.find({$and: query}, {sort: {header: 1, subHeader: 1, keyword: 1}})
+      if instance.selectableCodes.get()
+        codeIds = _.pluck instance.selectableCodes.get(), '_id'
+        query.push {_id: {$in: codeIds}}
 
+      results = CodingKeywords.find({$and: query}, {sort: {header: 1, subHeader: 1, keyword: 1}})
       instance.filteredCodes.set results
 
   Template.codingKeywords.helpers

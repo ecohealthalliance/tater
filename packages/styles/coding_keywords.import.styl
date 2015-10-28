@@ -44,6 +44,8 @@ checkMark(center=false)
 .listing
   .showing:not(.selected)
     background none !important
+  .clear-codes-container
+    margin-top -10px
 
 .code-header
 .code-sub-header
@@ -204,16 +206,16 @@ checkMark(center=false)
     padding 5px 15px 5px 5px
 
 .filteredCodes
+  margin-bottom 20px
   li
     position relative
-    margin-left 15px
     cursor pointer
     overflow hidden
     text-overflow ellipsis
     border-bottom 1px solid $border-color
     > span
       display block
-      padding 5px 20px 5px 5px
+      padding 5px 15px 5px 15px
       &:not(.selectable-code)
         color $m-gray
   .selectable
@@ -230,3 +232,9 @@ checkMark(center=false)
   .keyword
     font-weight 700
 
+.filter-result
+  .selectable-code
+    &:hover
+      background-color lighten($primary-light, 95%)
+  .selected
+    background-color desaturate(lighten($primary-light, 85%), 80%)

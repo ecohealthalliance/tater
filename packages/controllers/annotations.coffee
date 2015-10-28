@@ -29,8 +29,8 @@ if Meteor.isClient
       query.documentId = {$in: documents}
 
       unless instance.filtering.get()
-        codeIds = _.pluck(Annotations.find({documentId: query.documentId}).fetch(), 'codeId')
-        instance.selectableCodes.set _.map codeIds, (id) -> CodingKeywords.findOne({_id: id})
+        currentAnnotations = Annotations.find({documentId: query.documentId}).fetch()
+        instance.selectableCodes.set _.map currentAnnotations, (annotation) -> annotation._codingKeyword()
 
       annotations =
         _.map Annotations.find(query).fetch(), (annotation) ->
@@ -194,9 +194,9 @@ if Meteor.isClient
       selectedCodeKeywordId  = event.currentTarget.getAttribute('data-id')
       selectedCodeKeyword = CodingKeywords.findOne(selectedCodeKeywordId)
       currentlySelected = instance.selectedCodes.findOne(selectedCodeKeywordId)
-      header = selectedCodeKeyword.header
-      subHeader = selectedCodeKeyword.subHeader
-      keyword = selectedCodeKeyword.keyword
+      header = selectedCodeKeyword?.header
+      subHeader = selectedCodeKeyword?.subHeader
+      keyword = selectedCodeKeyword?.keyword
 
       instance.filtering.set(true)
 
