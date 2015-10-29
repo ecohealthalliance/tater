@@ -35,7 +35,6 @@ do ->
     'createTestDocument': (attributes) ->
       attributes['body'] ?= 'Test Body'
       attributes['groupId'] ?= 'fakegroupid'
-      attributes['_id'] = "fakedocumentid"
       Documents.insert(attributes)
 
     'createTestAnnotation': (attributes) ->

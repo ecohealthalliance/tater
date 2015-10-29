@@ -7,7 +7,7 @@ do ->
 
     url = require('url')
 
-    _test_document = {title: "Test Document", body: "This is a doc for testing"}
+    _test_document = {title: "Test Document", body: "This is a doc for testing", _id: "fakedocumentid"}
 
     @Given 'there is a test document in the database', ->
       @server.call('createTestDocument', _test_document)
