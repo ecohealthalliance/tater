@@ -1,3 +1,23 @@
 template(name="splashPage")
-  .container
-    h1 Welcome to Tater
+    if currentUser
+      if isAdmin
+        h2 Admin content
+      else
+        .view-header.secondary-bg.splash-header
+        .container.spash-user-content
+          .row
+            .col-sm-8
+              h4 Add a New Document
+              +documentForm
+
+            .col-sm-3.col-sm-offset-1
+              if documentsExist
+                h4 Recent Documents
+                ul.list-simple.list-unstyled
+                  each recentDocuments
+                    li.document
+                      a.list-link(href="{{path route='documentDetail' params=this}}")= title
+                a.btn.btn-default.btn-block.view-all(href="{{path route='documents'}}") View All Group Documents
+    else
+      h1 Tater
+

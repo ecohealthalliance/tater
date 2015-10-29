@@ -28,6 +28,27 @@
     i
       cursor pointer
 
+.list-simple
+  margin-left -5px
+  margin-bottom 10px
+  li
+    border-bottom 1px solid $l-gray
+    &:last-of-type
+      border 0
+  a
+    display block
+    padding 5px
+    color $body-text
+    &:hover
+      text-decoration none
+      background $highlight-color
+
+.list
+.list-simple
+  .view-all
+    background $background-secondary
+
+
 .list-table
   border 1px solid #DDD
   border-top 0
@@ -52,3 +73,4 @@
     margin-bottom 0
   .reactive-table-options
     display none
+

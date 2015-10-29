@@ -40,7 +40,7 @@ FlowRouter.route '/documents/new',
   name: 'newDocument'
   action: (params) ->
     FlowLayout.render 'layout',
-      main: 'documentForm'
+      main: 'documentNew'
 
 FlowRouter.route '/documents/:_id',
   name: 'documentDetail'
