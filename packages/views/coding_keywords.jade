@@ -8,11 +8,11 @@ template(name="codingKeywords")
         .clear-codes-container
           button.btn.btn-block.btn-default.btn-sm.clear-selected-codes Clear Selected Codes
       if Template.subscriptionsReady
-        if filtering
+        if searching
           ul.filteredCodes.list-unstyled
             each filteredCodes
-              li.filter-result(class="code-#{color} {{selectable 'heading' 'filtered'}}")
-                span(data-id=_id class="{{selectable 'code' 'filtered'}}")=code
+              li.filter-result.selectable-code(class="code-#{color}")
+                span.selectable-code(data-id=_id class="{{selected}}")=code
             else
               .no-results
                 i.fa.fa-search
@@ -39,21 +39,23 @@ template(name="codingKeywords")
                 li.code-header.count.highlighted.selectable(class='code-header-#{color}')
                   span.header-name.selectable-code(data-id=_id)= header
           else
-            each headers
-              li.code-header(class="code-header-#{color} {{selectable 'heading' 'header'}}" )
-                i(class="{{toggleDirection 'header'}}")
-                span(data-id=_id class="{{selectable 'code' 'header'}} {{selected}}")
+            each selectableHeaders
+              li.code-header.selectable(class="code-header-#{color}" )
+                span.selectable-code(data-id=_id class="{{selected}}")
                   span.icon.fa(class=icon)
                   span.header-name= header
-                ul.code-sub-headers.list-unstyled(class="{{showList 'header'}}")
-                  each subHeaders header
-                    li.code-sub-header(class="{{selectable 'heading' 'subHeader'}}")
-                      i(class="{{toggleDirection 'subHeader'}}")
-                      span(data-id=_id class="{{selectable 'code' 'subHeader'}} {{selected}}  {{showList 'subHeader' true}}")= subHeader
-                      ul.code-keywords.list-unstyled(class="{{showList 'subHeader'}}")
-                        each keywords subHeader
-                          li.code-keyword(class="{{selectable 'heading' 'keyword' }}")
-                            span(data-id=_id class="{{selectable 'code' 'keyword' }} {{selected}}")= keyword
+                if selectableSubHeaders header
+                  i.up
+                  ul.code-sub-headers.list-unstyled(class="")
+                    each selectableSubHeaders header
+                      li.code-sub-header.selectable(class="subHeader")
+                        span.selectable-code(data-id=_id class="{{selected}}")= subHeader
+                        if selectableKeywords subHeader
+                          i.up
+                          ul.code-keywords.list-unstyled
+                            each selectableKeywords subHeader
+                              li.code-keyword.selectable(class="")
+                                span.selectable-code(data-id=_id class="{{selected}}")= keyword
         .text-center
           a(href="mailto:hagan@ecohealthalliance.org?subject=Tater%20Coding%20Keyword%20Suggestion") Suggest new coding keyword
 

@@ -4,8 +4,9 @@ if Meteor.isClient
     @subscribe('CodingKeywords')
     @selectedCodes  = new Meteor.Collection(null)
     @annotations = new ReactiveVar()
-    @selectableCodeIds = new ReactiveVar()
+    @selectableCodes = new ReactiveVar()
     @showFlagged = new ReactiveVar(false)
+    @filtering = new ReactiveVar(false)
     @documents = new Meteor.Collection(null)
     @selectedGroups = new Meteor.Collection(null)
 
@@ -27,7 +28,9 @@ if Meteor.isClient
       documents = _.pluck(instance.documents.find().fetch(), 'docID')
       query.documentId = {$in: documents}
 
-      instance.selectableCodeIds.set _.pluck(Annotations.find({documentId: query.documentId}).fetch(), 'codeId')
+      unless instance.filtering.get()
+        currentAnnotations = Annotations.find({documentId: query.documentId}).fetch()
+        instance.selectableCodes.set _.map currentAnnotations, (annotation) -> annotation._codingKeyword()
 
       annotations =
         _.map Annotations.find(query).fetch(), (annotation) ->
@@ -50,14 +53,13 @@ if Meteor.isClient
           .sortBy((annotation) -> annotation.code?.subheader)
           .sortBy((annotation) -> annotation.code?.header)
           .value()
-
       instance.annotations.set(sortedAnnotations)
 
   Template.annotations.helpers
     annotationsByCode: ->
       Template.instance().annotations.get()
-    selectableCodeIds: ->
-      Template.instance().selectableCodeIds
+    selectableCodes: ->
+      Template.instance().selectableCodes
     codeString: ->
       header = @code?.header
       subHeader = @code?.subHeader
@@ -133,6 +135,11 @@ if Meteor.isClient
       else
         'disabled'
 
+  resetKeywords = ->
+    instance = Template.instance()
+    instance.filtering.set(false)
+    instance.selectedCodes.remove({})
+
   Template.annotations.events
     'click .show-flagged': (event, instance) ->
       instance.showFlagged.set(!instance.showFlagged.get())
@@ -143,6 +150,7 @@ if Meteor.isClient
       go "documentDetailWithAnnotation", {"_id": documentId, "annotationId" : annotationId}
 
     'click .document-selector': (event, instance) ->
+      resetKeywords()
       selectedDocID = $(event.currentTarget).data('id')
       documents = instance.documents
       docQuery = {docID:selectedDocID}
@@ -151,39 +159,8 @@ if Meteor.isClient
       else
         documents.insert(docQuery)
 
-    'click .selectable-code': (event, instance) ->
-      selectedCodeKeywordId  = event.currentTarget.getAttribute('data-id')
-      selectedCodeKeyword = CodingKeywords.findOne(selectedCodeKeywordId)
-      currentlySelected = instance.selectedCodes.findOne(selectedCodeKeywordId)
-      header = selectedCodeKeyword.header
-      subHeader = selectedCodeKeyword.subHeader
-      keyword = selectedCodeKeyword.keyword
-
-      if not subHeader and not keyword
-        codeKeywords = CodingKeywords.find({ header: header }).fetch()
-      else if not keyword
-        codeKeywords = CodingKeywords.find({ $and: [{header: header},{subHeader: subHeader}] }).fetch()
-      else
-        codeKeyword = CodingKeywords.findOne(selectedCodeKeywordId)
-
-      if not currentlySelected
-        if codeKeywords
-          _.each codeKeywords, (codeKeyword) ->
-            instance.selectedCodes.upsert({_id: codeKeyword._id}, codeKeyword)
-        else
-          instance.selectedCodes.upsert({_id: codeKeyword._id}, codeKeyword)
-      else
-        if codeKeywords
-          _.each codeKeywords, (codeKeyword) ->
-            instance.selectedCodes.remove(codeKeyword)
-        else
-          instance.selectedCodes.remove(codeKeyword)
-
-    'click .clear-filters': (event, instance) ->
-      instance.documents.remove({})
-      instance.selectedGroups.remove({})
-
     'click .group-selector.enabled span': (event, instance) ->
+      resetKeywords()
       groupId = $(event.currentTarget).parent().data('group')
       selectedDocs = instance.documents
       selectedGroups = instance.selectedGroups
@@ -212,6 +189,41 @@ if Meteor.isClient
       _.each Groups.find().fetch(), (group) ->
         unless instance.selectedGroups.find({id:group._id}).count()
           instance.selectedGroups.insert({id:group._id})
+
+    'click .selectable-code': (event, instance) ->
+      selectedCodeKeywordId  = event.currentTarget.getAttribute('data-id')
+      selectedCodeKeyword = CodingKeywords.findOne(selectedCodeKeywordId)
+      currentlySelected = instance.selectedCodes.findOne(selectedCodeKeywordId)
+      header = selectedCodeKeyword?.header
+      subHeader = selectedCodeKeyword?.subHeader
+      keyword = selectedCodeKeyword?.keyword
+
+      instance.filtering.set(true)
+
+      if not subHeader and not keyword
+        codeKeywords = CodingKeywords.find({ header: header }).fetch()
+      else if not keyword
+        codeKeywords = CodingKeywords.find({ $and: [{header: header},{subHeader: subHeader}] }).fetch()
+      else
+        codeKeyword = CodingKeywords.findOne(selectedCodeKeywordId)
+
+      if not currentlySelected
+        if codeKeywords
+          _.each codeKeywords, (codeKeyword) ->
+            instance.selectedCodes.upsert({_id: codeKeyword._id}, codeKeyword)
+        else
+          instance.selectedCodes.upsert({_id: codeKeyword._id}, codeKeyword)
+      else
+        if codeKeywords
+          _.each codeKeywords, (codeKeyword) ->
+            instance.selectedCodes.remove(codeKeyword)
+        else
+          instance.selectedCodes.remove(codeKeyword)
+
+    'click .clear-filters': (event, instance) ->
+      instance.documents.remove({})
+      instance.selectedGroups.remove({})
+
 
 if Meteor.isServer
 
