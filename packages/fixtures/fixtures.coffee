@@ -9,6 +9,7 @@ do ->
       UserProfiles.remove({})
       Groups.remove({})
       Documents.remove({})
+      Annotations.remove({})
 
     'createTestUser': (attributes) ->
       Meteor.users.remove({})
@@ -34,4 +35,13 @@ do ->
     'createTestDocument': (attributes) ->
       attributes['body'] ?= 'Test Body'
       attributes['groupId'] ?= 'fakegroupid'
+      attributes['_id'] = "fakedocumentid"
       Documents.insert(attributes)
+
+    'createTestAnnotation': (attributes) ->
+      attributes['documentId'] ?= 'fakedocumentid'
+      attributes['userId'] ?= 'fakeuserid'
+      attributes['startOffset'] ?= 0
+      attributes['endOffset'] ?= 1
+      attributes['_id'] = "fakeannotationid"
+      Annotations.insert(attributes)
