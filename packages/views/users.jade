@@ -1,11 +1,4 @@
 template(name="users")
-  section.rm-pad-top
-    .view-header.secondary-bg
-      .container
-        h1.inline Users
-        a.btn.btn-primary.new-user-link.header-btn.add-admin(data-toggle="modal" data-target="#add-admin-modal")
-          span Create New Admin User
-          i.fa.fa-user-plus
   #add-admin-modal.modal.fade(tabindex="-1" role="dialog")
     .modal-dialog
       .modal-content
@@ -15,8 +8,11 @@ template(name="users")
         .modal-body
           +userForm userType='admin'
   .table-wrap.users-table
-    .container.container-list.list-table
-      +reactiveTable collection=usersCollection settings=settings filters=filters
+    .container-list.list-table
+      if Template.subscriptionsReady
+        +reactiveTable collection=usersCollection settings=settings filters=filters
+      else
+        .loading.center-v
   #remove-user-modal.modal.fade(tabindex="-1" role="dialog")
     .modal-dialog
       .modal-content
