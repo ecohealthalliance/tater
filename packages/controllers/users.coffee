@@ -54,14 +54,15 @@ if Meteor.isClient
       Template.instance().userToDeleteEmail.get()
 
   Template.users.events
-    'click .remove-user': (evt, instance) ->
-      userId = $(evt.currentTarget).data("id")
-      userEmail = $(evt.currentTarget).data("email")
+    'click .remove-user': (event, instance) ->
+      event.stopPropagation()
+      userId = $(event.currentTarget).data("id")
+      userEmail = $(event.currentTarget).data("email")
       instance.userToDeleteId.set(userId)
       instance.userToDeleteEmail.set(userEmail)
       $('#remove-user-modal').modal('show')
 
-    'click .confirm-remove-user': (evt, instance) ->
+    'click .confirm-remove-user': (event, instance) ->
       userId = instance.userToDeleteId.get()
       Meteor.call 'removeUser', userId, (error, response) ->
         if error
