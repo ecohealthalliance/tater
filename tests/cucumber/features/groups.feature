@@ -13,3 +13,4 @@ Feature: Groups
     And I should see content "Test Group"
     When I click on the group link
     Then I should see content "Test Group"
+    And I should not see content "(Code Accessible)"

@@ -1,20 +1,40 @@
 if Meteor.isClient
 
+  $annotationSpanElement = (annotationId) ->
+    $(".document-text span[data-annotation-id='#{annotationId}']")
+
+  highlightText = (annotationId) ->
+    $(".document-text span").addClass('not-highlighted')
+    $annotationSpanElement(annotationId).addClass('highlighted').removeClass('not-highlighted')
+
+  scrollToAnnotation = (annotationId, scrollList) ->
+    $annotationText = $(".document-text span[data-annotation-id='#{annotationId}']")
+    $annotationInList = $("ul.annotations li[data-annotation-id='#{annotationId}']")
+    unless scrollList
+      $('.document-container').animate { scrollTop: ($annotationText.position().top - $annotationInList.position().top + ($annotationText.height() / 2) + 45) }, 1000, 'easeInOutQuint'
+    else
+      annotationDocTop  = $annotationSpanElement(annotationId).position()?.top + 10
+      annotationListTop = $annotationInList.position()?.top - 85
+      $('.document-container').animate { scrollTop: annotationDocTop }, 1000, 'easeInOutQuint'
+      $('.annotation-container').animate { scrollTop: annotationListTop }, 1000, 'easeInOutQuint'
+
   Template.documentDetail.onCreated ->
-    @subscribe('documentDetail', @data.documentId)
-    @subscribe('annotations', @data.documentId)
-    @subscribe('users', @data.documentId)
+    if @data.generateCode
+      @accessCode = Date.now()
+    @subscribe('documentDetail', @data.documentId, @accessCode)
+    @subscribe('docAnnotations', @data.documentId, @accessCode)
+    @subscribe('users', @data.documentId, @accessCode)
     @startOffset = new ReactiveVar()
     @endOffset = new ReactiveVar()
-    @selectedAnnotation = new ReactiveVar(null)
     @annotations = new ReactiveVar()
     @searchText = new ReactiveVar('')
     @temporaryAnnotation = new ReactiveVar(new Annotation())
+    @selectedAnnotation = new ReactiveVar({id: @data.annotationId, onLoad: true})
 
   Template.documentDetail.onRendered ->
     instance = Template.instance()
     @autorun ->
-      annotations = Annotations.find({documentId: instance.data.documentId}, sort: startOffset: 1)
+      annotations = Annotations.find({documentId: instance.data.documentId}, sort: {startOffset: 1, _id: 0})
       if instance.searchText.get() is ''
         instance.annotations.set annotations
       else
@@ -27,12 +47,28 @@ if Meteor.isClient
           wordMatches.length
         instance.annotations.set _.sortBy filteredAnnotations, 'startOffset'
 
+    @autorun ->
+      selectedAnnotation = instance.selectedAnnotation.get()
+      id = selectedAnnotation.id
+      if id
+        if selectedAnnotation.onLoad
+          setTimeout (->
+            scrollToAnnotation(id, true)
+            highlightText(id)
+            ), 400
+        else
+          highlightText(id)
+          scrollToAnnotation(id, false)
+
   Template.documentDetail.helpers
     'document': ->
       Documents.findOne({ _id: @documentId })
 
     'annotations': ->
       Template.instance().annotations.get()
+
+    'accessCode': ->
+      Template.instance().accessCode
 
     'annotationUserEmail': ->
       @userEmail()
@@ -75,8 +111,11 @@ if Meteor.isClient
         ''
 
     'selected': ->
-      if @_id is Template.instance().selectedAnnotation.get()
+      id = Template.instance().selectedAnnotation.get()?.id
+      if @_id is id
         'selected'
+      else if id
+        'not-selected'
 
   Template.documentDetail.events
     'mousedown .document-container': (event, instance) ->
@@ -86,16 +125,13 @@ if Meteor.isClient
 
     'click .annotations li': (event, template) ->
       annotationId = event.currentTarget.getAttribute('data-annotation-id')
-      documentAnnotation = $(".document-annotations span[data-annotation-id='#{annotationId}']")
-      if template.selectedAnnotation.get() is @_id
-        template.selectedAnnotation.set(null)
-        documentAnnotation.removeClass('highlighted')
-        $(".document-annotations span").removeClass('not-highlighted')
+      selectedAnnotation = template.selectedAnnotation
+      unless selectedAnnotation.get().id is annotationId
+        selectedAnnotation.set({id: annotationId})
       else
-        template.selectedAnnotation.set(@_id)
-        $(".document-annotations span").addClass('not-highlighted')
-        documentAnnotation.addClass('highlighted').removeClass('not-highlighted')
-        $('.document-container').animate { scrollTop: ($(".document-annotations span[data-annotation-id='#{annotationId}']").position().top - $("li[data-annotation-id='#{annotationId}']").position().top + ($(".document-annotations span[data-annotation-id='#{annotationId}']").height() / 2) + 45) }, 1000, 'easeInOutQuint'
+        selectedAnnotation.set({id: null})
+        $annotationSpanElement(annotationId).removeClass('highlighted')
+        $(".document-annotations span").removeClass('not-highlighted')
 
     'click .document-detail-container': (event, instance) =>
       instance.startOffset.set(null)
@@ -119,13 +155,13 @@ if Meteor.isClient
 
     'click .selectable-code': (event, instance) ->
       temporaryAnnotation = instance.temporaryAnnotation.get()
-      if temporaryAnnotation.startOffset >= 0
+      if temporaryAnnotation.startOffset?
         attributes = {}
         attributes['codeId'] = event.currentTarget.getAttribute('data-id')
         attributes['documentId'] = instance.data.documentId
         attributes['startOffset'] = temporaryAnnotation.startOffset
         attributes['endOffset'] = temporaryAnnotation.endOffset
-        Meteor.call('createAnnotation', attributes)
+        Meteor.call('createAnnotation', attributes, instance.accessCode)
 
         temporaryAnnotation.set({startOffset: null, endOffset: null})
         instance.temporaryAnnotation.set(temporaryAnnotation)
@@ -138,15 +174,23 @@ if Meteor.isClient
       annotationId = target.getAttribute('data-annotation-id')
       $(target).parent().addClass('deleting')
       setTimeout (->
-        Meteor.call 'deleteAnnotation', annotationId
+        Meteor.call 'deleteAnnotation', annotationId, instance.accessCode
         if annotationId is instance.selectedAnnotation.get()
           $(".document-annotations span").removeClass('not-highlighted')
         ), 800
 
+    'click .toggle-flag': (event, instance) ->
+      event.stopImmediatePropagation()
+      target = event.currentTarget
+      annotationId = target.getAttribute('data-annotation-id')
+      Meteor.call('toggleAnnotationFlag', annotationId)
+
 if Meteor.isServer
-  Meteor.publish 'documentDetail', (id) ->
+  Meteor.publish 'documentDetail', (id, code) ->
     document = Documents.findOne(id)
-    if @userId
+    if code && document.codeAccessible()
+      Documents.find id
+    else if @userId
       group = Groups.findOne({_id: document.groupId})
       user = Meteor.users.findOne(@userId)
       if group?.viewableByUser(user)
@@ -156,9 +200,11 @@ if Meteor.isServer
     else
       @ready()
 
-  Meteor.publish 'annotations', (documentId) ->
+  Meteor.publish 'docAnnotations', (documentId, code) ->
     document = Documents.findOne(documentId)
-    if @userId
+    if code && document.codeAccessible()
+      Annotations.find({documentId: documentId, accessCode: code})
+    else if @userId
       group = Groups.findOne({_id: document.groupId})
       user = Meteor.users.findOne(@userId)
       if group?.viewableByUser(user)
@@ -168,41 +214,52 @@ if Meteor.isServer
     else
       @ready()
 
-  Meteor.publish 'users', (documentId) ->
-    document = Documents.findOne(documentId)
-    group = Groups.findOne({_id: document.groupId})
-    Meteor.users.find
-      group: group._id
-      fields:
-        emails: 1
+  Meteor.publish 'users', (documentId, code) ->
+    if code
+      @ready()
+    else if @userId
+      document = Documents.findOne(documentId)
+      group = Groups.findOne({_id: document.groupId})
+      Meteor.users.find
+        group: group._id
+        fields:
+          emails: 1
+    else
+      @ready()
 
   Meteor.methods
-    createAnnotation: (attributes) ->
+    createAnnotation: (attributes, code) ->
       document = Documents.findOne(attributes.documentId)
-      if @userId
-        group = Groups.findOne({_id: document.groupId})
-        user = Meteor.users.findOne(@userId)
-        if group?.viewableByUser(user)
-          annotation = new Annotation()
-          annotation.set(attributes)
-          annotation.set(userId: @userId)
-          annotation.save ->
-            annotation
-        else
-          throw 'Unauthorized'
+      group = Groups.findOne({_id: document.groupId})
+      user = Meteor.users.findOne(@userId)
+      accessible = (code and document.codeAccessible()) or (user and group?.viewableByUser(user))
+      if accessible
+        annotation = new Annotation()
+        annotation.set(attributes)
+        annotation.set(userId: @userId)
+        annotation.set(accessCode: code)
+        annotation.save ->
+          annotation
       else
         throw 'Unauthorized'
 
-    deleteAnnotation: (annotationId) ->
+    deleteAnnotation: (annotationId, code) ->
       annotation = Annotations.findOne(annotationId)
       document = Documents.findOne(annotation.documentId)
-      if @userId
-        group = Groups.findOne({_id: document.groupId})
-        user = Meteor.users.findOne(@userId)
-        if group?.viewableByUser(user)
-          annotation.remove() ->
-            annotation
-        else
-          throw 'Unauthorized'
+      group = Groups.findOne({_id: document.groupId})
+      user = Meteor.users.findOne(@userId)
+      accessibleViaCode = (code and document.codeAccessible() and (code is annotation.accessCode))
+      accessibleViaUser = (user and group?.viewableByUser(user))
+      if accessibleViaCode or accessibleViaUser
+        annotation.remove ->
+          annotation
       else
         throw 'Unauthorized'
+
+    toggleAnnotationFlag: (annotationId) ->
+      annotation = Annotations.findOne(annotationId)
+      if annotation.flagged
+        annotation.set(flagged: false)
+      else
+        annotation.set(flagged: true)
+      annotation.save()

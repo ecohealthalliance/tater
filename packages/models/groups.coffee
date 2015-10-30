@@ -2,11 +2,12 @@ Groups = new Mongo.Collection('groups')
 Group = Astro.Class
   name: 'Group'
   collection: Groups
-  transform: true
   fields:
     name: 'string'
     description: 'string'
     createdById: 'string'
+    codeAccessible: 'boolean'
+  behaviors: ['timestamp']
 
   methods:
     truncateDescription: ->

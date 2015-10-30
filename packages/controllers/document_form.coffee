@@ -25,10 +25,7 @@ if Meteor.isClient
           toastr.error("Error")
         else
           toastr.success("Success")
-          if currentUser.admin
-            go 'documents'
-          else
-            go 'groupDocuments', {_id: currentUser.group}
+          go 'documentDetail', {_id: response}
 
 if Meteor.isServer
   Meteor.methods

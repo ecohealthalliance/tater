@@ -2,13 +2,15 @@ Annotations = new Mongo.Collection('annotations')
 Annotation = Astro.Class
   name: 'Annotation'
   collection: Annotations
-  transform: true
   fields:
     documentId: 'string'
     userId: 'string'
     codeId: 'string'
     startOffset: 'number'
     endOffset: 'number'
+    accessCode: 'string'
+    flagged: 'boolean'
+  behaviors: ['timestamp']
 
   methods:
     _codingKeyword: ->
@@ -29,3 +31,9 @@ Annotation = Astro.Class
 
     userEmail: ->
       Meteor.users.findOne(@userId)?.emails[0].address
+
+    document: ->
+      Documents.findOne({_id: @documentId})
+
+    text: ->
+      Spacebars.SafeString @document().body.substring(@startOffset, @endOffset)

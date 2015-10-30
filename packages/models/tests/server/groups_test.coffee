@@ -25,6 +25,19 @@ describe 'Group', ->
     group.save
     expect(group.createdById).to.eq('fakeid')
 
+  it 'includes codeAccessible', ->
+    group.set('codeAccessible', true)
+    group.save
+    expect(group.codeAccessible).to.eq(true)
+
+  it 'includes createdAt', ->
+    group.save
+    expect(group.createdAt).not.to.be.an('undefined')
+
+  it 'includes updatedAt', ->
+    group.save
+    expect(group.updatedAt).not.to.be.an('undefined')
+
   describe '#viewableByUser', ->
     it 'returns true if user belongs to group', ->
       group.save()

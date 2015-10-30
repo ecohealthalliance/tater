@@ -2,11 +2,11 @@ Documents = new Mongo.Collection('documents')
 Document = Astro.Class
   name: 'Document'
   collection: Documents
-  transform: true
   fields:
     title: 'string'
     body: 'string'
     groupId: 'string'
+  behaviors: ['timestamp']
 
   methods:
     groupName: ->
@@ -19,6 +19,9 @@ Document = Astro.Class
         splitText.slice(0,wordCount).join(' ')+'...'
       else
         @body
+
+    codeAccessible: ->
+      Groups.findOne(@groupId)?.codeAccessible
 
     textWithAnnotation: (annotation) ->
       body = @body

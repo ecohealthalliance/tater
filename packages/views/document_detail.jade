@@ -1,10 +1,14 @@
 template(name="documentDetail")
   if document
     .document-detail-container
-      +codingKeywords
-      .document-heading
+      +codingKeywords action='coding' accessCode=accessCode location='left'
+      .document-heading.pane-head.pane-head-m
         h1.document-title= document.title
-      .document-container
+        if accessCode
+          button.finished-annotating.btn.btn-primary(data-toggle="modal" data-target="#completionCodeModal")
+            i.fa.fa-check-circle.icon-left
+            span Finished Annotating
+      .document-container.pane.pane-middle
         #documentContainer
           #documentBody.document-body
             .document-wrapper
@@ -13,14 +17,22 @@ template(name="documentDetail")
                 each annotationLayers
                   .document-annotations
                     pre.document-text= this
-      .annotation-search-container
+      .annotation-search-container.pane-head.pane-head-r
         input.annotation-search.form-control(type="text" placeholder="Search Annotations")
-      .annotation-container
+      .annotation-container.pane.pane-r
         ul.annotations.list-unstyled
           if Template.subscriptionsReady
             each annotations
               li(data-annotation-id=_id class="annotation-color-#{color} {{selected}}")
-                span.code= code
+                if accessCode
+                  span.code
+                    span.header= header
+                else
+                  span.code= code
+                  if flagged
+                    span.toggle-flag.flagged.fa.fa-flag(data-annotation-id=_id)
+                  else
+                    span.toggle-flag.fa.fa-flag-o(data-annotation-id=_id)
                 span.user= annotationUserEmail
                 .delete-annotation.btn-delete(data-annotation-id=_id)
                   i.fa.fa-times-circle
@@ -28,3 +40,12 @@ template(name="documentDetail")
               .no-results
                 i.fa.fa-search
                 p Sorry, no annotations found
+          else
+            .loading
+  #completionCodeModal.modal.fade
+    .modal-dialog
+      .modal-content
+        .modal-body
+          p.instructions Thanks for completing this HIT.  Please enter this code into Mechanical Turk.
+          h5.completion-code Code:
+            span {{accessCode}}

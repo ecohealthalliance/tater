@@ -24,8 +24,7 @@ Feature: Documents
     And I log in as "non@admin.com"
     And I click on the Add Document link in the header
     And I fill out the new document form with title "Test Document"
-    Then I should be on the test group documents page
-    And I should see content "Test Document"
+    Then I should see content "Test Document"
     And I should see a "Success" toast
 
   @documents
@@ -53,6 +52,30 @@ Feature: Documents
     When I log in as the test user
     And I click on the Add Document link in the header
     And I fill out the new document form with title "Test Document" and select the test group
-    Then I should be on the admin documents page
-    And I should see that "Test Document" is in the test group
+    And I should see content "Test Document"
     And I should see a "Success" toast
+    When I navigate to "/admin"
+    And I click on the group link
+    Then I should see content "Test Document"
+
+  @documents
+  Scenario: Viewing a document with an access code
+    Given there is a code-accessible test group in the database
+    And there is a document with title "Test Document" in the test group
+    When I navigate to the test document with an access code
+    Then I should see content "Test Document"
+    When I click on the Finished Annotating button
+    Then I should see an access code in a modal
+
+  @documents
+  Scenario: Deleting a document
+    Given there is a code-accessible test group in the database
+    And there is a document with title "Test Document" in the test group
+    When I log in as the test user
+    When I navigate to "/admin"
+    And I click on the group link
+    Then I should see content "Test Document"
+    When I click on the Delete Document button
+    And I confirm the document deletion
+    Then I should see a "Success" toast
+    And I should not see content "Test Document"

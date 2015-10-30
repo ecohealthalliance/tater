@@ -4,6 +4,7 @@ body
 
 body
   font-family inherit
+  text-shadow 0 0 1px rgba(255,255,255,.5)
 
 .page-wrap
   position relative
@@ -40,6 +41,11 @@ h5
     background $background-primary
   &.secondary-bg
     background $background-secondary
+  &.no-border
+    border-bottom 0
+    margin-bottom 0
+    +above(3)
+      padding-bottom 0
 
 a
 button
@@ -53,20 +59,19 @@ a
   &:hover
   &:focus
     color $primary
-  &.with-icon-right
-    .fa
-      margin-left 3px
-  &.with-icon-left
-    .fa
-      margin-right 3px
 
 .btn
   border-width 2px
   .fa
     vAlign()
-    padding 0 0 0 5px
     font-size 110%
     line-height 0
+
+.fa
+  &.icon-right
+    margin-left 3px
+  &.icon-left
+    margin-right 3px
 
 .btn-primary
   makeButton($secondary)
@@ -78,7 +83,15 @@ a
   makeButton($confirm)
 
 .btn-danger
-  makeButton($primary-strong)
+  makeButton($delete, white, false)
+
+.btn-plain
+  background none
+  border 0
+  padding 0
+  &:focus
+    outline 0
+    box-shadow none
 
 .button-default['disabled']
 .btn['disabled']
@@ -113,6 +126,16 @@ a
   > div
     +below(2)
       width 100% !important
+
+.loading
+  loading(false)
+  position absolute
+  left 50%
+  top 100px
+  transform translate(-50%, 0)
+  &.center-v
+    top 50%
+    transform translate(-50%, -50%)
 
 .col-sm-0
   width 0%

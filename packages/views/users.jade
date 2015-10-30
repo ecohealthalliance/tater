@@ -1,11 +1,4 @@
 template(name="users")
-  section.rm-pad-top
-    .view-header.secondary-bg
-      .container
-        h1.inline Users
-        a.btn.btn-primary.new-user-link.header-btn.add-admin(data-toggle="modal" data-target="#add-admin-modal")
-          span Create New Admin User
-          i.fa.fa-user-plus
   #add-admin-modal.modal.fade(tabindex="-1" role="dialog")
     .modal-dialog
       .modal-content
@@ -14,9 +7,12 @@ template(name="users")
             i.fa.fa-times-circle
         .modal-body
           +userForm userType='admin'
-  .table-wrap.reports-table
-    .container.container-list.list-table
-      +reactiveTable collection=usersCollection settings=settings filters=filters
+  .table-wrap.users-table
+    .container-list.list-table
+      if Template.subscriptionsReady
+        +reactiveTable collection=usersCollection settings=settings filters=filters
+      else
+        .loading.center-v
   #remove-user-modal.modal.fade(tabindex="-1" role="dialog")
     .modal-dialog
       .modal-content
@@ -27,8 +23,8 @@ template(name="users")
           h3#myModalLabel Confirmation
           p Remove {{userToDeleteEmail}}?
         .modal-footer
-          button.btn(data-dismiss='modal', aria-hidden='true') Close
-          button.btn.btn-primary.confirm-remove-user Remove
+          button.btn.btn-default(data-dismiss='modal', aria-hidden='true') Close
+          button.btn.btn-danger.confirm-remove-user Remove
 
 template(name="noUsers")
   p No Users Found

@@ -1,19 +1,25 @@
 if Meteor.isClient
   Template.documents.onCreated ->
-    @subscribe('documents')
-    @subscribe('groups')
+    @subscribe('documentsAndGroups')
 
   Template.documents.helpers
-    documents: ->
-      Documents.find({}, {groupId: @groupId})
 
-    groupName: ->
-      @groupName()
+    documents: ->
+      Documents.find().map((doc)->
+        doc.groupName = Groups.findOne(doc.groupId)?.name
+        doc
+      )
 
 if Meteor.isServer
-  Meteor.publish 'documents', ->
+  Meteor.publish 'documentsAndGroups', ->
     user = Meteor.users.findOne({_id: @userId})
     if user?.admin
-      Documents.find()
+      [
+        Documents.find(),
+        Groups.find({}, {fields: {name: 1}})
+      ]
     else if user
-      Documents.find { groupId: user.group }
+      [
+        Documents.find({groupId: user.group}),
+        Groups.find({_id: user.group}, {fields: {name: 1}})
+      ]

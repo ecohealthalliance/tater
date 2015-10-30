@@ -17,6 +17,7 @@ Package.onUse(function(api) {
   api.addFiles('extends.import.styl');
   api.addFiles('globals.import.styl');
 
+  api.addFiles('layout.import.styl');
   api.addFiles('lists.import.styl');
   api.addFiles('modals.import.styl');
   api.addFiles('forms.import.styl');
@@ -29,6 +30,8 @@ Package.onUse(function(api) {
   api.addFiles('groups.import.styl');
   api.addFiles('documents.import.styl');
   api.addFiles('document_detail.import.styl');
+  api.addFiles('coding_keywords.import.styl');
+  api.addFiles('annotations.import.styl');
 
   api.addFiles('main.styl');
 });
