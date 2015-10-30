@@ -15,6 +15,12 @@ if Meteor.isClient
     fields = []
 
     fields.push
+      key: 'email'
+      label: 'Email'
+      fn: (val, object) ->
+        object.emails[0].address
+
+    fields.push
       key: 'group'
       label: 'Group'
       fn: (val, object) ->
@@ -22,12 +28,6 @@ if Meteor.isClient
           'Admins'
         else
           Groups.findOne(_id: val)?.name
-
-    fields.push
-      key: 'email'
-      label: 'Email'
-      fn: (val, object) ->
-        object.emails[0].address
 
     fields.push
       key: "controls"
