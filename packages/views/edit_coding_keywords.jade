@@ -18,15 +18,16 @@ template(name="editCodingKeywords")
           button(type="button" class="close" data-dismiss="modal" aria-label="Close")
             i.fa.fa-times-circle
         .modal-body
-          form#new-user-form
+          form#new-user-form.clearfix
             label Header
               input.form-control(name="header")
             label Sub-header
               input.form-control(name="subHeader")
             label Keyword
               input.form-control(name="keyword")
-            input.btn.btn-primary(type="submit" value="Add Keyword")
-            input.btn.btn-default.cancel(type="button" value="Cancel" data-dismiss="modal")
+            .modal-buttons
+              input.btn.btn-primary(type="submit" value="Add Keyword")
+              input.btn.btn-default.cancel(type="button" value="Cancel" data-dismiss="modal")
   #remove-keyword-modal.modal.fade(tabindex="-1" role="dialog")
     .modal-dialog
       .modal-content
