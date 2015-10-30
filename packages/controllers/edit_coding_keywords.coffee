@@ -19,17 +19,6 @@ if Meteor.isClient
       key: 'keyword'
       label: 'Keyword'
 
-    fields.push
-      key: "controls"
-      label: ""
-      hideToggle: true
-      fn: (val, obj) ->
-        new Spacebars.SafeString("""
-          <a class="control remove remove-keyword" data-id="#{obj._id}" title="Remove">
-            <i class='fa fa-remove'></>
-          </a>
-        """)
-
     showColumnToggles: false
     showFilter: true
     showRowCount: true
