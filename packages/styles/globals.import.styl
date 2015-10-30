@@ -41,6 +41,11 @@ h5
     background $background-primary
   &.secondary-bg
     background $background-secondary
+  &.no-border
+    border-bottom 0
+    margin-bottom 0
+    +above(3)
+      padding-bottom 0
 
 a
 button
@@ -121,6 +126,16 @@ a
   > div
     +below(2)
       width 100% !important
+
+.loading
+  loading(false)
+  position absolute
+  left 50%
+  top 100px
+  transform translate(-50%, 0)
+  &.center-v
+    top 50%
+    transform translate(-50%, -50%)
 
 .col-sm-0
   width 0%
