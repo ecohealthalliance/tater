@@ -1,10 +1,7 @@
 template(name="admin")
   if currentUser
     if isAdmin
-      .container
-        a.btn.btn-primary.header-btn(href="{{path route='editCodingKeywords'}}")
-          span Edit Coding Keywords
-        hr
+      .container.space-btm-4.space-top-1
         .row
           .col-sm-6
             .groups-container
@@ -25,6 +22,8 @@ template(name="admin")
                   i.fa.fa-user-plus
             .users-container
               +users
+      .container
+        +editCodingKeywords
   else
     .container
       .row

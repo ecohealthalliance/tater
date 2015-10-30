@@ -52,7 +52,7 @@ if Meteor.isClient
         subHeader: form.subHeader.value
         keyword: form.keyword.value
         color: 1
-      
+
       Meteor.call 'addKeyword', keywordProps, (error, response) ->
         if error
           toastr.error("Error: #{error.message}")

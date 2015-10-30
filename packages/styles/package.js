@@ -18,6 +18,7 @@ Package.onUse(function(api) {
   api.addFiles('globals.import.styl');
 
   api.addFiles('layout.import.styl');
+  api.addFiles('tables.import.styl');
   api.addFiles('lists.import.styl');
   api.addFiles('modals.import.styl');
   api.addFiles('forms.import.styl');
