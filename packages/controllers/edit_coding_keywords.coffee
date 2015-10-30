@@ -87,21 +87,11 @@ if Meteor.isServer
         if keywordProps.keyword or keywordProps.subHeader
           if not keywordProps.header
             throw new Meteor.Error('Header is required')
-          if not CodingKeywords.findOne(
-            header: keywordProps.header
-            subHeader: { $exists: false }
-            keyword: { $exists: false }
-          ) then throw new Meteor.Error('Header does not exist')
         if keywordProps.keyword
           if not keywordProps.header
             throw new Meteor.Error('Header is required')
           if not keywordProps.subHeader
             throw new Meteor.Error('Sub-header is required')
-          if not CodingKeywords.findOne(
-            header: keywordProps.header
-            subHeader: keywordProps.subHeader
-            keyword: { $exists: false }
-          ) then throw new Meteor.Error('Sub-header does not exist')
         if CodingKeywords.findOne(keywordProps)
           throw new Meteor.Error('Duplicate keyword')
         CodingKeywords.insert keywordProps
