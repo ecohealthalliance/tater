@@ -2,6 +2,5 @@
 ssh -i ~/.ssh/infrastructure.pem ubuntu@tater.ecohealthalliance.org mongodump
 scp -r -i ~/.ssh/infrastructure.pem ubuntu@tater.ecohealthalliance.org:dump/ dump/
 ssh -i ~/.ssh/infrastructure.pem ubuntu@tater.ecohealthalliance.org "rm -rf dump/"
-mongo --port 3001 meteor --eval "db.dropDatabase()"
-mongorestore --port 3001 -d meteor dump/tater
+mongorestore --drop --port 3001 -d meteor dump/tater
 rm -rf dump/
