@@ -42,5 +42,4 @@ do ->
       attributes['userId'] ?= 'fakeuserid'
       attributes['startOffset'] ?= 0
       attributes['endOffset'] ?= 1
-      attributes['_id'] = "fakeannotationid"
       Annotations.insert(attributes)
