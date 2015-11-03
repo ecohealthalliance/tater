@@ -14,12 +14,20 @@ Feature: Search Annotations Page
     And I select the test group
     Then I should see the test annotation
 
-  @searchAnnotations
+  @dev
   Scenario: Viewing search annotations page
     Given there are 30 test annotations in the database
     When I log in as the test user
     And I visit the search annotations page
     And I select the test group
     Then I should see 20 test annotations
+    And I should see the next page button
+
     When I go to the next page of annotations
     Then I should see 10 test annotations
+    And I should not see the next page button
+    And I should see the previous page button
+
+    When I go to the previous page of annotations
+    Then I should see 20 test annotations
+    And I should not see the previous page button

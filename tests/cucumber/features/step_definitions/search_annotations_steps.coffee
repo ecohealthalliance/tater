@@ -34,13 +34,22 @@ do ->
       @client
         .waitForExist('.annotation-detail', assert.ifError)
         .elements '.annotation-detail', (error, elements) ->
-          assert(elements.value.length == number, "Expected #{elements.value.length} to equal #{number}")
+          assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
     @When 'I select the test group', ->
       @browser
         .click('.group-selector')
 
-    @When 'I go to the next page of annotations', ->
+    @When /^I go to the (next|previous) page of annotations$/, (direction) ->
       @browser
         .waitForExist('.annotation-detail', assert.ifError)
-        .click('.next-page')
+        .click(".#{direction}-page")
+
+    @When /^I should( not)? see the (next|previous) page button$/, (noButton, direction) ->
+      selector = ".#{direction}-page"
+      @browser
+        .getHTML selector, (error, response) =>
+          if noButton
+            assert.notOk(response)
+          else
+            assert.notOk(error)
