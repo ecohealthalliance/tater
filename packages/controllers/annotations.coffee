@@ -11,6 +11,7 @@ if Meteor.isClient
     @selectedGroups = new Meteor.Collection(null)
     @page = new ReactiveVar(0)
     @showNextPageButton = new ReactiveVar(false)
+    @showPreviousPageButton = new ReactiveVar(false)
 
   Template.annotations.onRendered ->
     instance = Template.instance()
@@ -53,6 +54,12 @@ if Meteor.isClient
         instance.showNextPageButton.set(true)
       else
         instance.showNextPageButton.set(false)
+
+      if instance.page.get() > 0
+        instance.showPreviousPageButton.set(true)
+      else
+        instance.showPreviousPageButton.set(false)
+
       annotations = annotations.slice(startIndexForPage, endIndexForPage)
 
       annotationsByCode =
@@ -147,6 +154,9 @@ if Meteor.isClient
       else
         'disabled'
 
+    showPreviousPageButton: ->
+      Template.instance().showPreviousPageButton.get()
+
     showNextPageButton: ->
       Template.instance().showNextPageButton.get()
 
@@ -178,6 +188,10 @@ if Meteor.isClient
         documents.remove(docQuery)
       else
         documents.insert(docQuery)
+
+    'click .previous-page': (event, instance) ->
+      current_page = instance.page.get()
+      instance.page.set(current_page - 1)
 
     'click .next-page': (event, instance) ->
       current_page = instance.page.get()

@@ -54,6 +54,8 @@ template(name="annotations")
                     .details.clearfix
                       span.document-title= documentTitle
                       spna.user-email= user
+          if showPreviousPageButton
+            a.previous-page Previous Page
           if showNextPageButton
             a.next-page Next Page
         else
