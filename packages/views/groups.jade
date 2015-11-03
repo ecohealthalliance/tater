@@ -6,7 +6,7 @@ template(name="groups")
           ul.list.group-list.list-unstyled
             each groups
               li.group
-                a.list-link(href="{{path route='groupDocuments' params=this}}")
+                a.list-link(href="{{path route='groupDetail' params=this}}")
                   span.group-name= name
                 a.add-user.btn-list(data-toggle="modal" data-target="#add-group-user-modal")
                   i.fa.fa-user-plus

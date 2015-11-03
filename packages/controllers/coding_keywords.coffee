@@ -3,7 +3,7 @@ if Meteor.isClient
     if @data.accessCode
       @subscribe('caseCountCodingKeywords')
     else
-      @subscribe('codingKeywords')
+      @subscribe('codingKeywords', @data?.groupId, true)
     @searchText = new ReactiveVar('')
     @searching = new ReactiveVar(false)
     @filteredCodes = new ReactiveVar()
@@ -139,7 +139,18 @@ if Meteor.isClient
 
 
 if Meteor.isServer
-  Meteor.publish 'codingKeywords', () ->
-    CodingKeywords.find(caseCount: {$ne: true})
+  Meteor.publish 'codingKeywords', (groupId, returnDefaults) ->
+    results = CodingKeywords.find
+      groupId: groupId
+      caseCount: {$ne: true}
+    if returnDefaults
+      # If the group has no keywords fall back on the initial keywords.
+      if results.count() == 0
+        CodingKeywords.find
+          caseCount: {$ne: true}
+      else
+        results
+    else
+      results
   Meteor.publish 'caseCountCodingKeywords', () ->
     CodingKeywords.find(caseCount: true)

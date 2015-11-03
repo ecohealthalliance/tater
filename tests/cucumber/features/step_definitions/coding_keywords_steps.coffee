@@ -24,3 +24,9 @@ do ->
         .pause(2000)
         .getHTML '.keyword-table tbody', (error, response) ->
           assert.ok(response.toString().match(text), "Text not found")
+
+    @Then 'I should see "$text" in the coding keywords panel', (text) ->
+      @browser
+        .waitForVisible('.coding-container')
+        .getHTML '.selectable-code', (error, response) ->
+          assert.ok(response.toString().search(text) >= 0, "Text not found")
