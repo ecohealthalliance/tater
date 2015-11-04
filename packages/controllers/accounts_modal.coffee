@@ -2,6 +2,7 @@ AccountsTemplates.configure
   showPlaceholders: false
   enablePasswordChange: true
   hideSignUpLink: true
+  showForgotPasswordLink: true
   onSubmitHook: (err, state)->
     unless err
       $('.accounts-modal').modal('hide')
@@ -14,7 +15,15 @@ AccountsTemplates.configure
         , 0)
 
 Template.accountsModal.onCreated ->
-  @state = Template.currentData()?.state
+  if Accounts._resetPasswordToken
+    @state = new ReactiveVar('resetPwd')
+  else
+    @state = Template.currentData()?.state
+
+Template.accountsModal.onRendered ->
+  if Accounts._resetPasswordToken
+    @state = new ReactiveVar('resetPwd')
+    $('.accounts-modal').modal('show')
 
 Template.accountsModal.helpers
   state: -> Template.instance().state.get()
@@ -24,3 +33,5 @@ Template.accountsModal.events
     instance.state.set("signUp")
   'click #at-signIn' : (evt, instance)->
     instance.state.set("signIn")
+  'click #at-forgotPwd' : (evt, instance)->
+    instance.state.set("forgotPwd")

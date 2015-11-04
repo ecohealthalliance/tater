@@ -94,3 +94,10 @@ FlowRouter.route '/annotations',
   action: () ->
     FlowLayout.render 'layout',
       main: 'annotations'
+
+FlowRouter.route '/reset-password/:token',
+  name: 'resetPassword'
+  action: (params) ->
+    FlowLayout.render 'layout',
+      main: 'resetPassword'
+      params: {"token": params.token}
