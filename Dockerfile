@@ -28,6 +28,7 @@ RUN mkdir -p /tater/packages /tater/public /tater/.meteor
 ADD ./packages /tater/packages
 ADD ./public /tater/public
 ADD ./.meteor /tater/.meteor
+ADD ./revision.txt /revision.txt
 
 #Prepare for production
 #RUN cd /tater && meteor build /tater/build --directory
