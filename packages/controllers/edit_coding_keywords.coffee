@@ -51,21 +51,6 @@ if Meteor.isClient
         $('#remove-keyword-modal').modal('hide')
         instance.keywordToDeleteId.set(null)
 
-    'click .remove-keyword': (event, instance) ->
-      keywordId = $(event.currentTarget).data("id")
-      instance.keywordToDeleteId.set(keywordId)
-      $('#remove-keyword-modal').modal('show')
-
-    'click .confirm-remove-keyword': (event, instance) ->
-      keywordId = instance.keywordToDeleteId.get()
-      Meteor.call 'removeKeyword', keywordId, (error, response) ->
-        if error
-          toastr.error("Error")
-        else
-          toastr.success("Keyword removed")
-        $('#remove-keyword-modal').modal('hide')
-        instance.keywordToDeleteId.set(null)
-
 if Meteor.isServer
   Meteor.methods
     addKeyword: (keywordProps) ->
@@ -97,10 +82,5 @@ if Meteor.isServer
         if CodingKeywords.findOne(keywordProps)
           throw new Meteor.Error('Duplicate keyword')
         CodingKeywords.insert keywordProps
-      else
-        throw new Meteor.Error('Unauthorized')
-    removeKeyword: (keywordId) ->
-      if Meteor.users.findOne(@userId)?.admin
-        CodingKeywords.remove keywordId
       else
         throw new Meteor.Error('Unauthorized')

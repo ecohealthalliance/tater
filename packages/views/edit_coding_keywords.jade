@@ -28,15 +28,3 @@ template(name="editCodingKeywords")
             .modal-buttons
               input.btn.btn-primary(type="submit" value="Add Keyword")
               input.btn.btn-default.cancel(type="button" value="Cancel" data-dismiss="modal")
-  #remove-keyword-modal.modal.fade(tabindex="-1" role="dialog")
-    .modal-dialog
-      .modal-content
-        .modal-header
-          button(type="button" class="close" data-dismiss="modal" aria-label="Close")
-            i.fa.fa-times-circle
-        .modal-body
-          h3#myModalLabel Confirmation
-          p Remove {{keywordToDelete.keyword}}?
-        .modal-footer
-          button.btn(data-dismiss='modal', aria-hidden='true') Close
-          button.btn.btn-primary.confirm-remove-keyword Remove
