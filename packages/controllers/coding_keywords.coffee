@@ -23,7 +23,7 @@ if Meteor.isClient
         text = RegExp(text, 'i')
         query.push $or: [{'header': text}, {'subHeader': text}, {'keyword': text}]
 
-      if instance.selectableCodes.get()
+      if instance.selectableCodes?.get()
         codeIds = _.pluck instance.selectableCodes.get(), '_id'
         query.push {_id: {$in: codeIds}}
 
