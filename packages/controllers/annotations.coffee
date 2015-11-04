@@ -4,7 +4,7 @@ if Meteor.isClient
     @subscribe('CodingKeywords')
     @selectedCodes  = new Meteor.Collection(null)
     @annotations = new ReactiveVar()
-    @selectableCodes = new ReactiveVar()
+    @selectableCodes = new ReactiveVar([])
     @showFlagged = new ReactiveVar(false)
     @filtering = new ReactiveVar(false)
     @documents = new Meteor.Collection(null)
@@ -118,6 +118,9 @@ if Meteor.isClient
     selectedGroup: ->
       if Template.instance().selectedGroups.find({id:@_id}).count() and Documents.find({groupId:@_id}).count()
         'selected'
+
+    selectedGroups: ->
+      Template.instance().selectedGroups
 
     groups: ->
       Groups.find({}, {sort: {name: 1}})

@@ -1,9 +1,5 @@
 if Meteor.isClient
   Template.codingKeywords.onCreated ->
-    if @data.accessCode
-      @subscribe('caseCountCodingKeywords')
-    else
-      @subscribe('codingKeywords', @data?.groupId, true)
     @searchText = new ReactiveVar('')
     @searching = new ReactiveVar(false)
     @filteredCodes = new ReactiveVar()
@@ -13,6 +9,14 @@ if Meteor.isClient
     instance = Template.instance()
 
     @autorun ->
+      groupIds = _.chain(instance.data?.selectedGroups?.find()?.fetch() or [])
+        .pluck("id")
+        .uniq()
+        .value()
+      if instance.data.accessCode
+        instance.subscribe('caseCountCodingKeywords')
+      else
+        instance.subscribe('codingKeywords', instance.data?.groupId or groupIds, true)
       query = []
       searchText = instance.searchText.get().split(' ')
       _.each searchText, (text) ->
@@ -139,17 +143,24 @@ if Meteor.isClient
 
 
 if Meteor.isServer
-  Meteor.publish 'codingKeywords', (groupId, returnDefaults) ->
+  Meteor.publish 'codingKeywords', (groupIdOrIds, returnDefaults) ->
+    if _.isString(groupIdOrIds)
+      groupIds = [groupIdOrIds]
+    else if _.isArray(groupIdOrIds)
+      groupIds = groupIdOrIds
+    else
+      groupIds = [null]
     results = CodingKeywords.find
-      groupId: groupId
+      groupId: {$in: groupIds}
       caseCount: {$ne: true}
     if returnDefaults
-      # If the group has no keywords fall back on the initial keywords.
-      if results.count() == 0
-        CodingKeywords.find
-          caseCount: {$ne: true}
-      else
+      if _.every(groupIds, (id)-> CodingKeywords.findOne({groupId: id}))
         results
+      else
+        # If a group has no keywords include the initial default keywords.
+        CodingKeywords.find
+          groupId: {$in: groupIds.concat(null)}
+          caseCount: {$ne: true}
     else
       results
   Meteor.publish 'caseCountCodingKeywords', () ->
