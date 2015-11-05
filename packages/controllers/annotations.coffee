@@ -230,15 +230,18 @@ if Meteor.isServer
   Meteor.publish 'annotationsGroupsAndDocuments', ->
     user = Meteor.users.findOne({_id: @userId})
     codeInaccessibleGroups = Groups.find({codeAccessible: {$ne: true}})
-    if user?.admin
-      codeInaccessibleGroupIds = _.pluck(codeInaccessibleGroups.fetch(), '_id')
-      documents = Documents.find({groupId: {$in: codeInaccessibleGroupIds}})
-    else if user
-      documents = Documents.find({ groupId: user.group })
-    docIds = documents.map((d)-> d._id)
-    [
-      documents
-      codeInaccessibleGroups
-      Annotations.find
-        documentId: {$in: docIds}
-    ]
+    if user
+      if user?.admin
+        codeInaccessibleGroupIds = _.pluck(codeInaccessibleGroups.fetch(), '_id')
+        documents = Documents.find({groupId: {$in: codeInaccessibleGroupIds}})
+      else if user
+        documents = Documents.find({ groupId: user.group })
+      docIds = documents.map((d)-> d._id)
+      [
+        documents
+        codeInaccessibleGroups
+        Annotations.find
+          documentId: {$in: docIds}
+      ]
+    else
+      @ready()
