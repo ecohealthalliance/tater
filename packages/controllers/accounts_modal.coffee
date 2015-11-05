@@ -15,15 +15,7 @@ AccountsTemplates.configure
         , 0)
 
 Template.accountsModal.onCreated ->
-  if Accounts._resetPasswordToken
-    @state = new ReactiveVar('resetPwd')
-  else
-    @state = Template.currentData()?.state
-
-Template.accountsModal.onRendered ->
-  if Accounts._resetPasswordToken
-    @state = new ReactiveVar('resetPwd')
-    $('.accounts-modal').modal('show')
+  @state = Template.currentData()?.state
 
 Template.accountsModal.helpers
   state: -> Template.instance().state.get()
