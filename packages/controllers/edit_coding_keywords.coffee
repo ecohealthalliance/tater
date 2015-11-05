@@ -50,6 +50,41 @@ if Meteor.isClient
         instance.keywordToDeleteId.set(null)
 
 if Meteor.isServer
+
+  _validateHeader = (header) ->
+    if not CodingKeywords.findOne(
+      header: header
+      subHeader: { $exists: false }
+      keyword: { $exists: false }
+    ) then throw new Meteor.Error("""The header does not exist.
+    Omit the keyword and sub-header fields to create it before adding the keyword.""")
+
+  _validateSubheader = (header, subHeader) ->
+    if not CodingKeywords.findOne(
+      header: header
+      subHeader: subHeader
+      keyword: { $exists: false }
+    ) then throw new Meteor.Error("""The sub-header does not exist.
+    Omit the keyword field to create it before adding the keyword.""")
+
+  _validateKeywordProperties = (keywordProps) ->
+    if CodingKeywords.findOne(keywordProps)
+      throw new Meteor.Error('Duplicate keyword')
+
+    if keywordProps.keyword or keywordProps.subHeader
+      if not keywordProps.header
+        throw new Meteor.Error('Header is required')
+
+      _validateHeader(keywordProps.header)
+
+    if keywordProps.keyword
+      if not keywordProps.subHeader
+        throw new Meteor.Error('Sub-header is required')
+
+      _validateSubheader(keywordProps.header, keywordProps.subHeader)
+
+    true
+
   Meteor.methods
     addKeyword: (keywordProps) ->
       # Delete falsy values so the $exists queries work
@@ -57,31 +92,9 @@ if Meteor.isServer
         unless keywordProps[prop]
           delete keywordProps[prop]
       if Meteor.users.findOne(@userId)?.admin
-        if keywordProps.keyword or keywordProps.subHeader
-          if not keywordProps.header
-            throw new Meteor.Error('Header is required')
-          if not CodingKeywords.findOne(
-            header: keywordProps.header
-            subHeader: { $exists: false }
-            keyword: { $exists: false }
-          ) then throw new Meteor.Error("""The header does not exist.
-          Omit the keyword and sub-header fields to create it before adding the keyword.""")
-        if keywordProps.keyword
-          if not keywordProps.header
-            throw new Meteor.Error('Header is required')
-          if not keywordProps.subHeader
-            throw new Meteor.Error('Sub-header is required')
-          if not CodingKeywords.findOne(
-            header: keywordProps.header
-            subHeader: keywordProps.subHeader
-            keyword: { $exists: false }
-          ) then throw new Meteor.Error("""The sub-header does not exist.
-          Omit the keyword field to create it before adding the keyword.""")
-        if CodingKeywords.findOne(keywordProps)
-          throw new Meteor.Error('Duplicate keyword')
-
-        color = CodingKeywords.findOne({header: keywordProps.header})?.color
-        keywordProps.color = color or 1
-        CodingKeywords.insert keywordProps
+        if _validateKeywordProperties(keywordProps)
+          color = CodingKeywords.findOne({header: keywordProps.header})?.color
+          keywordProps.color = color or 1
+          CodingKeywords.insert keywordProps
       else
         throw new Meteor.Error('Unauthorized')
