@@ -40,7 +40,6 @@ if Meteor.isClient
         header: form.header.value
         subHeader: form.subHeader.value
         keyword: form.keyword.value
-        color: 1
 
       Meteor.call 'addKeyword', keywordProps, (error, response) ->
         if error
@@ -80,6 +79,9 @@ if Meteor.isServer
           Omit the keyword field to create it before adding the keyword.""")
         if CodingKeywords.findOne(keywordProps)
           throw new Meteor.Error('Duplicate keyword')
+
+        color = CodingKeywords.findOne({header: keywordProps.header})?.color
+        keywordProps.color = color or 1
         CodingKeywords.insert keywordProps
       else
         throw new Meteor.Error('Unauthorized')
