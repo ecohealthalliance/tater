@@ -1,6 +1,6 @@
 if Meteor.isClient
   Template.editCodingKeywords.onCreated ->
-    @subscribe('codingKeywords')
+    @subscribe('codingKeywords', @data?.groupId)
     @keywordToDeleteId = new ReactiveVar()
 
   Template.editCodingKeywords.settings = () =>
@@ -41,6 +41,7 @@ if Meteor.isClient
         subHeader: form.subHeader.value
         keyword: form.keyword.value
         color: 1
+        groupId: instance.data?.groupId
 
       Meteor.call 'addKeyword', keywordProps, (error, response) ->
         if error

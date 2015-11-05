@@ -1,9 +1,5 @@
 if Meteor.isClient
   Template.codingKeywords.onCreated ->
-    if @data.accessCode
-      @subscribe('caseCountCodingKeywords')
-    else
-      @subscribe('codingKeywords')
     @searchText = new ReactiveVar('')
     @searching = new ReactiveVar(false)
     @filteredCodes = new ReactiveVar()
@@ -13,13 +9,21 @@ if Meteor.isClient
     instance = Template.instance()
 
     @autorun ->
+      groupIds = _.chain(instance.data?.selectedGroups?.find()?.fetch() or [])
+        .pluck("id")
+        .uniq()
+        .value()
+      if instance.data.accessCode
+        instance.subscribe('caseCountCodingKeywords')
+      else
+        instance.subscribe('codingKeywords', instance.data?.groupId or groupIds, true)
       query = []
       searchText = instance.searchText.get().split(' ')
       _.each searchText, (text) ->
         text = RegExp(text, 'i')
         query.push $or: [{'header': text}, {'subHeader': text}, {'keyword': text}]
 
-      if instance.selectableCodes.get()
+      if instance.selectableCodes?.get()
         codeIds = _.pluck instance.selectableCodes.get(), '_id'
         query.push {_id: {$in: codeIds}}
 
@@ -139,7 +143,25 @@ if Meteor.isClient
 
 
 if Meteor.isServer
-  Meteor.publish 'codingKeywords', () ->
-    CodingKeywords.find(caseCount: {$ne: true})
+  Meteor.publish 'codingKeywords', (groupIdOrIds, returnDefaults) ->
+    if _.isString(groupIdOrIds)
+      groupIds = [groupIdOrIds]
+    else if _.isArray(groupIdOrIds)
+      groupIds = groupIdOrIds
+    else
+      groupIds = [null]
+    results = CodingKeywords.find
+      groupId: {$in: groupIds}
+      caseCount: {$ne: true}
+    if returnDefaults
+      if _.every(groupIds, (id)-> CodingKeywords.findOne({groupId: id}))
+        results
+      else
+        # If a group has no keywords include the initial default keywords.
+        CodingKeywords.find
+          groupId: {$in: groupIds.concat(null)}
+          caseCount: {$ne: true}
+    else
+      results
   Meteor.publish 'caseCountCodingKeywords', () ->
     CodingKeywords.find(caseCount: true)

@@ -23,7 +23,9 @@ template(name="admin")
             .users-container
               +users
       .container
-        +editCodingKeywords
+        // I am setting groupId to null because if the groupId is not specified,
+        // the groupId from proir invocations will be used.
+        +editCodingKeywords groupId=null
   else
     .container
       .row

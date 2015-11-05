@@ -11,4 +11,10 @@ template(name="groupDetail")
         .row
           .col-sm-10
             +paragraphText text=group.description
-
+      .container
+        +editCodingKeywords groupId=group._id
+  else
+    .container
+      .row
+        .col-sm-12
+          p You must be an admin to continue.

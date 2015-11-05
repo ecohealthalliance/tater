@@ -43,6 +43,7 @@ Feature: Documents
     When I log in as the test user
     And I navigate to "/admin"
     And I click on the group link
+    And I click on the documents link
     Then I should see content "Test Doc"
 
   @documents
@@ -56,6 +57,7 @@ Feature: Documents
     And I should see a "Success" toast
     When I navigate to "/admin"
     And I click on the group link
+    And I click on the documents link
     Then I should see content "Test Document"
 
   @documents
@@ -74,6 +76,7 @@ Feature: Documents
     When I log in as the test user
     When I navigate to "/admin"
     And I click on the group link
+    And I click on the documents link
     Then I should see content "Test Document"
     When I click on the Delete Document button
     And I confirm the document deletion

@@ -89,6 +89,13 @@ FlowRouter.route '/groups/:_id/documents',
       main: 'groupDocuments'
       params: {"groupId": params._id}
 
+FlowRouter.route '/groups/:_id/editCodingKeywords',
+  name: 'editGroupCodingKeywords'
+  action: () ->
+    FlowLayout.render 'layout',
+      main: 'editCodingKeywords'
+      params: {"groupId": params._id}
+
 FlowRouter.route '/codingKeywords',
   name: 'codingKeywords'
   action: () ->

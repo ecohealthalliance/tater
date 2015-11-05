@@ -105,3 +105,8 @@ do ->
           matchGroup = response.toString().match("Test Group")
           assert.ok(matchDocument, "Document name not found")
           assert.ok(matchGroup, "Group not found")
+
+    @Then "I click on the documents link", ->
+      @browser
+        .waitForVisible '.group-documents-link'
+        .click '.group-documents-link'
