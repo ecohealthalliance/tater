@@ -7,7 +7,7 @@ template(name="users")
             i.fa.fa-times-circle
         .modal-body
           +userForm userType='admin'
-  .table-wrap.users-table
+  .table-wrap.users-table.no-filter
     .container-list.list-table
       if Template.subscriptionsReady
         +reactiveTable collection=usersCollection settings=settings filters=filters

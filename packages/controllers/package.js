@@ -8,7 +8,7 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.1.0.2');
   api.use('coffeescript');
-  api.use('underscore')
+  api.use('underscore');
   api.use('templating');
   api.use('reactive-var');
   api.use('tater:models');
@@ -39,6 +39,7 @@ Package.onUse(function(api) {
   api.addFiles('documents.coffee', ['client', 'server']);
   api.addFiles('user_form.coffee', 'client');
   api.addFiles('coding_keywords.coffee', ['client', 'server']);
+  api.addFiles('edit_coding_keywords.coffee', ['client', 'server']);
   api.addFiles('annotations.coffee', ['client', 'server']);
   api.addFiles('random_document.coffee', ['client', 'server']);
 });

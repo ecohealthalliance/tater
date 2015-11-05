@@ -36,6 +36,12 @@ FlowRouter.route '/admin',
     FlowLayout.render 'layout',
       main: 'admin'
 
+FlowRouter.route '/editCodingKeywords',
+  name: 'editCodingKeywords'
+  action: () ->
+    FlowLayout.render 'layout',
+      main: 'editCodingKeywords'
+
 FlowRouter.route '/documents/new',
   name: 'newDocument'
   action: (params) ->
