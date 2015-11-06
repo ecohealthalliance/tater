@@ -205,7 +205,16 @@ caseCountCodes = [
 ]
 
 CodingKeywords = new Mongo.Collection('codingKeywords')
-
+CodingKeyword = Astro.Class
+  name: 'CodingKeyword'
+  collection: CodingKeywords
+  fields:
+    header: 'string'
+    subHeader: 'string'
+    keyword: 'string'
+    color: 'number'
+    caseCount: 'boolean'
+  behaviors: ['timestamp']
 
 if Meteor.isServer
   Meteor.startup ->
