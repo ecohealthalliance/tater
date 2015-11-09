@@ -8,7 +8,9 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.1.0.2');
   api.use(['coffeescript', 'ui']);
+  api.use('accounts-ui');
   api.use('aslagle:reactive-table');
   api.addFiles('user_publications.coffee', ['server', 'client']);
   api.addFiles('admin_helper.coffee', ['client']);
+  api.addFiles('default_user.coffee', ['server']);
 });
