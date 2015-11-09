@@ -21,7 +21,7 @@ Package.onUse(function(api) {
   api.export(['UserProfile', 'UserProfiles'], ['client', 'server']);
   api.export(['Document', 'Documents'], ['client', 'server']);
   api.export(['Group', 'Groups'], ['client', 'server']);
-  api.export(['CodingKeywords'], ['client', 'server']);
+  api.export(['CodingKeyword', 'CodingKeywords'], ['client', 'server']);
   api.export(['Annotation', 'Annotations'], ['client', 'server']);
 });
 
@@ -35,4 +35,5 @@ Package.onTest(function(api) {
   api.addFiles('tests/server/groups_test.coffee', 'server');
   api.addFiles('tests/server/documents_test.coffee', 'server');
   api.addFiles('tests/server/annotations_test.coffee', 'server');
+  api.addFiles('tests/server/coding_keywords_test.coffee', 'server');
 });
