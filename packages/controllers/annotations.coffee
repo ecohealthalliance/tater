@@ -4,7 +4,7 @@ if Meteor.isClient
     @subscribe('CodingKeywords')
     @selectedCodes  = new Meteor.Collection(null)
     @annotations = new ReactiveVar()
-    @selectableCodes = new ReactiveVar()
+    @selectableCodesQuery = new ReactiveVar({})
     @showFlagged = new ReactiveVar(false)
     @filtering = new ReactiveVar(false)
     @documents = new Meteor.Collection(null)
@@ -32,8 +32,8 @@ if Meteor.isClient
       query.documentId = {$in: documents}
 
       unless instance.filtering.get()
-        currentAnnotations = Annotations.find({documentId: query.documentId}).fetch()
-        instance.selectableCodes.set _.map currentAnnotations, (annotation) -> annotation._codingKeyword()
+        selectableCodesQuery = {documentId: query.documentId}
+        instance.selectableCodesQuery.set selectableCodesQuery
 
       annotations =
         _.map Annotations.find(query).fetch(), (annotation) ->
@@ -77,8 +77,8 @@ if Meteor.isClient
   Template.annotations.helpers
     annotationsByCode: ->
       Template.instance().annotations.get()
-    selectableCodes: ->
-      Template.instance().selectableCodes
+    selectableCodesQuery: ->
+      Template.instance().selectableCodesQuery
     codeString: ->
       header = @code?.header
       subHeader = @code?.subHeader
@@ -268,6 +268,35 @@ if Meteor.isClient
 
 
 if Meteor.isServer
+
+  Meteor.methods
+    getKeywordIdsForQuery: (query)->
+      user = Meteor.users.findOne({_id: @userId})
+      if user?.admin
+        codeInaccessibleGroups = Groups.find({codeAccessible: {$ne: true}})
+        codeInaccessibleGroupIds = _.pluck(codeInaccessibleGroups.fetch(), '_id')
+        documents = Documents.find({groupId: {$in: codeInaccessibleGroupIds}})
+      else if user
+        documents = Documents.find({ groupId: user.group })
+      else
+        documents = []
+      docIds = documents.map((d)-> d._id)
+      pipeline = [
+        {
+          $match: query
+        }
+        {
+          $group:
+            _id: "$codeId"
+        }
+      ]
+      if docIds.length > 0
+        pipeline = [{
+          $match:
+            documentId: {$in: docIds}
+        }].concat(pipeline)
+      aggResult = Annotations.aggregate pipeline
+      _.pluck aggResult, "_id"
 
   Meteor.publish 'annotationsGroupsAndDocuments', ->
     user = Meteor.users.findOne({_id: @userId})
