@@ -7,5 +7,6 @@ if Meteor.isClient
 
 if Meteor.isServer
   Meteor.startup ->
+    Accounts.emailTemplates.from = "\"Tater Accounts\" <no-reply@tater.io>"
     Accounts.urls.resetPassword = (token) ->
       "#{Meteor.absoluteUrl()}reset-password/#{token}"
