@@ -7,6 +7,5 @@ if Meteor.isClient
 
 if Meteor.isServer
   Meteor.startup ->
-    Accounts.emailTemplates.resetPassword.text = (user, url) ->
-      url = url.replace('#/', '')
-      "Click this link to reset your password: " + url
+    Accounts.urls.resetPassword = (token) ->
+      "#{Meteor.absoluteUrl()}reset-password/#{token}"
