@@ -13,6 +13,7 @@ Package.onUse(function(api) {
   api.use('accounts-password');
   api.use('useraccounts:core@1.7.0');
   api.use('mongo');
+  api.use('meteorhacks:aggregate@1.3.0');
   api.addFiles('user_profiles.coffee', ['client', 'server']);
   api.addFiles('groups.coffee', ['client', 'server']);
   api.addFiles('documents.coffee', ['client', 'server']);

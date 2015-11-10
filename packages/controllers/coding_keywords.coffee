@@ -7,24 +7,39 @@ if Meteor.isClient
     @searchText = new ReactiveVar('')
     @searching = new ReactiveVar(false)
     @filteredCodes = new ReactiveVar()
-    @selectableCodes = @data.selectableCodes
+    @selectableCodes = new ReactiveVar([])
+    @selectableCodesQuery = @data?.selectableCodesQuery
 
   Template.codingKeywords.onRendered ->
     instance = Template.instance()
-
+    codeIdsDeferred = $.Deferred()
     @autorun ->
+      # Trigger reruns when coding keywords change
+      CodingKeywords.find({})
       query = []
       searchText = instance.searchText.get().split(' ')
       _.each searchText, (text) ->
         text = RegExp(text, 'i')
         query.push $or: [{'header': text}, {'subHeader': text}, {'keyword': text}]
-
-      if instance.selectableCodes.get()
-        codeIds = _.pluck instance.selectableCodes.get(), '_id'
-        query.push {_id: {$in: codeIds}}
-
-      results = CodingKeywords.find({$and: query}, {sort: {header: 1, subHeader: 1, keyword: 1}})
-      instance.filteredCodes.set results
+      # Reject the previous deferred so that it can't run after this one.
+      codeIdsDeferred.reject()
+      codeIdsDeferred = $.Deferred (self)->
+        if instance.selectableCodesQuery
+          Meteor.call("getKeywordIdsForQuery", instance.selectableCodesQuery.get(), (err, codeIds)=>
+            @resolve(codeIds)
+          )
+        else
+          @resolve([])
+      codeIdsDeferred.then (codeIds)->
+        if codeIds.length > 0
+          query.push {_id: {$in: codeIds}}
+          instance.selectableCodes.set(
+            CodingKeywords.find({_id: {$in: codeIds}}).fetch()
+          )
+        else
+          instance.selectableCodes.set([])
+        results = CodingKeywords.find({$and: query}, {sort: {header: 1, subHeader: 1, keyword: 1}})
+        instance.filteredCodes.set results
 
   Template.codingKeywords.helpers
     searching: () ->
