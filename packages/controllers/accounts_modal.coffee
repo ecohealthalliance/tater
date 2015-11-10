@@ -2,6 +2,7 @@ AccountsTemplates.configure
   showPlaceholders: false
   enablePasswordChange: true
   hideSignUpLink: true
+  showForgotPasswordLink: true
   onSubmitHook: (err, state)->
     unless err
       $('.accounts-modal').modal('hide')
@@ -24,3 +25,5 @@ Template.accountsModal.events
     instance.state.set("signUp")
   'click #at-signIn' : (evt, instance)->
     instance.state.set("signIn")
+  'click #at-forgotPwd' : (evt, instance)->
+    instance.state.set("forgotPwd")

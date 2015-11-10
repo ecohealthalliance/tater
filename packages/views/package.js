@@ -38,4 +38,5 @@ Package.onUse(function(api) {
   api.addFiles('edit_coding_keywords.jade', 'client');
   api.addFiles('annotations.jade', 'client');
   api.addFiles('random_document.jade', 'client');
+  api.addFiles('reset_password.jade', 'client');
 });
