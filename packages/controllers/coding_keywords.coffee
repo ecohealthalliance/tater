@@ -19,7 +19,7 @@ if Meteor.isClient
         text = RegExp(text, 'i')
         query.push $or: [{'header': text}, {'subHeader': text}, {'keyword': text}]
 
-      if instance.selectableCodes.get()
+      if instance.selectableCodes?.get()
         codeIds = _.pluck instance.selectableCodes.get(), '_id'
         query.push {_id: {$in: codeIds}}
 
@@ -104,7 +104,7 @@ if Meteor.isClient
       Template.instance().data.action is 'coding'
 
     selected: (codeId) ->
-      if Template.instance().data.selectedCodes.findOne(@_id)
+      if Template.instance().data.selectedCodes?.findOne(@_id)
         'selected'
 
     selectedCodes: ->
