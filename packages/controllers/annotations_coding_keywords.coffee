@@ -1,5 +1,5 @@
 if Meteor.isClient
-  Template.codingKeywords.onCreated ->
+  Template.annotationsCodingKeywords.onCreated ->
     if @data.accessCode
       @subscribe('caseCountCodingKeywords')
     else
@@ -9,7 +9,7 @@ if Meteor.isClient
     @filteredCodes = new ReactiveVar()
     @selectableCodes = @data.selectableCodes
 
-  Template.codingKeywords.onRendered ->
+  Template.annotationsCodingKeywords.onRendered ->
     instance = Template.instance()
 
     @autorun ->
@@ -26,7 +26,7 @@ if Meteor.isClient
       results = CodingKeywords.find({$and: query}, {sort: {header: 1, subHeader: 1, keyword: 1}})
       instance.filteredCodes.set results
 
-  Template.codingKeywords.helpers
+  Template.annotationsCodingKeywords.helpers
     searching: () ->
       Template.instance().searching.get()
 
@@ -40,22 +40,6 @@ if Meteor.isClient
         Spacebars.SafeString("<span class='header'>#{@header}</span> : <span class='sub-header'>#{@subHeader}</span>")
       else
         Spacebars.SafeString("<span class='header'>"+@header+"</span>")
-
-    headers: () ->
-      CodingKeywords.find
-        'subHeader': $exists: false
-        'keywords': $exists: false
-
-    subHeaders: (header) ->
-      CodingKeywords.find
-        'header': header
-        'subHeader': $exists: true
-        'keyword': $exists: false
-
-    keywords: (subHeader) ->
-      CodingKeywords.find
-        'subHeader': subHeader
-        'keyword': $exists: true
 
     selectableHeaders: () ->
       headerNames = _.uniq _.pluck Template.instance().selectableCodes.get(), 'header'
@@ -100,9 +84,6 @@ if Meteor.isClient
       else if @header is 'Human Animal Contact' then 'fa-paw'
       else 'fa-ellipsis-h'
 
-    coding: ->
-      Template.instance().data.action is 'coding'
-
     selected: (codeId) ->
       if Template.instance().data.selectedCodes?.findOne(@_id)
         'selected'
@@ -110,10 +91,7 @@ if Meteor.isClient
     selectedCodes: ->
       Template.instance().data.selectedCodes?.find().count()
 
-    position: () ->
-      if @location is 'right' then 'r' else 'l'
-
-  Template.codingKeywords.events
+  Template.annotationsCodingKeywords.events
 
     'keyup .code-search': _.debounce ((e, instance) ->
       e.preventDefault()
