@@ -29,9 +29,9 @@ template(name="codingKeywords")
                   ul.code-sub-headers.coding.list-unstyled
                     each subHeaders header
                       li.code-sub-header.selectable
-                        i.down
+                        i.up
                         span.selectable-code(data-id=_id)= subHeader
-                        ul.code-keywords.list-unstyled.hidden
+                        ul.code-keywords.list-unstyled
                           each keywords subHeader
                             li.code-keyword.coding.selectable
                               span.selectable-code(data-id=_id)= keyword
