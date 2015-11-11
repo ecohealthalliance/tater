@@ -1,9 +1,6 @@
 if Meteor.isClient
   Template.annotationsCodingKeywords.onCreated ->
-    if @data.accessCode
-      @subscribe('caseCountCodingKeywords')
-    else
-      @subscribe('codingKeywords')
+    @subscribe('codingKeywords')
     @searchText = new ReactiveVar('')
     @searching = new ReactiveVar(false)
     @filteredCodes = new ReactiveVar()

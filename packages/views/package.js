@@ -40,5 +40,4 @@ Package.onUse(function(api) {
   api.addFiles('random_document.jade', 'client');
   api.addFiles('reset_password.jade', 'client');
   api.addFiles('document_detail_coding_keywords.jade', 'client');
-  api.addFiles('shared_coding_keywords.jade', 'client');
 });
