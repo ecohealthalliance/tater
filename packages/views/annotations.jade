@@ -40,6 +40,7 @@ template(name="annotations")
           input(type="checkbox", checked=showFlagged)
           | View Flagged
           i.fa.fa-flag-o
+        a.btn.btn-primary.btn-sm.download-csv Download CSV
       .annotations-list-container.pane.pane-m
         if annotationsByCode
           each annotationsByCode
@@ -65,3 +66,16 @@ template(name="annotations")
   else
     .container.space-top-2
       p Please log in or sign up to continue.
+  
+  #download-csv-modal.modal.fade(tabindex="-1" role="dialog")
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+            i.fa.fa-times-circle
+        .modal-body
+          if csvDataUri
+            a.btn.btn-primary(href=csvDataUri download="annotations.csv") Download
+          else
+            center
+              h3 Please wait while we generate a CSV...
