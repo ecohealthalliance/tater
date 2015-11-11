@@ -86,6 +86,8 @@ if Meteor.isClient
           else
             -1
       )
+    documentIds: ->
+      _.pluck(Document.find().fetch(), '_id')
 
     selectedCodes: ->
       Template.instance().selectedCodes

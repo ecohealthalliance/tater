@@ -1,10 +1,11 @@
 if Meteor.isClient
   Template.annotationsCodingKeywords.onCreated ->
-    @subscribe('codingKeywords')
     @searchText = new ReactiveVar('')
     @searching = new ReactiveVar(false)
     @filteredCodes = new ReactiveVar()
     @selectableCodes = @data.selectableCodes
+    @documentIds = @data.documentIds
+    @subscribe('codingKeywordsForDocuments', @documentIds)
 
   Template.annotationsCodingKeywords.onRendered ->
     instance = Template.instance()
@@ -114,7 +115,10 @@ if Meteor.isClient
 
 
 if Meteor.isServer
-  Meteor.publish 'codingKeywords', () ->
-    CodingKeywords.find(caseCount: {$ne: true})
-  Meteor.publish 'caseCountCodingKeywords', () ->
-    CodingKeywords.find(caseCount: true)
+  Meteor.publish 'codingKeywordsForDocuments', (documentIds) ->
+    console.log(documentIds)
+    if documentIds.length
+      annotations = Annotations.find({documentId: {$in: documentIds}})
+      CodingKeywords.find(_.pluck(annotations, 'codeId'))
+    else
+      @ready()
