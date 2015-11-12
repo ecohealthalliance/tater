@@ -10,6 +10,7 @@ do ->
       Groups.remove({})
       Documents.remove({})
       Annotations.remove({})
+      CodingKeywords.remove({})
 
     'createTestUser': (attributes) ->
       Meteor.users.remove({})
@@ -44,3 +45,6 @@ do ->
       attributes['endOffset'] ?= 1
       attributes['_id'] = "fakeannotationid"
       Annotations.insert(attributes)
+
+    'createCodingKeyword': (attributes) ->
+      CodingKeywords.insert(attributes)

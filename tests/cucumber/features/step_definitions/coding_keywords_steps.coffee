@@ -5,6 +5,24 @@ do ->
 
   module.exports = ->
 
+    @Given 'there is a coding keyword with header "$header" in the database', (header) ->
+      @server.call('createCodingKeyword', {header: header})
+
+    @When 'I type "$search" in the coding keyword search', (search) ->
+      @browser
+        .waitForVisible('.code-search')
+        .setValue('.code-search', search)
+        .waitForExist('.filteredCodes')
+
+    @Then /^I should( not)? see coding keyword search results$/, (noResults) ->
+      @browser
+        .waitForExist('.filteredCodes')
+        .getHTML '.filteredCodes', (error, response) ->
+          if noResults
+            assert.notOk(response.toString().match('selectable-code'), "Results found")
+          else
+            assert.ok(response.toString().match('selectable-code'), "No results found")
+
     @When "I click the Add Keyword button", ->
       @browser
         .waitForVisible('.add-keyword')

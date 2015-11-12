@@ -37,7 +37,7 @@ do ->
 
     @When 'I click on a coding keyword', ->
       @browser
-        .click('.code-list .coding.selectable')
+        .click('.code-list .coding')
 
     @Then /^I should( not)? see an annotation in the annotations list$/, (noAnnotations) ->
       @browser
