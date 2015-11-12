@@ -1,0 +1,30 @@
+template(name="editCodingKeywords")
+  .view-header.no-border
+    .container
+      h1.inline Coding Keywords
+      a.btn.btn-primary.new-user-link.header-btn.add-keyword(data-toggle="modal" data-target="#add-keyword-modal")
+        span Add Keyword
+        i.fa.fa-plus
+  .table-wrap.keyword-table
+    if Template.subscriptionsReady
+      .container-list.list-table
+        +reactiveTable collection=keywordCollection settings=settings
+    else
+      .loading
+  #add-keyword-modal.modal.fade(tabindex="-1" role="dialog")
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+            i.fa.fa-times-circle
+        .modal-body
+          form#new-user-form.clearfix
+            label Header
+              input.form-control(name="header")
+            label Sub-header
+              input.form-control(name="subHeader")
+            label Keyword
+              input.form-control(name="keyword")
+            .modal-buttons
+              input.btn.btn-primary(type="submit" value="Add Keyword")
+              input.btn.btn-default.cancel(type="button" value="Cancel" data-dismiss="modal")

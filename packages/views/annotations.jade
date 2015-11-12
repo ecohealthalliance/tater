@@ -57,12 +57,9 @@ template(name="annotations")
         else
           p.text-center Select a document to view annotations
 
-      +codingKeywords(
-        action='listing'
+      +annotationsCodingKeywords(
         selectedCodes=selectedCodes
-        annotations=annotationsByCode
-        selectableCodes=selectableCodes
-        location='right'
+        keywordQuery=keywordQuery
       )
 
   else

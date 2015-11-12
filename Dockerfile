@@ -28,6 +28,7 @@ RUN mkdir -p /tater/packages /tater/public /tater/.meteor
 ADD ./packages /tater/packages
 ADD ./public /tater/public
 ADD ./.meteor /tater/.meteor
+ADD ./revision.txt /revision.txt
 
 #Prepare for production
 #RUN cd /tater && meteor build /tater/build --directory
@@ -43,4 +44,5 @@ EXPOSE 3000
 #ENV ROOT_URL=http://localhost:3000
 #ENV DDP_DEFAULT_CONNECTION_URL https://tater.ecohealthalliance.org:8443
 #CMD node /tater/build/bundle/main.js
+ENV MAIL_URL="smtp://AKIAIE2YD4YI4TQOU3QQ:AgELzBJTKCMedBlCfMafPzVBbvbEO8R5Sdm7on2+7v8y@email-smtp.us-east-1.amazonaws.com:465"
 CMD cd /tater && meteor run --production

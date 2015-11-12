@@ -7,10 +7,8 @@ do ->
 
     url = require('url')
 
-    _test_annotation = {title: "Test Document", body: "This is a doc for testing"}
-
     @Given 'there is a test annotation in the database', ->
-      @server.call('createTestAnnotation', _test_annotation)
+      @server.call('createTestAnnotation', {})
 
     @When 'I visit the search annotations page', ->
       @browser

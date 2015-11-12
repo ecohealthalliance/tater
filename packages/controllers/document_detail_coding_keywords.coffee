@@ -1,5 +1,5 @@
 if Meteor.isClient
-  Template.codingKeywords.onCreated ->
+  Template.documentDetailCodingKeywords.onCreated ->
     if @data.accessCode
       @subscribe('caseCountCodingKeywords')
     else
@@ -9,7 +9,7 @@ if Meteor.isClient
     @filteredCodes = new ReactiveVar()
     @selectableCodes = @data.selectableCodes
 
-  Template.codingKeywords.onRendered ->
+  Template.documentDetailCodingKeywords.onRendered ->
     instance = Template.instance()
 
     @autorun ->
@@ -19,14 +19,10 @@ if Meteor.isClient
         text = RegExp(text, 'i')
         query.push $or: [{'header': text}, {'subHeader': text}, {'keyword': text}]
 
-      if instance.selectableCodes.get()
-        codeIds = _.pluck instance.selectableCodes.get(), '_id'
-        query.push {_id: {$in: codeIds}}
-
       results = CodingKeywords.find({$and: query}, {sort: {header: 1, subHeader: 1, keyword: 1}})
       instance.filteredCodes.set results
 
-  Template.codingKeywords.helpers
+  Template.documentDetailCodingKeywords.helpers
     searching: () ->
       Template.instance().searching.get()
 
@@ -43,63 +39,19 @@ if Meteor.isClient
 
     headers: () ->
       CodingKeywords.find
-        $and:
-          [
-            'subHeader': $exists: false
-            'keywords': $exists: false
-          ]
+        'subHeader': $exists: false
+        'keywords': $exists: false
 
     subHeaders: (header) ->
       CodingKeywords.find
-        $and:
-          [
-            'header': header
-            'subHeader': $exists: true
-            'keyword': $exists: false
-          ]
+        'header': header
+        'subHeader': $exists: true
+        'keyword': $exists: false
 
     keywords: (subHeader) ->
       CodingKeywords.find
-        $and:
-          [
-            'subHeader': subHeader
-            'keyword': $exists: true
-          ]
-
-    selectableHeaders: () ->
-      headerNames = _.uniq _.pluck Template.instance().selectableCodes.get(), 'header'
-      headers = CodingKeywords.find
-        $and:
-          [
-            'subHeader': $exists: false
-            'keyword': $exists: false
-            'header': $in: headerNames
-          ]
-      if headers.count()
-        headers
-
-    selectableSubHeaders: (header) ->
-      subHeaderNames = _.uniq _.pluck _.filter(Template.instance().selectableCodes.get(), (code) -> code.header == header and code.subHeader), 'subHeader'
-      subHeaders = CodingKeywords.find
-        $and:
-          [
-            'header': header
-            'subHeader': $exists: true
-            'keyword': $exists: false
-            'subHeader': $in: subHeaderNames
-          ]
-      if subHeaders.count()
-        subHeaders
-
-    selectableKeywords: (subHeader) ->
-      keywordIds = _.pluck _.filter(Template.instance().selectableCodes.get(), (code) -> code.subHeader == subHeader and code.keyword), '_id'
-      keywords = CodingKeywords.find
-        $and:
-          [
-            '_id': $in: keywordIds
-          ]
-      if keywords.count()
-        keywords
+        'subHeader': subHeader
+        'keyword': $exists: true
 
     icon: ->
       if @header is 'Human Movement' then 'fa-bus'
@@ -107,21 +59,9 @@ if Meteor.isClient
       else if @header is 'Biosecurity in Human Environments' then 'fa-lock'
       else if @header is 'Illness Medical Care/Treatment and Death' then 'fa-medkit'
       else if @header is 'Human Animal Contact' then 'fa-paw'
+      else 'fa-ellipsis-h'
 
-    coding: ->
-      Template.instance().data.action is 'coding'
-
-    selected: (codeId) ->
-      if Template.instance().data.selectedCodes.findOne(@_id)
-        'selected'
-
-    selectedCodes: ->
-      Template.instance().data.selectedCodes?.find().count()
-
-    position: () ->
-      if @location is 'right' then 'r' else 'l'
-
-  Template.codingKeywords.events
+  Template.documentDetailCodingKeywords.events
 
     'keyup .code-search': _.debounce ((e, instance) ->
       e.preventDefault()
@@ -141,10 +81,6 @@ if Meteor.isClient
 
     'click .code-sub-header > i': (e) ->
       $(e.target).toggleClass('down up').siblings('.code-keywords').toggleClass('hidden').siblings('span').toggleClass('showing')
-
-    'click .clear-selected-codes': (e, instance) ->
-      instance.data.selectedCodes.remove({})
-
 
 if Meteor.isServer
   Meteor.publish 'codingKeywords', () ->

@@ -1,17 +1,24 @@
 if Meteor.isClient
   Template.annotations.onCreated ->
     @subscribe('annotationsGroupsAndDocuments')
-    @subscribe('CodingKeywords')
+    @subscribe('codingKeywords')
     @selectedCodes  = new Meteor.Collection(null)
     @annotations = new ReactiveVar()
-    @selectableCodes = new ReactiveVar()
     @showFlagged = new ReactiveVar(false)
     @filtering = new ReactiveVar(false)
     @documents = new Meteor.Collection(null)
     @selectedGroups = new Meteor.Collection(null)
+    @keywordQuery = new ReactiveVar({})
 
   Template.annotations.onRendered ->
     instance = Template.instance()
+    @autorun ->
+      docIds = _.pluck(instance.documents.find().fetch(), 'docID')
+      query = 
+        documentId: {$in: docIds}
+      if instance.showFlagged.get()
+        query.flagged = true
+      instance.keywordQuery.set(query)
     @autorun ->
       selectedCodes = instance.selectedCodes.find().fetch()
       query = {}
@@ -27,10 +34,6 @@ if Meteor.isClient
 
       documents = _.pluck(instance.documents.find().fetch(), 'docID')
       query.documentId = {$in: documents}
-
-      unless instance.filtering.get()
-        currentAnnotations = Annotations.find({documentId: query.documentId}).fetch()
-        instance.selectableCodes.set _.map currentAnnotations, (annotation) -> annotation._codingKeyword()
 
       annotations =
         _.map Annotations.find(query).fetch(), (annotation) ->
@@ -58,8 +61,6 @@ if Meteor.isClient
   Template.annotations.helpers
     annotationsByCode: ->
       Template.instance().annotations.get()
-    selectableCodes: ->
-      Template.instance().selectableCodes
     codeString: ->
       header = @code?.header
       subHeader = @code?.subHeader
@@ -86,6 +87,8 @@ if Meteor.isClient
           else
             -1
       )
+    keywordQuery: ->
+      Template.instance().keywordQuery
 
     selectedCodes: ->
       Template.instance().selectedCodes
@@ -230,15 +233,18 @@ if Meteor.isServer
   Meteor.publish 'annotationsGroupsAndDocuments', ->
     user = Meteor.users.findOne({_id: @userId})
     codeInaccessibleGroups = Groups.find({codeAccessible: {$ne: true}})
-    if user?.admin
-      codeInaccessibleGroupIds = _.pluck(codeInaccessibleGroups.fetch(), '_id')
-      documents = Documents.find({groupId: {$in: codeInaccessibleGroupIds}})
-    else if user
-      documents = Documents.find({ groupId: user.group })
-    docIds = documents.map((d)-> d._id)
-    [
-      documents
-      codeInaccessibleGroups
-      Annotations.find
-        documentId: {$in: docIds}
-    ]
+    if user
+      if user?.admin
+        codeInaccessibleGroupIds = _.pluck(codeInaccessibleGroups.fetch(), '_id')
+        documents = Documents.find({groupId: {$in: codeInaccessibleGroupIds}})
+      else if user
+        documents = Documents.find({ groupId: user.group })
+      docIds = documents.map((d)-> d._id)
+      [
+        documents
+        codeInaccessibleGroups
+        Annotations.find
+          documentId: {$in: docIds}
+      ]
+    else
+      @ready()

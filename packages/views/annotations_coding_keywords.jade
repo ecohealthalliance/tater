@@ -1,0 +1,41 @@
+template(name="annotationsCodingKeywords")
+  .code-search-container.pane-head(class="pane-head-r")
+    input.code-search.form-control(type="text" placeholder="Search Code Keywords")
+    i.fa.fa-times-circle.clear-search
+  .coding-container.pane(class="pane-r")
+    ul.list-unstyled.code-list(class="listing")
+      if selectedCodes
+        .clear-codes-container
+          button.btn.btn-block.btn-default.btn-sm.clear-selected-codes Clear Selected Codes
+      if Template.subscriptionsReady
+        if searching
+          ul.filteredCodes.list-unstyled
+            each filteredCodes
+              li.filter-result.selectable-code(class="code-#{color}")
+                span.selectable-code(data-id=_id class="{{selected}}")=code
+            else
+              .no-results
+                i.fa.fa-search
+                p Sorry, no codes found
+        else
+          each selectableHeaders
+            li.code-header.selectable(class="code-header-#{color}" )
+              span.selectable-code(data-id=_id class="{{selected}}")
+                span.icon.fa(class=icon)
+                span.header-name= header
+              if selectableSubHeaders header
+                i.up
+                ul.code-sub-headers.list-unstyled(class="")
+                  each selectableSubHeaders header
+                    li.code-sub-header.selectable(class="subHeader")
+                      span.selectable-code(data-id=_id class="{{selected}}")= subHeader
+                      if selectableKeywords subHeader
+                        i.up
+                        ul.code-keywords.list-unstyled
+                          each selectableKeywords subHeader
+                            li.code-keyword.selectable(class="")
+                              span.selectable-code(data-id=_id class="{{selected}}")= keyword
+        .text-center Select a document to view keywords
+
+      else
+        .loading

@@ -1,0 +1,79 @@
+.table > tbody > tr > td
+  vertical-align middle
+
+.table-wrap
+  &.no-filter
+    .reactive-table-options
+      display none
+
+.reactive-table
+  padding-left 0
+  padding-right 0
+  border-radius 5px
+  overflow hidden
+  tbody tr
+    cursor pointer
+  .controls
+    text-align right
+    padding-right 15px
+
+.reactive-table-columns-dropdown
+  button
+    text-shadow none
+  width auto
+  padding 0
+  a
+    position relative
+  label
+    white-space initial
+    padding-left 25px
+    margin 0
+  input
+    position absolute
+    left 15px
+
+.reactive-table-options
+  padding 0 15px
+  margin-top -10px
+  margin-bottom 15px
+  margin-right -15px
+  .dropdown-toggle
+    &::before,
+    &::after
+      vAlign()
+    &::before
+      @extend .icon
+      content '\f0db'
+      padding-right 5px
+      font-size 16px
+
+.reactive-table-navigation
+  label
+    display inline-block
+  .previous-page
+  .next-page
+    font-size 150%
+    line-height 0
+
+.rows-per-page
+.page-number
+  span
+    display inline-block
+    padding 0 1px
+    margin 0
+    font-weight normal
+  .page-number-count
+  .rows-per-page-count
+  .form-control
+    font-weight bold
+  .form-control
+    margin 0
+    text-align center
+    font-weight bold
+
+.keyword-table
+  .reactive-table-options
+    width 35%
+
+  .reactive-table-filter
+    width 100%
