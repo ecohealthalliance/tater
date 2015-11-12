@@ -9,6 +9,9 @@ if Meteor.isClient
     @filtering = new ReactiveVar(false)
     @documents = new Meteor.Collection(null)
     @selectedGroups = new Meteor.Collection(null)
+    @page = new ReactiveVar(0)
+    @showNextPageButton = new ReactiveVar(false)
+    @showPreviousPageButton = new ReactiveVar(false)
 
   Template.annotations.onRendered ->
     instance = Template.instance()
@@ -42,6 +45,22 @@ if Meteor.isClient
           groupId: doc.groupId
           codeId: annotation.codeId
           annotationId: annotation._id
+
+      annotationsPerPage = 20
+      startIndexForPage = (instance.page.get()*annotationsPerPage)
+      endIndexForPage = startIndexForPage + annotationsPerPage
+
+      if annotations.length > endIndexForPage
+        instance.showNextPageButton.set(true)
+      else
+        instance.showNextPageButton.set(false)
+
+      if instance.page.get() > 0
+        instance.showPreviousPageButton.set(true)
+      else
+        instance.showPreviousPageButton.set(false)
+
+      annotations = annotations.slice(startIndexForPage, endIndexForPage)
 
       annotationsByCode =
         _.map _.groupBy(annotations, 'codeId'), (annotations, codeId) ->
@@ -135,13 +154,23 @@ if Meteor.isClient
       else
         'disabled'
 
+    showPreviousPageButton: ->
+      Template.instance().showPreviousPageButton.get()
+
+    showNextPageButton: ->
+      Template.instance().showNextPageButton.get()
+
   resetKeywords = ->
     instance = Template.instance()
     instance.filtering.set(false)
     instance.selectedCodes.remove({})
 
+  resetPage = ->
+    Template.instance().page.set(0)
+
   Template.annotations.events
     'click .show-flagged': (event, instance) ->
+      resetPage()
       instance.showFlagged.set(!instance.showFlagged.get())
 
     'click .annotation-detail': (event, instance) ->
@@ -150,6 +179,7 @@ if Meteor.isClient
       go "documentDetailWithAnnotation", {"_id": documentId, "annotationId" : annotationId}
 
     'click .document-selector': (event, instance) ->
+      resetPage()
       resetKeywords()
       selectedDocID = $(event.currentTarget).data('id')
       documents = instance.documents
@@ -159,7 +189,16 @@ if Meteor.isClient
       else
         documents.insert(docQuery)
 
+    'click .previous-page': (event, instance) ->
+      current_page = instance.page.get()
+      instance.page.set(current_page - 1)
+
+    'click .next-page': (event, instance) ->
+      current_page = instance.page.get()
+      instance.page.set(current_page + 1)
+
     'click .group-selector.enabled span': (event, instance) ->
+      resetPage()
       resetKeywords()
       groupId = $(event.currentTarget).parent().data('group')
       selectedDocs = instance.documents
@@ -182,6 +221,7 @@ if Meteor.isClient
       $(event.target).toggleClass('down up').parent().siblings('.group-docs').toggleClass('hidden')
 
     'click .select-all': (event, instance) ->
+      resetPage()
       _.each Documents.find().fetch(), (doc) ->
         docQuery = {docID:doc._id}
         unless instance.documents.find(docQuery).count()
@@ -191,6 +231,7 @@ if Meteor.isClient
           instance.selectedGroups.insert({id:group._id})
 
     'click .selectable-code': (event, instance) ->
+      resetPage()
       selectedCodeKeywordId  = event.currentTarget.getAttribute('data-id')
       selectedCodeKeyword = CodingKeywords.findOne(selectedCodeKeywordId)
       currentlySelected = instance.selectedCodes.findOne(selectedCodeKeywordId)
@@ -221,6 +262,7 @@ if Meteor.isClient
           instance.selectedCodes.remove(codeKeyword)
 
     'click .clear-filters': (event, instance) ->
+      resetPage()
       instance.documents.remove({})
       instance.selectedGroups.remove({})
 
