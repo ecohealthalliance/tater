@@ -228,7 +228,6 @@ if Meteor.isClient
   Template.annotation.onRendered ->
     # This hides the code keyword labels for all but the first element of a
     # a code group.
-    console.log @$(@.firstNode).prev()
     if @$(@.firstNode).prev().find("h3").text() == @$("h3").text()
       @$("h3").hide()
   Template.annotation.helpers
