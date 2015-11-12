@@ -43,8 +43,12 @@ do ->
       attributes['userId'] ?= 'fakeuserid'
       attributes['startOffset'] ?= 0
       attributes['endOffset'] ?= 1
-      attributes['_id'] = "fakeannotationid"
       Annotations.insert(attributes)
 
     'createCodingKeyword': (attributes) ->
-      CodingKeywords.insert(attributes)
+      attributes['header'] ?= 'fakeheader'
+      attributes['subHeader'] ?= 'fakesubheader'
+      attributes['keyword'] ?= 'Quick brown fox jumped over the lazy dog'
+      attributes['color'] ?= '1'      
+      CodingKeywords.insert (attributes)
+

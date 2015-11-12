@@ -7,9 +7,14 @@ do ->
 
     url = require('url')
 
-    _test_annotation = {title: "Test Document", body: "This is a doc for testing"}
-
     @Given 'there is a test annotation in the database', ->
+      _codeId = "";
+      possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      for [1..25]
+        _codeId += possible.charAt(Math.floor(Math.random() * possible.length));
+
+      @server.call('createCodingKeyword', {_id: _codeId, header:'Human', subHeader: 'Train', color: 1})
+      _test_annotation = {title: "Test Document", body: "This is a doc for testing", codeId: _codeId}
       @server.call('createTestAnnotation', _test_annotation)
 
     @When 'I visit the search annotations page', ->

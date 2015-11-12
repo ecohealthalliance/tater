@@ -1,3 +1,4 @@
+@dev
 Feature: Search Annotations Page
 
   Background:
