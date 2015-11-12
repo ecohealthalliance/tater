@@ -137,8 +137,12 @@ if Meteor.isClient
     instance.filtering.set(false)
     instance.selectedCodes.remove({})
 
+  resetPage = ->
+    Pages.sess("currentPage", 1)
+
   Template.annotations.events
     'click .show-flagged': (event, instance) ->
+      resetPage()
       instance.showFlagged.set(!instance.showFlagged.get())
 
     'click .annotation-detail': (event, instance) ->
@@ -158,6 +162,7 @@ if Meteor.isClient
 
     'click .group-selector.enabled span': (event, instance) ->
       resetKeywords()
+      resetPage()
       groupId = $(event.currentTarget).parent().data('group')
       selectedDocs = instance.documents
       selectedGroups = instance.selectedGroups
@@ -188,6 +193,7 @@ if Meteor.isClient
           instance.selectedGroups.insert({id:group._id})
 
     'click .selectable-code': (event, instance) ->
+      resetPage()
       selectedCodeKeywordId  = event.currentTarget.getAttribute('data-id')
       selectedCodeKeyword = CodingKeywords.findOne(selectedCodeKeywordId)
       currentlySelected = instance.selectedCodes.findOne(selectedCodeKeywordId)
