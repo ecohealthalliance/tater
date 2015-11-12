@@ -81,3 +81,9 @@ if Meteor.isClient
 
     'click .code-sub-header > i': (e) ->
       $(e.target).toggleClass('down up').siblings('.code-keywords').toggleClass('hidden').siblings('span').toggleClass('showing')
+
+if Meteor.isServer
+  Meteor.publish 'codingKeywords', () ->
+    CodingKeywords.find(caseCount: {$ne: true})
+  Meteor.publish 'caseCountCodingKeywords', () ->
+    CodingKeywords.find(caseCount: true)

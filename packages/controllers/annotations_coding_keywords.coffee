@@ -1,24 +1,29 @@
 if Meteor.isClient
+  SelectableCodes = new Meteor.Collection("SelectableCodes")
+  
   Template.annotationsCodingKeywords.onCreated ->
     @subscribe('codingKeywords')
     @searchText = new ReactiveVar('')
     @searching = new ReactiveVar(false)
     @filteredCodes = new ReactiveVar()
-    @selectableCodes = @data.selectableCodes
+    @keywordQuery = @data.keywordQuery
 
   Template.annotationsCodingKeywords.onRendered ->
     instance = Template.instance()
 
     @autorun ->
+      instance.subscribe(
+        'codingKeywordsForDocuments',
+        instance.keywordQuery.get(),
+        { onStop: (err)-> if err then console.log(err) }
+      )
       query = []
       searchText = instance.searchText.get().split(' ')
       _.each searchText, (text) ->
         text = RegExp(text, 'i')
         query.push $or: [{'header': text}, {'subHeader': text}, {'keyword': text}]
 
-      if instance.selectableCodes?.get()
-        codeIds = _.pluck instance.selectableCodes.get(), '_id'
-        query.push {_id: {$in: codeIds}}
+      query.push {_id: {$in: SelectableCodes.find().map((c)->c._id)}}
 
       results = CodingKeywords.find({$and: query}, {sort: {header: 1, subHeader: 1, keyword: 1}})
       instance.filteredCodes.set results
@@ -39,7 +44,7 @@ if Meteor.isClient
         Spacebars.SafeString("<span class='header'>"+@header+"</span>")
 
     selectableHeaders: () ->
-      headerNames = _.uniq _.pluck Template.instance().selectableCodes.get(), 'header'
+      headerNames = _.uniq _.pluck SelectableCodes.find().fetch(), 'header'
       headers = CodingKeywords.find
         $and:
           [
@@ -51,7 +56,7 @@ if Meteor.isClient
         headers
 
     selectableSubHeaders: (header) ->
-      subHeaderNames = _.uniq _.pluck _.filter(Template.instance().selectableCodes.get(), (code) -> code.header == header and code.subHeader), 'subHeader'
+      subHeaderNames = _.uniq _.pluck _.filter(SelectableCodes.find().fetch(), (code) -> code.header == header and code.subHeader), 'subHeader'
       subHeaders = CodingKeywords.find
         $and:
           [
@@ -64,7 +69,7 @@ if Meteor.isClient
         subHeaders
 
     selectableKeywords: (subHeader) ->
-      keywordIds = _.pluck _.filter(Template.instance().selectableCodes.get(), (code) -> code.subHeader == subHeader and code.keyword), '_id'
+      keywordIds = _.pluck _.filter(SelectableCodes.find().fetch(), (code) -> code.subHeader == subHeader and code.keyword), '_id'
       keywords = CodingKeywords.find
         $and:
           [
@@ -114,7 +119,41 @@ if Meteor.isClient
 
 
 if Meteor.isServer
-  Meteor.publish 'codingKeywords', () ->
-    CodingKeywords.find(caseCount: {$ne: true})
-  Meteor.publish 'caseCountCodingKeywords', () ->
-    CodingKeywords.find(caseCount: true)
+  limitQueryToUserDocs = (query, user)->
+    if user?.admin
+      codeInaccessibleGroups = Groups.find({codeAccessible: {$ne: true}})
+      codeInaccessibleGroupIds = _.pluck(codeInaccessibleGroups.fetch(), '_id')
+      documents = Documents.find({groupId: {$in: codeInaccessibleGroupIds}})
+    else
+      documents = Documents.find({ groupId: user.group })
+    docIds = documents.map((d)-> d._id)
+    if query.documentId
+      if _.isString query.documentId
+        userDocIds = [query.documentId]
+      else if query.documentId.$in
+        userDocIds = query.documentId.$in
+      else
+        throw Meteor.Error("Query is not supported")
+      if _.difference(userDocIds, docIds).length > 0
+        throw Meteor.Error("Invalid docIds")
+    else
+      query.documentId = {$in: docIds}
+    return query
+  
+  Meteor.publish 'codingKeywordsForDocuments', (keywordQuery) ->
+    # We need to publish all the coding keywords so that the parent keywords can
+    # be shown when only a child keyword is used in a selected document.
+    # This presents a challenge because they cannot both use the same collection
+    # so this subscription publishes results to a virtual collection
+    # called SelectableCodes.
+    user = Meteor.users.findOne({_id: @userId})
+    if user
+      annotations = Annotations.find(limitQueryToUserDocs(keywordQuery, user))
+      CodingKeywords.find(
+        _id:
+          $in: _.uniq(_.pluck(annotations.fetch(), 'codeId'))
+      ).forEach (codingKw)=>
+        @added( "SelectableCodes", codingKw._id, codingKw )
+      @ready()
+    else
+      @ready()
