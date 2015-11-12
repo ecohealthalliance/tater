@@ -1,4 +1,3 @@
-# TODO: Move this to it's own file
 limitQueryToUserDocs = (query, user)->
   if user?.admin
     codeInaccessibleGroups = Groups.find({codeAccessible: {$ne: true}})
@@ -6,6 +5,7 @@ limitQueryToUserDocs = (query, user)->
     documents = Documents.find({groupId: {$in: codeInaccessibleGroupIds}})
   else
     documents = Documents.find({ groupId: user.group })
+
   docIds = documents.map((d)-> d._id)
   if query.documentId
     if _.isString query.documentId
@@ -18,23 +18,21 @@ limitQueryToUserDocs = (query, user)->
       throw Meteor.Error("Invalid docIds")
   else
     query.documentId = {$in: docIds}
-  return query
+  query
 
-@Pages = Pages = new Meteor.Pagination Annotations,
-  filters: {
+Pages = new Meteor.Pagination Annotations,
+  filters:
     documentId: {$in: []}
-  }
-  sort: {
+  sort:
     codeId: 1
-  }
   auth: (skip, subscription)->
-    return [limitQueryToUserDocs({}, Meteor.users.findOne({_id: subscription.userId}))]
+    [limitQueryToUserDocs({}, Meteor.users.findOne({_id: subscription.userId}))]
   itemTemplate: "annotation"
-  availableSettings: {
+  availableSettings:
     perPage: true
     sort: true
     filters: true
-  }
+
 if Meteor.isClient
   Template.annotations.onCreated ->
     @subscribe('groupsAndDocuments')
@@ -56,6 +54,7 @@ if Meteor.isClient
       if instance.showFlagged.get()
         query.flagged = true
       instance.keywordQuery.set(query)
+
     @autorun ->
       selectedCodes = instance.selectedCodes.find().fetch()
       query = {}
@@ -71,6 +70,7 @@ if Meteor.isClient
 
       documents = _.pluck(instance.documents.find().fetch(), 'docID')
       query.documentId = {$in: documents}
+
       Pages.set
         filters: query
 
@@ -225,6 +225,7 @@ if Meteor.isClient
     @annotation = new Annotation(_.pick(@data, _.keys(Annotation.getFields())))
     @document = @annotation.document()
     @code = @annotation._codingKeyword()
+
   Template.annotation.onRendered ->
     # This hides the code keyword labels for all but the first element of a
     # a code group.
@@ -232,6 +233,7 @@ if Meteor.isClient
     annotationCodeText = @$("h3").text()
     if prevAnnotationCodeText == annotationCodeText
       @$("h3").hide()
+
   Template.annotation.helpers
     annotatedText: ->
       Template.instance().annotation.text()
