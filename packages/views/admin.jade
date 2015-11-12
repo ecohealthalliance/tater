@@ -5,23 +5,18 @@ template(name="admin")
         .row
           .col-sm-6
             .groups-container
-              .view-header
-                .container
-                  h1.inline Groups
-                  a.btn.btn-primary.new-group-link.header-btn(href="{{path route='newGroup'}}")
-                    span Create
-                    i.fa.fa-users
-              +groups
+              h2.inline Groups
+              a.btn.btn-primary.new-group-link.header-btn(href="{{path route='newGroup'}}")
+                span Create
+                i.fa.fa-users
+            +groups
           .col-sm-6
-            section.rm-pad-top
-            .view-header
-              .container
-                h1.inline Users
-                a.btn.btn-primary.new-user-link.header-btn.add-admin(data-toggle="modal" data-target="#add-admin-modal")
-                  span Create New Admin User
-                  i.fa.fa-user-plus
             .users-container
-              +users
+              h2.inline Users
+              a.btn.btn-primary.new-user-link.header-btn.add-admin(data-toggle="modal" data-target="#add-admin-modal")
+                span Create New Admin User
+                i.fa.fa-user-plus
+            +users
   else
     .container
       .row
