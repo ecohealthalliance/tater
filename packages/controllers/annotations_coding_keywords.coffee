@@ -1,11 +1,12 @@
 if Meteor.isClient
+  SelectableCodes = new Meteor.Collection("SelectableCodes")
+  
   Template.annotationsCodingKeywords.onCreated ->
     @subscribe('codingKeywords')
     @searchText = new ReactiveVar('')
     @searching = new ReactiveVar(false)
     @filteredCodes = new ReactiveVar()
     @keywordQuery = @data.keywordQuery
-    @selectableCodes = new Meteor.Collection("SelectableCodes")
 
   Template.annotationsCodingKeywords.onRendered ->
     instance = Template.instance()
@@ -22,7 +23,7 @@ if Meteor.isClient
         text = RegExp(text, 'i')
         query.push $or: [{'header': text}, {'subHeader': text}, {'keyword': text}]
 
-      query.push {_id: {$in: instance.selectableCodes.find().map((c)->c._id)}}
+      query.push {_id: {$in: SelectableCodes.find().map((c)->c._id)}}
 
       results = CodingKeywords.find({$and: query}, {sort: {header: 1, subHeader: 1, keyword: 1}})
       instance.filteredCodes.set results
@@ -43,7 +44,7 @@ if Meteor.isClient
         Spacebars.SafeString("<span class='header'>"+@header+"</span>")
 
     selectableHeaders: () ->
-      headerNames = _.uniq _.pluck Template.instance().selectableCodes.find().fetch(), 'header'
+      headerNames = _.uniq _.pluck SelectableCodes.find().fetch(), 'header'
       headers = CodingKeywords.find
         $and:
           [
@@ -55,7 +56,7 @@ if Meteor.isClient
         headers
 
     selectableSubHeaders: (header) ->
-      subHeaderNames = _.uniq _.pluck _.filter(Template.instance().selectableCodes.find().fetch(), (code) -> code.header == header and code.subHeader), 'subHeader'
+      subHeaderNames = _.uniq _.pluck _.filter(SelectableCodes.find().fetch(), (code) -> code.header == header and code.subHeader), 'subHeader'
       subHeaders = CodingKeywords.find
         $and:
           [
@@ -68,7 +69,7 @@ if Meteor.isClient
         subHeaders
 
     selectableKeywords: (subHeader) ->
-      keywordIds = _.pluck _.filter(Template.instance().selectableCodes.find().fetch(), (code) -> code.subHeader == subHeader and code.keyword), '_id'
+      keywordIds = _.pluck _.filter(SelectableCodes.find().fetch(), (code) -> code.subHeader == subHeader and code.keyword), '_id'
       keywords = CodingKeywords.find
         $and:
           [
@@ -144,7 +145,7 @@ if Meteor.isServer
     # be shown when only a child keyword is used in a selected document.
     # This presents a challenge because they cannot both use the same collection
     # so this subscription publishes results to a virtual collection
-    # called selectableCodes.
+    # called SelectableCodes.
     user = Meteor.users.findOne({_id: @userId})
     if user
       annotations = Annotations.find(limitQueryToUserDocs(keywordQuery, user))
