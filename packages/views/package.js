@@ -38,4 +38,5 @@ Package.onUse(function(api) {
   api.addFiles('annotations.jade', 'client');
   api.addFiles('random_document.jade', 'client');
   api.addFiles('document_new.jade', 'client');
+  api.addFiles('marketing_page.jade', 'client');
 });

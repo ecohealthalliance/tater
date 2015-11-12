@@ -1,14 +1,12 @@
 if Meteor.isClient
   Template.splashPage.onCreated ->
     @subscribe('recentDocuments')
-    # @subscribe('userDocuments')
 
   Template.splashPage.helpers
     documentsExist: ->
       Documents.find().count()
 
     recentDocuments: ->
-      console.log Documents.find().fetch()
       Documents.find()
 
 if Meteor.isServer
