@@ -35,6 +35,11 @@ if Meteor.isClient
     instance = Template.instance()
     @autorun ->
       annotations = Annotations.find({documentId: instance.data.documentId}, sort: {startOffset: 1, _id: 0})
+
+      #Don't show this annotation if the corresponding coding keyword is not available.
+      annotations = _.filter annotations.fetch(), (annotation) ->
+        CodingKeywords.findOne(annotation.codeId)
+
       if instance.searchText.get() is ''
         instance.annotations.set annotations
       else
