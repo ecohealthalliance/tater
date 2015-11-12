@@ -11,3 +11,6 @@ To run end-to-end tests:
 ## Copying production database to local machine
 First get the file `infrastructure.pem` from another EHA developer and place it in `~/.ssh`
 Then run `./scripts/restore_database`
+
+## Setting up a default user for an empty database
+In the browser console, run `Meteor.call('createDefaultUser', YOUR_USERNAME, YOUR_PASSWORD)`
