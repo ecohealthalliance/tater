@@ -21,4 +21,8 @@ template(name="splashPage")
                 else
                   .loading
     else
-      +marketingPage
+      .container
+        .row
+          .col-sm-6.col-sm-offset-3
+            h1.text-center Sign In
+            +atForm
