@@ -49,7 +49,7 @@ if Meteor.isClient
     instance = Template.instance()
     @autorun ->
       docIds = _.pluck(instance.documents.find().fetch(), 'docID')
-      query = 
+      query =
         documentId: {$in: docIds}
       if instance.showFlagged.get()
         query.flagged = true
@@ -107,6 +107,9 @@ if Meteor.isClient
           'muted'
         else
           true
+
+    documentSelected: ->
+      Template.instance().documents.find().count() or Template.instance().selectedGroups.find().count()
 
     selectedDoc: ->
       if Template.instance().documents.find({docID:@_id}).count()

@@ -41,8 +41,10 @@ template(name="annotations")
           | View Flagged
           i.fa.fa-flag-o
       .annotations-list-container.pane.pane-m
-        +pagesNav
         +pages
+        +pagesNav
+        unless documentSelected
+          p.text-center Select a group or document to view annotations
       +annotationsCodingKeywords(
         action='listing'
         selectedCodes=selectedCodes

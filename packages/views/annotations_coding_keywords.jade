@@ -35,7 +35,8 @@ template(name="annotationsCodingKeywords")
                           each selectableKeywords subHeader
                             li.code-keyword.selectable(class="")
                               span.selectable-code(data-id=_id class="{{selected}}")= keyword
-        .text-center Select a document to view keywords
+        unless selectableHeaders
+          p.text-center Select a group or document to view keywords
 
       else
         .loading
