@@ -29,8 +29,9 @@ do ->
 
     @When 'I click the Download CSV button', ->
       @browser
+        .waitForExist('.download-csv')
         .click('.download-csv')
-      
+
     @Then 'I should see a link that downloads the generated CSV', ->
       csvData = """documentId,userEmail,header,subHeader,keyword,text,flagged,createdAt\r
       fakedocumentid,,,,,T,false,"""
