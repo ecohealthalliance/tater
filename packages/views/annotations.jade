@@ -36,11 +36,15 @@ template(name="annotations")
 
       .annotation-list-heading.pane-head.pane-head-m
         h1 Annotations
-        .show-flagged
-          input(type="checkbox", checked=showFlagged)
-          | View Flagged
-          i.fa.fa-flag-o
-        a.btn.btn-primary.btn-sm.download-csv Download CSV
+        .pull-right
+          .show-flagged.pull-left
+            input(type="checkbox", checked=showFlagged)
+            | View Flagged
+            i.fa.fa-flag-o
+          if showingAnnotations
+            a.btn.btn-default.btn-sm.download-csv.pull-left
+              i.fa.fa-download
+              span Generate CSV
       .annotations-list-container.pane.pane-m
         if annotationsByCode
           each annotationsByCode
@@ -66,7 +70,7 @@ template(name="annotations")
   else
     .container.space-top-2
       p Please log in or sign up to continue.
-  
+
   #download-csv-modal.modal.fade(tabindex="-1" role="dialog")
     .modal-dialog
       .modal-content
@@ -75,7 +79,9 @@ template(name="annotations")
             i.fa.fa-times-circle
         .modal-body
           if csvDataUri
-            a.btn.btn-primary(href=csvDataUri download="annotations.csv") Download
+            .row
+              .col-sm-6.col-sm-offset-3
+                a.btn.btn-primary.btn-lg.btn-block.download-csv-btn(href=csvDataUri download="annotations.csv") Download CSV
           else
-            center
-              h3 Please wait while we generate a CSV...
+            .loading.top
+              h4 Generating CSV file

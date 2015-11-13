@@ -16,7 +16,7 @@ if Meteor.isClient
     instance = Template.instance()
     @autorun ->
       docIds = _.pluck(instance.documents.find().fetch(), 'docID')
-      query = 
+      query =
         documentId: {$in: docIds}
       if instance.showFlagged.get()
         query.flagged = true
@@ -110,6 +110,9 @@ if Meteor.isClient
 
     docGroup: ->
       @groupName()
+
+    showingAnnotations: ->
+      Template.instance().documents.find().count()
 
     selectionState: (attr) ->
       if Template.instance().documents.find().count() is 0
@@ -247,6 +250,8 @@ if Meteor.isClient
       instance.documents.remove({})
       instance.selectedGroups.remove({})
 
+    'click .download-csv-btn': (event) ->
+      $('#download-csv-modal').modal('hide')
 
 if Meteor.isServer
 
