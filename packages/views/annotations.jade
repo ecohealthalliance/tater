@@ -41,27 +41,26 @@ template(name="annotations")
           | View Flagged
           i.fa.fa-flag-o
       .annotations-list-container.pane.pane-m
-        if annotationsByCode
-          each annotationsByCode
-            .annotation-group(class="color-#{code.color}")
-              h3
-                span.icon.fa(class=icon)
-                | #{codeString}
-              ul.list-unstyled
-                each annotations
-                  li.annotation-detail(data-annotation-id= annotationId, data-doc-id= documentId)
-                    p= annotatedText
-                    .details.clearfix
-                      span.document-title= documentTitle
-                      spna.user-email= user
-        else
-          p.text-center Select a document to view annotations
-
+        +pages
+        +pagesNav
+        unless documentSelected
+          p.text-center Select a group or document to view annotations
       +annotationsCodingKeywords(
         selectedCodes=selectedCodes
         keywordQuery=keywordQuery
       )
-
   else
     .container.space-top-2
       p Please log in or sign up to continue.
+
+template(name="annotation")
+  .annotation-group(class="color-#{codeColor}")
+    h3
+      span.icon.fa(class=icon)
+      | #{codeString}
+    ul.list-unstyled
+      li.annotation-detail(data-annotation-id=_id, data-doc-id= documentId)
+        p= annotatedText
+        .details.clearfix
+          span.document-title= documentTitle
+          spna.user-email= user

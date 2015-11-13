@@ -20,7 +20,7 @@ Package.onUse(function(api) {
   api.use('chrismbeckett:toastr');
   api.use('aslagle:reactive-table');
   api.use('mrt:jquery-easing');
-
+  api.use('alethes:pages@1.8.4');
   api.addFiles('toastr.coffee', 'client');
   api.addFiles('header.coffee', 'client');
   api.addFiles('accounts_modal.coffee', 'client');
