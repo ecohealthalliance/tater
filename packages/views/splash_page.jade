@@ -13,7 +13,7 @@ template(name="splashPage")
               if documentsExist
                 h4 Recent Documents
                 if Template.subscriptionsReady
-                  ul.list-simple.list-unstyled.list
+                  ul.recent-documents.list-simple.list-unstyled.list
                     each recentDocuments
                       li.document
                         a.link-list(href="{{path route='documentDetail' params=this}}")= title
