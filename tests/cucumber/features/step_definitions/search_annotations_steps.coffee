@@ -26,3 +26,16 @@ do ->
     @When 'I select the test group', ->
       @browser
         .click('.group-selector')
+
+    @When 'I click the Download CSV button', ->
+      @browser
+        .waitForExist('.download-csv')
+        .click('.download-csv')
+
+    @Then 'I should see a link that downloads the generated CSV', ->
+      csvData = """documentId,userEmail,header,subHeader,keyword,text,flagged,createdAt\r
+      fakedocumentid,,,,,T,false,"""
+      @browser
+        .waitForExist '#download-csv-modal .btn-primary'
+        .getHTML '#download-csv-modal .btn-primary', (error, response) ->
+          assert(response.search(encodeURIComponent(csvData)) >= 0)

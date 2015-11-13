@@ -9,12 +9,14 @@ if Meteor.isClient
     @documents = new Meteor.Collection(null)
     @selectedGroups = new Meteor.Collection(null)
     @keywordQuery = new ReactiveVar({})
+    @query = new ReactiveVar({})
+    @csvData = new ReactiveVar(null)
 
   Template.annotations.onRendered ->
     instance = Template.instance()
     @autorun ->
       docIds = _.pluck(instance.documents.find().fetch(), 'docID')
-      query = 
+      query =
         documentId: {$in: docIds}
       if instance.showFlagged.get()
         query.flagged = true
@@ -34,6 +36,8 @@ if Meteor.isClient
 
       documents = _.pluck(instance.documents.find().fetch(), 'docID')
       query.documentId = {$in: documents}
+
+      instance.query.set(query)
 
       annotations =
         _.map Annotations.find(query).fetch(), (annotation) ->
@@ -107,6 +111,9 @@ if Meteor.isClient
     docGroup: ->
       @groupName()
 
+    showingAnnotations: ->
+      Template.instance().documents.find().count()
+
     selectionState: (attr) ->
       if Template.instance().documents.find().count() is 0
         if attr is 'class'
@@ -138,12 +145,28 @@ if Meteor.isClient
       else
         'disabled'
 
+    csvDataUri: ->
+      csvData = Template.instance().csvData.get()
+      if csvData
+        "data:text/csv;charset=utf-8," + encodeURIComponent(csvData)
+
   resetKeywords = ->
     instance = Template.instance()
     instance.filtering.set(false)
     instance.selectedCodes.remove({})
 
   Template.annotations.events
+    'click .download-csv': (event, instance) ->
+      instance.csvData.set(null)
+      $('#download-csv-modal').modal('show')
+      Meteor.call 'generateCsv', instance.query.get(), ((err, csvData)->
+        if err
+          $('#download-csv-modal').modal('hide')
+          alert "CSV Generation Error: " + err
+        else
+          instance.csvData.set(csvData)
+      )
+
     'click .show-flagged': (event, instance) ->
       instance.showFlagged.set(!instance.showFlagged.get())
 
@@ -227,8 +250,50 @@ if Meteor.isClient
       instance.documents.remove({})
       instance.selectedGroups.remove({})
 
+    'click .download-csv-btn': (event) ->
+      $('#download-csv-modal').modal('hide')
 
 if Meteor.isServer
+
+  Meteor.methods
+
+    generateCsv: (query) ->
+      user = Meteor.users.findOne({_id: @userId})
+      codeInaccessibleGroups = Groups.find({codeAccessible: {$ne: true}})
+      if user
+        if user?.admin
+          codeInaccessibleGroupIds = _.pluck(codeInaccessibleGroups.fetch(), '_id')
+          documents = Documents.find({groupId: {$in: codeInaccessibleGroupIds}})
+        else if user
+          documents = Documents.find({ groupId: user.group })
+        docIds = documents.map((d)-> d._id)
+        if query.documentId
+          if _.isString query.documentId
+            userDocIds = [query.documentId]
+          else if query.documentId.$in
+            userDocIds = query.documentId.$in
+          else
+            throw Meteor.Error("Query is not supported")
+          if _.difference(userDocIds, docIds).length > 0
+            throw Meteor.Error("Invalid docIds")
+        else
+          query.documentId = {$in: docIds}
+        headerGetters =
+          documentId: (annotation)-> annotation.documentId
+          userEmail: (annotation)-> annotation.userEmail()
+          header: (annotation)-> annotation.header()
+          subHeader: (annotation)-> annotation.subHeader()
+          keyword: (annotation)-> annotation.keyword()
+          text: (annotation)-> annotation.text().string
+          flagged: (annotation)-> Boolean(annotation.flagged)
+          createdAt: (annotation)-> annotation.createdAt
+        Baby.unparse
+          fields: _.keys(headerGetters)
+          data: Annotations.find(query).map((annotation)->
+            _.map(headerGetters, (getValue, header)->
+              getValue(annotation)
+            )
+          )
 
   Meteor.publish 'annotationsGroupsAndDocuments', ->
     user = Meteor.users.findOne({_id: @userId})
