@@ -4,7 +4,7 @@ Feature: Splash Page
     Given there is a test user in the database
     And there is a test group in the database
 
-  @dev
+  @splashPage
   Scenario: Viewing Recent Documents
     Given there is a test document with title "First Doc" in group "Test Group"
     And there is a test document with title "Second Doc" in group "Test Group"

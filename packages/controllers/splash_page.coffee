@@ -14,5 +14,7 @@ if Meteor.isServer
     user = Meteor.users.findOne({_id: @userId})
     if user?.admin
       Documents.find({}, {sort: {createdAt: -1}, limit: 12})
-    else
+    else if user
       Documents.find({groupId: user.group}, {sort: {createdAt: -1}, limit: 12})
+    else
+      @ready()
