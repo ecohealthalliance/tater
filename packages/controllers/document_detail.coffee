@@ -38,6 +38,9 @@ if Meteor.isClient
       if instance.searchText.get() is ''
         instance.annotations.set annotations
       else
+        annotations = _.filter annotations.fetch(), (annotation) ->
+          CodingKeywords.findOne(annotation.codeId)
+
         searchText = instance.searchText.get().split(' ')
         filteredAnnotations = _.filter annotations.fetch(), (annotation) ->
           code = CodingKeywords.findOne(annotation.codeId)

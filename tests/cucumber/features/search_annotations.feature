@@ -16,12 +16,12 @@ Feature: Search Annotations Page
 
   @searchAnnotations
   Scenario: Downloading a CSV
-    Given there is a test annotation in the database
+    Given there is an annotation with codingKeyword header "Hdr1" and key "KeyC"
     When I log in as the test user
     And I visit the search annotations page
     And I select the test group
     And I click the Download CSV button
-    Then I should see a link that downloads the generated CSV
+    Then I should see a link that downloads the generated CSV with header "Hdr1" and key "KeyC"
 
   @searchAnnotations
   Scenario: Paginating search annotations page
