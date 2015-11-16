@@ -36,8 +36,13 @@ if Meteor.isServer
         if group?.viewableByUser(user)
           document = new Document()
           document.set(fields)
-          document.save ->
-            document
+
+          if document.validate()
+            document.save ->
+              document
+          else
+            throw new Error('Invalid')
+
         else
           throw "Unauthorized"
       else

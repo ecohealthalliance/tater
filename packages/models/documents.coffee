@@ -3,8 +3,12 @@ Document = Astro.Class
   name: 'Document'
   collection: Documents
   fields:
-    title: 'string'
-    body: 'string'
+    title:
+      type: 'string'
+      validator: Validators.required()
+    body:
+      type: 'string'
+      validator: Validators.required()
     groupId: 'string'
   behaviors: ['timestamp']
 

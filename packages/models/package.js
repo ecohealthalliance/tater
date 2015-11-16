@@ -10,6 +10,7 @@ Package.onUse(function(api) {
   api.use('coffeescript');
   api.use('jagi:astronomy@1.0.0');
   api.use('jagi:astronomy-timestamp-behavior');
+  api.use('jagi:astronomy-validators');
   api.use('accounts-password');
   api.use('useraccounts:core@1.7.0');
   api.use('mongo');
