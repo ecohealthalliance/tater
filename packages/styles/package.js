@@ -25,6 +25,9 @@ Package.onUse(function(api) {
   api.addFiles('header.import.styl');
   api.addFiles('footer.import.styl');
 
+  api.addFiles('splash_page.import.styl');
+  api.addFiles('marketing_page.import.styl');
+
   api.addFiles('admin.import.styl');
   api.addFiles('accounts.import.styl');
   api.addFiles('profile.import.styl');

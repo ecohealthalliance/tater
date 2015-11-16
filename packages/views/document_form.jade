@@ -1,24 +1,18 @@
 template(name="documentForm")
- .view-header.secondary-bg
-    .container
-      h1 New Document
-  .container
+  form#new-document-form
     .row
-      .col-sm-10
-        form#new-document-form
-          .row
-            .col-sm-6
-              label Title
-                input#document-title.form-control(type='string' name='title')
-          .row
-            .col-sm-10
-              label Body
-              textarea#document-body.form-control(name='body')
-          if isAdmin
-            .row
-              .col-sm-7
-                label Group
-                select#document-group-id.form-control(name='groupId')
-                  each groups
-                    option(value=_id)= name
-          input.btn.btn-primary(type="submit" value="Save")
+      .col-sm-6
+        label Title
+          input#document-title.form-control(type='string' name='title')
+    .row
+      .col-sm-12
+        label Body
+        textarea#document-body.form-control(name='body')
+    if isAdmin
+      .row
+        .col-sm-7
+          label Group
+          select#document-group-id.form-control(name='groupId')
+            each groups
+              option(value=_id)= name
+    input.btn.btn-primary(type="submit" value="Add Document")

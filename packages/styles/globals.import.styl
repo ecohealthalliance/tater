@@ -12,6 +12,7 @@ body
 
 .content-wrap
   padding-top 20px
+  margin-bottom 40px
   padding-bottom $footer-height-actual+10
 
 h2
@@ -43,9 +44,6 @@ h5
     background $background-secondary
   &.no-border
     border-bottom 0
-    margin-bottom 0
-    +above(3)
-      padding-bottom 0
 
 a
 button
@@ -77,7 +75,7 @@ a
   makeButton($secondary)
 
 .btn-default
-  makeButton($m-gray, $body-text, true)
+  makeButton(lighten($m-gray, 50%), $body-text, true)
 
 .btn-success
   makeButton($confirm)

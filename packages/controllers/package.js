@@ -43,5 +43,6 @@ Package.onUse(function(api) {
   api.addFiles('edit_coding_keywords.coffee', ['client', 'server']);
   api.addFiles('annotations.coffee', ['client', 'server']);
   api.addFiles('random_document.coffee', ['client', 'server']);
+  api.addFiles('splash_page.coffee', ['client', 'server']);
   api.addFiles('reset_password.coffee', ['client', 'server']);
 });
