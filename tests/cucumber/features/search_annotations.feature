@@ -1,10 +1,11 @@
+@dev
 Feature: Search Annotations Page
 
   Background:
     Given there is a test user in the database
     And there is a test group in the database
     And there is a test document in the database
-    And there is an annotation with codeingKeyword header "Hdr1" and key "KeyC"
+    And there is an annotation with codingKeyword header "Hdr1" and key "KeyC"
 
   @searchAnnotations
   Scenario: Viewing search annotations page

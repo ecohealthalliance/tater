@@ -7,14 +7,12 @@ do ->
 
     url = require('url')
 
-    @Given /^there is an annotation with codeingKeyword header "([^"]*)" and key "([^"]*)"$/, (header, keyword) ->
+    @Given /^there is an annotation with codingKeyword header "([^"]*)" and key "([^"]*)"$/, (header, keyword) ->
       that = @
       @server
         .call('createCodingKeyword', {header:header, keyword: keyword, color: 1})
         .then (codeId) ->
           that.server.call('createTestAnnotation', {codeId: codeId})
-            .then (res) ->
-              res
           codeId
 
     @Given 'there is a test annotation in the database', ->
@@ -49,5 +47,3 @@ do ->
         .waitForExist '#download-csv-modal .btn-primary'
         .getHTML '#download-csv-modal .btn-primary', (error, response) ->
           assert(response.search(encodeURIComponent(csvData)) >= 0)
-
-
