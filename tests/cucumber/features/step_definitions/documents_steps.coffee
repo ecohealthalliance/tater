@@ -61,7 +61,7 @@ do ->
       @browser
         .waitForExist('#new-document-form', assert.ifError)
         .setValue('#document-title', title)
-        .setValue('#document-body', 'This is a document.')
+        .setValue('#document-body', 'This is a document with 38 characters.')
       if selectGroup
         @browser.selectByVisibleText('#document-group-id', 'Test Group')
       @browser.submitForm('#new-document-form', assert.ifError)

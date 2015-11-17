@@ -5,10 +5,17 @@ Document = Astro.Class
   fields:
     title:
       type: 'string'
-      validator: Validators.required()
+      validator: [
+        Validators.required()
+        Validators.minLength(5, 'The title must be at least 5 characters')
+        Validators.unique()
+      ]
     body:
       type: 'string'
-      validator: Validators.required()
+      validator: [
+        Validators.required()
+        Validators.minLength(20, 'The body must be at least 20 characters')
+      ]
     groupId: 'string'
   behaviors: ['timestamp']
 

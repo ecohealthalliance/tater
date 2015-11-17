@@ -22,7 +22,12 @@ if Meteor.isClient
 
       Meteor.call 'createDocument', fields, (error, response) =>
         if error
-          toastr.error("Error")
+          console.log error
+          if error.reason
+            for key, value of error.reason
+              toastr.error("Error: " + value)
+          else
+            toastr.error("Unknown Error")
         else
           toastr.success("Success")
           go 'documentDetail', {_id: response}
@@ -41,8 +46,7 @@ if Meteor.isServer
             document.save ->
               document
           else
-            throw new Error('Invalid')
-
+            document.throwValidationException()
         else
           throw "Unauthorized"
       else
