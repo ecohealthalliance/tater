@@ -22,7 +22,6 @@ if Meteor.isClient
 
       Meteor.call 'createDocument', fields, (error, response) =>
         if error
-          console.log error
           if error.reason
             for key, value of error.reason
               toastr.error("Error: " + value)
