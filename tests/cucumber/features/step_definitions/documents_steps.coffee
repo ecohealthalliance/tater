@@ -16,6 +16,11 @@ do ->
     @Given /^there is a document with title "([^"]*)" in the test group$/, (title) ->
       @server.call('createTestDocument', {title: title, groupId: 'fakegroupid', _id: 'fakedocid'})
 
+    @Given /^there are (\d+) documents in the database$/, (number, callback) ->
+      _(number).times (index)=>
+        @server.call('createTestDocument', {title: 'document ' + index})
+      callback()
+
     @When "I click the documents header link", (callback) ->
       @browser
         .waitForExist('.header-documents-link', assert.ifError)
@@ -105,3 +110,16 @@ do ->
           matchGroup = response.toString().match("Test Group")
           assert.ok(matchDocument, "Document name not found")
           assert.ok(matchGroup, "Group not found")
+
+    @Then /^I should see (\d+) documents$/, (number) ->
+      @client
+        .waitForExist('.document-title', assert.ifError)
+        .elements '.document-title', (error, elements) ->
+          assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
+
+    @When /^I go to the next page of documents$/, ->
+      @browser
+        .waitForExist('.document-title', assert.ifError)
+        .execute ->
+          $("a:contains('>')").click()
+

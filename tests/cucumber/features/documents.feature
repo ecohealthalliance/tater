@@ -79,3 +79,12 @@ Feature: Documents
     And I confirm the document deletion
     Then I should see a "Success" toast
     And I should not see content "Test Document"
+
+  @documents
+  Scenario: Paginating documents page
+    Given there are 15 documents in the database
+    When I log in as the test user
+    When I navigate to "/documents"
+    Then I should see 10 documents
+    When I go to the next page of documents
+    Then I should see 5 documents
