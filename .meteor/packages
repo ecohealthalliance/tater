@@ -11,3 +11,4 @@ tater:models
 tater:fixtures
 tater:accounts
 aslagle:reactive-table
+zimme:active-route
