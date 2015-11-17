@@ -1,17 +1,10 @@
 template(name="groups")
   if currentUser
-    .container-list
-      if Template.subscriptionsReady
-        if groups
-          ul.list.group-list.list-unstyled
-            each groups
-              li.group
-                a.list-link(href="{{path route='groupDocuments' params=this}}")
-                  span.group-name= name
-                a.add-user.btn-list(data-toggle="modal" data-target="#add-group-user-modal")
-                  i.fa.fa-user-plus
-      else
-        .loading.center-v
+    if Template.subscriptionsReady
+      .group-list.list-table.groups-table
+        +reactiveTable collection=groups settings=settings filters=filters
+        else
+          .loading.center-v
     #add-group-user-modal.modal.fade(tabindex="-1" role="dialog")
       .modal-dialog
         .modal-content

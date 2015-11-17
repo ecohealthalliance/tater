@@ -26,12 +26,14 @@ do ->
         @browser.click('#group-code-accessible')
       @browser.submitForm('#new-group-form', assert.ifError)
 
-    @When /^I click on the group link$/, (callback) ->
+    @When "I click on the test group", ->
       @browser
-        .waitForExist('.group-list', assert.ifError)
-        .click(".group-list a.list-link", assert.ifError)
-        .waitForVisible('.documents', assert.ifError)
-        .call(callback)
+        .waitForVisible('.groups-table', assert.ifError)
+        .click('.groups-table .reactive-table tr', assert.ifError)
+
+    @Then "I should be on the test group document page", ->
+      @browser
+        .waitForExist('.documents', assert.ifError)
 
     @When /^I navigate to the test group page$/, (callback) ->
       @browser
