@@ -33,7 +33,8 @@ Feature: Accounts
     And there is a group in the database
     When I log in as the test user
     And I navigate to the admin page
-    And I create a user account for "mr@potato.head"
+    Then I should see the "Admin" link highlighted in the header
+    When I create a user account for "mr@potato.head"
     And I log out
     And I log in as "mr@potato.head"
     Then I am logged in
@@ -43,7 +44,8 @@ Feature: Accounts
     Given there is a test user in the database
     When I log in as the test user
     And I navigate to the admin page
-    And I create an admin user account for "mr@potato.head"
+    Then I should see the "Admin" link highlighted in the header
+    When I create an admin user account for "mr@potato.head"
     And I log out
     And I log in as "mr@potato.head"
     Then I am logged in
@@ -55,7 +57,8 @@ Feature: Accounts
     And there is a group in the database
     When I log in as the test user
     And I navigate to the admin page
-    And I create a user account for "mr@potato.head"
+    Then I should see the "Admin" link highlighted in the header
+    When I create a user account for "mr@potato.head"
     Then I should see content "mr@potato.head"
     When I click the remove user link
     And I confirm the account deletion

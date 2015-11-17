@@ -8,7 +8,8 @@ Feature: Documents
     Given there is a test group in the database
     When I log in as the test user
     And I navigate to the admin page
-    And I create a user account for "non@admin.com"
+    Then I should see the "Admin" link highlighted in the header
+    When I create a user account for "non@admin.com"
     And I log out
     And I log in as "non@admin.com"
     And I click the documents header link
@@ -19,7 +20,8 @@ Feature: Documents
     Given there is a test group in the database
     When I log in as the test user
     And I navigate to the admin page
-    And I create a user account for "non@admin.com"
+    Then I should see the "Admin" link highlighted in the header
+    When I create a user account for "non@admin.com"
     And I log out
     And I log in as "non@admin.com"
     And I click on the Add Document link in the header
@@ -33,7 +35,8 @@ Feature: Documents
     And there is a test document with title "Second Doc" in group "groupid2"
     When I log in as the test user
     And I click the documents header link
-    Then I should see content "First Doc"
+    Then I should see the "Documents" link highlighted in the header
+    And I should see content "First Doc"
     And I should see content "Second Doc"
 
   @documents
@@ -42,7 +45,8 @@ Feature: Documents
     And there is a document with title "Test Doc" in the test group
     When I log in as the test user
     And I navigate to "/admin"
-    And I click on the group link
+    Then I should see the "Admin" link highlighted in the header
+    When I click on the group link
     Then I should see content "Test Doc"
 
   @documents
@@ -55,7 +59,8 @@ Feature: Documents
     And I should see content "Test Document"
     And I should see a "Success" toast
     When I navigate to "/admin"
-    And I click on the group link
+    Then I should see the "Admin" link highlighted in the header
+    When I click on the group link
     Then I should see content "Test Document"
 
   @documents
@@ -73,7 +78,8 @@ Feature: Documents
     And there is a document with title "Test Document" in the test group
     When I log in as the test user
     When I navigate to "/admin"
-    And I click on the group link
+    Then I should see the "Admin" link highlighted in the header
+    When I click on the group link
     Then I should see content "Test Document"
     When I click on the Delete Document button
     And I confirm the document deletion
