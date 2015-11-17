@@ -6,10 +6,13 @@ template(name="documents")
     .container.container-list
       if documents
         ul.list.document-list.list-unstyled
-          each documents
-            li.document
-                a.list-link.clearfix(href="{{path route='documentDetail' params=this}}")
-                  span.document-title= title
-                  span.document-group= groupName
+          +pages
+          +pagesNav
       else
         p No documents have been uploaded.
+
+template(name="document")
+  li.document
+      a.list-link.clearfix(href="{{path route='documentDetail' params=this}}")
+        span.document-title= title
+        span.document-group= groupName

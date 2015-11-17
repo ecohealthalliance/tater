@@ -1,3 +1,10 @@
+Pages = new Meteor.Pagination Documents, 
+  perPage: 10,
+  itemTemplate: 'document',
+  availableSettings:
+    perPage: true
+
+
 if Meteor.isClient
   Template.documents.onCreated ->
     @subscribe('documentsAndGroups')

@@ -117,3 +117,9 @@ do ->
         .elements '.document-title', (error, elements) ->
           assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
+    @When /^I go to the next page of documents$/, ->
+      @browser
+        .waitForExist('.document-title', assert.ifError)
+        .execute ->
+          $("a:contains('>')").click()
+

@@ -1,3 +1,4 @@
+@dev
 Feature: Documents
 
   Background:
@@ -84,7 +85,7 @@ Feature: Documents
   Scenario: Paginating documents page
     Given there are 15 documents in the database
     When I log in as the test user
-    And I navigate to documents
-    Then I should see 10 test documents
+    When I navigate to "/documents"
+    Then I should see 10 documents
     When I go to the next page of documents
-    Then I should see 5 test documents
+    Then I should see 5 documents
