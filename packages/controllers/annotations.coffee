@@ -357,7 +357,11 @@ if Meteor.isServer
           text: (annotation)-> annotation.text().string
           flagged: (annotation)-> Boolean(annotation.flagged)
           createdAt: (annotation)-> annotation.createdAt
-        Baby.unparse
+        # This BOM is needed to make modern versions of Excel open the CSV
+        # using the correct encoding.
+        # See: http://stackoverflow.com/questions/155097/microsoft-excel-mangles-diacritics-in-csv-files
+        excelBOM = '\uFEFF'
+        excelBOM + Baby.unparse
           fields: _.keys(headerGetters)
           data: Annotations.find(query).map((annotation)->
             _.map(headerGetters, (getValue, header)->
