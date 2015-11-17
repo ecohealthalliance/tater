@@ -35,6 +35,7 @@ Package.onUse(function(api) {
   api.addFiles('layout.jade', 'client');
   api.addFiles('documents.jade', 'client');
   api.addFiles('annotations_coding_keywords.jade', 'client');
+  api.addFiles('coding_keywords.jade', 'client');
   api.addFiles('edit_coding_keywords.jade', 'client');
   api.addFiles('annotations.jade', 'client');
   api.addFiles('random_document.jade', 'client');

@@ -1,0 +1,22 @@
+template(name="codingKeywords")
+  .container
+    .coding-container
+      ul.list-unstyled.code-list(class=action)
+        if Template.subscriptionsReady
+          each headers
+            li.code-header.coding.highlighted.selectable(class='code-header-#{color}')
+              i.up
+              span.selectable-code(data-id=_id class="{{highlightHeading}}")
+                span.icon.fa(class=icon)
+                span.header-name= header
+              ul.code-sub-headers.coding.list-unstyled
+                each subHeaders header
+                  li.code-sub-header.selectable
+                    i.up
+                    span.selectable-code.showing(data-id=_id)= subHeader
+                    ul.code-keywords.list-unstyled
+                      each keywords subHeader
+                        li.code-keyword.coding.selectable
+                          span.selectable-code(data-id=_id)= keyword
+        else
+          .loading
