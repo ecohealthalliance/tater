@@ -8,7 +8,6 @@ Document = Astro.Class
       validator: [
         Validators.required()
         Validators.minLength(5, 'The title must be at least 5 characters')
-        Validators.unique()
       ]
     body:
       type: 'string'
