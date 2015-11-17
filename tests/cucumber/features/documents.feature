@@ -33,7 +33,8 @@ Feature: Documents
     And there is a test document with title "Second Doc" in group "groupid2"
     When I log in as the test user
     And I click the documents header link
-    Then I should see content "First Doc"
+    Then I should see the "Documents" link highlighted in the header
+    And I should see content "First Doc"
     And I should see content "Second Doc"
 
   @documents

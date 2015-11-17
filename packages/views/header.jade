@@ -22,18 +22,18 @@ template(name="header")
               if currentUser
                 if isAdmin
                   li
-                    a.header-documents-link(href="{{path route='documents'}}")
+                    a.header-documents-link(href="{{path route='documents'}}" class="{{isActiveRoute 'documents'}}")
                       span Documents
                 else
                   li
-                    a.header-documents-link(href="{{path route='groupDocuments' params=documentsLinkParams}}")
+                    a.header-documents-link(href="{{path route='groupDocuments' params=documentsLinkParams}}" class="{{isActiveRoute 'groupDocuments'}}")
                       span Documents
                 li
-                  a.header-documents-link(href="{{path route='annotations'}}")
+                  a.header-documents-link(href="{{path route='annotations'}}" class="{{isActiveRoute 'annotations'}}")
                     span Search Annotations
                 if isAdmin
                   li
-                    a(href="{{path route='admin'}}")
+                    a(href="{{path route='admin'}}" class="{{isActiveRoute 'admin'}}")
                       span Admin
 
               +accountsHeaderButtons state=accountsState
