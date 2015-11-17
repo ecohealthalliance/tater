@@ -1,38 +1,8 @@
 if Meteor.isClient
   Template.codingKeywords.onCreated ->
     @subscribe('codingKeywords')
-    @searchText = new ReactiveVar('')
-    @searching = new ReactiveVar(false)
-    @filteredCodes = new ReactiveVar()
-
-  Template.codingKeywords.onRendered ->
-    instance = Template.instance()
-
-    @autorun ->
-      query = []
-      searchText = instance.searchText.get().split(' ')
-      _.each searchText, (text) ->
-        text = RegExp(text, 'i')
-        query.push $or: [{'header': text}, {'subHeader': text}, {'keyword': text}]
-
-      results = CodingKeywords.find({$and: query}, {sort: {header: 1, subHeader: 1, keyword: 1}})
-      instance.filteredCodes.set results
 
   Template.codingKeywords.helpers
-    searching: () ->
-      Template.instance().searching.get()
-
-    filteredCodes: () ->
-      Template.instance().filteredCodes.get()
-
-    code: () ->
-      if @header and @subHeader and @keyword
-        Spacebars.SafeString("<span class='header'>#{@header}</span> : <span class='sub-header'>#{@subHeader}</span> : <span class='keyword'>#{@keyword}</span>")
-      else if @subHeader and not @keyword
-        Spacebars.SafeString("<span class='header'>#{@header}</span> : <span class='sub-header'>#{@subHeader}</span>")
-      else
-        Spacebars.SafeString("<span class='header'>"+@header+"</span>")
-
     headers: () ->
       CodingKeywords.find
         'subHeader': $exists: false
@@ -58,19 +28,6 @@ if Meteor.isClient
       else 'fa-ellipsis-h'
 
   Template.codingKeywords.events
-
-    'keyup .code-search': _.debounce ((e, instance) ->
-      e.preventDefault()
-      searchText = e.target.value
-      if searchText.length > 1 then instance.searching.set true
-      else instance.searching.set false
-      instance.searchText.set e.target.value
-      ), 100
-
-    'click .clear-search': (e, instance) ->
-      instance.searching.set false
-      instance.searchText.set ''
-      $('.code-search').val('')
 
     'click .code-header > i': (e) ->
       $(e.target).toggleClass('down up').siblings('.code-sub-headers').toggleClass('hidden')
