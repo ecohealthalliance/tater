@@ -20,8 +20,7 @@ Feature: Search Annotations Page
     Given there is an annotation with codingKeyword header "Hdr1" and key "KeyC"
     When I log in as the test user
     And I visit the search annotations page
-    Then I should see the "Search Annotations" link highlighted in the header
-    When I select the test group
+    And I select the test group
     And I click the Download CSV button
     Then I should see a link that downloads the generated CSV with header "Hdr1" and key "KeyC"
 
@@ -30,8 +29,7 @@ Feature: Search Annotations Page
     Given there are 15 test annotations in the database
     When I log in as the test user
     And I visit the search annotations page
-    Then I should see the "Search Annotations" link highlighted in the header
-    When I select the test group
+    And I select the test group
     Then I should see 10 test annotations
 
     When I go to the next page of annotations
