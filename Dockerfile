@@ -18,7 +18,7 @@ RUN tar -zxf node-v0.12.7-linux-x64.tar.gz && rm node-v0.12.7-linux-x64.tar.gz
 ENV PATH $PATH:/node-v0.12.7-linux-x64/bin
 
 #Install MeteorJS
-ENV METEOR_VERSION_TAG release/METEOR@1.1.0.3
+ENV METEOR_VERSION_TAG release/METEOR@1.2.1
 RUN git clone https://github.com/meteor/meteor.git --depth 1 --branch $METEOR_VERSION_TAG --single-branch
 RUN cd meteor && git checkout -b $METEOR_VERSION_TAG
 ENV PATH $PATH:/meteor
