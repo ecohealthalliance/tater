@@ -279,6 +279,9 @@ if Meteor.isClient
     'click .download-csv-btn': (event) ->
       $('#download-csv-modal').modal('hide')
 
+    'click .pagination li': (event, instance)->
+      instance.$('.annotations-list-container').scrollTop(0)
+
   Template.annotation.onCreated ->
     @annotation = new Annotation(_.pick(@data, _.keys(Annotation.getFields())))
     @document = @annotation.document()
