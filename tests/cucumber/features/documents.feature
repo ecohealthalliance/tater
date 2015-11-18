@@ -1,3 +1,4 @@
+@dev
 Feature: Documents
 
   Background:
@@ -45,6 +46,18 @@ Feature: Documents
     And I navigate to "/admin"
     And I click on the group link
     Then I should see content "Test Doc"
+
+  @documents
+  Scenario: Paginating group documents
+    Given there is a test group in the database
+    And there are 15 documents in the "fakegroupid" group
+    And there are 2 documents in the "test2" group
+    When I log in as the test user
+    And I navigate to "/admin"
+    And I click on the group link
+    Then I should see 10 documents
+    When I go to the next page of documents
+    Then I should see 5 documents
 
   @documents
   Scenario: Adding a document as an admin
