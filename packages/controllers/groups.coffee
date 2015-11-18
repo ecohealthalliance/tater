@@ -11,11 +11,15 @@ if Meteor.isClient
       key: 'name'
       label: 'Name'
       fn: (val, object) ->
-        object.name
+        new Spacebars.SafeString("""
+          <span class="group-detail" data-id="#{object._id}">
+            """+object.name+"""
+          </span>
+        """)
 
     fields.push
       key: "controls"
-      label: "Add User"
+      label: ""
       hideToggle: true
       fn: (val, obj) ->
         new Spacebars.SafeString("""
@@ -38,11 +42,12 @@ if Meteor.isClient
       Template.instance().selectedGroup
 
   Template.groups.events
-    'click .add-user': (event, template) ->
+    'click .groups-table .add-user': (event, template) ->
       template.selectedGroup.set(@)
     
-    'click .groups-table .reactive-table tr': ->
-      go 'groupDocuments', {_id: @_id}
+    'click span.group-detail': (event, template) ->
+      docID = $(event.currentTarget).data("id")
+      go 'groupDocuments', {_id: docID}
 
 if Meteor.isServer
   Meteor.publish 'groups', ->
