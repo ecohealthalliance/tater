@@ -1,32 +1,11 @@
-limitQueryToUserDocs = (query, user)->
-  if user?.admin
-    codeInaccessibleGroups = Groups.find({codeAccessible: {$ne: true}})
-    codeInaccessibleGroupIds = _.pluck(codeInaccessibleGroups.fetch(), '_id')
-    documents = Documents.find({groupId: {$in: codeInaccessibleGroupIds}})
-  else
-    documents = Documents.find({ groupId: user.group })
-
-  docIds = documents.map((d)-> d._id)
-  if query.documentId
-    if _.isString query.documentId
-      userDocIds = [query.documentId]
-    else if query.documentId.$in
-      userDocIds = query.documentId.$in
-    else
-      throw Meteor.Error("Query is not supported")
-    if _.difference(userDocIds, docIds).length > 0
-      throw Meteor.Error("Invalid docIds")
-  else
-    query.documentId = {$in: docIds}
-  query
-
-Pages = new Meteor.Pagination Annotations,
+AnnotationsPages = new Meteor.Pagination Annotations,
   filters:
     documentId: {$in: []}
   sort:
     codeId: 1
   auth: (skip, subscription)->
-    [limitQueryToUserDocs({}, Meteor.users.findOne({_id: subscription.userId}))]
+    [QueryHelpers.limitQueryToUserDocs({}, Meteor.users.findOne({_id: subscription.userId}))]
+  templateName: "annotations"
   itemTemplate: "annotation"
   availableSettings:
     perPage: true
@@ -98,7 +77,7 @@ if Meteor.isClient
           .value()
       instance.annotations.set(sortedAnnotations)
 
-      Pages.set
+      AnnotationsPages.set
         filters: query
 
   Template.annotations.helpers
@@ -176,7 +155,7 @@ if Meteor.isClient
     instance.selectedCodes.remove({})
 
   resetPage = ->
-    Pages.sess("currentPage", 1)
+    AnnotationsPages.sess("currentPage", 1)
 
   Template.annotations.events
     'click .download-csv': (event, instance) ->

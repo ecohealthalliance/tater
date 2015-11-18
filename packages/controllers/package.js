@@ -15,6 +15,7 @@ Package.onUse(function(api) {
   api.use('tater:views');
   api.use('tater:accounts');
   api.use('tater:route-helpers');
+  api.use('tater:query-helpers');
   api.use('accounts-password');
   api.use('useraccounts:core');
   api.use('chrismbeckett:toastr');
@@ -22,6 +23,7 @@ Package.onUse(function(api) {
   api.use('mrt:jquery-easing');
   api.use('harrison:babyparse');
   api.use('alethes:pages@1.8.4');
+  api.addFiles('delete_document_modal.coffee', ['client', 'server']);
   api.addFiles('toastr.coffee', 'client');
   api.addFiles('header.coffee', 'client');
   api.addFiles('accounts_modal.coffee', 'client');
@@ -40,7 +42,6 @@ Package.onUse(function(api) {
   api.addFiles('documents.coffee', ['client', 'server']);
   api.addFiles('user_form.coffee', 'client');
   api.addFiles('annotations_coding_keywords.coffee', ['client', 'server']);
-  api.addFiles('coding_keywords.coffee', ['client', 'server']);
   api.addFiles('document_detail_coding_keywords.coffee', ['client', 'server']);
   api.addFiles('edit_coding_keywords.coffee', ['client', 'server']);
   api.addFiles('annotations.coffee', ['client', 'server']);

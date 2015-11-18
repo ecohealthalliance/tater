@@ -1,0 +1,13 @@
+template(name="deleteDocumentModal")
+  #confirm-delete-document-modal.modal.fade
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+            i.fa.fa-times-circle
+        .modal-body
+          h3#myModalLabel Confirmation
+          p Delete document?
+        .modal-footer
+          button.btn.btn-default(data-dismiss='modal' aria-hidden='true') Close
+          button.btn.btn-danger#confirm-delete-document(data-dismiss='modal' aria-hidden='true') Delete
