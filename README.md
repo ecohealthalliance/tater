@@ -2,6 +2,8 @@
 Manual annotation interface
 
 ## Testing
+First install the Java Runtime Environment: https://support.apple.com/kb/DL1572?locale=en_US
+
 To run model unit tests:
 `spacejam test-packages packages/models/`
 
