@@ -98,6 +98,7 @@ tater:accounts@0.0.1
 tater:controllers@0.0.1
 tater:fixtures@0.0.1
 tater:models@0.0.1
+tater:query-helpers@0.0.1
 tater:route-helpers@0.0.1
 tater:router@0.0.1
 tater:styles@0.0.1
@@ -111,13 +112,13 @@ underscore@1.0.4
 url@1.0.5
 useraccounts:bootstrap@1.12.3
 useraccounts:core@1.12.3
-velocity:chokidar@1.2.0_1
-velocity:core@0.10.8
-velocity:html-reporter@0.9.1
+velocity:chokidar@1.0.3_1
+velocity:core@0.7.1
+velocity:html-reporter@0.6.2
 velocity:meteor-internals@1.1.0_7
 velocity:shim@0.1.0
 velocity:source-map-support@0.3.2_1
 webapp@1.2.3
 webapp-hashing@1.0.5
-xolvio:cucumber@0.20.2_1
+xolvio:cucumber@0.10.0
 zimme:active-route@2.3.2
