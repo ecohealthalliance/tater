@@ -10,8 +10,8 @@ DocumentsPages = new Meteor.Pagination Documents,
 if Meteor.isClient
 
   Template.documents.helpers
-    documentsEmpty: ->
-      DocumentsPages.isEmpty
+    thereAreDocuments: ->
+      not DocumentsPages.isEmpty
 
   Template.documents.events
     'click .delete-document-button': (event) ->

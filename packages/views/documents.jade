@@ -4,7 +4,7 @@ template(name="documents")
       .container
         h1 All Documents
     .container.container-list
-      unless documentsEmpty
+      if thereAreDocuments
         ul.list.document-list.list-unstyled
           +pages
         +pagesNav
