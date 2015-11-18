@@ -14,7 +14,7 @@ if Meteor.isClient
 
     showNewDocumentLink: ->
       group = Groups.findOne(@groupId)
-      group.viewableByUser(Meteor.user())
+      group?.viewableByUser(Meteor.user())
 
   Template.groupDocuments.events
     'click .delete-document-button': (event) ->
