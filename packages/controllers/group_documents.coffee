@@ -1,5 +1,18 @@
+GroupPages = new Meteor.Pagination Documents, 
+  perPage: 10,
+  templateName: 'groupDocuments',
+  itemTemplate: 'groupDocument',
+  availableSettings:
+    perPage: true,
+    filters: true
+  auth: (skip, subscription)->
+    [QueryHelpers.userDocsQuery(Meteor.users.findOne({_id: subscription.userId}))]
+
 if Meteor.isClient
   Template.groupDocuments.onCreated ->
+    GroupPages.set
+      filters: 
+        groupId: @data.groupId
     @subscribe('groupDocuments', @data.groupId)
 
   Template.groupDocuments.helpers

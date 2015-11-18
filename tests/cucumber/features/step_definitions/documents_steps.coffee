@@ -16,6 +16,11 @@ do ->
     @Given /^there is a document with title "([^"]*)" in the test group$/, (title) ->
       @server.call('createTestDocument', {title: title, groupId: 'fakegroupid', _id: 'fakedocid'})
 
+    @Given /^there are (\d+) documents in the "([^"]*)" group$/, (number, groupId, callback) ->
+      _(number).times (index)=>
+        @server.call('createTestDocument', {title: 'document ' + index, groupId: groupId})
+      callback()
+
     @Given /^there are (\d+) documents in the database$/, (number, callback) ->
       _(number).times (index)=>
         @server.call('createTestDocument', {title: 'document ' + index})
