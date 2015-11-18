@@ -1,21 +1,22 @@
 template(name="codingKeywords")
   .container
-    .coding-container
-      ul.list-unstyled.code-list(class=action)
-        if Template.subscriptionsReady
-          each headers
-            li.code-header.coding.highlighted.selectable(class='code-header-#{color}')
-              i.up
-              span.selectable-code(data-id=_id class="{{highlightHeading}}")
-                span.header-name= header
-              ul.code-sub-headers.coding.list-unstyled
-                each subHeaders header
-                  li.code-sub-header.selectable
-                    i.up
-                    span.selectable-code.showing(data-id=_id)= subHeader
-                    ul.code-keywords.list-unstyled
-                      each keywords subHeader
-                        li.code-keyword.coding.selectable
-                          span.selectable-code(data-id=_id)= keyword
-        else
-          .loading
+    .code-container.col-sm-4
+      ul.code-list.list-unstyled.level-1
+        each headers
+          li.code.code-level-1(class="{{selected 'header'}}")= header
+      input.add-code.add-level-1.form-control(placeholder="New Code")
+
+    .code-container.col-sm-4
+      h5= currentlySelectedHeader
+      ul.code-list.list-unstyled.level-2
+        each subHeaders
+          li.code.code-level-2(class="{{selected 'subHeader'}}")= subHeader
+      input.add-code.add-level-2.form-control(placeholder="New Code")
+
+    .code-container.col-sm-4
+      h5= currentlySelectedSubHeader
+      ul.code-list.list-unstyled.level-3
+        each keywords
+          li.code.code-level-3.not-clickable= keyword
+      if currentlySelectedSubHeader
+        input.add-code.add-level-3.form-control(placeholder="New Code")

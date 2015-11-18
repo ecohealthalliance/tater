@@ -1,6 +1,6 @@
 if Meteor.isClient
   SelectableCodes = new Meteor.Collection("SelectableCodes")
-  
+
   Template.annotationsCodingKeywords.onCreated ->
     @subscribe('codingKeywords')
     @searchText = new ReactiveVar('')
