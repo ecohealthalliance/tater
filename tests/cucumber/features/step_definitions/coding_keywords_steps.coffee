@@ -5,7 +5,7 @@ do ->
 
   module.exports = ->
 
-    @Given /^there is a coding keyword with header "([^"]*)" in the database$/, (header, callback) ->
+    @Given /^there is a coding keyword with header "([^"]*)" in the database$/, (header) ->
       @server.call('createCodingKeyword', {header: header})
 
     @Given /^there is a coding keyword with header "([^"]*)" and sub-header "([^"]*)" in the database$/, (header, subHeader) ->
