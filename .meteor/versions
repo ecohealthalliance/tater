@@ -98,6 +98,7 @@ tater:accounts@0.0.1
 tater:controllers@0.0.1
 tater:fixtures@0.0.1
 tater:models@0.0.1
+tater:query-helpers@0.0.1
 tater:route-helpers@0.0.1
 tater:router@0.0.1
 tater:styles@0.0.1

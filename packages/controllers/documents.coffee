@@ -1,32 +1,21 @@
-Pages = new Meteor.Pagination Documents, 
+DocumentsPages = new Meteor.Pagination Documents, 
   perPage: 10,
-  itemTemplate: 'document',
+  templateName: 'documents'
+  itemTemplate: 'document'
   availableSettings:
     perPage: true
-
+  auth: (skip, subscription)->
+    [QueryHelpers.userDocsQuery(Meteor.users.findOne({_id: subscription.userId}))]
 
 if Meteor.isClient
-  Template.documents.onCreated ->
-    @subscribe('documentsAndGroups')
 
   Template.documents.helpers
+    thereAreDocuments: ->
+      not DocumentsPages.isEmpty
 
-    documents: ->
-      Documents.find().map((doc)->
-        doc.groupName = Groups.findOne(doc.groupId)?.name
-        doc
+  Template.documents.events
+    'click .delete-document-button': (event) ->
+      $('#confirm-delete-document').attr(
+        "data-document-id",
+        event.target.parentElement.getAttribute("data-document-id")
       )
-
-if Meteor.isServer
-  Meteor.publish 'documentsAndGroups', ->
-    user = Meteor.users.findOne({_id: @userId})
-    if user?.admin
-      [
-        Documents.find(),
-        Groups.find({}, {fields: {name: 1}})
-      ]
-    else if user
-      [
-        Documents.find({groupId: user.group}),
-        Groups.find({_id: user.group}, {fields: {name: 1}})
-      ]
