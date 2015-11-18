@@ -1,5 +1,18 @@
+GroupPages = new Meteor.Pagination Documents, 
+  perPage: 10,
+  templateName: 'groupDocuments',
+  itemTemplate: 'groupDocument',
+  availableSettings:
+    perPage: true,
+    filters: true
+  auth: (skip, subscription)->
+    [QueryHelpers.userDocsQuery(Meteor.users.findOne({_id: subscription.userId}))]
+
 if Meteor.isClient
   Template.groupDocuments.onCreated ->
+    GroupPages.set
+      filters: 
+        groupId: @data.groupId
     @subscribe('groupDocuments', @data.groupId)
 
   Template.groupDocuments.helpers
@@ -20,15 +33,6 @@ if Meteor.isClient
     'click .delete-document-button': (event) ->
       $('#confirm-delete-document').attr("data-document-id", event.target.parentElement.getAttribute("data-document-id"))
 
-    'click #confirm-delete-document': (event) ->
-      documentId = event.target.getAttribute('data-document-id')
-      Meteor.call 'deleteDocument', documentId, (error) ->
-        if error
-          toastr.error("Server Error")
-          console.log error
-        else
-          toastr.success("Success")
-
 if Meteor.isServer
   Meteor.publish 'groupDocuments', (id) ->
     user = Meteor.users.findOne(@userId)
@@ -39,13 +43,3 @@ if Meteor.isServer
         Groups.find(id)
         Groups.findOne(id).documents()
       ]
-
-  Meteor.methods
-    deleteDocument: (documentId) ->
-      document = Documents.findOne(documentId)
-      if document
-        group = Groups.findOne({_id: document.groupId})
-        user = Meteor.users.findOne(@userId)
-        accessible = (user and group?.viewableByUser(user))
-        if accessible
-          Documents.remove({_id: documentId})

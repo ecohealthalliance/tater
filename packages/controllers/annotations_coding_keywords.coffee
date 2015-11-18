@@ -1,6 +1,6 @@
 if Meteor.isClient
   SelectableCodes = new Meteor.Collection("SelectableCodes")
-  
+
   Template.annotationsCodingKeywords.onCreated ->
     @subscribe('codingKeywords')
     @searchText = new ReactiveVar('')
@@ -119,27 +119,7 @@ if Meteor.isClient
 
 
 if Meteor.isServer
-  limitQueryToUserDocs = (query, user)->
-    if user?.admin
-      codeInaccessibleGroups = Groups.find({codeAccessible: {$ne: true}})
-      codeInaccessibleGroupIds = _.pluck(codeInaccessibleGroups.fetch(), '_id')
-      documents = Documents.find({groupId: {$in: codeInaccessibleGroupIds}})
-    else
-      documents = Documents.find({ groupId: user.group })
-    docIds = documents.map((d)-> d._id)
-    if query.documentId
-      if _.isString query.documentId
-        userDocIds = [query.documentId]
-      else if query.documentId.$in
-        userDocIds = query.documentId.$in
-      else
-        throw Meteor.Error("Query is not supported")
-      if _.difference(userDocIds, docIds).length > 0
-        throw Meteor.Error("Invalid docIds")
-    else
-      query.documentId = {$in: docIds}
-    return query
-  
+
   Meteor.publish 'codingKeywordsForDocuments', (keywordQuery) ->
     # We need to publish all the coding keywords so that the parent keywords can
     # be shown when only a child keyword is used in a selected document.
@@ -148,7 +128,7 @@ if Meteor.isServer
     # called SelectableCodes.
     user = Meteor.users.findOne({_id: @userId})
     if user
-      annotations = Annotations.find(limitQueryToUserDocs(keywordQuery, user))
+      annotations = Annotations.find(QueryHelpers.limitQueryToUserDocs(keywordQuery, user))
       CodingKeywords.find(
         _id:
           $in: _.uniq(_.pluck(annotations.fetch(), 'codeId'))

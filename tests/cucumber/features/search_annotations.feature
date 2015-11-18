@@ -10,8 +10,9 @@ Feature: Search Annotations Page
     Given there is a test annotation in the database
     When I log in as the test user
     And I visit the search annotations page
-    Then I should not see the test annotation
-    And I select the test group
+    Then I should see the "Search Annotations" link highlighted in the header
+    And I should not see the test annotation
+    When I select the test group
     Then I should see the test annotation
 
   @searchAnnotations
