@@ -36,14 +36,6 @@ if Meteor.isClient
     currentlySelectedKeyword: ->
       Template.instance().selectedKeyword.get()
 
-    disabled: (level) ->
-      if level == 'subHeader'
-        unless Template.instance().selectedHeader.get()
-          'disabled'
-      else
-        unless Template.instance().selectedSubHeader.get()
-          'disabled'
-
   Template.codingKeywords.events
     'click .code-level-1': (event, instance) ->
       selectedHeader = $(event.currentTarget).text()
