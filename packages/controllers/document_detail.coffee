@@ -189,6 +189,17 @@ if Meteor.isClient
       Meteor.call('toggleAnnotationFlag', annotationId)
 
 if Meteor.isServer
+
+  # Global API configuration
+  Api = new Restivus
+    useDefaultAuth: true
+    prettyJson: true
+
+  # Generates: GET, POST on /api/items and GET, PUT, DELETE on
+  # /api/items/:id for the Items collection
+  Api.addCollection Documents
+
+
   Meteor.publish 'documentDetail', (id, code) ->
     document = Documents.findOne(id)
     if code && document.codeAccessible()

@@ -23,6 +23,8 @@ Package.onUse(function(api) {
   api.use('mrt:jquery-easing');
   api.use('harrison:babyparse');
   api.use('alethes:pages@1.8.4');
+  api.use('nimble:restivus');
+  
   api.addFiles('delete_document_modal.coffee', ['client', 'server']);
   api.addFiles('toastr.coffee', 'client');
   api.addFiles('header.coffee', 'client');
