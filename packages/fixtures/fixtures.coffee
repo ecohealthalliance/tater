@@ -36,6 +36,7 @@ do ->
     'createTestDocument': (attributes) ->
       attributes['body'] ?= 'Test Body'
       attributes['groupId'] ?= 'fakegroupid'
+      attributes['createdAt'] ?= new Date()
       Documents.insert(attributes)
 
     'createTestAnnotation': (attributes) ->
