@@ -23,7 +23,7 @@ if Meteor.isClient
       hideToggle: true
       fn: (val, obj) ->
         new Spacebars.SafeString("""
-          <a class="control add-user" data-toggle="modal" data-target="#add-group-user-modal">
+          <a class="control add-user" data-toggle="modal" data-target="#add-group-user-modal" data-group="#{obj._id}">
             <i class='fa fa-user-plus'></>
           </a>
         """)
@@ -43,8 +43,8 @@ if Meteor.isClient
 
   Template.groups.events
     'click .groups-table .add-user': (event, template) ->
-      template.selectedGroup.set(@)
-    
+      template.selectedGroup.set $(event.currentTarget).data("group")
+
     'click span.group-detail': (event, template) ->
       docID = $(event.currentTarget).data("id")
       go 'groupDocuments', {_id: docID}

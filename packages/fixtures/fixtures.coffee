@@ -20,12 +20,14 @@ do ->
       Meteor.users.update({_id: account}, {$set: {admin: true}})
 
     'createTestGroup': (codeAccessible) ->
-      Groups.insert
+      userId = Meteor.users.findOne()._id
+      groupId = Groups.insert
         name: "Test Group"
         description: "Test Description"
-        createdById: Meteor.users.findOne()._id
+        createdById: userId
         _id: "fakegroupid"
         codeAccessible: codeAccessible
+      Meteor.users.update({_id: userId}, {$set: {group: groupId}})
 
     'createProfile': (field, value, id) ->
       attributes = {}

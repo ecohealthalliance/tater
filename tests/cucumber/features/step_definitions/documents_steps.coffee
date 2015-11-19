@@ -26,12 +26,11 @@ do ->
         @server.call('createTestDocument', {title: 'document ' + index})
       callback()
 
-    @When "I click the documents header link", (callback) ->
+    @When "I click the documents header link", ->
       @browser
-        .waitForExist('.header-documents-link', assert.ifError)
-        .click('.header-documents-link', assert.ifError)
-        .waitForExist('.group-documents', assert.ifError)
-        .call(callback)
+        .waitForExist('.header-documents-link')
+        .click('.header-documents-link')
+        .waitForExist('.group-documents')
 
     @When "I click on the group documents link", (callback) ->
       @browser
