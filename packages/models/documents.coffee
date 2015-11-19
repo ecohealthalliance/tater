@@ -10,6 +10,9 @@ Document = Astro.Class
       type: 'string'
       validator: Validators.required()
     groupId: 'string'
+    annotated:
+      type: 'number'
+      default: 0
   behaviors: ['timestamp']
 
   methods:

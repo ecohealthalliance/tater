@@ -1,6 +1,6 @@
 if Meteor.isClient
   SelectableCodes = new Meteor.Collection("SelectableCodes")
-  
+
   Template.annotationsCodingKeywords.onCreated ->
     @subscribe('codingKeywords')
     @searchText = new ReactiveVar('')
@@ -139,7 +139,7 @@ if Meteor.isServer
     else
       query.documentId = {$in: docIds}
     return query
-  
+
   Meteor.publish 'codingKeywordsForDocuments', (keywordQuery) ->
     # We need to publish all the coding keywords so that the parent keywords can
     # be shown when only a child keyword is used in a selected document.

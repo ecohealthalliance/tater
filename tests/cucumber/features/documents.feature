@@ -79,3 +79,27 @@ Feature: Documents
     And I confirm the document deletion
     Then I should see a "Success" toast
     And I should not see content "Test Document"
+
+  @documents
+  Scenario: Increasing and decreasing a document's annotation count
+    Given there is a test group in the database
+    When I log in as the test user
+
+    And I navigate to "/editCodingKeywords"
+    When I click the Add Keyword button
+    And I add the header "Bur Bur"
+    Then I should be able to find "Bur Bur" in the keyword table
+
+    And I click on the Add Document link in the header
+    And I fill out the new document form with title "Annotation Test Doc" and select the test group
+
+    When I highlight some document text
+    And I click on a coding keyword
+
+    When I click the documents header link
+    Then I should see that document "Annotation Test Doc" has annotations
+
+    When I navigate to the document which has annotations
+    And I remove all annotations
+    When I click the documents header link
+    Then I should see that document "Annotation Test Doc" has no annotations

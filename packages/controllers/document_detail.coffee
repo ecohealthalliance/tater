@@ -242,6 +242,8 @@ if Meteor.isServer
         annotation.set(userId: @userId)
         annotation.set(accessCode: code)
         annotation.save ->
+          document.inc("annotated", 1)
+          document.save()
           annotation
       else
         throw 'Unauthorized'
@@ -255,6 +257,8 @@ if Meteor.isServer
       accessibleViaUser = (user and group?.viewableByUser(user))
       if accessibleViaCode or accessibleViaUser
         annotation.remove ->
+          document.inc("annotated", -1)
+          document.save()
           annotation
       else
         throw 'Unauthorized'

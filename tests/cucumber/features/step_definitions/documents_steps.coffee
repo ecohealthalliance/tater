@@ -105,3 +105,22 @@ do ->
           matchGroup = response.toString().match("Test Group")
           assert.ok(matchDocument, "Document name not found")
           assert.ok(matchGroup, "Group not found")
+
+    @Then /^I should see that document "([^"]*)" has( no)? annotations$/, (documentName, noAnnotations) ->
+      @browser
+        .waitForVisible('.documents', assert.ifError)
+        .getHTML '.document-list', (error, response) ->
+          matchDocument = response.toString().match(documentName)
+          matchGroup = response.toString().match("Test Group")
+          matchAnnotationMark = response.toString().match("fa-circle")
+          assert.ok(matchDocument, "Document name not found")
+          assert.ok(matchGroup, "Group not found")
+          if noAnnotations
+            assert.ok(!matchAnnotationMark, "Annotations found")
+          else
+            assert.ok(matchAnnotationMark, "No annotations found")
+
+    @When "I navigate to the document which has annotations", ->
+      @browser
+        .click(".document .list-link")
+        .waitForVisible(".document-text", assert.ifError)

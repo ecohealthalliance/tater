@@ -1,19 +1,19 @@
 if Meteor.isClient
+
   Template.documents.onCreated ->
     @subscribe('documentsAndGroups')
 
   Template.documents.helpers
-
     documents: ->
       Documents.find().map((doc)->
         doc.groupName = Groups.findOne(doc.groupId)?.name
-        doc.annotated = Annotations.findOne({documentId: doc._id})?
         doc
       )
 
 if Meteor.isServer
   Meteor.publish 'documentsAndGroups', ->
     user = Meteor.users.findOne({_id: @userId})
+
     if user?.admin
       [
         Documents.find(),

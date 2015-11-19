@@ -19,6 +19,9 @@ template(name="groupDocuments")
             li.document
                 a.list-link.clearfix(href="{{path route='documentDetail' params=this}}")
                   span.document-title= title
+                  if annotated
+                    span.document-annotated
+                      i.fa.fa-circle
                 button.btn-plain.delete-document-button(data-toggle="modal" data-document-id=_id data-target="#confirm-delete-document-modal" )
                   i.fa.fa-trash-o
           #confirm-delete-document-modal.modal.fade
