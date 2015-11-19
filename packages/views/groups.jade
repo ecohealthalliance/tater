@@ -1,7 +1,7 @@
 template(name="groups")
   if currentUser
     if Template.subscriptionsReady
-      .group-list.list-table.groups-table
+      .group-list.list-table.groups-table.no-filter.table-wrap
         +reactiveTable collection=groups settings=settings filters=filters
         else
           .loading.center-v
