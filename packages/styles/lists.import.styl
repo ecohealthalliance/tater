@@ -10,12 +10,15 @@
   border-bottom-right-radius 4px
   li
     position relative
-    &:nth-of-type(odd)
-      background $ll-gray
     &:last-of-type
       border 0
+  &.stripped
+    li
+      &:nth-of-type(odd)
+        background $ll-gray
+
   .list-link
-    padding 15px
+    padding 12px
     display block
     linkTransition()
     color lighten($body-text, 15%)

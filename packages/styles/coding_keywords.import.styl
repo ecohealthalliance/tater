@@ -241,15 +241,79 @@ checkMark(center=false)
 
 // Management
 
-.code-container
+.code-management-container
+  min-height 600px
+  padding 0
+  border 1px solid $m-gray
+  border-radius 3px
+  overflow hidden
+
+.code-list-header
+  position absolute
+  max-height 50px
+  z-index $mid-layer
+  top 0
+  left 0
+  right 0
+  padding 10px
+  background $sub-header-BG
+  border-bottom 1px solid lighten($primary-light, 60%)
+  .add-code
+    centerVertically(true)
+    pointer()
+    right 10px
+    font-size 1.5em
+    color $d-gray
+    &:hover
+      color $secondary
+
+.code-list-wrap
+  float left
+  position relative
+  width 33.33%
+  min-height 600px
+  border-right 1px solid $m-gray
+  &:last-of-type
+    border-right 0
+
+.code-list
+  margin-bottom 0
+
+.code-list-container
+  overflow-x scroll
+  position absolute
+  top 0
+  bottom 0
+  left 0
+  right 0
+  padding 50px 0 75px 0
   li
-    padding 5px
+    padding 10px
+    border-bottom 1px solid lighten($l-gray, 20%)
+
     &.selected
-      background $l-gray
+      background lighten($background-secondary, 20%)
+      &::after
+        color $d-gray
+    &::after
+      @extend .icon
+      content '\f054'
+      centerVertically(true)
+      right 15px
+      color $l-gray
 
   .code
     pointer()
 
   .not-clickable
-    cursor auto
+    &:after
+      content ''
 
+.code-details
+  min-height 60px
+  padding 15px
+  background alpha($sub-header-BG, 80%)
+  position absolute
+  bottom 0
+  left 0
+  right 0
