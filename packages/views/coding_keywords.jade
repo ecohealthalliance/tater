@@ -17,6 +17,10 @@ template(name="codingKeywords")
       h5= currentlySelectedSubHeader
       ul.code-list.list-unstyled.level-3
         each keywords
-          li.code.code-level-3.not-clickable= keyword
+          li.code.code-level-3.not-clickable
+            span= keyword
+            button.btn-plain.delete-keyword-button(data-toggle="modal" data-keyword-id=_id data-target="#confirm-delete-keyword-modal" )
+              i.fa.fa-trash-o
+      +deleteKeywordModal
       if currentlySelectedSubHeader
         input.add-code.add-level-3.form-control(placeholder="New Code")

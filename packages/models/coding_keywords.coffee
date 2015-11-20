@@ -214,6 +214,7 @@ CodingKeyword = Astro.Class
     keyword: 'string'
     color: 'number'
     caseCount: 'boolean'
+    deleted: 'boolean'
   behaviors: ['timestamp']
 
 if Meteor.isServer

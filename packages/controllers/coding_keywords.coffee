@@ -64,3 +64,7 @@ if Meteor.isClient
             ]
         _.each keywords.fetch(), (keyword) ->
           instance.keywords.insert keyword
+
+    'click .delete-keyword-button': (event) ->
+      $('#confirm-delete-keyword').attr("data-keyword-id", event.target.parentElement.getAttribute("data-keyword-id"))
+
