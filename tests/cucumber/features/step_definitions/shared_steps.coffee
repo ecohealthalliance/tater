@@ -23,9 +23,9 @@ do ->
       @client
         .url(url.resolve(process.env.ROOT_URL, '/'))
         .click('.sign-in', assert.ifError)
-        .setValue('#at-field-email', _testUser.email)
-        .setValue('#at-field-password', _testUser.password)
-        .submitForm('#at-field-email', assert.ifError)
+        .setValue('.accounts-modal #at-field-email', _testUser.email)
+        .setValue('.accounts-modal #at-field-password', _testUser.password)
+        .submitForm('.accounts-modal #at-field-email', assert.ifError)
         .waitForExist('.sign-out')
         .call(callback)
 
