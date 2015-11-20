@@ -1,4 +1,4 @@
-DocumentListPages = new Meteor.Pagination Documents, 
+DocumentListPages = new Meteor.Pagination Documents,
   perPage: 10,
   templateName: 'documentList'
   itemTemplate: 'document'
@@ -20,10 +20,27 @@ if Meteor.isClient
     instance.group = @data?.group
     if instance.group
       DocumentListPages.set
-        filters: 
+        filters:
           groupId: @data.group._id
     else
       @subscribe('groups')
+    @searchString = instance.data.searchString
+    @searchResultsCount = new ReactiveVar()
+
+
+  Template.documentList.onRendered ->
+    instance = Template.instance()
+    @autorun ->
+      searchString = instance.searchString.get()
+      filters =
+        title:
+          $regex: regexEscape(searchString)
+          $options: 'i'
+      if instance.group
+        filters.groupId = instance.group._id
+      DocumentListPages.set(filters:filters)
+      DocumentListPages.sess("currentPage", 1)
+      instance.searchResultsCount.set DocumentListPages.Collection.find().count()
 
   Template.documentList.helpers
     thereAreDocuments: ->
@@ -35,16 +52,6 @@ if Meteor.isClient
         "data-document-id",
         event.target.parentElement.getAttribute("data-document-id")
       )
-    'keyup .document-search': _.debounce(((event, instance)->
-      filters =
-        title:
-          $regex: regexEscape($(event.currentTarget).val())
-          $options: 'i'
-      if instance.group
-        filters.groupId = instance.group._id
-      DocumentListPages.set(filters:filters)
-      DocumentListPages.sess("currentPage", 1)
-    ), 500)
 
   Template.document.onCreated ->
     @document = new Document(_.pick(@data, _.keys(Document.getFields())))

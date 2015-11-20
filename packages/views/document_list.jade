@@ -1,7 +1,5 @@
 template(name="documentList")
   if thereAreDocuments
-    .form-group
-      input.form-control.document-search(placeholder="Type a document name here to filter the list...")
     ul.list.document-list.list-unstyled
       +pages
     +pagesNav

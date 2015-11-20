@@ -32,15 +32,30 @@ h5
   border-bottom 2px solid $border-gray
   +below(1)
     margin-bottom 5px
-  h1
-    margin-bottom 0
-    text-shadow 0 1px 0 rgba(255,255,255,.8)
   &.primary-bg
     background $background-primary
   &.secondary-bg
     background $background-secondary
   &.no-border
     border-bottom 0
+  h1
+    margin-bottom 0
+    text-shadow 0 1px 0 rgba(255,255,255,.8)
+  .container
+    padding 0
+
+.view-header-search
+  position relative
+  margin 15px 0 0 0
+  width 30%
+  input
+    padding-left 28px
+  i
+    position absolute
+    top 50%
+    left 10px
+    transform translate(0,-50%)
+    color $d-gray
 
 a
 button
