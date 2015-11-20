@@ -290,7 +290,6 @@ checkMark(center=false)
   li
     padding 10px
     border-bottom 1px solid lighten($l-gray, 20%)
-
     &.selected
       background lighten($background-secondary, 20%)
       &::after
@@ -306,7 +305,11 @@ checkMark(center=false)
     pointer()
 
   .not-clickable
-    &:after
+    cursor auto
+    &:hover
+      background none
+      color inherit
+    &::after
       content ''
 
 .code-details
