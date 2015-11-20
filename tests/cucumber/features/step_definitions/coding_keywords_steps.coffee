@@ -42,6 +42,7 @@ do ->
         .click('.fa-trash-o')
         .waitForVisible('#confirm-delete-keyword-modal')
         .click('#confirm-delete-keyword')
+        .waitForVisible('.toast-message')
 
 
     @Then /^I should( not)? see coding keyword search results$/, (noResults) ->
