@@ -35,12 +35,12 @@ if Meteor.isClient
     instance = Template.instance()
     @autorun ->
       annotations = Annotations.find({documentId: instance.data.documentId}, sort: {startOffset: 1, _id: 0})
-      if instance.searchText.get() is ''
-        instance.annotations.set annotations
-      else
-        annotations = _.filter annotations.fetch(), (annotation) ->
-          CodingKeywords.findOne(annotation.codeId)
+      annotations = _.filter annotations.fetch(), (annotation) ->
+        CodingKeywords.findOne(annotation.codeId)
 
+      if instance.searchText.get() is ''
+        instance.annotations.set annotations      
+      else
         searchText = instance.searchText.get().split(' ')
         filteredAnnotations = _.filter annotations.fetch(), (annotation) ->
           code = CodingKeywords.findOne(annotation.codeId)

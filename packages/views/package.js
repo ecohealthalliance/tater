@@ -13,7 +13,7 @@ Package.onUse(function(api) {
   api.use('tater:accounts');
   api.use('tater:route-helpers');
   api.use('aslagle:reactive-table');
-
+  api.addFiles('delete_document_modal.jade');
   api.addFiles('accounts_modal.jade');
   api.addFiles('accounts_header_buttons.jade');
   api.addFiles('splash_page.jade', 'client');
@@ -35,6 +35,7 @@ Package.onUse(function(api) {
   api.addFiles('layout.jade', 'client');
   api.addFiles('documents.jade', 'client');
   api.addFiles('annotations_coding_keywords.jade', 'client');
+  api.addFiles('coding_keywords.jade', 'client');
   api.addFiles('edit_coding_keywords.jade', 'client');
   api.addFiles('annotations.jade', 'client');
   api.addFiles('random_document.jade', 'client');

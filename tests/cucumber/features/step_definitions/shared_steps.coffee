@@ -50,6 +50,14 @@ do ->
         .click('[href="/admin"]')
         .call(callback)
 
+    @Then /^I should see the "([^"]*)" link highlighted in the header$/, (linkText, callback) ->
+      @client
+        .waitForExist('.navbar-nav')
+        .getHTML('.navbar-nav .active', (error, response) ->
+          match = response?.toString().match(linkText)
+          assert.ok(match)
+        ).call(callback)
+
     @Then /^I should( not)? see a "([^"]*)" toast$/, (noToast, message, callback) ->
       @browser
         .waitForVisible('body *')

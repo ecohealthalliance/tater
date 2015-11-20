@@ -15,26 +15,18 @@ template(name="groupDocuments")
     .container
       if documents
         ul.document-list.list.list-unstyled
-          each documents
-            li.document
-                a.list-link.clearfix(href="{{path route='documentDetail' params=this}}")
-                  span.document-title= title
-                  if annotated
-                    span.document-annotated
-                      i.fa.fa-circle
-                button.btn-plain.delete-document-button(data-toggle="modal" data-document-id=_id data-target="#confirm-delete-document-modal" )
-                  i.fa.fa-trash-o
-          #confirm-delete-document-modal.modal.fade
-            .modal-dialog
-              .modal-content
-                .modal-header
-                  button(type="button" class="close" data-dismiss="modal" aria-label="Close")
-                    i.fa.fa-times-circle
-                .modal-body
-                  h3#myModalLabel Confirmation
-                  p Delete document?
-                .modal-footer
-                  button.btn.btn-default(data-dismiss='modal' aria-hidden='true') Close
-                  button.btn.btn-danger#confirm-delete-document(data-dismiss='modal' aria-hidden='true') Delete
+          +pages
+        +pagesNav
+        +deleteDocumentModal
       else
         p No documents have been uploaded.
+
+template(name="groupDocument")
+  li.document
+      a.list-link.clearfix(href="{{path route='documentDetail' params=this}}")
+        span.document-title= title
+        if annotated
+          span.document-annotated
+            i.fa.fa-circle
+      button.btn-plain.delete-document-button(data-toggle="modal" data-document-id=_id data-target="#confirm-delete-document-modal" )
+        i.fa.fa-trash-o

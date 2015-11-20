@@ -238,3 +238,18 @@ checkMark(center=false)
       background-color lighten($primary-light, 95%)
   .selected
     background-color desaturate(lighten($primary-light, 85%), 80%)
+
+// Management
+
+.code-container
+  li
+    padding 5px
+    &.selected
+      background $l-gray
+
+  .code
+    pointer()
+
+  .not-clickable
+    cursor auto
+

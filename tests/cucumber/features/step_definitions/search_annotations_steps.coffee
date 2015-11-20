@@ -54,7 +54,7 @@ do ->
         .click('.download-csv')
 
     @Then /^I should see a link that downloads the generated CSV with header "([^"]*)" and key "([^"]*)"$/, (header, keyword) ->
-      csvData = """documentId,userEmail,header,subHeader,keyword,text,flagged,createdAt\r
+      csvData = """\uFEFFdocumentId,userEmail,header,subHeader,keyword,text,flagged,createdAt\r
       fakedocumentid,,"""+header+""",,"""+keyword+""",T,false,"""
       @browser
         .waitForExist '#download-csv-modal .btn-primary'

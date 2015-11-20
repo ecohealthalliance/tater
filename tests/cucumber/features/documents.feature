@@ -33,7 +33,8 @@ Feature: Documents
     And there is a test document with title "Second Doc" in group "groupid2"
     When I log in as the test user
     And I click the documents header link
-    Then I should see content "First Doc"
+    Then I should see the "Documents" link highlighted in the header
+    And I should see content "First Doc"
     And I should see content "Second Doc"
 
   @documents
@@ -44,6 +45,18 @@ Feature: Documents
     And I navigate to "/admin"
     And I click on the group link
     Then I should see content "Test Doc"
+
+  @documents
+  Scenario: Paginating group documents
+    Given there is a test group in the database
+    And there are 15 documents in the "fakegroupid" group
+    And there are 2 documents in the "test2" group
+    When I log in as the test user
+    And I navigate to "/admin"
+    And I click on the group link
+    Then I should see 10 documents
+    When I go to the next page of documents
+    Then I should see 5 documents
 
   @documents
   Scenario: Adding a document as an admin
@@ -80,7 +93,7 @@ Feature: Documents
     Then I should see a "Success" toast
     And I should not see content "Test Document"
 
-  @documents
+  @dev
   Scenario: Increasing and decreasing a document's annotation count
     Given there is a test group in the database
     When I log in as the test user
@@ -103,3 +116,11 @@ Feature: Documents
     And I remove all annotations
     When I click the documents header link
     Then I should see that document "Annotation Test Doc" has no annotations
+
+  Scenario: Paginating documents page
+    Given there are 15 documents in the database
+    When I log in as the test user
+    When I navigate to "/documents"
+    Then I should see 10 documents
+    When I go to the next page of documents
+    Then I should see 5 documents

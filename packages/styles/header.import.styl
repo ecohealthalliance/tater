@@ -110,6 +110,13 @@ header
           width 50%
           margin 10px auto
           padding 12px inherit
+  a.active
+  a.active:focus
+    background $primary
+    color white
+    outline 0
+    &:hover
+      background $primary
   li
     &.open
       +below(1)
@@ -176,11 +183,6 @@ header
             position static
             color white
             centerPosition(0,0)
-
-.navbar-nav .active a
-.navbar-nav .active a:focus
-  background nav-hover
-  outline 0
 
 .navbar-brand
   display block

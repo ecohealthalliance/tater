@@ -16,6 +16,16 @@ do ->
     @Given /^there is a document with title "([^"]*)" in the test group$/, (title) ->
       @server.call('createTestDocument', {title: title, groupId: 'fakegroupid', _id: 'fakedocid'})
 
+    @Given /^there are (\d+) documents in the "([^"]*)" group$/, (number, groupId, callback) ->
+      _(number).times (index)=>
+        @server.call('createTestDocument', {title: 'document ' + index, groupId: groupId})
+      callback()
+
+    @Given /^there are (\d+) documents in the database$/, (number, callback) ->
+      _(number).times (index)=>
+        @server.call('createTestDocument', {title: 'document ' + index})
+      callback()
+
     @When "I click the documents header link", (callback) ->
       @browser
         .waitForExist('.header-documents-link', assert.ifError)
@@ -61,7 +71,7 @@ do ->
       @browser
         .waitForExist('#new-document-form', assert.ifError)
         .setValue('#document-title', title)
-        .setValue('#document-body', 'This is a document.')
+        .setValue('#document-body', 'This is a document with 38 characters.')
       if selectGroup
         @browser.selectByVisibleText('#document-group-id', 'Test Group')
       @browser.submitForm('#new-document-form', assert.ifError)
@@ -108,15 +118,15 @@ do ->
 
     @Then /^I should see that document "([^"]*)" has( no)? annotations$/, (documentName, noAnnotations) ->
       @browser
-        .waitForVisible('.documents', assert.ifError)
+        .waitForVisible('.document-list', assert.ifError)
         .getHTML '.document-list', (error, response) ->
           matchDocument = response.toString().match(documentName)
-          matchGroup = response.toString().match("Test Group")
+          #matchGroup = response.toString().match("Test Group")
           matchAnnotationMark = response.toString().match("fa-circle")
           assert.ok(matchDocument, "Document name not found")
-          assert.ok(matchGroup, "Group not found")
+          #assert.ok(matchGroup, "Group not found")
           if noAnnotations
-            assert.ok(!matchAnnotationMark, "Annotations found")
+            assert.notOk(matchAnnotationMark, "Annotations found")
           else
             assert.ok(matchAnnotationMark, "No annotations found")
 
@@ -124,3 +134,15 @@ do ->
       @browser
         .click(".document .list-link")
         .waitForVisible(".document-text", assert.ifError)
+
+    @Then /^I should see (\d+) documents$/, (number) ->
+      @client
+        .waitForExist('.document-title', assert.ifError)
+        .elements '.document-title', (error, elements) ->
+          assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
+
+    @When /^I go to the next page of documents$/, ->
+      @browser
+        .waitForExist('.document-title', assert.ifError)
+        .execute ->
+          $("a:contains('>')").click()
