@@ -9,5 +9,5 @@ Package.onUse(function(api) {
   api.versionsFrom('1.1.0.2');
   api.use('coffeescript');
   api.use('meteorhacks:picker');
-  api.addFiles('router.coffee', ['client', 'server']);
+  api.addFiles('router.coffee', ['server']);
 });
