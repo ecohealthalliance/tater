@@ -107,3 +107,11 @@ FlowRouter.route '/reset-password/:token',
     FlowLayout.render 'layout',
       main: 'resetPassword'
       params: {"token": params.token}
+
+  
+
+
+
+
+
+

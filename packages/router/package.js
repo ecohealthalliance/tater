@@ -11,6 +11,10 @@ Package.onUse(function(api) {
   api.use('templating');
   api.use('meteorhacks:flow-layout@1.3.0');
   api.use('meteorhacks:flow-router@1.9.0');
+  api.use('nimble:restivus');
+  
   api.use('tater:controllers');
+  
   api.addFiles('router.coffee', ['client', 'server']);
+
 });

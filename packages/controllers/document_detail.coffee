@@ -190,7 +190,7 @@ if Meteor.isClient
 
 if Meteor.isServer
 
-  # Global API configuration
+  # Global API configuration for API
   Api = new Restivus
     useDefaultAuth: true
     prettyJson: true
@@ -198,6 +198,19 @@ if Meteor.isServer
   # Generates: GET, POST on /api/items and GET, PUT, DELETE on
   # /api/items/:id for the Items collection
   Api.addCollection Documents
+      
+  # Maps to: /api/annotations/:id
+  Api.addRoute 'annotations/:id', 
+    authRequired: true,
+    get: -> 
+      annotations = _.filter Annotations.find( {documentId: @urlParams.id}).fetch(), (annotation) -> 
+        !_.isNull(annotation.accessCode) && CodingKeywords.findOne(annotation.codeId)
+      _.map annotations, (anno) ->
+        {
+          anno: anno
+          code: CodingKeywords.findOne(anno.codeId)
+        }
+        
 
 
   Meteor.publish 'documentDetail', (id, code) ->
