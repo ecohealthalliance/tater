@@ -4,6 +4,8 @@ if Meteor.isClient
       @subscribe('caseCountCodingKeywords')
     else
       @subscribe('codingKeywords')
+      @subscribe('headers')
+      @subscribe('subHeaders')
     @searchText = new ReactiveVar('')
     @searching = new ReactiveVar(false)
     @filteredCodes = new ReactiveVar()
@@ -38,20 +40,13 @@ if Meteor.isClient
         Spacebars.SafeString("<span class='header'>"+@header+"</span>")
 
     headers: () ->
-      CodingKeywords.find
-        'subHeader': $exists: false
-        'keywords': $exists: false
+      Headers.find()
 
-    subHeaders: (header) ->
-      CodingKeywords.find
-        'header': header
-        'subHeader': $exists: true
-        'keyword': $exists: false
+    subHeaders: (headerId) ->
+      SubHeaders.find(headerId: headerId)
 
-    keywords: (subHeader) ->
-      CodingKeywords.find
-        'subHeader': subHeader
-        'keyword': $exists: true
+    keywords: (subHeaderId) ->
+      CodingKeywords.find(subHeaderId: subHeaderId)
 
     icon: ->
       if @header is 'Human Movement' then 'fa-bus'
@@ -83,6 +78,10 @@ if Meteor.isClient
       $(e.target).toggleClass('down up').siblings('.code-keywords').toggleClass('hidden').siblings('span').toggleClass('showing')
 
 if Meteor.isServer
+  Meteor.publish 'headers', () ->
+    Headers.find()
+  Meteor.publish 'subHeaders', () ->
+    SubHeaders.find()
   Meteor.publish 'codingKeywords', () ->
     CodingKeywords.find(caseCount: {$ne: true})
   Meteor.publish 'caseCountCodingKeywords', () ->

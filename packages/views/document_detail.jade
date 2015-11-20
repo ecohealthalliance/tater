@@ -28,7 +28,7 @@ template(name="documentDetail")
                   span.code
                     span.header= header
                 else
-                  span.code= code
+                  span.code= label
                   if flagged
                     span.toggle-flag.flagged.fa.fa-flag(data-annotation-id=_id)
                   else

@@ -18,22 +18,22 @@ template(name="documentDetailCodingKeywords")
           each headers
             if ../accessCode
               li.code-header.count.highlighted.selectable(class='code-header-#{color}')
-                span.header-name.selectable-code(data-id=_id)= header
+                span.header-name.selectable-code(data-id=_id)= label
             else
               li.code-header.coding.highlighted.selectable(class='code-header-#{color}')
                 i.up
                 span.selectable-code(data-id=_id class="{{highlightHeading}}")
                   span.icon.fa(class=icon)
-                  span.header-name= header
+                  span.header-name= label
                 ul.code-sub-headers.coding.list-unstyled
-                  each subHeaders header
+                  each subHeaders _id
                     li.code-sub-header.selectable
                       i.up
-                      span.selectable-code.showing(data-id=_id)= subHeader
+                      span.selectable-code.showing(data-id=_id)= label
                       ul.code-keywords.list-unstyled
-                        each keywords subHeader
+                        each keywords _id
                           li.code-keyword.coding.selectable
-                            span.selectable-code(data-id=_id)= keyword
+                            span.selectable-code(data-id=_id)= label
         .text-center
           a(href="mailto:hagan@ecohealthalliance.org?subject=Tater%20Coding%20Keyword%20Suggestion") Suggest new coding keyword
 
