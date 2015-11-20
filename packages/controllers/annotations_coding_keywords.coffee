@@ -2,7 +2,6 @@ if Meteor.isClient
   SelectableCodes = new Meteor.Collection("SelectableCodes")
 
   Template.annotationsCodingKeywords.onCreated ->
-    @subscribe('codingKeywords')
     @searchText = new ReactiveVar('')
     @searching = new ReactiveVar(false)
     @filteredCodes = new ReactiveVar()
@@ -25,7 +24,7 @@ if Meteor.isClient
 
       query.push {_id: {$in: SelectableCodes.find().map((c)->c._id)}}
 
-      results = CodingKeywords.find({$and: query}, {sort: {header: 1, subHeader: 1, keyword: 1}})
+      results = CodingKeywords.find({$and: query}, {sort: {headerId: 1, subHeaderId: 1, label: 1}})
       instance.filteredCodes.set results
 
   Template.annotationsCodingKeywords.helpers
@@ -36,47 +35,16 @@ if Meteor.isClient
       Template.instance().filteredCodes.get()
 
     code: () ->
-      if @header and @subHeader and @keyword
-        Spacebars.SafeString("<span class='header'>#{@header}</span> : <span class='sub-header'>#{@subHeader}</span> : <span class='keyword'>#{@keyword}</span>")
-      else if @subHeader and not @keyword
-        Spacebars.SafeString("<span class='header'>#{@header}</span> : <span class='sub-header'>#{@subHeader}</span>")
-      else
-        Spacebars.SafeString("<span class='header'>"+@header+"</span>")
+      Spacebars.SafeString("<span class='header'>#{@headerLabel()}</span> : <span class='sub-header'>#{@subHeaderLabel()}</span> : <span class='keyword'>#{@label}</span>")
 
     selectableHeaders: () ->
-      headerNames = _.uniq _.pluck SelectableCodes.find().fetch(), 'header'
-      headers = CodingKeywords.find
-        $and:
-          [
-            'subHeader': $exists: false
-            'keyword': $exists: false
-            'header': $in: headerNames
-          ]
-      if headers.count()
-        headers
+      Headers.find()
 
-    selectableSubHeaders: (header) ->
-      subHeaderNames = _.uniq _.pluck _.filter(SelectableCodes.find().fetch(), (code) -> code.header == header and code.subHeader), 'subHeader'
-      subHeaders = CodingKeywords.find
-        $and:
-          [
-            'header': header
-            'subHeader': $exists: true
-            'keyword': $exists: false
-            'subHeader': $in: subHeaderNames
-          ]
-      if subHeaders.count()
-        subHeaders
+    selectableSubHeaders: (headerId) ->
+      SubHeaders.find(headerId: headerId)
 
-    selectableKeywords: (subHeader) ->
-      keywordIds = _.pluck _.filter(SelectableCodes.find().fetch(), (code) -> code.subHeader == subHeader and code.keyword), '_id'
-      keywords = CodingKeywords.find
-        $and:
-          [
-            '_id': $in: keywordIds
-          ]
-      if keywords.count()
-        keywords
+    selectableKeywords: (subHeaderId) ->
+      CodingKeywords.find(subHeaderId: subHeaderId)
 
     icon: ->
       if @header is 'Human Movement' then 'fa-bus'
@@ -129,11 +97,9 @@ if Meteor.isServer
     user = Meteor.users.findOne({_id: @userId})
     if user
       annotations = Annotations.find(QueryHelpers.limitQueryToUserDocs(keywordQuery, user))
-      CodingKeywords.find(
-        _id:
-          $in: _.uniq(_.pluck(annotations.fetch(), 'codeId'))
-      ).forEach (codingKw)=>
-        @added( "SelectableCodes", codingKw._id, codingKw )
-      @ready()
+      codingKeywords = CodingKeywords.find({_id: {$in: _.uniq(_.pluck(annotations.fetch(), 'codeId'))}})
+      subHeaders = SubHeaders.find({_id: {$in: _.uniq(_.pluck(codingKeywords.fetch(), 'subHeaderId'))}})
+      headers = Headers.find({_id: {$in: _.uniq(_.pluck(subHeaders.fetch(), 'headerId'))}})
+      [codingKeywords, subHeaders, headers]
     else
       @ready()

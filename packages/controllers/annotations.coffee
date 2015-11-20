@@ -15,7 +15,6 @@ AnnotationsPages = new Meteor.Pagination Annotations,
 if Meteor.isClient
   Template.annotations.onCreated ->
     @subscribe('groupsAndDocuments')
-    @subscribe('codingKeywords')
     @selectedCodes  = new Meteor.Collection(null)
     @annotations = new ReactiveVar()
     @showFlagged = new ReactiveVar(false)

@@ -22,19 +22,19 @@ template(name="annotationsCodingKeywords")
             li.code-header.selectable(class="code-header-#{color}" )
               span.selectable-code(data-id=_id class="{{selected}}")
                 span.icon.fa(class=icon)
-                span.header-name= header
-              if selectableSubHeaders header
+                span.header-name= label
+              if selectableSubHeaders _id
                 i.up
                 ul.code-sub-headers.list-unstyled(class="")
-                  each selectableSubHeaders header
+                  each selectableSubHeaders _id
                     li.code-sub-header.selectable(class="subHeader")
-                      span.selectable-code(data-id=_id class="{{selected}}")= subHeader
-                      if selectableKeywords subHeader
+                      span.selectable-code(data-id=_id class="{{selected}}")= label
+                      if selectableKeywords _id
                         i.up
                         ul.code-keywords.list-unstyled
-                          each selectableKeywords subHeader
+                          each selectableKeywords _id
                             li.code-keyword.selectable(class="")
-                              span.selectable-code(data-id=_id class="{{selected}}")= keyword
+                              span.selectable-code(data-id=_id class="{{selected}}")= label
         unless selectableHeaders
           p.text-center Select a group or document to view keywords
 
