@@ -30,6 +30,20 @@ do ->
         .setValue('.code-search', search)
         .waitForExist('.filteredCodes')
 
+    @Then /^I should see (\d+) keywords$/, (number) ->
+      @client
+        .waitForExist('.level-3', assert.ifError)
+        .elements '.code-level-3', (error, elements) ->
+          assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
+
+    @When 'I delete a keyword', () ->
+      @client
+        .waitForVisible('.level-3')
+        .click('.fa-trash-o')
+        .waitForVisible('#confirm-delete-keyword-modal')
+        .click('#confirm-delete-keyword')
+
+
     @Then /^I should( not)? see coding keyword search results$/, (noResults) ->
       @browser
         .waitForExist('.filteredCodes')
