@@ -22,16 +22,8 @@ if Meteor.isServer
         throw new Meteor.Error("Keyword is in use - it cannot be deleted.")
       else
         CodingKeywords.remove codingKeyword._id
+        # This can be used when a keyword is already in use?
         # CodingKeywords.update codingKeyword._id,
         #   $set:
         #     deleted: true
-
-        # debugger
-        # user = Meteor.users.findOne(@userId)
-        # accessible = (user and codingKeyword?.viewableByUser(user))
-        # if accessible
-        #   CodingKeywords.update codingKeyword._id,
-        #     deleted: true
-        # else
-        #   throw new Meteor.Error("Keyword is not accessible.")
 
