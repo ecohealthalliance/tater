@@ -195,3 +195,13 @@ for $num in 1 2 3
 
   .border-top-{$num}
     addBorder('top', $num, $l-gray)
+
+.curtain-black
+  cover()
+  background rgba(0,0,0,.8)
+  z-index 100
+
+.curtain-white
+  cover()
+  background rgba(255,255,255,.8)
+  z-index $top-layer
