@@ -3,7 +3,7 @@ template(name="groups")
     .container-list
       if Template.subscriptionsReady
         if groups
-          ul.list.group-list.list-unstyled
+          ul.list.group-list.stripped.list-unstyled
             each groups
               li.group
                 a.list-link(href="{{path route='groupDocuments' params=this}}")
