@@ -30,8 +30,11 @@ h5
   margin-bottom 15px
   padding 20px 0
   border-bottom 2px solid $border-gray
-  +below(1)
-    margin-bottom 5px
+  +below(2)
+    padding-left 15px
+    padding-right 15px
+    margin-bottom 0
+    margin-top -20px
   &.primary-bg
     background $background-primary
   &.secondary-bg
@@ -45,9 +48,20 @@ h5
     padding 0
 
 .view-header-search
-  position relative
+  position absolute
+  top -90px
+  right 0
   margin 15px 0 0 0
   width 30%
+  +below(2)
+    position static
+    padding 12px
+    margin 0
+    width 100%
+    background $border-gray
+  .form-group
+    margin 0
+    position relative
   input
     padding-left 28px
   i

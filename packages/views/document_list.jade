@@ -1,4 +1,8 @@
 template(name="documentList")
+  .view-header-search
+    .form-group
+      i.fa.fa-search
+      input.form-control.document-search(placeholder="Search Documents")
   if thereAreDocuments
     ul.list.document-list.list-unstyled
       +pages

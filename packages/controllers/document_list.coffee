@@ -24,23 +24,7 @@ if Meteor.isClient
           groupId: @data.group._id
     else
       @subscribe('groups')
-    @searchString = instance.data.searchString
     @searchResultsCount = new ReactiveVar()
-
-
-  Template.documentList.onRendered ->
-    instance = Template.instance()
-    @autorun ->
-      searchString = instance.searchString.get()
-      filters =
-        title:
-          $regex: regexEscape(searchString)
-          $options: 'i'
-      if instance.group
-        filters.groupId = instance.group._id
-      DocumentListPages.set(filters:filters)
-      DocumentListPages.sess("currentPage", 1)
-      instance.searchResultsCount.set DocumentListPages.Collection.find().count()
 
   Template.documentList.helpers
     thereAreDocuments: ->
@@ -52,9 +36,22 @@ if Meteor.isClient
         "data-document-id",
         event.target.parentElement.getAttribute("data-document-id")
       )
+    'keyup .document-search': _.debounce(((event, instance)->
+      searchText = $(event.currentTarget).val()
+      instance.searchResultsCount.set(searchText)
+      filters =
+        title:
+          $regex: regexEscape(searchText)
+          $options: 'i'
+      if instance.group
+        filters.groupId = instance.group._id
+      DocumentListPages.set(filters:filters)
+      DocumentListPages.sess("currentPage", 1)
+    ), 500)
 
   Template.document.onCreated ->
     @document = new Document(_.pick(@data, _.keys(Document.getFields())))
   Template.document.helpers
     groupName: ->
       Template.instance().document.groupName()
+
