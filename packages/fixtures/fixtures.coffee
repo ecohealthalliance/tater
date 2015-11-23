@@ -10,6 +10,8 @@ do ->
       Groups.remove({})
       Documents.remove({})
       Annotations.remove({})
+      Headers.remove({})
+      SubHeaders.remove({})
       CodingKeywords.remove({})
 
     'createTestUser': (attributes) ->
@@ -53,5 +55,7 @@ do ->
       annotation.set(attributes)
       annotation.save()
 
-    'createCodingKeyword': (attributes) ->
-      CodingKeywords.insert(attributes)
+    'createCodingKeyword': (header, subHeader, keyword, color) ->
+      headerId = Headers.insert(label: header)
+      subHeaderId = SubHeaders.insert(headerId: headerId, label: subHeader)
+      CodingKeywords.insert(subHeaderId: subHeaderId, label: keyword)

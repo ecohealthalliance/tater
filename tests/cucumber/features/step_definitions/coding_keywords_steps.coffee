@@ -12,7 +12,7 @@ do ->
       @server.call('createCodingKeyword', {header: header, subHeader:subHeader})
 
     @Given /^there is a coding keyword with header "([^"]*)", sub-header "([^"]*)" and keyword "([^"]*)" in the database$/, (header, subHeader, keyword) ->
-      @server.call('createCodingKeyword', {header: header, subHeader:subHeader, keyword:keyword})
+      @server.call('createCodingKeyword', header, subHeader, keyword, 1)
 
     @When /^I click on a "([^"]*)"$/, (level) ->
       if level == 'header'

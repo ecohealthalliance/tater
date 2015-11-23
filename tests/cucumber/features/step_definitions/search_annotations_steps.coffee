@@ -11,7 +11,7 @@ do ->
     @Given /^there is an annotation with codingKeyword header "([^"]*)" and key "([^"]*)"$/, (header, keyword) ->
       that = @
       @server
-        .call('createCodingKeyword', {header:header, keyword: keyword, color: 1})
+        .call('createCodingKeyword', header, "Test SubHeader", keyword, 1)
         .then (codeId) ->
           that.server.call('createTestAnnotation', {codeId: codeId})
           codeId
