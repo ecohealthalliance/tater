@@ -24,18 +24,27 @@ if Meteor.isClient
           text = RegExp(text, 'i')
           query.push {'label': text}
 
-        codingKeywordResults = CodingKeywords.find({$and: query})
-        instance.filteredCodes.set codingKeywordResults
-        subHeaderIds = _.uniq(_.pluck(codingKeywordResults.fetch(), 'subHeaderId'))
+        # Find Coding Keywords, SubHeaders, and Headers that match the query
+        codingKeywordResults = CodingKeywords.find({$and: query}).fetch()
+        subHeaderResults = SubHeaders.find({$and: query}).fetch()
+        headerResults = Headers.find({$and: query}).fetch()
 
-        # Find subheaders that match the search or are parents of filtered codes
-        subHeaderResults = SubHeaders.find({$or: [{$and: query}, {_id: {$in: subHeaderIds}}]})
-        instance.filteredSubHeaders.set subHeaderResults
-        headerIds = _.uniq(_.pluck(subHeaderResults.fetch(), 'headerId'))
+        # For each keyword or subheader result, get its parents
+        parentSubHeaderIds = _.pluck(codingKeywordResults, 'subHeaderId')
+        parentSubHeaders = SubHeaders.find(_id: {$in: parentSubHeaderIds}).fetch()
+        parentOrResultSubHeaders = _.union(parentSubHeaders, subHeaderResults)
+        headerIds = _.uniq(_.pluck(parentOrResultSubHeaders, 'headerId'))
+        parentHeaders = Headers.find(_id: {$in: headerIds}).fetch()
 
-        # Find subheaders that match the search or are parents of filtered subheaders
-        headerResults = Headers.find({$or: [{$and: query}, {_id: {$in: headerIds}}]})
-        instance.filteredHeaders.set headerResults
+        # For each header or subheader result, get its children
+        headerIds = _.pluck(headerResults, '_id')
+        childSubHeaders = SubHeaders.find({headerId: {$in: headerIds}}).fetch()
+        childOrResultSubHeaders = _.union(childSubHeaders, subHeaderResults)
+        childKeywords = CodingKeywords.find(subHeaderId: {$in: _.pluck(childOrResultSubHeaders, '_id')}).fetch()
+
+        instance.filteredCodes.set _.union(codingKeywordResults, childKeywords)
+        instance.filteredSubHeaders.set _.union(subHeaderResults, parentSubHeaders, childSubHeaders)
+        instance.filteredHeaders.set _.union(headerResults, parentHeaders)
 
       else
         instance.filteredHeaders.set null
@@ -63,7 +72,7 @@ if Meteor.isClient
     subHeaders: (headerId) ->
       subHeaders = Template.instance().filteredSubHeaders.get()
       if Template.instance().filteredHeaders.get()
-        _.filter subHeaders.fetch(), (subHeader) =>
+        _.filter subHeaders, (subHeader) =>
           subHeader?.headerId == headerId
       else
         SubHeaders.find(headerId: headerId)
@@ -71,7 +80,7 @@ if Meteor.isClient
     keywords: (subHeaderId) ->
       keywords = Template.instance().filteredCodes.get()
       if Template.instance().filteredHeaders.get()
-        _.filter keywords.fetch(), (keyword) =>
+        _.filter keywords, (keyword) =>
           keyword?.subHeaderId == subHeaderId
       else
         CodingKeywords.find(subHeaderId: subHeaderId)

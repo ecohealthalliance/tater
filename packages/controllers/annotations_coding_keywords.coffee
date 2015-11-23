@@ -4,6 +4,8 @@ if Meteor.isClient
   Template.annotationsCodingKeywords.onCreated ->
     @searchText = new ReactiveVar('')
     @searching = new ReactiveVar(false)
+    @filteredHeaders = new ReactiveVar()
+    @filteredSubHeaders = new ReactiveVar()
     @filteredCodes = new ReactiveVar()
     @keywordQuery = @data.keywordQuery
 
@@ -17,15 +19,38 @@ if Meteor.isClient
         { onStop: (err)-> if err then console.log(err) }
       )
       query = []
-      searchText = instance.searchText.get().split(' ')
-      _.each searchText, (text) ->
-        text = RegExp(text, 'i')
-        query.push $or: [{'header': text}, {'subHeader': text}, {'keyword': text}]
+      searchText = instance.searchText.get()
+      if searchText.length > 0
+        _.each searchText.split(' '), (text) ->
+          text = RegExp(text, 'i')
+          query.push {'label': text}
 
-      query.push {_id: {$in: SelectableCodes.find().map((c)->c._id)}}
+        # Find Coding Keywords, SubHeaders, and Headers that match the query
+        codingKeywordResults = CodingKeywords.find({$and: query}).fetch()
+        subHeaderResults = SubHeaders.find({$and: query}).fetch()
+        headerResults = Headers.find({$and: query}).fetch()
 
-      results = CodingKeywords.find({$and: query}, {sort: {headerId: 1, subHeaderId: 1, label: 1}})
-      instance.filteredCodes.set results
+        # For each keyword or subheader result, get its parents
+        parentSubHeaderIds = _.pluck(codingKeywordResults, 'subHeaderId')
+        parentSubHeaders = SubHeaders.find(_id: {$in: parentSubHeaderIds}).fetch()
+        parentOrResultSubHeaders = _.union(parentSubHeaders, subHeaderResults)
+        headerIds = _.uniq(_.pluck(parentOrResultSubHeaders, 'headerId'))
+        parentHeaders = Headers.find(_id: {$in: headerIds}).fetch()
+
+        # For each header or subheader result, get its children
+        headerIds = _.pluck(headerResults, '_id')
+        childSubHeaders = SubHeaders.find({headerId: {$in: headerIds}}).fetch()
+        childOrResultSubHeaders = _.union(childSubHeaders, subHeaderResults)
+        childKeywords = CodingKeywords.find(subHeaderId: {$in: _.pluck(childOrResultSubHeaders, '_id')}).fetch()
+
+        instance.filteredCodes.set _.union(codingKeywordResults, childKeywords)
+        instance.filteredSubHeaders.set _.union(subHeaderResults, parentSubHeaders, childSubHeaders)
+        instance.filteredHeaders.set _.union(headerResults, parentHeaders)
+
+      else
+        instance.filteredHeaders.set null
+        instance.filteredSubHeaders.set null
+        instance.filteredCodes.set null
 
   Template.annotationsCodingKeywords.helpers
     searching: () ->
@@ -38,13 +63,26 @@ if Meteor.isClient
       Spacebars.SafeString("<span class='header'>#{@headerLabel()}</span> : <span class='sub-header'>#{@subHeaderLabel()}</span> : <span class='keyword'>#{@label}</span>")
 
     selectableHeaders: () ->
-      Headers.find()
+      if Template.instance().filteredHeaders.get()
+        Template.instance().filteredHeaders.get()
+      else
+        Headers.find()
 
     selectableSubHeaders: (headerId) ->
-      SubHeaders.find(headerId: headerId)
+      subHeaders = Template.instance().filteredSubHeaders.get()
+      if Template.instance().filteredHeaders.get()
+        _.filter subHeaders, (subHeader) =>
+          subHeader?.headerId == headerId
+      else
+        SubHeaders.find(headerId: headerId)
 
     selectableKeywords: (subHeaderId) ->
-      CodingKeywords.find(subHeaderId: subHeaderId)
+      keywords = Template.instance().filteredCodes.get()
+      if Template.instance().filteredHeaders.get()
+        _.filter keywords, (keyword) =>
+          keyword?.subHeaderId == subHeaderId
+      else
+        CodingKeywords.find(subHeaderId: subHeaderId)
 
     icon: ->
       if @header is 'Human Movement' then 'fa-bus'

@@ -8,33 +8,27 @@ template(name="annotationsCodingKeywords")
         .clear-codes-container
           button.btn.btn-block.btn-default.btn-sm.clear-selected-codes Clear Selected Codes
       if Template.subscriptionsReady
-        if searching
-          ul.filteredCodes.list-unstyled
-            each filteredCodes
-              li.filter-result.selectable-code(class="code-#{color}")
-                span.selectable-code(data-id=_id class="{{selected}}")=code
-            else
-              .no-results
-                i.fa.fa-search
-                p Sorry, no codes found
+        each selectableHeaders
+          li.code-header.selectable(class="code-header-#{color}" )
+            span.selectable-code.selectable-header(data-id=_id class="{{selectedHeader}}")
+              span.icon.fa(class=icon)
+              span.header-name= label
+            if selectableSubHeaders _id
+              i.up
+              ul.code-sub-headers.list-unstyled(class="")
+                each selectableSubHeaders _id
+                  li.code-sub-header.selectable(class="subHeader")
+                    span.selectable-code.selectable-subheader(data-id=_id class="{{selectedSubHeader}}")= label
+                    if selectableKeywords _id
+                      i.up
+                      ul.code-keywords.list-unstyled
+                        each selectableKeywords _id
+                          li.code-keyword.selectable(class="")
+                            span.selectable-code.selectable-keyword(data-id=_id class="{{selectedKeyword}}")= label
         else
-          each selectableHeaders
-            li.code-header.selectable(class="code-header-#{color}" )
-              span.selectable-code.selectable-header(data-id=_id class="{{selectedHeader}}")
-                span.icon.fa(class=icon)
-                span.header-name= label
-              if selectableSubHeaders _id
-                i.up
-                ul.code-sub-headers.list-unstyled(class="")
-                  each selectableSubHeaders _id
-                    li.code-sub-header.selectable(class="subHeader")
-                      span.selectable-code.selectable-subheader(data-id=_id class="{{selectedSubHeader}}")= label
-                      if selectableKeywords _id
-                        i.up
-                        ul.code-keywords.list-unstyled
-                          each selectableKeywords _id
-                            li.code-keyword.selectable(class="")
-                              span.selectable-code.selectable-keyword(data-id=_id class="{{selectedKeyword}}")= label
+          .no-results
+            i.fa.fa-search
+            p Sorry, no codes found
         unless selectableHeaders
           p.text-center Select a group or document to view keywords
 
