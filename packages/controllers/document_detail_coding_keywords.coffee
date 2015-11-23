@@ -8,6 +8,8 @@ if Meteor.isClient
       @subscribe('subHeaders')
     @searchText = new ReactiveVar('')
     @searching = new ReactiveVar(false)
+    @filteredHeaders = new ReactiveVar()
+    @filteredSubHeaders = new ReactiveVar()
     @filteredCodes = new ReactiveVar()
     @selectableCodes = @data.selectableCodes
 
@@ -16,17 +18,31 @@ if Meteor.isClient
 
     @autorun ->
       query = []
-      searchText = instance.searchText.get().split(' ')
-      _.each searchText, (text) ->
-        text = RegExp(text, 'i')
-        query.push $or: [{'header': text}, {'subHeader': text}, {'keyword': text}]
+      searchText = instance.searchText.get()
+      if searchText.length > 0
+        _.each searchText.split(' '), (text) ->
+          text = RegExp(text, 'i')
+          query.push {'label': text}
 
-      results = CodingKeywords.find({$and: query}, {sort: {header: 1, subHeader: 1, keyword: 1}})
-      instance.filteredCodes.set results
+        codingKeywordResults = CodingKeywords.find({$and: query})
+        instance.filteredCodes.set codingKeywordResults
+        subHeaderIds = _.uniq(_.pluck(codingKeywordResults.fetch(), 'subHeaderId'))
+
+        subHeaderResults = SubHeaders.find({$or: [{$and: query}, {_id: {$in: subHeaderIds}}]})
+        instance.filteredSubHeaders.set subHeaderResults
+        headerIds = _.uniq(_.pluck(subHeaderResults.fetch(), 'headerId'))
+
+        headerResults = Headers.find({$or: [{$and: query}, {_id: {$in: headerIds}}]})
+        instance.filteredHeaders.set headerResults
+      else
+        instance.filteredHeaders.set null
+        instance.filteredSubHeaders.set null
+        instance.filteredCodes.set null
 
   Template.documentDetailCodingKeywords.helpers
     searching: () ->
-      Template.instance().searching.get()
+      false
+      # Template.instance().searching.get()
 
     filteredCodes: () ->
       Template.instance().filteredCodes.get()
@@ -40,13 +56,26 @@ if Meteor.isClient
         Spacebars.SafeString("<span class='header'>"+@header+"</span>")
 
     headers: () ->
-      Headers.find()
+      if Template.instance().filteredHeaders.get()?.count()
+        Template.instance().filteredHeaders.get()
+      else
+        Headers.find()
 
     subHeaders: (headerId) ->
-      SubHeaders.find(headerId: headerId)
+      subHeaders = Template.instance().filteredSubHeaders.get()
+      if subHeaders?.count()
+        _.filter subHeaders.fetch(), (subHeader) =>
+          subHeader?.headerId == headerId
+      else
+        SubHeaders.find(headerId: headerId)
 
     keywords: (subHeaderId) ->
-      CodingKeywords.find(subHeaderId: subHeaderId)
+      keywords = Template.instance().filteredCodes.get()
+      if keywords?.count()
+        _.filter keywords.fetch(), (keyword) =>
+          keyword?.subHeaderId == subHeaderId
+      else
+        CodingKeywords.find(subHeaderId: subHeaderId)
 
     icon: ->
       if @header is 'Human Movement' then 'fa-bus'
