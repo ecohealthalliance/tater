@@ -32,6 +32,7 @@ do ->
 
     @When 'I highlight some document text', ->
       @browser
+        .waitForVisible('.document-text', assert.ifError)
         .moveToObject('.document-text')
         .doDoubleClick()
 
@@ -48,3 +49,10 @@ do ->
           else
             assert(!response.match("no-results"))
             assert(response.match("<li"))
+
+    @When 'I remove all annotations', ->
+      @browser
+        .waitForExist('.delete-annotation', assert.ifError)
+        .moveToObject('.annotations > li')
+        .waitForVisible('.delete-annotation', assert.ifError)
+        .click('.delete-annotation')
