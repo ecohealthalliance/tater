@@ -28,22 +28,21 @@ if Meteor.isClient
         instance.filteredCodes.set codingKeywordResults
         subHeaderIds = _.uniq(_.pluck(codingKeywordResults.fetch(), 'subHeaderId'))
 
+        # Find subheaders that match the search or are parents of filtered codes
         subHeaderResults = SubHeaders.find({$or: [{$and: query}, {_id: {$in: subHeaderIds}}]})
         instance.filteredSubHeaders.set subHeaderResults
         headerIds = _.uniq(_.pluck(subHeaderResults.fetch(), 'headerId'))
 
+        # Find subheaders that match the search or are parents of filtered subheaders
         headerResults = Headers.find({$or: [{$and: query}, {_id: {$in: headerIds}}]})
         instance.filteredHeaders.set headerResults
+
       else
         instance.filteredHeaders.set null
         instance.filteredSubHeaders.set null
         instance.filteredCodes.set null
 
   Template.documentDetailCodingKeywords.helpers
-    searching: () ->
-      false
-      # Template.instance().searching.get()
-
     filteredCodes: () ->
       Template.instance().filteredCodes.get()
 
@@ -56,14 +55,14 @@ if Meteor.isClient
         Spacebars.SafeString("<span class='header'>"+@header+"</span>")
 
     headers: () ->
-      if Template.instance().filteredHeaders.get()?.count()
+      if Template.instance().filteredHeaders.get()
         Template.instance().filteredHeaders.get()
       else
         Headers.find()
 
     subHeaders: (headerId) ->
       subHeaders = Template.instance().filteredSubHeaders.get()
-      if subHeaders?.count()
+      if Template.instance().filteredHeaders.get()
         _.filter subHeaders.fetch(), (subHeader) =>
           subHeader?.headerId == headerId
       else
@@ -71,7 +70,7 @@ if Meteor.isClient
 
     keywords: (subHeaderId) ->
       keywords = Template.instance().filteredCodes.get()
-      if keywords?.count()
+      if Template.instance().filteredHeaders.get()
         _.filter keywords.fetch(), (keyword) =>
           keyword?.subHeaderId == subHeaderId
       else

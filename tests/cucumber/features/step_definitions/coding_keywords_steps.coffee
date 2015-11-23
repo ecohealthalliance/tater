@@ -29,8 +29,8 @@ do ->
 
     @Then /^I should( not)? see coding keyword search results$/, (noResults) ->
       @browser
-        .waitForExist('.filteredCodes')
-        .getHTML '.filteredCodes', (error, response) ->
+        .waitForExist('.code-list')
+        .getHTML '.code-list', (error, response) ->
           if noResults
             assert.notOk(response.toString().match('selectable-code'), "Results found")
           else
