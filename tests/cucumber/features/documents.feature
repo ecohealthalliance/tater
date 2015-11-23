@@ -93,7 +93,7 @@ Feature: Documents
     Then I should see a "Success" toast
     And I should not see content "Test Document"
 
-  @dev
+  @documents
   Scenario: Increasing and decreasing a document's annotation count
     Given there is a test group in the database
     When I log in as the test user

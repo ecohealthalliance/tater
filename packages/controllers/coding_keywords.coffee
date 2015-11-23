@@ -72,3 +72,20 @@ if Meteor.isClient
 
     'click .code-level-3': (event, instance) ->
       instance.selectedKeyword.set($(event.currentTarget).text())
+
+    'submit #new-keyword-form': (event, instance) ->
+      event.preventDefault()
+      event.stopImmediatePropagation()
+      form = event.target
+      keywordProps =
+        header: instance.selectedHeader.get()
+        subHeader: instance.selectedSubHeader.get()
+        keyword: form.keyword.value
+
+      Meteor.call 'addKeyword', keywordProps, (error, response) ->
+        if error
+          toastr.error("Error: #{error.message}")
+        else
+          instance.keywords.insert keywordProps
+          toastr.success("Keyword added")
+          $('#add-keyword-modal').modal('hide')

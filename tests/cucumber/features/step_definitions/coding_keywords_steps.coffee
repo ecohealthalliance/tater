@@ -58,3 +58,15 @@ do ->
         .pause(2000)
         .getHTML '.keyword-table tbody', (error, response) ->
           assert.ok(response.toString().match(text), "Text not found")
+
+    @When "I click the Add Code button", ->
+      @browser
+        .waitForVisible('[data-target="#add-keyword-modal"]')
+        .click('[data-target="#add-keyword-modal"]')
+
+    @When 'I add the keyword "$header"', (code) ->
+      @browser
+        .waitForVisible('input[name="keyword"]')
+        .setValue('input[name="keyword"]', code)
+        .submitForm('input[name="keyword"]')
+        .click('.close')
