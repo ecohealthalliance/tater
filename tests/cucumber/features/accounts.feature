@@ -1,5 +1,8 @@
 Feature: Accounts
 
+  Background:
+    Given the user is not logged in
+
   @accounts
   Scenario: Editing my profile
     Given there is a test user in the database

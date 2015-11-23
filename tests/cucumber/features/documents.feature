@@ -2,6 +2,7 @@ Feature: Documents
 
   Background:
     Given there is a test user in the database
+    And the user is not logged in
 
   @documents
   Scenario: Viewing group documents as a non-admin

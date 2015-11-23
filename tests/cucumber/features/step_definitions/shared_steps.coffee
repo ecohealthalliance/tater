@@ -19,9 +19,15 @@ do ->
     @Given /^there is a group in the database/, ->
       @server.call('createTestGroup')
 
+    @Given /^the user is not logged in/, ->
+      @client.execute( ->
+          Meteor.logout()
+        );
+
     @When "I log in as the test user", (callback) ->
       @client
         .url(url.resolve(process.env.ROOT_URL, '/'))
+        .waitForExist('.sign-in')
         .click('.sign-in', assert.ifError)
         .setValue('.accounts-modal #at-field-email', _testUser.email)
         .setValue('.accounts-modal #at-field-password', _testUser.password)
@@ -32,6 +38,7 @@ do ->
     @When "I log in as the non-admin test group user", (callback) ->
       @client
         .url(url.resolve(process.env.ROOT_URL, '/'))
+        .waitForExist('.sign-in')
         .click('.sign-in', assert.ifError)
         .setValue('#at-field-email', _nonAdminTestUser.email)
         .setValue('#at-field-password', _nonAdminTestUser.password)

@@ -3,6 +3,7 @@ Feature: Annotation interface
   Background:
     Given there is a test user in the database
     And there is a test group in the database
+    And the user is not logged in
 
   @annotations
   Scenario: Viewing document in annotation interface
