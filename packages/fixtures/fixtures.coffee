@@ -20,32 +20,38 @@ do ->
       Meteor.users.update({_id: account}, {$set: {admin: true}})
 
     'createTestGroup': (codeAccessible) ->
-      userId = Meteor.users.findOne()._id
-      groupId = Groups.insert
+      group = new Group()
+      group.set
         name: "Test Group"
         description: "Test Description"
         createdById: userId
         _id: "fakegroupid"
         codeAccessible: codeAccessible
-      Meteor.users.update({_id: userId}, {$set: {group: groupId}})
+      group.save()
 
     'createProfile': (field, value, id) ->
+      userProfile = new UserProfile()
       attributes = {}
       attributes[field] = value
       attributes['_id'] = id
-      UserProfiles.insert attributes
+      userProfile.set(attributes)
+      userProfile.save()
 
     'createTestDocument': (attributes) ->
+      document = new Document()
       attributes['body'] ?= 'Test Body'
       attributes['groupId'] ?= 'fakegroupid'
-      Documents.insert(attributes)
+      document.set(attributes)
+      document.save()
 
     'createTestAnnotation': (attributes) ->
+      annotation = new Annotation()
       attributes['documentId'] ?= 'fakedocumentid'
       attributes['userId'] ?= 'fakeuserid'
       attributes['startOffset'] ?= 0
       attributes['endOffset'] ?= 1
-      Annotations.insert(attributes)
+      annotation.set(attributes)
+      annotation.save()
 
     'createCodingKeyword': (attributes) ->
       CodingKeywords.insert(attributes)

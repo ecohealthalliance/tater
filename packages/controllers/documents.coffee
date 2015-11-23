@@ -1,4 +1,4 @@
-DocumentsPages = new Meteor.Pagination Documents, 
+DocumentsPages = new Meteor.Pagination Documents,
   perPage: 10,
   templateName: 'documents'
   itemTemplate: 'document'
@@ -8,7 +8,6 @@ DocumentsPages = new Meteor.Pagination Documents,
     [QueryHelpers.userDocsQuery(Meteor.users.findOne({_id: subscription.userId}))]
 
 if Meteor.isClient
-
   Template.documents.helpers
     thereAreDocuments: ->
       not DocumentsPages.isEmpty

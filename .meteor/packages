@@ -5,6 +5,7 @@
 # but you can also edit it by hand.
 
 tater:router
+tater:server-router
 xolvio:cucumber
 tater:models
 tater:fixtures

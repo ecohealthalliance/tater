@@ -115,6 +115,25 @@ do ->
           assert.ok(matchDocument, "Document name not found")
           assert.ok(matchGroup, "Group not found")
 
+    @Then /^I should see that document "([^"]*)" has( no)? annotations$/, (documentName, noAnnotations) ->
+      @browser
+        .waitForVisible('.document-list', assert.ifError)
+        .getHTML '.document-list', (error, response) ->
+          matchDocument = response.toString().match(documentName)
+          #matchGroup = response.toString().match("Test Group")
+          matchAnnotationMark = response.toString().match("fa-circle")
+          assert.ok(matchDocument, "Document name not found")
+          #assert.ok(matchGroup, "Group not found")
+          if noAnnotations
+            assert.notOk(matchAnnotationMark, "Annotations found")
+          else
+            assert.ok(matchAnnotationMark, "No annotations found")
+
+    @When "I navigate to the document which has annotations", ->
+      @browser
+        .click(".document .list-link")
+        .waitForVisible(".document-text", assert.ifError)
+
     @Then /^I should see (\d+) documents$/, (number) ->
       @client
         .waitForExist('.document-title', assert.ifError)
@@ -126,4 +145,3 @@ do ->
         .waitForExist('.document-title', assert.ifError)
         .execute ->
           $("a:contains('>')").click()
-

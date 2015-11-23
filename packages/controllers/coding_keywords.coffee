@@ -5,6 +5,7 @@ if Meteor.isClient
     @keywords = new Meteor.Collection(null)
     @selectedHeader = new ReactiveVar('')
     @selectedSubHeader = new ReactiveVar('')
+    @selectedKeyword = new ReactiveVar('')
 
   Template.codingKeywords.helpers
     headers: () ->
@@ -32,6 +33,8 @@ if Meteor.isClient
     currentlySelectedSubHeader: ->
       Template.instance().selectedSubHeader.get()
 
+    currentlySelectedKeyword: ->
+      Template.instance().selectedKeyword.get()
 
   Template.codingKeywords.events
     'click .code-level-1': (event, instance) ->
@@ -39,6 +42,7 @@ if Meteor.isClient
       if selectedHeader != instance.selectedHeader.get()
         instance.selectedHeader.set(selectedHeader)
         instance.selectedSubHeader.set('')
+        instance.selectedKeyword.set('')
         instance.subHeaders.remove({})
         instance.keywords.remove({})
         subHeaders = CodingKeywords.find
@@ -55,6 +59,7 @@ if Meteor.isClient
       selectedSubHeader = $(event.currentTarget).text()
       if selectedSubHeader != instance.selectedSubHeader.get()
         instance.selectedSubHeader.set(selectedSubHeader)
+        instance.selectedKeyword.set('')
         instance.keywords.remove({})
         keywords = CodingKeywords.find
           $and:
@@ -64,3 +69,6 @@ if Meteor.isClient
             ]
         _.each keywords.fetch(), (keyword) ->
           instance.keywords.insert keyword
+
+    'click .code-level-3': (event, instance) ->
+      instance.selectedKeyword.set($(event.currentTarget).text())

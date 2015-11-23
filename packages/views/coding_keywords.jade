@@ -1,22 +1,41 @@
 template(name="codingKeywords")
-  .container
-    .code-container.col-sm-4
-      ul.code-list.list-unstyled.level-1
-        each headers
-          li.code.code-level-1(class="{{selected 'header'}}")= header
-      input.add-code.add-level-1.form-control(placeholder="New Code")
+  .view-header.primary-bg
+    .container
+      h1 Code Management
 
-    .code-container.col-sm-4
-      h5= currentlySelectedHeader
-      ul.code-list.list-unstyled.level-2
-        each subHeaders
-          li.code.code-level-2(class="{{selected 'subHeader'}}")= subHeader
-      input.add-code.add-level-2.form-control(placeholder="New Code")
+  .container.code-management-container
+    .code-list-wrap
+      .code-list-header
+        h4 Headers
+        i.add-code.fa.fa-plus
+      .code-list-container
+        ul.code-list.list.list-unstyled.level-1
+          each headers
+            li.code.list-link.code-level-1(class="{{selected 'header'}}")= header
 
-    .code-container.col-sm-4
-      h5= currentlySelectedSubHeader
-      ul.code-list.list-unstyled.level-3
-        each keywords
-          li.code.code-level-3.not-clickable= keyword
-      if currentlySelectedSubHeader
-        input.add-code.add-level-3.form-control(placeholder="New Code")
+    .code-list-wrap
+      unless currentlySelectedHeader
+        +curtain
+      .code-list-header
+        h4 Sub-Headers
+        i.add-code.fa.fa-plus
+      .code-list-container
+        if currentlySelectedHeader
+          ul.code-list.list.list-unstyled.level-2
+            each subHeaders
+              li.code.list-link.code-level-2(class="{{selected 'subHeader'}}")= subHeader
+
+    .code-list-wrap
+      unless currentlySelectedSubHeader
+        +curtain
+      .code-list-header
+        h4 Keywords
+        i.add-code.fa.fa-plus
+      .code-list-container
+        if currentlySelectedSubHeader
+          ul.code-list.list.list-unstyled.level-3
+            each keywords
+              li.code.list-link.code-level-3.not-clickable= keyword
+
+template(name="curtain")
+  .curtain-white

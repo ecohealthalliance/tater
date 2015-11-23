@@ -4,6 +4,8 @@ Manual annotation interface
 ## Testing
 First install the Java Runtime Environment: https://support.apple.com/kb/DL1572?locale=en_US
 
+Also install spacejam (for running unit tests via command line interface): `npm install -g spacejam`
+
 To run model unit tests:
 `spacejam test-packages packages/models/`
 

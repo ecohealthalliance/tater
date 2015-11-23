@@ -39,7 +39,7 @@ if Meteor.isClient
         CodingKeywords.findOne(annotation.codeId)
 
       if instance.searchText.get() is ''
-        instance.annotations.set annotations      
+        instance.annotations.set annotations
       else
         searchText = instance.searchText.get().split(' ')
         filteredAnnotations = _.filter annotations.fetch(), (annotation) ->
@@ -242,6 +242,8 @@ if Meteor.isServer
         annotation.set(userId: @userId)
         annotation.set(accessCode: code)
         annotation.save ->
+          document.set("annotated", Annotations.find({documentId: document._id}).count())
+          document.save()
           annotation
       else
         throw 'Unauthorized'
@@ -255,6 +257,8 @@ if Meteor.isServer
       accessibleViaUser = (user and group?.viewableByUser(user))
       if accessibleViaCode or accessibleViaUser
         annotation.remove ->
+          document.set("annotated", Annotations.find({documentId: document._id}).count())
+          document.save()
           annotation
       else
         throw 'Unauthorized'

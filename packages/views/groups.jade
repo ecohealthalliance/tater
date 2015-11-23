@@ -1,10 +1,12 @@
 template(name="groups")
   if currentUser
-    if Template.subscriptionsReady
-      .group-list.list-table.groups-table.no-filter.table-wrap
-        +reactiveTable collection=groups settings=settings filters=filters
-        else
-          .loading.center-v
+    .container-list
+      if Template.subscriptionsReady
+        if groups
+          .group-list.list-table.groups-table.no-filter.table-wrap
+            +reactiveTable collection=groups settings=settings filters=filters
+      else
+        .loading.center-v
     #add-group-user-modal.modal.fade(tabindex="-1" role="dialog")
       .modal-dialog
         .modal-content
