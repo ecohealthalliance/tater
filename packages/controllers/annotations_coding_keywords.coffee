@@ -54,7 +54,15 @@ if Meteor.isClient
       else if @header is 'Human Animal Contact' then 'fa-paw'
       else 'fa-ellipsis-h'
 
-    selected: (codeId) ->
+    selectedHeader: (codeId) ->
+      if Template.instance().data.selectedHeaders?.findOne(@_id)
+        'selected'
+
+    selectedSubHeader: ->
+      if Template.instance().data.selectedSubHeaders?.findOne(@_id)
+        'selected'
+
+    selectedKeyword: (codeId) ->
       if Template.instance().data.selectedCodes?.findOne(@_id)
         'selected'
 

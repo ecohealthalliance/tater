@@ -15,7 +15,9 @@ AnnotationsPages = new Meteor.Pagination Annotations,
 if Meteor.isClient
   Template.annotations.onCreated ->
     @subscribe('groupsAndDocuments')
-    @selectedCodes  = new Meteor.Collection(null)
+    @selectedCodes = new Meteor.Collection(null)
+    @selectedSubHeaders = new Meteor.Collection(null)
+    @selectedHeaders = new Meteor.Collection(null)
     @annotations = new ReactiveVar()
     @showFlagged = new ReactiveVar(false)
     @filtering = new ReactiveVar(false)
@@ -96,6 +98,12 @@ if Meteor.isClient
       )
     keywordQuery: ->
       Template.instance().keywordQuery
+
+    selectedHeaders: ->
+      Template.instance().selectedHeaders
+
+    selectedSubHeaders: ->
+      Template.instance().selectedSubHeaders
 
     selectedCodes: ->
       Template.instance().selectedCodes
@@ -219,36 +227,60 @@ if Meteor.isClient
         unless instance.selectedGroups.find({id:group._id}).count()
           instance.selectedGroups.insert({id:group._id})
 
-    'click .selectable-code': (event, instance) ->
+    'click .selectable-header': (event, instance) ->
+      resetPage()
+      selectedHeaderId  = event.currentTarget.getAttribute('data-id')
+      selectedHeader = Headers.findOne(selectedHeaderId)
+      currentlySelected = instance.selectedHeaders.findOne(selectedHeaderId)
+
+      instance.filtering.set(true)
+      subHeaders = SubHeaders.find({headerId: selectedHeaderId}).fetch()
+      codeKeywords = CodingKeywords.find({subHeaderId: {$in: _.pluck(subHeaders, '_id')}}).fetch()
+
+      if currentlySelected
+        instance.selectedHeaders.remove(selectedHeader)
+        _.each subHeaders, (subHeader) ->
+          instance.selectedSubHeaders.remove(subHeader)
+        _.each codeKeywords, (codeKeyword) ->
+          instance.selectedCodes.remove(codeKeyword)
+      else
+        instance.selectedHeaders.upsert({_id: selectedHeader._id}, selectedHeader)
+        _.each subHeaders, (subHeader) ->
+          instance.selectedSubHeaders.upsert({_id: subHeader._id}, subHeader)
+        _.each codeKeywords, (codeKeyword) ->
+          instance.selectedCodes.upsert({_id: codeKeyword._id}, codeKeyword)
+
+    'click .selectable-subheader': (event, instance) ->
+      resetPage()
+      selectedSubHeaderId  = event.currentTarget.getAttribute('data-id')
+      selectedSubHeader = SubHeaders.findOne(selectedSubHeaderId)
+      currentlySelected = instance.selectedSubHeaders.findOne(selectedSubHeaderId)
+
+      instance.filtering.set(true)
+      codeKeywords = CodingKeywords.find({subHeaderId: selectedSubHeaderId}).fetch()
+
+      if currentlySelected
+        instance.selectedSubHeaders.remove(selectedSubHeader)
+        _.each codeKeywords, (codeKeyword) ->
+          instance.selectedCodes.remove(codeKeyword)
+      else
+        instance.selectedSubHeaders.upsert({_id: selectedSubHeader._id}, selectedSubHeader)
+        _.each codeKeywords, (codeKeyword) ->
+          instance.selectedCodes.upsert({_id: codeKeyword._id}, codeKeyword)
+
+    'click .selectable-keyword': (event, instance) ->
       resetPage()
       selectedCodeKeywordId  = event.currentTarget.getAttribute('data-id')
       selectedCodeKeyword = CodingKeywords.findOne(selectedCodeKeywordId)
       currentlySelected = instance.selectedCodes.findOne(selectedCodeKeywordId)
-      header = selectedCodeKeyword?.header
-      subHeader = selectedCodeKeyword?.subHeader
       keyword = selectedCodeKeyword?.keyword
 
       instance.filtering.set(true)
 
-      if not subHeader and not keyword
-        codeKeywords = CodingKeywords.find({ header: header }).fetch()
-      else if not keyword
-        codeKeywords = CodingKeywords.find({ $and: [{header: header},{subHeader: subHeader}] }).fetch()
+      if currentlySelected
+        instance.selectedCodes.remove(selectedCodeKeyword)
       else
-        codeKeyword = CodingKeywords.findOne(selectedCodeKeywordId)
-
-      if not currentlySelected
-        if codeKeywords
-          _.each codeKeywords, (codeKeyword) ->
-            instance.selectedCodes.upsert({_id: codeKeyword._id}, codeKeyword)
-        else
-          instance.selectedCodes.upsert({_id: codeKeyword._id}, codeKeyword)
-      else
-        if codeKeywords
-          _.each codeKeywords, (codeKeyword) ->
-            instance.selectedCodes.remove(codeKeyword)
-        else
-          instance.selectedCodes.remove(codeKeyword)
+        instance.selectedCodes.upsert({_id: selectedCodeKeyword._id}, selectedCodeKeyword)
 
     'click .clear-filters': (event, instance) ->
       instance.documents.remove({})
