@@ -8,10 +8,10 @@ do ->
 
     url = require('url')
 
-    @Given /^there is an annotation with codingKeyword header "([^"]*)" and key "([^"]*)"$/, (header, keyword) ->
+    @Given /^there is an annotation with codingKeyword header "([^"]*)", subHeader "([^"]*)" and key "([^"]*)"$/, (header, subHeader, keyword) ->
       that = @
       @server
-        .call('createCodingKeyword', header, "Test SubHeader", keyword, 1)
+        .call('createCodingKeyword', header, subHeader, keyword, 1)
         .then (codeId) ->
           that.server.call('createTestAnnotation', {codeId: codeId})
           codeId
@@ -53,13 +53,13 @@ do ->
         .waitForExist('.download-csv')
         .click('.download-csv')
 
-    @Then /^I should see a link that downloads the generated CSV with header "([^"]*)" and key "([^"]*)"$/, (header, keyword) ->
+    @Then /^I should see a link that downloads the generated CSV with header "([^"]*)", subHeader "([^"]*)" and key "([^"]*)"$/, (header, subHeader, keyword) ->
       csvData = """\uFEFFdocumentId,userEmail,header,subHeader,keyword,text,flagged,createdAt\r
-      fakedocumentid,,"""+header+""",,"""+keyword+""",T,false,"""
+      fakedocumentid,,#{header},#{subHeader},#{keyword},T,false,"""
       @browser
         .waitForExist '#download-csv-modal .btn-primary'
         .getHTML '#download-csv-modal .btn-primary', (error, response) ->
-          assert(response.search(encodeURIComponent(csvData)) >= 0)
+          assert(response.search(encodeURIComponent(csvData)) >= 0, "Expected #{response} to match #{encodeURIComponent(csvData)}")
 
     @When /^I go to the next page of annotations$/, ->
       @browser

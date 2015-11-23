@@ -56,6 +56,6 @@ do ->
       annotation.save()
 
     'createCodingKeyword': (header, subHeader, keyword, color) ->
-      headerId = Headers.insert(label: header)
+      headerId = Headers.insert(label: header, color: 1)
       subHeaderId = SubHeaders.insert(headerId: headerId, label: subHeader)
       CodingKeywords.insert(subHeaderId: subHeaderId, label: keyword)
