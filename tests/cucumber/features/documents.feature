@@ -94,7 +94,7 @@ Feature: Documents
     Then I should see a "Success" toast
     And I should not see content "Test Document"
 
-  @dev
+  @documents
   Scenario: Increasing and decreasing a document's annotation count
     Given there is a test group in the database
     When I log in as the test user
@@ -118,6 +118,7 @@ Feature: Documents
     When I click the documents header link
     Then I should see that document "Annotation Test Doc" has no annotations
 
+  @documents
   Scenario: Paginating documents page
     Given there are 15 documents in the database
     When I log in as the test user
@@ -125,3 +126,13 @@ Feature: Documents
     Then I should see 10 documents
     When I go to the next page of documents
     Then I should see 5 documents
+
+  @documents
+  Scenario: Searching Documents
+    Given there are 15 documents in the database
+    When I log in as the test user
+    When I navigate to "/documents"
+    Then I should see 10 documents
+    When I search for a document with the title of "document 12"
+    Then I should see 1 documents
+    And I should see content "document 12"

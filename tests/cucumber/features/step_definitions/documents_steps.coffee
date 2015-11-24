@@ -146,3 +146,13 @@ do ->
         .waitForExist('.document-title', assert.ifError)
         .execute ->
           $("a:contains('>')").click()
+
+    @When /^I search for a document with the title of "([^"]*)"$/, (documentName) ->
+      @browser
+        .waitForExist('.document-list', assert.ifError)
+        .setValue('.document-search', documentName)
+        .pause(2000)
+        .getHTML '.document-list', (error, response) ->
+          match = response.toString().match(documentName)
+          assert.ok(match)
+
