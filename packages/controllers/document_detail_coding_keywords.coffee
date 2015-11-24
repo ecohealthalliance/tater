@@ -4,8 +4,6 @@ if Meteor.isClient
       @subscribe('caseCountCodingKeywords')
     else
       @subscribe('codingKeywords')
-      @subscribe('headers')
-      @subscribe('subHeaders')
     @searchText = new ReactiveVar('')
     @searching = new ReactiveVar(false)
     @filteredHeaders = new ReactiveVar()
@@ -115,11 +113,11 @@ if Meteor.isClient
       $(e.target).toggleClass('down up').siblings('.code-keywords').toggleClass('hidden').siblings('span').toggleClass('showing')
 
 if Meteor.isServer
-  Meteor.publish 'headers', () ->
-    Headers.find()
-  Meteor.publish 'subHeaders', () ->
-    SubHeaders.find()
   Meteor.publish 'codingKeywords', () ->
-    CodingKeywords.find(caseCount: {$ne: true})
+    [
+      Headers.find()
+      SubHeaders.find()
+      CodingKeywords.find(caseCount: {$ne: true})
+    ]
   Meteor.publish 'caseCountCodingKeywords', () ->
     CodingKeywords.find(caseCount: true)

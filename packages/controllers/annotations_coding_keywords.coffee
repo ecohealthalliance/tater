@@ -129,6 +129,8 @@ if Meteor.isClient
       $(e.target).toggleClass('down up').siblings('.code-keywords').toggleClass('hidden').siblings('span').toggleClass('showing')
 
     'click .clear-selected-codes': (e, instance) ->
+      instance.data.selectedHeaders.remove({})
+      instance.data.selectedSubHeaders.remove({})
       instance.data.selectedCodes.remove({})
 
 
