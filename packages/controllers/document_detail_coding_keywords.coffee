@@ -41,10 +41,13 @@ if Meteor.isClient
         childOrResultSubHeaders = _.union(childSubHeaders, subHeaderResults)
         childKeywords = CodingKeywords.find(subHeaderId: {$in: _.pluck(childOrResultSubHeaders, '_id')}).fetch()
 
-        instance.filteredCodes.set _.union(codingKeywordResults, childKeywords)
-        instance.filteredSubHeaders.set _.union(subHeaderResults, parentSubHeaders, childSubHeaders)
-        instance.filteredHeaders.set _.union(headerResults, parentHeaders)
+        filteredCodes = codingKeywordResults.concat(childKeywords)
+        filteredSubHeaders = subHeaderResults.concat(parentSubHeaders).concat(childSubHeaders)
+        filteredHeaders = headerResults.concat(parentHeaders)
 
+        instance.filteredCodes.set(_.uniq filteredCodes, (code) -> code._id)
+        instance.filteredSubHeaders.set(_.uniq filteredSubHeaders, (subHeader) -> subHeader._id)
+        instance.filteredHeaders.set(_.uniq filteredHeaders, (header) -> header._id)
       else
         instance.filteredHeaders.set null
         instance.filteredSubHeaders.set null
