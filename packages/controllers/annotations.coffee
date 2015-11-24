@@ -4,7 +4,28 @@ AnnotationsPages = new Meteor.Pagination Annotations,
   sort:
     codeId: 1
   auth: (skip, subscription)->
-    [QueryHelpers.limitQueryToUserDocs({}, Meteor.users.findOne({_id: subscription.userId}))]
+    # Meteor pagination auth functions break filtering.
+    # I am using a work around based on the approach here:
+    # https://github.com/alethes/meteor-pages/issues/131
+    userSettings = @userSettings[subscription._session.id] or {}
+    userFilters = userSettings.filters or @filters
+    userFields = userSettings.fields or @fields
+    userSort = userSettings.sort or @sort
+    userPerPage = userSettings.perPage or @perPage
+    [
+      {
+        $and: [
+          userFilters
+          QueryHelpers.limitQueryToUserDocs({}, Meteor.users.findOne({_id: subscription.userId}))
+        ]
+      },
+      {
+        fields: userFields
+        sort: userSort
+        limit: userPerPage
+        skip: skip
+      }
+    ]
   templateName: "annotations"
   itemTemplate: "annotation"
   availableSettings:
