@@ -2,10 +2,10 @@ Feature: Documents
 
   Background:
     Given there is a test user in the database
+    Given there is a test group in the database
 
   @documents
   Scenario: Viewing group documents as a non-admin
-    Given there is a test group in the database
     When I log in as the test user
     And I navigate to the admin page
     And I create a user account for "non@admin.com"
@@ -16,7 +16,6 @@ Feature: Documents
 
   @documents
   Scenario: Adding a group document as a non-admin
-    Given there is a test group in the database
     When I log in as the test user
     And I navigate to the admin page
     And I create a user account for "non@admin.com"
@@ -39,7 +38,6 @@ Feature: Documents
 
   @documents
   Scenario: Viewing one group's documents as an admin
-    Given there is a test group in the database
     And there is a document with title "Test Doc" in the test group
     When I log in as the test user
     And I navigate to "/admin"
@@ -48,7 +46,6 @@ Feature: Documents
 
   @documents
   Scenario: Paginating group documents
-    Given there is a test group in the database
     And there are 15 documents in the "fakegroupid" group
     And there are 2 documents in the "test2" group
     When I log in as the test user
@@ -60,7 +57,6 @@ Feature: Documents
 
   @documents
   Scenario: Adding a document as an admin
-    Given there is a test group in the database
     When I navigate to "/"
     When I log in as the test user
     And I click on the Add Document link in the header
@@ -95,7 +91,6 @@ Feature: Documents
 
   @documents
   Scenario: Increasing and decreasing a document's annotation count
-    Given there is a test group in the database
     When I log in as the test user
 
     And I navigate to "/editCodingKeywords"
