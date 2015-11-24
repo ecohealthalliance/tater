@@ -121,10 +121,8 @@ do ->
         .waitForVisible('.document-list', assert.ifError)
         .getHTML '.document-list', (error, response) ->
           matchDocument = response.toString().match(documentName)
-          #matchGroup = response.toString().match("Test Group")
-          matchAnnotationMark = response.toString().match("fa-circle")
+          matchAnnotationMark = response.toString().match("fa-adjust")
           assert.ok(matchDocument, "Document name not found")
-          #assert.ok(matchGroup, "Group not found")
           if noAnnotations
             assert.notOk(matchAnnotationMark, "Annotations found")
           else
