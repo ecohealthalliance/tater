@@ -16,6 +16,9 @@ Document = Astro.Class
         Validators.minLength(20, 'The body must be at least 20 characters')
       ]
     groupId: 'string'
+    annotated:
+      type: 'number'
+      default: 0
   behaviors: ['timestamp']
 
   methods:
