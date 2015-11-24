@@ -39,7 +39,7 @@ Package.onUse(function(api) {
   api.addFiles('users.coffee', ['client', 'server']);
   api.addFiles('group_documents.coffee', ['client', 'server']);
   api.addFiles('document_form.coffee', ['client', 'server']);
-  api.addFiles('documents.coffee', ['client', 'server']);
+  api.addFiles('document_list.coffee', ['client', 'server']);
   api.addFiles('annotations_coding_keywords.coffee', ['client', 'server']);
   api.addFiles('coding_keywords.coffee', ['client', 'server']);
   api.addFiles('document_detail_coding_keywords.coffee', ['client', 'server']);
