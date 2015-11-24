@@ -14,6 +14,11 @@ do ->
     @Given /^there is a coding keyword with header "([^"]*)", sub-header "([^"]*)" and keyword "([^"]*)" in the database$/, (header, subHeader, keyword) ->
       @server.call('createCodingKeyword', {header: header, subHeader:subHeader, keyword:keyword})
 
+    @Given "there are coding keywords in the database", ->
+      @server.call('createCodingKeyword', {header: "Test Header"})
+      @server.call('createCodingKeyword', {header: "Test Header", subHeader: "Test Sub-Header"})
+      @server.call('createCodingKeyword', {header: "Test Header", subHeader: "Test Sub-Header", keyword: "Test Keyword"})
+
     @When /^I click on a "([^"]*)"$/, (level) ->
       if level == 'header'
         @browser
@@ -64,9 +69,8 @@ do ->
         .waitForVisible('[data-target="#add-keyword-modal"]')
         .click('[data-target="#add-keyword-modal"]')
 
-    @When 'I add the keyword "$header"', (code) ->
+    @When 'I add the keyword "$code"', (code) ->
       @browser
         .waitForVisible('input[name="keyword"]')
         .setValue('input[name="keyword"]', code)
         .submitForm('input[name="keyword"]')
-        .click('.close')
