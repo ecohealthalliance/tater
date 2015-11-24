@@ -18,7 +18,8 @@ if Meteor.isClient
       query = []
       searchText = instance.searchText.get()
       if searchText.length > 0
-        _.each searchText.split(' '), (text) ->
+        escapedSearchText = StringHelpers.escapeRegex(searchText)
+        _.each escapedSearchText.split(' '), (text) ->
           text = RegExp(text, 'i')
           query.push {'label': text}
 
