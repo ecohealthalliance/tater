@@ -12,9 +12,7 @@ template(name="documentDetailCodingKeywords")
           else
             li.code-header.coding.highlighted.selectable(class='code-header-#{color}')
               i.up
-              span.selectable-code(class="{{highlightHeading}}")
-                span.icon.fa(class=icon)
-                span.header-name= label
+              span.selectable-code(class="{{highlightHeading}}")= label
               ul.code-sub-headers.coding.list-unstyled
                 each subHeaders _id
                   li.code-sub-header.selectable

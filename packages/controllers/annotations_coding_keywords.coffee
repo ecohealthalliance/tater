@@ -88,14 +88,6 @@ if Meteor.isClient
       else
         CodingKeywords.find(subHeaderId: subHeaderId)
 
-    icon: ->
-      if @header is 'Human Movement' then 'fa-bus'
-      else if @header is 'Socioeconomics' then 'fa-money'
-      else if @header is 'Biosecurity in Human Environments' then 'fa-lock'
-      else if @header is 'Illness Medical Care/Treatment and Death' then 'fa-medkit'
-      else if @header is 'Human Animal Contact' then 'fa-paw'
-      else 'fa-ellipsis-h'
-
     selectedHeader: (codeId) ->
       if Template.instance().data.selectedHeaders?.findOne(@_id)
         'selected'

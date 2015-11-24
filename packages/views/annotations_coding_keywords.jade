@@ -10,9 +10,7 @@ template(name="annotationsCodingKeywords")
       if Template.subscriptionsReady
         each selectableHeaders
           li.code-header.selectable(class="code-header-#{color}" )
-            span.selectable-code.selectable-header(data-id=_id class="{{selectedHeader}}")
-              span.icon.fa(class=icon)
-              span.header-name= label
+            span.selectable-code.selectable-header(data-id=_id class="{{selectedHeader}}")= label
             if selectableSubHeaders _id
               i.up
               ul.code-sub-headers.list-unstyled
