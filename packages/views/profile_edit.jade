@@ -2,7 +2,7 @@ template(name="profileEdit")
   .profile-edit
     if currentUser
       if Template.subscriptionsReady
-        .view-header.secondary-bg
+        .view-header.secondary-bg.space-btm-2
           .container
             h1.inline Edit Profile
             a.btn.btn-primary.profile-detail-link.header-btn(href= "{{path route='profileDetail' params=userProfile}}")

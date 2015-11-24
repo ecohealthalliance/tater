@@ -46,6 +46,13 @@ makeButton($color, $text = white, $dark = false, $noOutline = false, $hoverColor
     background darken($color, 20%)
     color $text
     background darken($color, 20%)
+  &:disabled
+    background desaturate($color, 50%)
+    border-color darken($color, 30%)
+    color lighten($color, 60%)
+    &:hover
+      background desaturate($color, 50%)
+      border-color desaturate(darken($color, 20%), 50%)
   transition()
   if $noOutline
     &:focus
