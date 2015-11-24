@@ -32,12 +32,13 @@ do ->
 
     @When 'I highlight some document text', ->
       @browser
+        .waitForVisible('.document-text', assert.ifError)
         .moveToObject('.document-text')
         .doDoubleClick()
 
     @When 'I click on a coding keyword', ->
       @browser
-        .click('.code-list .coding')
+        .click('.code-list .code-keyword')
 
     @Then /^I should( not)? see an annotation in the annotations list$/, (noAnnotations) ->
       @browser
@@ -48,3 +49,10 @@ do ->
           else
             assert(!response.match("no-results"))
             assert(response.match("<li"))
+
+    @When 'I remove all annotations', ->
+      @browser
+        .waitForExist('.delete-annotation', assert.ifError)
+        .moveToObject('.annotations > li')
+        .waitForVisible('.delete-annotation', assert.ifError)
+        .click('.delete-annotation')

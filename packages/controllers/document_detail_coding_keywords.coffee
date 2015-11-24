@@ -4,10 +4,10 @@ if Meteor.isClient
       @subscribe('caseCountCodingKeywords')
     else
       @subscribe('codingKeywords')
-      @subscribe('headers')
-      @subscribe('subHeaders')
     @searchText = new ReactiveVar('')
     @searching = new ReactiveVar(false)
+    @filteredHeaders = new ReactiveVar()
+    @filteredSubHeaders = new ReactiveVar()
     @filteredCodes = new ReactiveVar()
     @selectableCodes = @data.selectableCodes
 
@@ -16,18 +16,44 @@ if Meteor.isClient
 
     @autorun ->
       query = []
-      searchText = instance.searchText.get().split(' ')
-      _.each searchText, (text) ->
-        text = RegExp(text, 'i')
-        query.push $or: [{'header': text}, {'subHeader': text}, {'keyword': text}]
+      searchText = instance.searchText.get()
+      if searchText.length > 0
+        escapedSearchText = StringHelpers.escapeRegex(searchText)
+        _.each escapedSearchText.split(' '), (text) ->
+          text = RegExp(text, 'i')
+          query.push {'label': text}
 
-      results = CodingKeywords.find({$and: query}, {sort: {header: 1, subHeader: 1, keyword: 1}})
-      instance.filteredCodes.set results
+        # Find Coding Keywords, SubHeaders, and Headers that match the query
+        codingKeywordResults = CodingKeywords.find({$and: query}).fetch()
+        subHeaderResults = SubHeaders.find({$and: query}).fetch()
+        headerResults = Headers.find({$and: query}).fetch()
+
+        # For each keyword or subheader result, get its parents
+        parentSubHeaderIds = _.pluck(codingKeywordResults, 'subHeaderId')
+        parentSubHeaders = SubHeaders.find(_id: {$in: parentSubHeaderIds}).fetch()
+        parentOrResultSubHeaders = _.union(parentSubHeaders, subHeaderResults)
+        headerIds = _.uniq(_.pluck(parentOrResultSubHeaders, 'headerId'))
+        parentHeaders = Headers.find(_id: {$in: headerIds}).fetch()
+
+        # For each header or subheader result, get its children
+        headerIds = _.pluck(headerResults, '_id')
+        childSubHeaders = SubHeaders.find({headerId: {$in: headerIds}}).fetch()
+        childOrResultSubHeaders = _.union(childSubHeaders, subHeaderResults)
+        childKeywords = CodingKeywords.find(subHeaderId: {$in: _.pluck(childOrResultSubHeaders, '_id')}).fetch()
+
+        filteredCodes = codingKeywordResults.concat(childKeywords)
+        filteredSubHeaders = subHeaderResults.concat(parentSubHeaders).concat(childSubHeaders)
+        filteredHeaders = headerResults.concat(parentHeaders)
+
+        instance.filteredCodes.set(_.uniq filteredCodes, (code) -> code._id)
+        instance.filteredSubHeaders.set(_.uniq filteredSubHeaders, (subHeader) -> subHeader._id)
+        instance.filteredHeaders.set(_.uniq filteredHeaders, (header) -> header._id)
+      else
+        instance.filteredHeaders.set null
+        instance.filteredSubHeaders.set null
+        instance.filteredCodes.set null
 
   Template.documentDetailCodingKeywords.helpers
-    searching: () ->
-      Template.instance().searching.get()
-
     filteredCodes: () ->
       Template.instance().filteredCodes.get()
 
@@ -40,21 +66,26 @@ if Meteor.isClient
         Spacebars.SafeString("<span class='header'>"+@header+"</span>")
 
     headers: () ->
-      Headers.find()
+      if Template.instance().filteredHeaders.get()
+        Template.instance().filteredHeaders.get()
+      else
+        Headers.find()
 
     subHeaders: (headerId) ->
-      SubHeaders.find(headerId: headerId)
+      subHeaders = Template.instance().filteredSubHeaders.get()
+      if Template.instance().filteredHeaders.get()
+        _.filter subHeaders, (subHeader) =>
+          subHeader?.headerId == headerId
+      else
+        SubHeaders.find(headerId: headerId)
 
     keywords: (subHeaderId) ->
-      CodingKeywords.find(subHeaderId: subHeaderId)
-
-    icon: ->
-      if @header is 'Human Movement' then 'fa-bus'
-      else if @header is 'Socioeconomics' then 'fa-money'
-      else if @header is 'Biosecurity in Human Environments' then 'fa-lock'
-      else if @header is 'Illness Medical Care/Treatment and Death' then 'fa-medkit'
-      else if @header is 'Human Animal Contact' then 'fa-paw'
-      else 'fa-ellipsis-h'
+      keywords = Template.instance().filteredCodes.get()
+      if Template.instance().filteredHeaders.get()
+        _.filter keywords, (keyword) =>
+          keyword?.subHeaderId == subHeaderId
+      else
+        CodingKeywords.find(subHeaderId: subHeaderId)
 
   Template.documentDetailCodingKeywords.events
 
@@ -78,11 +109,11 @@ if Meteor.isClient
       $(e.target).toggleClass('down up').siblings('.code-keywords').toggleClass('hidden').siblings('span').toggleClass('showing')
 
 if Meteor.isServer
-  Meteor.publish 'headers', () ->
-    Headers.find()
-  Meteor.publish 'subHeaders', () ->
-    SubHeaders.find()
   Meteor.publish 'codingKeywords', () ->
-    CodingKeywords.find(caseCount: {$ne: true})
+    [
+      Headers.find()
+      SubHeaders.find()
+      CodingKeywords.find(caseCount: {$ne: true})
+    ]
   Meteor.publish 'caseCountCodingKeywords', () ->
     CodingKeywords.find(caseCount: true)

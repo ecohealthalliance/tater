@@ -5,35 +5,27 @@ template(name="documentDetailCodingKeywords")
   .coding-container.pane(class="pane-l")
     ul.list-unstyled.code-list(class=action)
       if Template.subscriptionsReady
-        if searching
-          ul.filteredCodes.list-unstyled
-            each filteredCodes
-              li.filter-result.selectable-code(class="code-#{color}")
-                span.selectable-code(data-id=_id)=code
-            else
-              .no-results
-                i.fa.fa-search
-                p Sorry, no codes found
+        each headers
+          if ../accessCode
+            li.code-header.count.highlighted.selectable(class='code-header-#{color}')
+              span.header-name.selectable-code(data-id=_id)= label
+          else
+            li.code-header.coding.highlighted.selectable(class='code-header-#{color}')
+              i.up
+              span.selectable-code(class="{{highlightHeading}}")= label
+              ul.code-sub-headers.coding.list-unstyled
+                each subHeaders _id
+                  li.code-sub-header.selectable
+                    i.up
+                    span.selectable-code.showing(data-id=_id)= label
+                    ul.code-keywords.list-unstyled
+                      each keywords _id
+                        li.code-keyword.coding.selectable
+                          span.selectable-code(data-id=_id)= label
         else
-          each headers
-            if ../accessCode
-              li.code-header.count.highlighted.selectable(class='code-header-#{color}')
-                span.header-name.selectable-code(data-id=_id)= label
-            else
-              li.code-header.coding.highlighted.selectable(class='code-header-#{color}')
-                i.up
-                span.selectable-code(class="{{highlightHeading}}")
-                  span.icon.fa(class=icon)
-                  span.header-name= label
-                ul.code-sub-headers.coding.list-unstyled
-                  each subHeaders _id
-                    li.code-sub-header.selectable
-                      i.up
-                      span.selectable-code.showing(data-id=_id)= label
-                      ul.code-keywords.list-unstyled
-                        each keywords _id
-                          li.code-keyword.coding.selectable
-                            span.selectable-code(data-id=_id)= label
+          .no-results
+            i.fa.fa-search
+            p Sorry, no codes found
         .text-center
           a(href="mailto:hagan@ecohealthalliance.org?subject=Tater%20Coding%20Keyword%20Suggestion") Suggest new coding keyword
 

@@ -1,8 +1,6 @@
 if Meteor.isClient
   Template.codingKeywords.onCreated ->
     @subscribe('codingKeywords')
-    @subscribe('headers')
-    @subscribe('subHeaders')
     @subHeaders = new Meteor.Collection(null)
     @keywords = new Meteor.Collection(null)
     @selectedHeader = new ReactiveVar('')
