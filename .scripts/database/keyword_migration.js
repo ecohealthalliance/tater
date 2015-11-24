@@ -81,7 +81,7 @@ function createOtherKeyword(subHeader, header){
 
 function createMeteorId(){
 	var charset = "23456789ABCDEFGHJKLMNPQRSTWXYZabcdefghijkmnopqrstuvwxyz";                                    
-    var text = " ";
+    var text = "";
     for( var i=0; i < 17; i++ )
         text += charset.charAt(Math.floor(Math.random() * charset.length));
     return text;
