@@ -58,3 +58,14 @@ do ->
         .pause(2000)
         .getHTML '.keyword-table tbody', (error, response) ->
           assert.ok(response.toString().match(text), "Text not found")
+
+    @When "I click the Add Sub-Header button", ->
+      @browser
+        .waitForVisible('[data-target="#add-subheader-modal"]')
+        .click('[data-target="#add-subheader-modal"]')
+
+    @When 'I add the sub-header "$subheader"', (subheader) ->
+      @browser
+        .waitForVisible('input[name="subHeader"]')
+        .setValue('input[name="subHeader"]', subheader)
+        .submitForm('input[name="subHeader"]')
