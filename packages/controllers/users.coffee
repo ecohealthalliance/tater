@@ -5,51 +5,46 @@ if Meteor.isClient
     @userToDeleteEmail = new ReactiveVar()
     @subscribe('userProfiles')
 
-
-  Template.users.filters = () =>
-    filters = []
-    filters
-
-  Template.users.settings = () =>
-
-    fields = []
-
-    fields.push
-      key: 'email'
-      label: 'Email'
-      fn: (val, object) ->
-        object.emails[0].address
-
-    fields.push
-      key: 'group'
-      label: 'Group'
-      fn: (val, object) ->
-        if object.admin
-          'Admins'
-        else
-          Groups.findOne(_id: val)?.name
-
-    fields.push
-      key: "controls"
-      label: ""
-      hideToggle: true
-      fn: (val, obj) ->
-        new Spacebars.SafeString("""
-          <a class="control remove remove-user" data-id="#{obj._id}" data-email="#{obj.emails[0].address}" title="Remove">
-            <i class='fa fa-user-times'></>
-          </a>
-        """)
-
-    showColumnToggles: false
-    showFilter: false
-    showRowCount: true
-    fields: fields
-    noDataTmpl: Template.noUsers
-
-  Template.users.usersCollection = () ->
-    Meteor.users.find()
-
   Template.users.helpers
+    filters: =>
+      filters = []
+      filters
+    settings: =>
+      fields = []
+
+      fields.push
+        key: 'email'
+        label: 'Email'
+        fn: (val, object) ->
+          object.emails[0].address
+
+      fields.push
+        key: 'group'
+        label: 'Group'
+        fn: (val, object) ->
+          if object.admin
+            'Admins'
+          else
+            Groups.findOne(_id: val)?.name
+
+      fields.push
+        key: "controls"
+        label: ""
+        hideToggle: true
+        fn: (val, obj) ->
+          new Spacebars.SafeString("""
+            <a class="control remove remove-user" data-id="#{obj._id}" data-email="#{obj.emails[0].address}" title="Remove">
+              <i class='fa fa-user-times'></>
+            </a>
+          """)
+
+      showColumnToggles: false
+      showFilter: false
+      showRowCount: true
+      fields: fields
+      noDataTmpl: Template.noUsers
+    usersCollection: ->
+      Meteor.users.find()
     userToDeleteEmail: ->
       Template.instance().userToDeleteEmail.get()
 
@@ -77,7 +72,9 @@ if Meteor.isClient
       profileId = UserProfiles.findOne({userId: @_id})._id
       go 'profileDetail', {_id: profileId}
 
+
 if Meteor.isServer
+
   Meteor.methods
     removeUser: (userId) ->
       if Meteor.users.findOne(@userId)?.admin
