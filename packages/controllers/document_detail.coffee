@@ -42,11 +42,11 @@ if Meteor.isClient
         instance.annotations.set annotations
       else
         searchText = instance.searchText.get().split(' ')
-        filteredAnnotations = _.filter annotations.fetch(), (annotation) ->
+        filteredAnnotations = _.filter annotations, (annotation) ->
           code = CodingKeywords.findOne(annotation.codeId)
           wordMatches = _.filter searchText, (word) ->
             word = new RegExp(word, 'i')
-            code.header?.match(word) or code.subHeader?.match(word) or code.keyword?.match(word)
+            code.headerLabel()?.match(word) or code.subHeaderLabel()?.match(word) or code.label?.match(word)
           wordMatches.length
         instance.annotations.set _.sortBy filteredAnnotations, 'startOffset'
 
