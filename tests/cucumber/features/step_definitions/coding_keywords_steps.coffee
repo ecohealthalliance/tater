@@ -41,9 +41,9 @@ do ->
 
     @When "I click the Add Keyword button", ->
       @browser
-        .waitForVisible('.add-keyword')
+        .waitForExist('.add-keyword')
         .click('.add-keyword')
-
+ 
     @When 'I add the header "$header"', (header) ->
       @browser
         .waitForVisible('input[name="header"]')
