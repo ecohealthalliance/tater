@@ -120,10 +120,8 @@ do ->
         .waitForVisible('.document-list', assert.ifError)
         .getHTML '.document-list', (error, response) ->
           matchDocument = response.toString().match(documentName)
-          #matchGroup = response.toString().match("Test Group")
-          matchAnnotationMark = response.toString().match("fa-circle")
+          matchAnnotationMark = response.toString().match("fa-adjust")
           assert.ok(matchDocument, "Document name not found")
-          #assert.ok(matchGroup, "Group not found")
           if noAnnotations
             assert.notOk(matchAnnotationMark, "Annotations found")
           else
@@ -145,3 +143,13 @@ do ->
         .waitForExist('.document-title', assert.ifError)
         .execute ->
           $("a:contains('>')").click()
+
+    @When /^I search for a document with the title of "([^"]*)"$/, (documentName) ->
+      @browser
+        .waitForExist('.document-list', assert.ifError)
+        .setValue('.document-search', documentName)
+        .pause(2000)
+        .getHTML '.document-list', (error, response) ->
+          match = response.toString().match(documentName)
+          assert.ok(match)
+

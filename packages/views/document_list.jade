@@ -1,0 +1,25 @@
+template(name="documentList")
+  .view-header-search
+    .form-group
+      i.fa.fa-search
+      input.form-control.document-search(placeholder="Search Documents")
+  if thereAreDocuments
+    ul.list.document-list.list-unstyled
+      +pages
+    +pagesNav
+  else
+    p No documents have been uploaded that you have access to.
+  +deleteDocumentModal
+
+template(name="document")
+  li.document
+    a.list-link.clearfix(href="{{path route='documentDetail' params=this}}")
+      span.annotation-state
+        if annotated
+          i.fa.fa-adjust(data-toggle='tooltip' title='{{annotated}} annotations')
+        else
+          i.fa.fa-circle-o(data-toggle='tooltip' title='{{annotated}} annotations')
+      span.document-title= title
+      span.document-group= groupName
+    button.btn-plain.delete-document-button(data-toggle="modal" data-document-id=_id data-target="#confirm-delete-document-modal" )
+      i.fa.fa-trash-o
