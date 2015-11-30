@@ -6,6 +6,7 @@ if Meteor.isClient
     @selectedHeader = new ReactiveVar('')
     @selectedSubHeader = new ReactiveVar('')
     @selectedKeyword = new ReactiveVar('')
+    @addingKeyword = new ReactiveVar(false)
 
   Template.codingKeywords.helpers
     headers: () ->
@@ -36,6 +37,9 @@ if Meteor.isClient
     currentlySelectedKeyword: ->
       Template.instance().selectedKeyword.get()
 
+    addingKeyword: ->
+      Template.instance().addingKeyword.get()
+
   Template.codingKeywords.events
     'click .code-level-1': (event, instance) ->
       selectedHeader = $(event.currentTarget).text()
@@ -45,6 +49,7 @@ if Meteor.isClient
         instance.selectedKeyword.set('')
         instance.subHeaders.remove({})
         instance.keywords.remove({})
+        instance.addingKeyword.set(false)
         subHeaders = CodingKeywords.find
           $and:
             [
@@ -61,17 +66,27 @@ if Meteor.isClient
         instance.selectedSubHeader.set(selectedSubHeader)
         instance.selectedKeyword.set('')
         instance.keywords.remove({})
+        instance.addingKeyword.set(false)
         keywords = CodingKeywords.find
           $and:
             [
               'subHeader': selectedSubHeader
               'keyword': $exists: true
             ]
-        _.each keywords.fetch(), (keyword) ->
-          instance.keywords.insert keyword
+        if keywords.count()
+          _.each keywords.fetch(), (keyword) ->
+            instance.keywords.insert keyword
+        else
+          instance.addingKeyword.set(true)
 
     'click .code-level-3': (event, instance) ->
       instance.selectedKeyword.set($(event.currentTarget).text())
+
+    'click .add-keyword': (event, instance) ->
+      instance.addingKeyword.set(true)
+
+    'click .cancel-keyword': (event, instance) ->
+      instance.addingKeyword.set(false)
 
     'submit #new-keyword-form': (event, instance) ->
       event.preventDefault()
@@ -88,4 +103,4 @@ if Meteor.isClient
         else
           instance.keywords.insert keywordProps
           toastr.success("Keyword added")
-          $('#add-keyword-modal').modal('hide')
+          form.keyword.value = ''

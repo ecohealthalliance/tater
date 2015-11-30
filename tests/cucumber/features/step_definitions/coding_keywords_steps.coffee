@@ -64,13 +64,13 @@ do ->
         .getHTML '.keyword-table tbody', (error, response) ->
           assert.ok(response.toString().match(text), "Text not found")
 
-    @When "I click the Add Code button", ->
+    @When /^I click the add "([^"]*)" button$/, (level) ->
       @browser
-        .waitForVisible('[data-target="#add-keyword-modal"]')
-        .click('[data-target="#add-keyword-modal"]')
+        .waitForVisible(".add-#{level}")
+        .click(".add-#{level}")
 
-    @When 'I add the keyword "$code"', (code) ->
+    @When /^I add the "([^"]*)" "([^"]*)"$/, (level, code) ->
       @browser
-        .waitForVisible('input[name="keyword"]')
-        .setValue('input[name="keyword"]', code)
-        .submitForm('input[name="keyword"]')
+        .waitForVisible("input[name=#{level}]")
+        .setValue("input[name=#{level}]", code)
+        .submitForm("input[name=#{level}]")
