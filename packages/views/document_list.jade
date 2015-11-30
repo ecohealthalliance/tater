@@ -14,10 +14,12 @@ template(name="documentList")
 template(name="document")
   li.document
     a.list-link.clearfix(href="{{path route='documentDetail' params=this}}")
+      span.annotation-state
+        if annotated
+          i.fa.fa-adjust(data-toggle='tooltip' title='{{annotated}} annotations')
+        else
+          i.fa.fa-circle-o(data-toggle='tooltip' title='{{annotated}} annotations')
       span.document-title= title
-      if annotated
-        span.document-annotated
-          i.fa.fa-circle
       span.document-group= groupName
     button.btn-plain.delete-document-button(data-toggle="modal" data-document-id=_id data-target="#confirm-delete-document-modal" )
       i.fa.fa-trash-o

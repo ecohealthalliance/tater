@@ -32,7 +32,7 @@ do ->
 
     @When 'I highlight some document text', ->
       @browser
-        .waitForVisible('.document-text', assert.ifError)
+        .waitForExist('.document-text')
         .moveToObject('.document-text')
         .doDoubleClick()
 
