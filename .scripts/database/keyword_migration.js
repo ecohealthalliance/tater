@@ -6,7 +6,7 @@ db.createCollection('headers')
 db.createCollection('subHeaders')
 db.createCollection('keywords')
 
-headers = db.codingKeywords.find({keyword: null, subHeader: null})
+headers = db.codingKeywords.find({keyword: null, subHeader: null, caseCount: {$ne: true}})
 
 //track the number of keywords associated with a header or subheader rather than a keyword
 headerKeywords = 0;
