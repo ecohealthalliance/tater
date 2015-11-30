@@ -204,17 +204,27 @@ caseCountCodes = [
   'Death count'
 ]
 
-CodingKeywords = new Mongo.Collection('codingKeywords')
+CodingKeywords = new Mongo.Collection('keywords')
 CodingKeyword = Astro.Class
   name: 'CodingKeyword'
   collection: CodingKeywords
   fields:
-    header: 'string'
-    subHeader: 'string'
-    keyword: 'string'
-    color: 'number'
+    headerId: 'string'
+    subHeaderId: 'string'
+    label: 'string'
     caseCount: 'boolean'
   behaviors: ['timestamp']
+  methods:
+    _subHeader: ->
+      SubHeaders.findOne(@subHeaderId)
+    _header: ->
+      Headers.findOne(@_subHeader().headerId)
+    color: ->
+      @_header().color
+    headerLabel: ->
+      @_header().label
+    subHeaderLabel: ->
+      @_subHeader().label
 
 if Meteor.isServer
   Meteor.startup ->
@@ -222,20 +232,20 @@ if Meteor.isServer
       i = 0
       for header, subHeaders of codes
         i++
-        CodingKeywords.insert
-          'header': header
+        headerId = Headers.insert
+          'label': header
           'color': i
+
         for subHeader, keywords of subHeaders
-          CodingKeywords.insert
-            'header': header
-            'subHeader': subHeader
-            'color': i
+          subHeaderId = SubHeaders.insert
+            'label': subHeader
+            'headerId': headerId
+
           for keyword in keywords
             CodingKeywords.insert
-              'header': header
-              'subHeader': subHeader
-              'keyword': keyword
-              'color': i
+              'label': keyword
+              'subHeaderId': subHeaderId
+
     i = 0
     for header in caseCountCodes
       unless CodingKeywords.findOne({header: header})

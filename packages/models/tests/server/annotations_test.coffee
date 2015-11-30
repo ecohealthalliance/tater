@@ -51,10 +51,9 @@ describe 'Annotation code methods', ->
   annotation = null
 
   beforeEach ->
-    codeId = CodingKeywords.insert
-      header: 'Test Header'
-      subHeader: 'Test Subheader'
-      keyword: 'Test Keywords'
+    headerId = Headers.insert(label: "Test Header")
+    subHeaderId = SubHeaders.insert(label: "Test Subheader", headerId: headerId)
+    codeId = CodingKeywords.insert(subHeaderId: subHeaderId, label: 'Test Keywords')
 
     annotation = new Annotation(codeId: codeId)
     annotation.save()

@@ -5,12 +5,11 @@ if Meteor.isClient
     @keywords = new Meteor.Collection(null)
     @selectedHeader = new ReactiveVar('')
     @selectedSubHeader = new ReactiveVar('')
+    @selectedKeyword = new ReactiveVar('')
 
   Template.codingKeywords.helpers
     headers: () ->
-      CodingKeywords.find
-        'subHeader': $exists: false
-        'keywords': $exists: false
+      Headers.find()
 
     subHeaders: ->
       Template.instance().subHeaders.find()
@@ -20,52 +19,46 @@ if Meteor.isClient
 
     selected: (level) ->
       if level == 'header'
-        if @header == Template.instance().selectedHeader.get()
+        if @_id == Template.instance().selectedHeader.get()._id
           'selected'
       else
-        if @subHeader == Template.instance().selectedSubHeader.get()
+        if @_id == Template.instance().selectedSubHeader.get()._id
           'selected'
 
     currentlySelectedHeader: ->
-      Template.instance().selectedHeader.get()
+      Template.instance().selectedHeader.get()?.label
 
     currentlySelectedSubHeader: ->
-      Template.instance().selectedSubHeader.get()
+      Template.instance().selectedSubHeader.get()?.label
+
+    currentlySelectedKeyword: ->
+      Template.instance().selectedKeyword.get()?.label
 
   setKeywords = (selectedSubHeader) ->
     instance = Template.instance()
     instance.selectedSubHeader.set(selectedSubHeader)
     instance.keywords.remove({})
-    keywords = CodingKeywords.find
-      $and:
-        [
-          'subHeader': selectedSubHeader
-          'keyword': $exists: true
-        ]
+    keywords = CodingKeywords.find({'subHeaderId': selectedSubHeader._id})
     _.each keywords.fetch(), (keyword) ->
       instance.keywords.insert keyword
 
-
   Template.codingKeywords.events
     'click .code-level-1': (event, instance) ->
-      selectedHeader = $(event.currentTarget).text()
+      selectedHeaderId = event.currentTarget.getAttribute('data-id')
+      selectedHeader = Headers.findOne(selectedHeaderId)
       if selectedHeader != instance.selectedHeader.get()
         instance.selectedHeader.set(selectedHeader)
-        instance.selectedSubHeader.set('')
+        instance.selectedSubHeader.set(null)
+        instance.selectedKeyword.set(null)
         instance.subHeaders.remove({})
         instance.keywords.remove({})
-        subHeaders = CodingKeywords.find
-          $and:
-            [
-              'header': selectedHeader
-              'subHeader': $exists: true
-              'keyword': $exists: false
-            ]
+        subHeaders = SubHeaders.find({headerId: selectedHeaderId})
         _.each subHeaders.fetch(), (subHeader) ->
           instance.subHeaders.insert subHeader
 
     'click .code-level-2': (event, instance) ->
-      selectedSubHeader = $(event.currentTarget).text()
+      selectedSubHeaderId = event.currentTarget.getAttribute('data-id')
+      selectedSubHeader = SubHeaders.findOne(selectedSubHeaderId)
       if selectedSubHeader != instance.selectedSubHeader.get()
         setKeywords(selectedSubHeader)
 
@@ -76,3 +69,6 @@ if Meteor.isClient
       # since we are using a collection that exists only for this controller for keywords 
       # we need to rebind the keywords in order to get changes to show on the page after an update
       setKeywords(instance.selectedSubHeader.get())
+
+    'click .code-level-3': (event, instance) ->
+      instance.selectedKeyword.set($(event.currentTarget).text())

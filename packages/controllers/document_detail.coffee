@@ -39,14 +39,14 @@ if Meteor.isClient
         CodingKeywords.findOne(annotation.codeId)
 
       if instance.searchText.get() is ''
-        instance.annotations.set annotations      
+        instance.annotations.set annotations
       else
         searchText = instance.searchText.get().split(' ')
-        filteredAnnotations = _.filter annotations.fetch(), (annotation) ->
+        filteredAnnotations = _.filter annotations, (annotation) ->
           code = CodingKeywords.findOne(annotation.codeId)
           wordMatches = _.filter searchText, (word) ->
             word = new RegExp(word, 'i')
-            code.header?.match(word) or code.subHeader?.match(word) or code.keyword?.match(word)
+            code.headerLabel()?.match(word) or code.subHeaderLabel()?.match(word) or code.label?.match(word)
           wordMatches.length
         instance.annotations.set _.sortBy filteredAnnotations, 'startOffset'
 
@@ -242,6 +242,8 @@ if Meteor.isServer
         annotation.set(userId: @userId)
         annotation.set(accessCode: code)
         annotation.save ->
+          document.set("annotated", Annotations.find({documentId: document._id}).count())
+          document.save()
           annotation
       else
         throw 'Unauthorized'
@@ -255,6 +257,8 @@ if Meteor.isServer
       accessibleViaUser = (user and group?.viewableByUser(user))
       if accessibleViaCode or accessibleViaUser
         annotation.remove ->
+          document.set("annotated", Annotations.find({documentId: document._id}).count())
+          document.save()
           annotation
       else
         throw 'Unauthorized'

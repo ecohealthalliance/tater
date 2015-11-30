@@ -1,6 +1,6 @@
 header
   position relative
-  z-index $mid-layer
+  z-index $top-layer
 
 .container > .navbar-header
   +below(3)
@@ -169,6 +169,7 @@ header
         text-shadow none
         font-size 13px
         &:hover
+          cursor pointer
           background $background-secondary
         span
           padding-right 5px

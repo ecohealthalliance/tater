@@ -16,13 +16,13 @@ Annotation = Astro.Class
     _codingKeyword: ->
       CodingKeywords.findOne(@codeId)
     header: ->
-      @_codingKeyword()?.header
+      @_codingKeyword()?.headerLabel()
     subHeader: ->
-      @_codingKeyword()?.subHeader
+      @_codingKeyword()?.subHeaderLabel()
     keyword: ->
-      @_codingKeyword()?.keyword
+      @_codingKeyword()?.label
     color: ->
-      @_codingKeyword()?.color
+      @_codingKeyword()?.color()
 
     overlapsWithOffsets: (startOffset, endOffset) ->
       (startOffset >= @startOffset and startOffset < @endOffset) or
