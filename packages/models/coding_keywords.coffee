@@ -204,7 +204,7 @@ caseCountCodes = [
   'Death count'
 ]
 
-CodingKeywords = new Mongo.Collection('codingKeywords')
+CodingKeywords = new Mongo.Collection('keywords')
 CodingKeyword = Astro.Class
   name: 'CodingKeyword'
   collection: CodingKeywords
