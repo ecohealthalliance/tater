@@ -3,31 +3,26 @@ if Meteor.isClient
     @subscribe('codingKeywords')
     @keywordToDeleteId = new ReactiveVar()
 
-  Template.editCodingKeywords.settings = () =>
-
-    fields = []
-
-    fields.push
-      key: 'header'
-      label: 'Header'
-
-    fields.push
-      key: 'subHeader'
-      label: 'Sub-Header'
-
-    fields.push
-      key: 'keyword'
-      label: 'Keyword'
-
-    showColumnToggles: false
-    showFilter: true
-    showRowCount: true
-    fields: fields
-
-  Template.editCodingKeywords.keywordCollection = () ->
-    CodingKeywords.find()
-
   Template.editCodingKeywords.helpers
+    settings: =>
+      fields = []
+      fields.push
+        key: 'header'
+        label: 'Header'
+      fields.push
+        key: 'subHeader'
+        label: 'Sub-Header'
+      fields.push
+        key: 'keyword'
+        label: 'Keyword'
+      showColumnToggles: false
+      showFilter: true
+      showRowCount: true
+      fields: fields
+
+    keywordCollection: ->
+      CodingKeywords.find()
+
     keywordToDelete: ->
       CodingKeywords.findOne(Template.instance().keywordToDeleteId.get())
 
