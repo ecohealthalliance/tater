@@ -96,12 +96,8 @@ Feature: Documents
   @documents
   Scenario: Increasing and decreasing a document's annotation count
     Given there is a test group in the database
+    And there is a coding keyword with header "Bur Bur" in the database
     When I log in as the test user
-
-    And I navigate to "/editCodingKeywords"
-    When I click the Add Keyword button
-    And I add the header "Bur Bur"
-    Then I should be able to find "Bur Bur" in the keyword table
 
     And I click on the Add Document link in the header
     And I fill out the new document form with title "Annotation Test Doc" and select the test group

@@ -16,6 +16,7 @@ Package.onUse(function(api) {
   api.use('tater:accounts');
   api.use('tater:route-helpers');
   api.use('tater:query-helpers');
+  api.use('tater:string-helpers');
   api.use('accounts-password');
   api.use('useraccounts:core');
   api.use('chrismbeckett:toastr');

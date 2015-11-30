@@ -5,9 +5,7 @@ Feature: Coding Keywords
 
   @codingKeywords
   Scenario: Viewing coding keywords interface
-    Given there is a coding keyword with header "Test Header" in the database
-    And there is a coding keyword with header "Test Header" and sub-header "Test Sub-Header" in the database
-    And there is a coding keyword with header "Test Header", sub-header "Test Sub-Header" and keyword "Test Keyword" in the database
+    Given there is a coding keyword with header "Test Header", sub-header "Test Sub-Header" and keyword "Test Keyword" in the database
     When I log in as the test user
     And I navigate to "/codingKeywords"
     Then I should see content "Test Header"

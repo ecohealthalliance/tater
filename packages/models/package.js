@@ -18,10 +18,14 @@ Package.onUse(function(api) {
   api.addFiles('groups.coffee', ['client', 'server']);
   api.addFiles('documents.coffee', ['client', 'server']);
   api.addFiles('coding_keywords.coffee', ['client', 'server']);
+  api.addFiles('headers.coffee', ['client', 'server']);
+  api.addFiles('subheaders.coffee', ['client', 'server']);
   api.addFiles('annotations.coffee', ['client', 'server']);
   api.export(['UserProfile', 'UserProfiles'], ['client', 'server']);
   api.export(['Document', 'Documents'], ['client', 'server']);
   api.export(['Group', 'Groups'], ['client', 'server']);
+  api.export(['Header', 'Headers'], ['client', 'server']);
+  api.export(['SubHeader', 'SubHeaders'], ['client', 'server']);
   api.export(['CodingKeyword', 'CodingKeywords'], ['client', 'server']);
   api.export(['Annotation', 'Annotations'], ['client', 'server']);
 });
