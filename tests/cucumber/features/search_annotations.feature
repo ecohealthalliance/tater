@@ -4,7 +4,6 @@ Feature: Search Annotations Page
     Given there is a test user in the database
     And there is a test group in the database
     And there is a test document in the database
-    And the user is not logged in
 
   @searchAnnotations
   Scenario: Viewing search annotations page

@@ -2,7 +2,6 @@ Feature: Coding Keywords
 
   Background:
     Given there is a test user in the database
-    And the user is not logged in
 
   @codingKeywords
   Scenario: Viewing coding keywords interface

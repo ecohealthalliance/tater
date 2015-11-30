@@ -3,7 +3,6 @@ Feature: Splash Page
   Background:
     Given there is a test user in the database
     And there is a test group in the database
-    And the user is not logged in
 
   @splashPage
   Scenario: Viewing Recent Documents

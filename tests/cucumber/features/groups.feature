@@ -2,7 +2,6 @@ Feature: Groups
 
   Background:
     Given there is a test user in the database
-    And the user is not logged in
 
   @groups
   Scenario: Creating a new group

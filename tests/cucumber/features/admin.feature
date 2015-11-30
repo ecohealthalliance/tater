@@ -2,7 +2,6 @@ Feature: Admin page
 
   Background:
     Given there is a test user in the database
-    And the user is not logged in
 
   @admin
   Scenario: Viewing user profiles as an admin
