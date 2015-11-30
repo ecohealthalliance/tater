@@ -317,17 +317,12 @@ if Meteor.isClient
     codeColor: ->
       Template.instance().annotation.color()
     codeString: ->
-      header = Template.instance().code?.header
-      subHeader = Template.instance().code?.subHeader
-      keyword = Template.instance().code?.keyword
-      if header and subHeader and keyword
-        Spacebars.SafeString("<span class='header'>#{header}</span> : <span class='sub-header'>#{subHeader}</span> : <span class='keyword'>#{keyword}</span>")
-      else if subHeader and not keyword
-        Spacebars.SafeString("<span class='header'>#{header}</span> : <span class='sub-header'>#{subHeader}</span>")
-      else if header
-        Spacebars.SafeString("<span class='header'>"+header+"</span>")
-      else
-        ''
+      code = Template.instance().code
+      header = code?.headerLabel()
+      subHeader = code?.subHeaderLabel()
+      keyword = code?.label
+      Spacebars.SafeString("<span class='header'>#{header}</span> : <span class='sub-header'>#{subHeader}</span> : <span class='keyword'>#{keyword}</span>")
+
     icon: ->
       header = Template.instance().code?.header
       if header is 'Human Movement' then 'fa-bus'
