@@ -44,6 +44,7 @@ if Meteor.isClient
         $('#remove-keyword-modal').modal('hide')
         instance.keywordToDeleteId.set(null)
 
+###
 if Meteor.isServer
 
   _validateHeader = (header) ->
@@ -93,3 +94,4 @@ if Meteor.isServer
           CodingKeywords.insert keywordProps
       else
         throw new Meteor.Error('Unauthorized')
+###

@@ -13,7 +13,7 @@ template(name="codingKeywords")
           .code-list-container
             ul.code-list.list.list-unstyled.level-1
               each headers
-                li.code.list-link.code-level-1(class="{{selected 'header'}}")= header
+                li.code.list-link.code-level-1(class="{{selected 'header'}}" data-id="{{_id}}")= label
 
         .code-list-wrap.col-sm-4
           unless currentlySelectedHeader
@@ -25,7 +25,7 @@ template(name="codingKeywords")
             if currentlySelectedHeader
               ul.code-list.list.list-unstyled.level-2
                 each subHeaders
-                  li.code.list-link.code-level-2(class="{{selected 'subHeader'}}")= subHeader
+                  li.code.list-link.code-level-2(class="{{selected 'subHeader'}}" data-id="{{_id}}")= label
         .code-list-wrap.col-sm-4
           unless currentlySelectedSubHeader
             +curtain
@@ -44,7 +44,7 @@ template(name="codingKeywords")
               if keywords
                 ul.code-list.list.list-unstyled.level-3
                   each keywords
-                    li.code.list-link.code-level-3.not-clickable= keyword
+                    li.code.list-link.code-level-3.not-clickable= label
     else
       .loading
 

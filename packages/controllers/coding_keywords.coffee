@@ -1,4 +1,5 @@
 if Meteor.isClient
+
   Template.codingKeywords.onCreated ->
     @subscribe('codingKeywords')
     @subHeaders = new Meteor.Collection(null)
@@ -20,20 +21,20 @@ if Meteor.isClient
 
     selected: (level) ->
       if level == 'header'
-        if @_id == Template.instance().selectedHeader.get()._id
+        if @_id == Template.instance().selectedHeader.get()?._id
           'selected'
       else
-        if @_id == Template.instance().selectedSubHeader.get()._id
+        if @_id == Template.instance().selectedSubHeader.get()?._id
           'selected'
 
     currentlySelectedHeader: ->
-      Template.instance().selectedHeader.get()?.label
+      Template.instance().selectedHeader.get()
 
     currentlySelectedSubHeader: ->
-      Template.instance().selectedSubHeader.get()?.label
+      Template.instance().selectedSubHeader.get()
 
     currentlySelectedKeyword: ->
-      Template.instance().selectedKeyword.get()?.label
+      Template.instance().selectedKeyword.get()
 
     addingKeyword: ->
       Template.instance().addingKeyword.get()
@@ -77,9 +78,9 @@ if Meteor.isClient
       event.stopImmediatePropagation()
       form = event.target
       keywordProps =
-        header: instance.selectedHeader.get()
-        subHeader: instance.selectedSubHeader.get()
-        keyword: form.keyword.value
+        headerId: instance.selectedHeader.get()?._id
+        subHeaderId: instance.selectedSubHeader.get()?._id
+        label: form.keyword.value
 
       Meteor.call 'addKeyword', keywordProps, (error, response) ->
         if error
@@ -88,3 +89,50 @@ if Meteor.isClient
           instance.keywords.insert keywordProps
           toastr.success("Keyword added")
           form.keyword.value = ''
+
+
+if Meteor.isServer
+
+  _validateHeader = (headerId) ->
+    if not Headers.findOne(headerId)
+      throw new Meteor.Error("""The header does not exist.
+    Omit the keyword and sub-header fields to create it before adding the keyword.""")
+
+  _validateSubheader = (headerId, subHeaderId) ->
+    if not SubHeaders.findOne(
+      _id: subHeaderId
+      headerId: headerId
+    ) then throw new Meteor.Error("""The sub-header does not belong to the
+    given header or does not exist.""")
+
+  _validateKeywordProperties = (keywordProps) ->
+    if not keywordProps.headerId
+      throw new Meteor.Error('Header is required')
+    if not keywordProps.subHeaderId
+      throw new Meteor.Error('Sub-header is required')
+
+    if CodingKeywords.findOne(
+      headerId: keywordProps.headerId
+      subHeaderId: keywordProps.subHeaderId
+      label: keywordProps.label
+    ) then throw new Meteor.Error('Duplicate keyword')
+
+    _validateHeader(keywordProps.headerId)
+    _validateSubheader(keywordProps.headerId, keywordProps.subHeaderId)
+
+    true
+
+  Meteor.methods
+    addKeyword: (keywordProps) ->
+      if Meteor.users.findOne(@userId)?.admin
+        _keywordProps =
+          headerId: keywordProps.headerId
+          subHeaderId: keywordProps.subHeaderId
+          label: keywordProps.label?.trim()
+
+        if _validateKeywordProperties(_keywordProps)
+          color = CodingKeywords.findOne({header: _keywordProps.headerId})?.color
+          keywordProps.color = color or 1
+          CodingKeywords.insert _keywordProps
+      else
+        throw new Meteor.Error('Unauthorized')
