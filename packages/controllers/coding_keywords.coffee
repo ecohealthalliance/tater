@@ -49,6 +49,7 @@ if Meteor.isClient
         instance.selectedKeyword.set('')
         instance.subHeaders.remove({})
         instance.keywords.remove({})
+        instance.addingKeyword.set(false)
         subHeaders = CodingKeywords.find
           $and:
             [
@@ -65,14 +66,18 @@ if Meteor.isClient
         instance.selectedSubHeader.set(selectedSubHeader)
         instance.selectedKeyword.set('')
         instance.keywords.remove({})
+        instance.addingKeyword.set(false)
         keywords = CodingKeywords.find
           $and:
             [
               'subHeader': selectedSubHeader
               'keyword': $exists: true
             ]
-        _.each keywords.fetch(), (keyword) ->
-          instance.keywords.insert keyword
+        if keywords.count()
+          _.each keywords.fetch(), (keyword) ->
+            instance.keywords.insert keyword
+        else
+          instance.addingKeyword.set(true)
 
     'click .code-level-3': (event, instance) ->
       instance.selectedKeyword.set($(event.currentTarget).text())
@@ -98,5 +103,4 @@ if Meteor.isClient
         else
           instance.keywords.insert keywordProps
           toastr.success("Keyword added")
-          $('#add-keyword-modal').modal('hide')
           form.keyword.value = ''

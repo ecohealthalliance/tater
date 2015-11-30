@@ -242,6 +242,8 @@ checkMark(center=false)
 // Management
 
 .code-management-container
+  position relative
+  min-height 700px
   border 1px solid $m-gray
   border-top 0
   border-bottom-right-radius 3px
@@ -288,9 +290,12 @@ checkMark(center=false)
   padding-bottom 50px
   li
     padding 10px
-    border-bottom 1px solid lighten($l-gray, 20%)
+    &
+    &:last-of-type
+      border-bottom 1px solid lighten($l-gray, 20%)
     &.selected
       background lighten($background-secondary, 20%)
+      font-weight bold
       &::after
         color $d-gray
     &::after

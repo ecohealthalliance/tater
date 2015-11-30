@@ -26,7 +26,6 @@ template(name="codingKeywords")
               ul.code-list.list.list-unstyled.level-2
                 each subHeaders
                   li.code.list-link.code-level-2(class="{{selected 'subHeader'}}")= subHeader
-
         .code-list-wrap.col-sm-4
           unless currentlySelectedSubHeader
             +curtain
@@ -42,9 +41,10 @@ template(name="codingKeywords")
                     input.form-control.code(name="keyword" placeholder="Enter a keyword")
                     button.add.btn.btn-primary.btn-block(type="submit") Add keyword
                     button.cancel.btn.btn-default(type="button" class="cancel-keyword") Cancel
-              ul.code-list.list.list-unstyled.level-3
-                each keywords
-                  li.code.list-link.code-level-3.not-clickable= keyword
+              if keywords
+                ul.code-list.list.list-unstyled.level-3
+                  each keywords
+                    li.code.list-link.code-level-3.not-clickable= keyword
     else
       .loading
 
