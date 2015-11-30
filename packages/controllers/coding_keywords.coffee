@@ -6,6 +6,7 @@ if Meteor.isClient
     @selectedHeader = new ReactiveVar('')
     @selectedSubHeader = new ReactiveVar('')
     @selectedKeyword = new ReactiveVar('')
+    @addingKeyword = new ReactiveVar(false)
 
   Template.codingKeywords.helpers
     headers: () ->
@@ -36,6 +37,9 @@ if Meteor.isClient
     currentlySelectedKeyword: ->
       Template.instance().selectedKeyword.get()
 
+    addingKeyword: ->
+      Template.instance().addingKeyword.get()
+
   Template.codingKeywords.events
     'click .code-level-1': (event, instance) ->
       selectedHeader = $(event.currentTarget).text()
@@ -45,6 +49,7 @@ if Meteor.isClient
         instance.selectedKeyword.set('')
         instance.subHeaders.remove({})
         instance.keywords.remove({})
+        instance.addingKeyword.set(false)
         subHeaders = CodingKeywords.find
           $and:
             [
@@ -61,30 +66,57 @@ if Meteor.isClient
         instance.selectedSubHeader.set(selectedSubHeader)
         instance.selectedKeyword.set('')
         instance.keywords.remove({})
+        instance.addingKeyword.set(false)
         keywords = CodingKeywords.find
           $and:
             [
               'subHeader': selectedSubHeader
               'keyword': $exists: true
             ]
-        _.each keywords.fetch(), (keyword) ->
-          instance.keywords.insert keyword
+        if keywords.count()
+          _.each keywords.fetch(), (keyword) ->
+            instance.keywords.insert keyword
+        else
+          instance.addingKeyword.set(true)
 
     'click .code-level-3': (event, instance) ->
       instance.selectedKeyword.set($(event.currentTarget).text())
 
-    'submit #new-subheader-form': (event, instance) ->
-      event.preventDefault()
-      event.stopImmediatePropagation()
-      form = event.target
-      keywordProps =
-        header: instance.selectedHeader.get()
-        subHeader: form.subHeader.value
+    'click .add-keyword': (event, instance) ->
+      instance.addingKeyword.set(true)
 
-      Meteor.call 'addKeyword', keywordProps, (error, response) ->
-        if error
-          toastr.error("Error: #{error.message}")
-        else
-          instance.subHeaders.insert keywordProps
-          toastr.success("Sub-Header added")
-          $('#add-subheader-modal').modal('hide')
+    'click .cancel-keyword': (event, instance) ->
+      instance.addingKeyword.set(false)
+
+    'submit #new-keyword-form': (event, instance) ->
+          event.preventDefault()
+          event.stopImmediatePropagation()
+          form = event.target
+          keywordProps =
+            header: instance.selectedHeader.get()
+            subHeader: instance.selectedSubHeader.get()
+            keyword: form.keyword.value
+
+          Meteor.call 'addKeyword', keywordProps, (error, response) ->
+            if error
+              toastr.error("Error: #{error.message}")
+            else
+              instance.keywords.insert keywordProps
+              toastr.success("Keyword added")
+              form.keyword.value = ''
+
+    'submit #new-subheader-form': (event, instance) ->
+          event.preventDefault()
+          event.stopImmediatePropagation()
+          form = event.target
+          keywordProps =
+            header: instance.selectedHeader.get()
+            subHeader: form.subHeader.value
+
+          Meteor.call 'addKeyword', keywordProps, (error, response) ->
+            if error
+              toastr.error("Error: #{error.message}")
+            else
+              instance.subHeaders.insert keywordProps
+              toastr.success("Sub-Header added")
+              $('#add-subheader-modal').modal('hide')
