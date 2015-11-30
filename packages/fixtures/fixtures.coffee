@@ -56,6 +56,11 @@ do ->
       annotation.save()
 
     'createCodingKeyword': (header, subHeader, keyword, color) ->
-      headerId = Headers.insert(label: header, color: 1)
-      subHeaderId = SubHeaders.insert(headerId: headerId, label: subHeader)
-      CodingKeywords.insert(subHeaderId: subHeaderId, label: keyword)
+      headerDoc = Headers.findOne({label: header})
+      headerId = if headerDoc then headerDoc._id else Headers.insert({label: header, color: 1})
+
+      subHeaderDoc = SubHeaders.findOne({headerId: headerId, label: subHeader})
+      subHeaderId = if subHeaderDoc then subHeaderDoc._id else SubHeaders.insert({headerId: headerId, label: subHeader})
+
+      keywordId = CodingKeywords.insert(subHeaderId: subHeaderId, label: keyword)
+
