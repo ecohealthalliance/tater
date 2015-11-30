@@ -16,7 +16,7 @@ Feature: Coding Keywords
     When I click on a "sub-header"
     Then I should see content "Test Keyword"
 
-  @dev
+  @codingKeywords
   Scenario: Adding coding keywords on the Coding Keywords page
     Given there are coding keywords in the database
     When I log in as the test user
@@ -26,6 +26,6 @@ Feature: Coding Keywords
     Then I should see content "Test Sub-Header"
     When I click on a "sub-header"
     Then I should see content "Test Keyword"
-    When I click the Add Code button
-    And I add the keyword "Bur Bur"
+    When I click the add "keyword" button
+    And I add the "keyword" "Bur Bur"
     Then I should see content "Bur Bur"
