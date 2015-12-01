@@ -3,10 +3,8 @@ if Meteor.isClient
     @subscribe('codingKeywords')
     @subHeaders = new Meteor.Collection(null)
     @keywords = new Meteor.Collection(null)
-    @selectedHeader = new ReactiveVar('')
-    @selectedSubHeader = new ReactiveVar('')
-    @selectedKeyword = new ReactiveVar('')
-    @addingKeyword = new ReactiveVar(false)
+    @selectedCodes = new ReactiveDict()
+    @addingCode = new ReactiveDict()
 
   Template.codingKeywords.helpers
     headers: () ->
@@ -22,34 +20,36 @@ if Meteor.isClient
 
     selected: (level) ->
       if level == 'header'
-        if @header == Template.instance().selectedHeader.get()
+        if @header == Template.instance().selectedCodes.get('header')
           'selected'
       else
-        if @subHeader == Template.instance().selectedSubHeader.get()
+        if @subHeader == Template.instance().selectedCodes.get('subHeader')
           'selected'
 
     currentlySelectedHeader: ->
-      Template.instance().selectedHeader.get()
+      Template.instance().selectedCodes.get('header')
 
     currentlySelectedSubHeader: ->
-      Template.instance().selectedSubHeader.get()
+      Template.instance().selectedCodes.get('subHeader')
 
     currentlySelectedKeyword: ->
-      Template.instance().selectedKeyword.get()
+      Template.instance().selectedCodes.get('keyword')
 
-    addingKeyword: ->
-      Template.instance().addingKeyword.get()
+    addingCode: (level) ->
+      console.log Template.instance().addingCode.get(level)
+      Template.instance().addingCode.get(level)
 
   Template.codingKeywords.events
     'click .code-level-1': (event, instance) ->
       selectedHeader = $(event.currentTarget).text()
-      if selectedHeader != instance.selectedHeader.get()
-        instance.selectedHeader.set(selectedHeader)
-        instance.selectedSubHeader.set('')
-        instance.selectedKeyword.set('')
+      if selectedHeader != instance.selectedCodes.get('header')
+        instance.selectedCodes.set('header', selectedHeader)
+        instance.selectedCodes.set('subHeader', '')
+        instance.selectedCodes.set('keywords', '')
         instance.subHeaders.remove({})
         instance.keywords.remove({})
-        instance.addingKeyword.set(false)
+        instance.addingCode.set('keyword', false)
+        instance.addingCode.set('subHeader', false)
         subHeaders = CodingKeywords.find
           $and:
             [
@@ -62,11 +62,11 @@ if Meteor.isClient
 
     'click .code-level-2': (event, instance) ->
       selectedSubHeader = $(event.currentTarget).text()
-      if selectedSubHeader != instance.selectedSubHeader.get()
-        instance.selectedSubHeader.set(selectedSubHeader)
-        instance.selectedKeyword.set('')
+      if selectedSubHeader != instance.selectedCodes.get('subHeader')
+        instance.selectedCodes.set('subHeader', selectedSubHeader)
+        instance.selectedCodes.set('keywords', '')
         instance.keywords.remove({})
-        instance.addingKeyword.set(false)
+        instance.addingCode.set('keyword', false)
         keywords = CodingKeywords.find
           $and:
             [
@@ -77,46 +77,47 @@ if Meteor.isClient
           _.each keywords.fetch(), (keyword) ->
             instance.keywords.insert keyword
         else
-          instance.addingKeyword.set(true)
+          instance.addingCode.set('keyword', true)
 
     'click .code-level-3': (event, instance) ->
-      instance.selectedKeyword.set($(event.currentTarget).text())
+      instance.selectedCodes.set('keyword', $(event.currentTarget).text())
 
-    'click .add-keyword': (event, instance) ->
-      instance.addingKeyword.set(true)
+    'click .add-code': (event, instance) ->
+      instance.addingCode.set($(event.target).data('level'), true)
 
-    'click .cancel-keyword': (event, instance) ->
-      instance.addingKeyword.set(false)
+    'click .adding-code .cancel': (event, instance) ->
+      instance.addingCode.set($(event.target).data('level'), false)
+
+    'submit #new-subHeader-form': (event, instance) ->
+      event.preventDefault()
+      event.stopImmediatePropagation()
+      form = event.target
+      keywordProps =
+        header: instance.selectedCodes.get('header')
+        subHeader: form.subHeader.value
+
+      Meteor.call 'addKeyword', keywordProps, (error, response) ->
+        if error
+          toastr.error("Error: #{error.message}")
+        else
+          instance.subHeaders.insert keywordProps
+          toastr.success("Sub-Header added")
+          form.keyword.value = ''
+
 
     'submit #new-keyword-form': (event, instance) ->
-          event.preventDefault()
-          event.stopImmediatePropagation()
-          form = event.target
-          keywordProps =
-            header: instance.selectedHeader.get()
-            subHeader: instance.selectedSubHeader.get()
-            keyword: form.keyword.value
+      event.preventDefault()
+      event.stopImmediatePropagation()
+      form = event.target
+      keywordProps =
+        header: instance.selectedCodes.get('header')
+        subHeader: instance.selectedCodes.get('subHeader')
+        keyword: form.keyword.value
 
-          Meteor.call 'addKeyword', keywordProps, (error, response) ->
-            if error
-              toastr.error("Error: #{error.message}")
-            else
-              instance.keywords.insert keywordProps
-              toastr.success("Keyword added")
-              form.keyword.value = ''
-
-    'submit #new-subheader-form': (event, instance) ->
-          event.preventDefault()
-          event.stopImmediatePropagation()
-          form = event.target
-          keywordProps =
-            header: instance.selectedHeader.get()
-            subHeader: form.subHeader.value
-
-          Meteor.call 'addKeyword', keywordProps, (error, response) ->
-            if error
-              toastr.error("Error: #{error.message}")
-            else
-              instance.subHeaders.insert keywordProps
-              toastr.success("Sub-Header added")
-              $('#add-subheader-modal').modal('hide')
+      Meteor.call 'addKeyword', keywordProps, (error, response) ->
+        if error
+          toastr.error("Error: #{error.message}")
+        else
+          instance.keywords.insert keywordProps
+          toastr.success("Keyword added")
+          form.keyword.value = ''

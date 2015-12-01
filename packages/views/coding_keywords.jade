@@ -14,53 +14,46 @@ template(name="codingKeywords")
             ul.code-list.list.list-unstyled.level-1
               each headers
                 li.code.list-link.code-level-1(class="{{selected 'header'}}")= header
+
         .code-list-wrap.col-sm-4
           unless currentlySelectedHeader
             +curtain
           .code-list-header
             h4 Sub-Headers
-            i.add-code.fa.fa-plus(data-toggle="modal" data-target="#add-subheader-modal")
+            i.add-code.fa.fa-plus(data-level="subHeader")
           .code-list-container
             if currentlySelectedHeader
+              if addingCode 'subHeader'
+                .adding-code.clearfix
+                  form(id="new-subHeader-form")
+                    input.form-control.code(type="text" name="subHeader" placeholder="Enter a sub-header")
+                    button.cancel.btn.btn-default(type="button" data-level="subHeader") Cancel
+                    button.add.btn.btn-primary.btn-block(type="submit" data-level="subHeader") Add Sub-Header
               ul.code-list.list.list-unstyled.level-2
                 each subHeaders
                   li.code.list-link.code-level-2(class="{{selected 'subHeader'}}")= subHeader
+
         .code-list-wrap.col-sm-4
           unless currentlySelectedSubHeader
             +curtain
           .code-list-header
             h4 Keywords
-            unless addingKeyword
-              i.add-code.add-keyword.fa.fa-plus
+            unless addingCode 'keyword'
+              i.add-code.fa.fa-plus(data-level="keyword")
           .code-list-container
             if currentlySelectedSubHeader
-              if addingKeyword
+              if addingCode 'keyword'
                 .adding-code.clearfix
                   form(id="new-keyword-form")
-                    input.form-control.code(name="keyword" placeholder="Enter a keyword")
-                    button.add.btn.btn-primary.btn-block(type="submit") Add keyword
-                    button.cancel.btn.btn-default(type="button" class="cancel-keyword") Cancel
+                    input.form-control.code(type="text" name="keyword" placeholder="Enter a keyword")
+                    button.cancel.btn.btn-default(type="button" data-level="keyword") Cancel
+                    button.add.btn.btn-primary.btn-block(type="submit" data-level="keyword") Add keyword
               if keywords
                 ul.code-list.list.list-unstyled.level-3
                   each keywords
                     li.code.list-link.code-level-3.not-clickable= keyword
     else
       .loading
-
-  #add-subheader-modal.modal.fade(tabindex="-1" role="dialog")
-    .modal-dialog
-      .modal-content
-        .modal-header
-          button(type="button" class="close" data-dismiss="modal" aria-label="Close")
-            i.fa.fa-times-circle
-        .modal-body
-          form#new-subheader-form.clearfix
-            label Header: {{currentlySelectedHeader}}
-            label Sub-header
-              input.form-control(name="subHeader")
-            .modal-buttons
-              input.btn.btn-primary(type="submit" value="Add SubHeader")
-              input.btn.btn-default.cancel(type="button" value="Cancel" data-dismiss="modal")
 
 template(name="curtain")
   .curtain-white

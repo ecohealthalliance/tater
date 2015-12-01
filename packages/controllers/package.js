@@ -11,6 +11,7 @@ Package.onUse(function(api) {
   api.use('underscore');
   api.use('templating');
   api.use('reactive-var');
+  api.use('reactive-dict');
   api.use('tater:models');
   api.use('tater:views');
   api.use('tater:accounts');
