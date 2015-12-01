@@ -5,7 +5,9 @@ template(name="documentList")
       input.form-control.document-search(placeholder="Search Documents")
   .document-list-container
     if noDocumentsFound
-      .no-documents-found No documents found.
+      .no-results.space-top-3
+        i.fa.fa-search
+        .no-documents-found.cetnered Sorry, no documents found.
     ul.list.document-list.list-unstyled
       +pages
     +pagesNav

@@ -48,7 +48,6 @@ if Meteor.isClient
       DocumentListPages.set
         filters: {}
       @subscribe('groups')
-    @searchResultsCount = new ReactiveVar()
 
   Template.documentList.helpers
     noDocumentsFound: ->
@@ -63,7 +62,6 @@ if Meteor.isClient
       )
     'keyup .document-search': _.debounce(((event, instance)->
       searchText = $(event.currentTarget).val()
-      instance.searchResultsCount.set(searchText)
       filters =
         title:
           $regex: regexEscape(searchText)
