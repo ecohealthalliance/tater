@@ -102,6 +102,7 @@ tater:query-helpers@0.0.1
 tater:route-helpers@0.0.1
 tater:router@0.0.1
 tater:server-router@0.0.1
+tater:string-helpers@0.0.1
 tater:styles@0.0.1
 tater:views@0.0.1
 templating@1.1.5

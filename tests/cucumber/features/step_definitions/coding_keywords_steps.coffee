@@ -6,13 +6,10 @@ do ->
   module.exports = ->
 
     @Given /^there is a coding keyword with header "([^"]*)" in the database$/, (header) ->
-      @server.call('createCodingKeyword', {header: header})
-
-    @Given /^there is a coding keyword with header "([^"]*)" and sub-header "([^"]*)" in the database$/, (header, subHeader) ->
-      @server.call('createCodingKeyword', {header: header, subHeader:subHeader})
+      @server.call('createCodingKeyword', header, "Test Subheader", "Test Keyword", 1)
 
     @Given /^there is a coding keyword with header "([^"]*)", sub-header "([^"]*)" and keyword "([^"]*)" in the database$/, (header, subHeader, keyword) ->
-      @server.call('createCodingKeyword', {header: header, subHeader:subHeader, keyword:keyword})
+      @server.call('createCodingKeyword', header, subHeader, keyword, 1)
 
     @When /^I click on a "([^"]*)"$/, (level) ->
       if level == 'header'
@@ -32,8 +29,8 @@ do ->
 
     @Then /^I should( not)? see coding keyword search results$/, (noResults) ->
       @browser
-        .waitForExist('.filteredCodes')
-        .getHTML '.filteredCodes', (error, response) ->
+        .waitForExist('.code-list')
+        .getHTML '.code-list', (error, response) ->
           if noResults
             assert.notOk(response.toString().match('selectable-code'), "Results found")
           else
@@ -41,9 +38,9 @@ do ->
 
     @When "I click the Add Keyword button", ->
       @browser
-        .waitForVisible('.add-keyword')
+        .waitForExist('.add-keyword')
         .click('.add-keyword')
-
+ 
     @When 'I add the header "$header"', (header) ->
       @browser
         .waitForVisible('input[name="header"]')

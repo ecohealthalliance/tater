@@ -27,19 +27,24 @@
       border-top 0
       border-bottom-left-radius 4px
       border-bottom-right-radius 4px
+    &:hover
+      background $background-secondary
+
+  .list-link
+    padding-right 60px
 
   .document-title
   .document-group
     truncateString()
 
   .document-title
-    width 55%
+    width 53%
     font-size 1.1em
     float left
+    padding-left 10px
 
   .document-group
     position relative
-    right 40px
     width 40%
     float right
     text-align right
@@ -47,16 +52,26 @@
     font-size 95%
     font-style italic
 
-  .document-annotated
-    width 1.8%
-    float right
-    overflow hidden
-    text-align right
+.annotation-state
+  float left
+  overflow hidden
+  text-align right
+  color $m-gray
+  &:hover
+    color $primary
 
 .delete-document-button
-  centerVertically()
-  right 20px
+  position absolute
+  top 0
+  bottom 0
+  right 0
+  margin-bottom 0
+  width 50px
   font-size 1.5em
   color $m-gray
   &:hover
-    color $delete
+    background-color $delete
+    color white
+  i
+    position absolute
+    centerPosition()

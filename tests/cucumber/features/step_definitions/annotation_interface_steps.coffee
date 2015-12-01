@@ -32,13 +32,13 @@ do ->
 
     @When 'I highlight some document text', ->
       @browser
-        .waitForVisible('.document-text', assert.ifError)
+        .waitForExist('.document-text')
         .moveToObject('.document-text')
         .doDoubleClick()
 
     @When 'I click on a coding keyword', ->
       @browser
-        .click('.code-list .coding')
+        .click('.code-list .code-keyword')
 
     @Then /^I should( not)? see an annotation in the annotations list$/, (noAnnotations) ->
       @browser
