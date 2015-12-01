@@ -11,11 +11,6 @@ do ->
     @Given /^there is a coding keyword with header "([^"]*)", sub-header "([^"]*)" and keyword "([^"]*)" in the database$/, (header, subHeader, keyword) ->
       @server.call('createCodingKeyword', header, subHeader, keyword, 1)
 
-    @Given "there are coding keywords in the database", ->
-      @server.call('createCodingKeyword', {header: "Test Header"})
-      @server.call('createCodingKeyword', {header: "Test Header", subHeader: "Test Sub-Header"})
-      @server.call('createCodingKeyword', {header: "Test Header", subHeader: "Test Sub-Header", keyword: "Test Keyword"})
-
     @When /^I click on a "([^"]*)"$/, (level) ->
       if level == 'header'
         @browser
@@ -45,7 +40,7 @@ do ->
       @browser
         .waitForExist('.add-keyword')
         .click('.add-keyword')
- 
+
     @When 'I add the header "$header"', (header) ->
       @browser
         .waitForVisible('input[name="header"]')
