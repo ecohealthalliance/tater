@@ -1,11 +1,14 @@
 QueryHelpers = {}
 # Construct a Documents query that will only returns documents the given user
 # has access to.
-QueryHelpers.userDocsQuery = (user)->
+QueryHelpers.userDocsQuery = (user, options)->
   if user?.admin
-    codeInaccessibleGroups = Groups.find({codeAccessible: {$ne: true}})
-    codeInaccessibleGroupIds = _.pluck(codeInaccessibleGroups.fetch(), '_id')
-    { groupId: {$in: codeInaccessibleGroupIds} }
+    if options?.showCodeAccessible
+      {}
+    else
+      codeInaccessibleGroups = Groups.find({codeAccessible: {$ne: true}})
+      codeInaccessibleGroupIds = _.pluck(codeInaccessibleGroups.fetch(), '_id')
+      { groupId: {$in: codeInaccessibleGroupIds} }
   else
     { groupId: user.group }
 # Add a documentId: { $in: ... } clause to the given query object

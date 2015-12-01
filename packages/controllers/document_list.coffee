@@ -9,6 +9,8 @@ DocumentListPages = new Meteor.Pagination Documents,
     # Meteor pagination auth functions break filtering.
     # I am using a work around based on the approach here:
     # https://github.com/alethes/meteor-pages/issues/131
+    user = Meteor.users.findOne({_id: subscription.userId})
+    if not user then return false
     userSettings = @userSettings[subscription._session.id] or {}
     userFilters = userSettings.filters or @filters
     userFields = userSettings.fields or @fields
@@ -18,7 +20,9 @@ DocumentListPages = new Meteor.Pagination Documents,
       {
         $and: [
           userFilters
-          QueryHelpers.userDocsQuery(Meteor.users.findOne({_id: subscription.userId}))
+          QueryHelpers.userDocsQuery(
+            user,
+            { showCodeAccessible: Boolean(userFilters.groupId) })
         ]
       },
       {
@@ -51,8 +55,7 @@ if Meteor.isClient
 
   Template.documentList.helpers
     noDocumentsFound: ->
-      !DocumentListPages.isReady() or
-      DocumentListPages.Collection.find().count() == 0
+      DocumentListPages.Collection.find().count() == 0 and DocumentListPages.isReady()
 
   Template.documentList.events
     'click .delete-document-button': (event) ->
