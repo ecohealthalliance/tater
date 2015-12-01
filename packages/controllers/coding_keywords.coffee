@@ -1,6 +1,6 @@
 if Meteor.isClient
   Template.codingKeywords.onCreated ->
-    @subscribe('codingKeywords')
+    @subscribe('archivedCodingKeywords')
     @subHeaders = new Meteor.Collection(null)
     @keywords = new Meteor.Collection(null)
     @selectedHeader = new ReactiveVar('')
@@ -25,6 +25,10 @@ if Meteor.isClient
         if @_id == Template.instance().selectedSubHeader.get()._id
           'selected'
 
+    archived: () ->
+      if @archived
+        'disabled'
+
     currentlySelectedHeader: ->
       Template.instance().selectedHeader.get()?.label
 
@@ -38,7 +42,7 @@ if Meteor.isClient
     instance = Template.instance()
     instance.selectedSubHeader.set(selectedSubHeader)
     instance.keywords.remove({})
-    keywords = CodingKeywords.find({'subHeaderId': selectedSubHeader._id, 'archived': {$ne: true}})
+    keywords = CodingKeywords.find({'subHeaderId': selectedSubHeader._id}, {sort: {archived: 1}})
     _.each keywords.fetch(), (keyword) ->
       instance.keywords.insert keyword
 

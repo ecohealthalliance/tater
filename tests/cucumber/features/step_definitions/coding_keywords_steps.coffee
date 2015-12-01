@@ -27,7 +27,14 @@ do ->
     @When /^I click the first document$/, (level) -> 
       @browser
         .waitForVisible('.document-list')
-        .click('.docment-title')
+        .click('.document a')
+        .waitForVisible('.code-list')
+
+    @Then /^I should not see the keyword "([^"]*)"$/, (keyword) ->
+      @browser
+        .waitForVisible('.selectable-code')
+        .elements '.selectable-code:contains("' + keyword + '")', (error, elements) ->
+          assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal 0")
 
     @When 'I type "$search" in the coding keyword search', (search) ->
       @browser
@@ -38,7 +45,13 @@ do ->
     @Then /^I should see (\d+) keywords$/, (number) ->
       @client
         .waitForExist('.level-3', assert.ifError)
-        .elements '.code-level-3', (error, elements) ->
+        .elements '.code-level-3:not(.disabled)', (error, elements) ->
+          assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
+
+    @Then /^I should see (\d+) archived keywords$/, (number) ->
+      @client
+        .waitForExist('.level-3', assert.ifError)
+        .elements '.code-level-3.disabled', (error, elements) ->
           assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
     @When 'I delete a keyword', () ->

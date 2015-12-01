@@ -35,10 +35,11 @@ template(name="codingKeywords")
         if currentlySelectedSubHeader
           ul.code-list.list.list-unstyled.level-3
             each keywords
-              li.code.code-level-3.not-clickable
+              li.code.code-level-3.not-clickable(class="{{archived}}")
                 span= label
-                button.btn-plain.delete-keyword-button(data-toggle="modal" data-keyword-id=_id data-target="#confirm-delete-keyword-modal" )
-                  i.fa.fa-trash-o
+                unless archived
+                  button.btn-plain.delete-keyword-button(data-toggle="modal" data-keyword-id=_id data-target="#confirm-delete-keyword-modal" )
+                    i.fa.fa-trash-o
           +deleteKeywordModal
 
 template(name="curtain")
