@@ -21,14 +21,15 @@ do ->
         password: attributes.password
       Meteor.users.update({_id: account}, {$set: {admin: true}})
 
-    'createTestGroup': (codeAccessible) ->
+    'createTestGroup': (attributes) ->
+      attributes ?= {}
+      attributes.name ?= "Test Group"
+      attributes.description ?= "Test Description"
+      attributes.createdById ?= Meteor.users.findOne()._id
+      attributes._id ?= "fakegroupid"
+      Groups.remove({_id: attributes._id})
       group = new Group()
-      group.set
-        name: "Test Group"
-        description: "Test Description"
-        createdById: Meteor.users.findOne()._id
-        _id: "fakegroupid"
-        codeAccessible: codeAccessible
+      group.set(attributes)
       group.save()
 
     'createProfile': (field, value, id) ->

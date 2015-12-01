@@ -28,6 +28,8 @@ Feature: Documents
 
   @documents
   Scenario: Viewing all documents as an admin
+    Given there is a group in the database with id "groupid1"
+    And there is a group in the database with id "groupid2"
     Given there is a test document with title "First Doc" in group "groupid1"
     And there is a test document with title "Second Doc" in group "groupid2"
     When I log in as the test user
