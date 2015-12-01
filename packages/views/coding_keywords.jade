@@ -48,7 +48,7 @@ template(name="codingKeywords")
                       span= label
                       button.btn-plain.delete-keyword-button(data-toggle="modal" data-keyword-id=_id data-target="#confirm-delete-keyword-modal" )
                         i.fa.fa-trash-o
-                +deleteKeywordModal
+                +deleteKeywordModal(keywordToDelete=keywordToDelete)
     else
       .loading
 

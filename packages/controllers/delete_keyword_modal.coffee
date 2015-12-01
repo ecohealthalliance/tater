@@ -1,4 +1,11 @@
 if Meteor.isClient
+  Template.deleteKeywordModal.helpers
+    keywordId: ->
+      Template.instance().data.keywordToDelete?._id
+
+    keywordLabel: ->
+      Template.instance().data.keywordToDelete?.label
+
   Template.deleteKeywordModal.events
     'click #confirm-delete-keyword': (event) ->
       keywordId = event.target.getAttribute('data-keyword-id')
