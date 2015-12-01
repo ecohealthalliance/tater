@@ -106,6 +106,8 @@ if Meteor.isServer
     given header or does not exist.""")
 
   _validateKeywordProperties = (keywordProps) ->
+    if not keywordProps.label
+      throw new Meteor.Error('Keyword is empty')
     if not keywordProps.headerId
       throw new Meteor.Error('Header is required')
     if not keywordProps.subHeaderId
@@ -131,7 +133,7 @@ if Meteor.isServer
           label: keywordProps.label?.trim()
 
         if _validateKeywordProperties(_keywordProps)
-          color = CodingKeywords.findOne({header: _keywordProps.headerId})?.color
+          color = Headers.findOne({headerId: _keywordProps.headerId})?.color
           keywordProps.color = color or 1
           CodingKeywords.insert _keywordProps
       else
