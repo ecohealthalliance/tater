@@ -6,7 +6,10 @@ do ->
   module.exports = ->
 
     @Given /^there is a coding keyword with header "([^"]*)" in the database$/, (header) ->
-      @server.call('createCodingKeyword', header, "Test Subheader", "Test Keyword", 1)
+      @server.call('createCodingKeyword', header, "Test Sub-Header", "Test Keyword", 1)
+
+    @Given /^there is a coding keyword with header "([^"]*)" and sub\-header "([^"]*)" in the database$/, (header, subHeader) ->
+      @server.call('createCodingKeyword', header, subHeader, "Test Keyword", 1)
 
     @Given /^there is a coding keyword with header "([^"]*)", sub-header "([^"]*)" and keyword "([^"]*)" in the database$/, (header, subHeader, keyword) ->
       @server.call('createCodingKeyword', header, subHeader, keyword, 1)
@@ -26,6 +29,21 @@ do ->
         .waitForVisible('.code-search')
         .setValue('.code-search', search)
         .waitForExist('.filteredCodes')
+
+    @Then /^I should see (\d+) keywords$/, (number) ->
+      @client
+        .waitForExist('.level-3', assert.ifError)
+        .elements '.code-level-3', (error, elements) ->
+          assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
+
+    @When 'I delete a keyword', () ->
+      @client
+        .waitForVisible('.level-3')
+        .click('.fa-trash-o')
+        .waitForVisible('#confirm-delete-keyword-modal')
+        .click('#confirm-delete-keyword')
+        .waitForVisible('.toast-message')
+
 
     @Then /^I should( not)? see coding keyword search results$/, (noResults) ->
       @browser

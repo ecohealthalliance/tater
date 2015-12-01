@@ -175,6 +175,14 @@ checkMark(center=false)
 
 .code-keywords
   padding-left 10px
+  
+.delete-keyword-button
+  centerVertically()
+  right 20px
+  font-size 1.5em
+  color $m-gray
+  &:hover
+    color $delete
 
 .code-keyword
   font-size 13px
@@ -269,6 +277,7 @@ checkMark(center=false)
   margin 50px 0 0 0
   padding-bottom 50px
   li
+    position:relative
     padding 10px
     &
     &:last-of-type

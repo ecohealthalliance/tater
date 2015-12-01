@@ -8,6 +8,7 @@ if Meteor.isClient
     @selectedSubHeader = new ReactiveVar('')
     @selectedKeyword = new ReactiveVar('')
     @addingKeyword = new ReactiveVar(false)
+    @keywordToDelete = new ReactiveVar()
 
   Template.codingKeywords.helpers
     headers: () ->
@@ -39,6 +40,17 @@ if Meteor.isClient
     addingKeyword: ->
       Template.instance().addingKeyword.get()
 
+    keywordToDelete: ->
+      Template.instance().keywordToDelete.get()
+
+  setKeywords = (selectedSubHeader) ->
+    instance = Template.instance()
+    instance.selectedSubHeader.set(selectedSubHeader)
+    instance.keywords.remove({})
+    keywords = CodingKeywords.find({'subHeaderId': selectedSubHeader._id})
+    _.each keywords.fetch(), (keyword) ->
+      instance.keywords.insert keyword
+
   Template.codingKeywords.events
     'click .code-level-1': (event, instance) ->
       selectedHeaderId = event.currentTarget.getAttribute('data-id')
@@ -57,12 +69,16 @@ if Meteor.isClient
       selectedSubHeaderId = event.currentTarget.getAttribute('data-id')
       selectedSubHeader = SubHeaders.findOne(selectedSubHeaderId)
       if selectedSubHeader != instance.selectedSubHeader.get()
-        instance.selectedSubHeader.set(selectedSubHeader)
-        instance.selectedKeyword.set(null)
-        instance.keywords.remove({})
-        keywords = CodingKeywords.find({subHeaderId: selectedSubHeaderId})
-        _.each keywords.fetch(), (keyword) ->
-          instance.keywords.insert keyword
+        setKeywords(selectedSubHeader)
+
+    'click .delete-keyword-button': (event, instance) ->
+      keywordId = event.target.parentElement.getAttribute("data-keyword-id")
+      instance.keywordToDelete.set(CodingKeywords.findOne(keywordId))
+
+    'hidden.bs.modal #confirm-delete-keyword-modal': (event, instance) ->
+      # since we are using a collection that exists only for this controller for keywords 
+      # we need to rebind the keywords in order to get changes to show on the page after an update
+      setKeywords(instance.selectedSubHeader.get())
 
     'click .code-level-3': (event, instance) ->
       instance.selectedKeyword.set($(event.currentTarget).text())
