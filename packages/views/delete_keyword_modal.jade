@@ -7,7 +7,7 @@ template(name="deleteKeywordModal")
             i.fa.fa-times-circle
         .modal-body
           h3#keywordModal Confirmation
-          p Delete keyword?
+          p Delete keyword '#[span#keywordLabel]'?
         .modal-footer
           button.btn.btn-default(data-dismiss='modal' aria-hidden='true') Close
           button.btn.btn-danger#confirm-delete-keyword(data-dismiss='modal' aria-hidden='true') Delete

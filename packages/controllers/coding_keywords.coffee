@@ -38,7 +38,7 @@ if Meteor.isClient
     instance = Template.instance()
     instance.selectedSubHeader.set(selectedSubHeader)
     instance.keywords.remove({})
-    keywords = CodingKeywords.find({'subHeaderId': selectedSubHeader._id})
+    keywords = CodingKeywords.find({'subHeaderId': selectedSubHeader._id, 'archived': {$ne: true}})
     _.each keywords.fetch(), (keyword) ->
       instance.keywords.insert keyword
 
@@ -63,7 +63,9 @@ if Meteor.isClient
         setKeywords(selectedSubHeader)
 
     'click .delete-keyword-button': (event) ->
-      $('#confirm-delete-keyword').attr("data-keyword-id", event.target.parentElement.getAttribute("data-keyword-id"))
+      keywordId = event.target.parentElement.getAttribute("data-keyword-id")
+      $('#keywordLabel').html(CodingKeywords.findOne(keywordId).label)
+      $('#confirm-delete-keyword').attr("data-keyword-id", keywordId)
 
     'hidden.bs.modal #confirm-delete-keyword-modal': (event, instance) ->
       # since we are using a collection that exists only for this controller for keywords 

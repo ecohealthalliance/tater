@@ -6,6 +6,7 @@ do ->
   module.exports = ->
 
     url = require('url')
+    _test_document = {title: "Test Document", body: "This is a doc for testing", _id: "fakedocumentid"}
 
     @Before (callback) ->
       @server.call('reset')
@@ -21,6 +22,17 @@ do ->
 
     @Given /^there is a group in the database/, ->
       @server.call('createTestGroup')
+
+    @Given 'there is a test document in the database', ->
+      @server.call('createTestDocument', _test_document)
+
+    @Given /^there is an annotation with codingKeyword header "([^"]*)", subHeader "([^"]*)" and key "([^"]*)"$/, (header, subHeader, keyword) ->
+      that = @
+      @server
+        .call('createCodingKeyword', header, subHeader, keyword, 1)
+        .then (codeId) ->
+          that.server.call('createTestAnnotation', {codeId: codeId})
+          codeId
 
     @When "I log in as the test user", (callback) ->
       @client

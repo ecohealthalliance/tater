@@ -24,6 +24,11 @@ do ->
           .waitForVisible('.level-2')
           .click('.code-level-2')
 
+    @When /^I click the first document$/, (level) -> 
+      @browser
+        .waitForVisible('.document-list')
+        .click('.docment-title')
+
     @When 'I type "$search" in the coding keyword search', (search) ->
       @browser
         .waitForVisible('.code-search')
