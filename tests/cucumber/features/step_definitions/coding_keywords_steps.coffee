@@ -58,7 +58,7 @@ do ->
       @browser
         .waitForExist('.add-keyword')
         .click('.add-keyword')
- 
+
     @When 'I add the header "$header"', (header) ->
       @browser
         .waitForVisible('input[name="header"]')
@@ -73,3 +73,14 @@ do ->
         .pause(2000)
         .getHTML '.keyword-table tbody', (error, response) ->
           assert.ok(response.toString().match(text), "Text not found")
+
+    @When /^I click the add "([^"]*)" button$/, (level) ->
+      @browser
+        .waitForVisible(".add-#{level}")
+        .click(".add-#{level}")
+
+    @When /^I add the "([^"]*)" "([^"]*)"$/, (level, code) ->
+      @browser
+        .waitForVisible("input[name=#{level}]")
+        .setValue("input[name=#{level}]", code)
+        .submitForm("input[name=#{level}]")

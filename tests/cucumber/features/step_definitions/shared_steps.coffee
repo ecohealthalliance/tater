@@ -22,6 +22,9 @@ do ->
     @Given /^there is a group in the database/, ->
       @server.call('createTestGroup')
 
+    @Given 'there is a group in the database with id "$id"', (id)->
+      @server.call('createTestGroup', _id: id)
+
     @When "I log in as the test user", (callback) ->
       @client
         .url(url.resolve(process.env.ROOT_URL, '/'))
