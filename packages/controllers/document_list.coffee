@@ -2,6 +2,8 @@ DocumentListPages = new Meteor.Pagination Documents,
   perPage: 10,
   templateName: 'documentList'
   itemTemplate: 'document'
+  sort:
+    createdAt: -1
   availableSettings:
     perPage: true
     filters: true
@@ -54,4 +56,3 @@ if Meteor.isClient
   Template.document.helpers
     groupName: ->
       Template.instance().document.groupName()
-
