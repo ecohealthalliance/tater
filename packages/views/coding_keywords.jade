@@ -18,7 +18,7 @@ template(name="codingKeywords")
         +curtain
       .code-list-header
         h4 Sub-Headers
-        i.add-code.fa.fa-plus
+        i.add-code.fa.fa-plus(data-toggle="modal" data-target="#add-subheader-modal")
       .code-list-container
         if currentlySelectedHeader
           ul.code-list.list.list-unstyled.level-2
@@ -36,6 +36,21 @@ template(name="codingKeywords")
           ul.code-list.list.list-unstyled.level-3
             each keywords
               li.code.list-link.code-level-3.not-clickable= label
+
+  #add-subheader-modal.modal.fade(tabindex="-1" role="dialog")
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+            i.fa.fa-times-circle
+        .modal-body
+          form#new-subheader-form.clearfix
+            label Header: {{currentlySelectedHeader}}
+            label Sub-header
+              input.form-control(name="subHeader")
+            .modal-buttons
+              input.btn.btn-primary(type="submit" value="Add SubHeader")
+              input.btn.btn-default.cancel(type="button" value="Cancel" data-dismiss="modal")
 
 template(name="curtain")
   .curtain-white

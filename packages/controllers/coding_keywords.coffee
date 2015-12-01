@@ -61,3 +61,19 @@ if Meteor.isClient
 
     'click .code-level-3': (event, instance) ->
       instance.selectedKeyword.set($(event.currentTarget).text())
+
+    'submit #new-subheader-form': (event, instance) ->
+      event.preventDefault()
+      event.stopImmediatePropagation()
+      form = event.target
+      keywordProps =
+        header: instance.selectedHeader.get()
+        subHeader: form.subHeader.value
+
+      Meteor.call 'addKeyword', keywordProps, (error, response) ->
+        if error
+          toastr.error("Error: #{error.message}")
+        else
+          instance.subHeaders.insert keywordProps
+          toastr.success("Sub-Header added")
+          $('#add-subheader-modal').modal('hide')
