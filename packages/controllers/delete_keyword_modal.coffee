@@ -12,18 +12,17 @@ if Meteor.isClient
 if Meteor.isServer
   Meteor.methods
     deleteKeyword: (keywordId) ->
-      codingKeyword = CodingKeywords.findOne(keywordId)
-      timesUsed = Annotations.find
-        codeId: keywordId
-      .count()
-      if !codingKeyword
-        throw new Meteor.Error("Keyword does not exist.")
-      else if timesUsed > 0
-        throw new Meteor.Error("Keyword is in use - it cannot be deleted.")
+      user = Meteor.user()
+      if user?.admin
+        codingKeyword = CodingKeywords.findOne(keywordId)
+        timesUsed = Annotations.find
+          codeId: keywordId
+        .count()
+        if !codingKeyword
+          throw new Meteor.Error("Keyword does not exist.")
+        else if timesUsed > 0
+          throw new Meteor.Error("Keyword is in use - it cannot be deleted.")
+        else
+          CodingKeywords.remove codingKeyword._id
       else
-        CodingKeywords.remove codingKeyword._id
-        # This can be used when a keyword is already in use?
-        # CodingKeywords.update codingKeyword._id,
-        #   $set:
-        #     deleted: true
-
+        throw new Meteor.Error("Unauthorized")
