@@ -6,6 +6,7 @@ if Meteor.isClient
     @keywords = new Meteor.Collection(null)
     @selectedCodes = new ReactiveDict()
     @addingCode = new ReactiveDict()
+    @keywordToDelete = new ReactiveVar('')
 
   Template.codingKeywords.helpers
     headers: ->
@@ -37,6 +38,18 @@ if Meteor.isClient
     addingCode: (level) ->
       Template.instance().addingCode.get(level)
 
+    keywordToDelete: ->
+      Template.instance().keywordToDelete.get()
+
+
+  setKeywords = (selectedSubHeaderId) ->
+    instance = Template.instance()
+    #instance.selectedCodes.set('subHeaderId', selectedSubHeaderId)
+    instance.keywords.remove({})
+    keywords = CodingKeywords.find({'subHeaderId': selectedSubHeaderId})
+    _.each keywords.fetch(), (keyword) ->
+      instance.keywords.insert keyword
+
   Template.codingKeywords.events
     'click .code-level-1': (event, instance) ->
       selectedHeaderId = event.currentTarget.getAttribute('data-id')
@@ -54,9 +67,10 @@ if Meteor.isClient
 
     'click .code-level-2': (event, instance) ->
       selectedSubHeaderId = event.currentTarget.getAttribute('data-id')
+
       if selectedSubHeaderId != instance.selectedCodes.get('subHeaderId')
         instance.selectedCodes.set('subHeaderId', selectedSubHeaderId)
-        instance.selectedCodes.set('keywordsId', '')
+        instance.selectedCodes.set('keywordId', '')
         instance.keywords.remove({})
         instance.addingCode.set('keyword', false)
         keywords = CodingKeywords.find({subHeaderId: selectedSubHeaderId})
@@ -131,6 +145,15 @@ if Meteor.isClient
           toastr.success("Keyword added")
           form.keyword.value = ''
         form.keyword.focus()
+
+    'click .delete-keyword-button': (event, instance) ->
+      keywordId = event.target.parentElement.getAttribute("data-keyword-id")
+      instance.keywordToDelete.set(CodingKeywords.findOne(keywordId))
+
+    'hidden.bs.modal #confirm-delete-keyword-modal': (event, instance) ->
+      # since we are using a collection that exists only for this controller for keywords
+      # we need to rebind the keywords in order to get changes to show on the page after an update
+      setKeywords(instance.selectedCodes.get('subHeaderId'))
 
   Template.new_header_form.onRendered ->
     @$("input").focus()
