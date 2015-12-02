@@ -1,4 +1,10 @@
 if Meteor.isClient
+  Template.deleteKeywordModal.helpers
+    keywordId: ->
+      Template.instance().data.keywordToDelete?._id
+
+    keywordLabel: ->
+      Template.instance().data.keywordToDelete?.label
 
   Template.deleteKeywordModal.events
     'click #confirm-delete-keyword': (event) ->
@@ -12,7 +18,8 @@ if Meteor.isClient
 if Meteor.isServer
   Meteor.methods
     deleteKeyword: (keywordId) ->
-      if Meteor.users.findOne(@userId)?.admin
+      user = Meteor.user()
+      if user?.admin
         codingKeyword = CodingKeywords.findOne(keywordId)
         timesUsed = Annotations.find
           codeId: keywordId
@@ -27,5 +34,3 @@ if Meteor.isServer
           CodingKeywords.remove codingKeyword._id
       else
         throw new Meteor.Error("Only admins can delete keywords.")
-
-

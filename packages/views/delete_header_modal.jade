@@ -1,13 +1,13 @@
-template(name="deleteKeywordModal")
-  #confirm-delete-keyword-modal.modal.fade
+template(name="deleteHeaderModal")
+  #confirm-delete-header-modal.modal.fade
     .modal-dialog
       .modal-content
         .modal-header
           button(type="button" class="close" data-dismiss="modal" aria-label="Close")
             i.fa.fa-times-circle
         .modal-body
-          h3#keywordModal Confirmation
-          p Delete keyword #{keywordLabel}?
+          h3#headerModal Confirmation
+          p Delete header "{{headerToDelete.label}}"?
         .modal-footer
           button.btn.btn-default(data-dismiss='modal' aria-hidden='true') Close
-          button.btn.btn-danger#confirm-delete-keyword(data-dismiss='modal' aria-hidden='true' data-keyword-id=keywordId) Delete
+          button.btn.btn-danger#confirm-delete-header(data-dismiss='modal' aria-hidden='true') Delete

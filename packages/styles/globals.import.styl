@@ -27,7 +27,6 @@ h5
 
 .view-header
   margin-top -20px
-  margin-bottom 15px
   padding 20px 0
   border-bottom 2px solid $border-gray
   +below(2)
@@ -49,7 +48,7 @@ h5
 
 .view-header-search
   position absolute
-  top -90px
+  top -70px
   right 0
   margin 15px 0 0 0
   width 30%
@@ -203,6 +202,24 @@ a
 
 .pagination
   margin-top 0 !important
+  > .active
+    > a
+    > span
+    > a:hover
+    > span:hover
+    > a:focus
+    > span:focus
+      background-color $primary !important
+      border-color $primary !important
+  > li
+    > a
+    > span
+      color $primary
+    > a:hover
+    > span:hover
+    > a:focus
+    > span:focus
+      background-color $background-secondary !important
 
 // Overide the default spinner of the alethes:pages package to make spinners consistent
 .pagesLoadingDefaultCont

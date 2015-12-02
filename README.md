@@ -22,3 +22,13 @@ Then run `./scripts/restore_database`
 
 ## Setting up a default user for an empty database
 In the browser console, run `Meteor.call('createDefaultUser', YOUR_USERNAME, YOUR_PASSWORD)`
+
+## Building the docker image, and running the container
+Build the app with the shell script  
+`./build.sh`
+
+Build the docker image  
+`docker build -t tater .`
+
+Run the newly built image  
+`docker run --restart=always -e MONGO_URL=mongodb://<ip address>:<port>/<database name> -e ROOT_URL=http://<ip or FQDN> -e PORT=80 -p 80:80 --name tater tater`

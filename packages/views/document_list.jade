@@ -3,12 +3,14 @@ template(name="documentList")
     .form-group
       i.fa.fa-search
       input.form-control.document-search(placeholder="Search Documents")
-  if thereAreDocuments
+  .document-list-container
+    if noDocumentsFound
+      .no-results.space-top-3
+        i.fa.fa-search
+        .no-documents-found.centered Sorry, no documents found.
     ul.list.document-list.list-unstyled
       +pages
     +pagesNav
-  else
-    p No documents have been uploaded that you have access to.
   +deleteDocumentModal
 
 template(name="document")

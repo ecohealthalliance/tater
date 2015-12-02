@@ -8,12 +8,12 @@ do ->
     url = require('url')
 
     @Given /^there is a( code-accessible)? test group in the database$/, (codeAccessible) ->
-      @server.call('createTestGroup', codeAccessible)
+      @server.call('createTestGroup', codeAccessible: Boolean(codeAccessible))
 
     @When "I click the new group link", (callback) ->
       @browser
         .waitForExist('.groups-table')
-        .click('.new-group-link', assert.ifError)
+        .click('.new-group-link')
         .waitForExist('#new-group-form')
         .call(callback)
 
@@ -24,19 +24,22 @@ do ->
         .setValue('#group-description', 'This is an group.')
       if codeAccessible
         @browser.click('#group-code-accessible')
-      @browser.submitForm('#new-group-form', assert.ifError)
+      @browser.submitForm('#new-group-form')
 
-    @When /^I click on the group link$/, (callback) ->
+
+    @When "I click on the test group", ->
       @browser
-        .waitForExist('.group-list', assert.ifError)
-        .click(".group-list a.list-link", assert.ifError)
-        .waitForVisible('.documents', assert.ifError)
-        .call(callback)
+        .waitForExist('.groups-table')
+        .click('span.group-detail')
+
+    @Then "I should be on the test group document page", ->
+      @browser
+        .waitForExist('.documents')
 
     @When /^I navigate to the test group page$/, (callback) ->
       @browser
         .url(url.resolve(process.env.ROOT_URL, "/groups/fakegroupid"))
-        .waitForExist('.group-detail', assert.ifError)
+        .waitForExist('.group-detail')
         .call(callback)
 
     @Then /^I should be on the test group page$/, (callback) ->

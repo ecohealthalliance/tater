@@ -33,6 +33,9 @@ do ->
         .then (codeId) ->
           that.server.call('createTestAnnotation', {codeId: codeId})
           codeId
+          
+    @Given 'there is a group in the database with id "$id"', (id)->
+      @server.call('createTestGroup', _id: id)
 
     @When "I log in as the test user", (callback) ->
       @client
@@ -87,6 +90,10 @@ do ->
             assert.ifError(error)
             assert.ok(match)
         ).call(callback)
+
+    @Then 'I should see an error toast', ->
+      @browser
+        .waitForVisible '.toast-error'
 
     @Then /^I should( not)? see content "([^"]*)"$/, (shouldNot, text, callback) ->
       @client

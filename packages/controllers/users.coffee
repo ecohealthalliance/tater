@@ -68,7 +68,7 @@ if Meteor.isClient
         instance.userToDeleteId.set(null)
         instance.userToDeleteEmail.set(null)
 
-    'click .users-table .reactive-table tr': ->
+    'click .users-table .reactive-table tbody tr': ->
       profileId = UserProfiles.findOne({userId: @_id})._id
       go 'profileDetail', {_id: profileId}
 
