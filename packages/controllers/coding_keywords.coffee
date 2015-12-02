@@ -4,7 +4,6 @@ if Meteor.isClient
     @subscribe('archivedCodingKeywords')
     @subHeaders = new Meteor.Collection(null)
     @keywords = new Meteor.Collection(null)
-    @subHeaders = new Meteor.Collection(null)
     @selectedCodes = new ReactiveDict()
     @addingCode = new ReactiveDict()
     @keywordToDelete = new ReactiveVar()
