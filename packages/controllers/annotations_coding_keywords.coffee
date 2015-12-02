@@ -86,7 +86,7 @@ if Meteor.isClient
         _.filter keywords, (keyword) =>
           keyword?.subHeaderId == subHeaderId
       else
-        CodingKeywords.find({subHeaderId: subHeaderId, archived: {$ne: true}})
+        CodingKeywords.find({subHeaderId: subHeaderId})
 
     selectedHeader: (codeId) ->
       if Template.instance().data.selectedHeaders?.findOne(@_id)

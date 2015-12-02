@@ -36,14 +36,14 @@ if Meteor.isClient
     @autorun ->
       annotations = Annotations.find({documentId: instance.data.documentId}, sort: {startOffset: 1, _id: 0})
       annotations = _.filter annotations.fetch(), (annotation) ->
-        CodingKeywords.findOne({_id: annotation.codeId, archived: {$ne: true}})
+        CodingKeywords.findOne({_id: annotation.codeId})
 
       if instance.searchText.get() is ''
         instance.annotations.set annotations
       else
         searchText = instance.searchText.get().split(' ')
         filteredAnnotations = _.filter annotations, (annotation) ->
-          code = CodingKeywords.findOne({_id: annotation.codeId, archived: {$ne: true}})
+          code = CodingKeywords.findOne({_id: annotation.codeId})
           wordMatches = _.filter searchText, (word) ->
             word = new RegExp(word, 'i')
             code.headerLabel()?.match(word) or code.subHeaderLabel()?.match(word) or code.label?.match(word)
