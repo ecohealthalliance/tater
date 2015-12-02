@@ -26,10 +26,11 @@ do ->
         @browser.click('#group-code-accessible')
       @browser.submitForm('#new-group-form')
 
+
     @When "I click on the test group", ->
       @browser
-        .waitForVisible('.groups-table')
-        .click('.groups-table .reactive-table tr')
+        .waitForExist('.groups-table')
+        .click('span.group-detail')
 
     @Then "I should be on the test group document page", ->
       @browser
