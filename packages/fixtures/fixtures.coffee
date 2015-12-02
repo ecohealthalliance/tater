@@ -10,6 +10,8 @@ do ->
       Groups.remove({})
       Documents.remove({})
       Annotations.remove({})
+      Headers.remove({})
+      SubHeaders.remove({})
       CodingKeywords.remove({})
 
     'createTestUser': (attributes) ->
@@ -19,14 +21,15 @@ do ->
         password: attributes.password
       Meteor.users.update({_id: account}, {$set: {admin: true}})
 
-    'createTestGroup': (codeAccessible) ->
+    'createTestGroup': (attributes) ->
+      attributes ?= {}
+      attributes.name ?= "Test Group"
+      attributes.description ?= "Test Description"
+      attributes.createdById ?= Meteor.users.findOne()._id
+      attributes._id ?= "fakegroupid"
+      Groups.remove({_id: attributes._id})
       group = new Group()
-      group.set
-        name: "Test Group"
-        description: "Test Description"
-        createdById: userId
-        _id: "fakegroupid"
-        codeAccessible: codeAccessible
+      group.set(attributes)
       group.save()
 
     'createProfile': (field, value, id) ->
@@ -53,5 +56,12 @@ do ->
       annotation.set(attributes)
       annotation.save()
 
-    'createCodingKeyword': (attributes) ->
-      CodingKeywords.insert(attributes)
+    'createCodingKeyword': (header, subHeader, keyword, color) ->
+      headerDoc = Headers.findOne({label: header})
+      headerId = if headerDoc then headerDoc._id else Headers.insert({label: header, color: 1})
+
+      subHeaderDoc = SubHeaders.findOne({headerId: headerId, label: subHeader})
+      subHeaderId = if subHeaderDoc then subHeaderDoc._id else SubHeaders.insert({headerId: headerId, label: subHeader})
+
+      keywordId = CodingKeywords.insert(subHeaderId: subHeaderId, label: keyword)
+

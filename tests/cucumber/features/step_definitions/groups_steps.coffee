@@ -8,7 +8,7 @@ do ->
     url = require('url')
 
     @Given /^there is a( code-accessible)? test group in the database$/, (codeAccessible) ->
-      @server.call('createTestGroup', codeAccessible)
+      @server.call('createTestGroup', codeAccessible: Boolean(codeAccessible))
 
     @When "I click the new group link", (callback) ->
       @browser

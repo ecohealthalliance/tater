@@ -10,6 +10,9 @@ do ->
     @Before (callback) ->
       @server.call('reset')
       @client.url(url.resolve(process.env.ROOT_URL, '/'), callback)
+      @client.execute( ->
+          Meteor.logout()
+        );
 
     _testUser = {email: 'test@example.com', password: 'password'}
 
@@ -19,19 +22,25 @@ do ->
     @Given /^there is a group in the database/, ->
       @server.call('createTestGroup')
 
+    @Given 'there is a group in the database with id "$id"', (id)->
+      @server.call('createTestGroup', _id: id)
+
     @When "I log in as the test user", (callback) ->
       @client
         .url(url.resolve(process.env.ROOT_URL, '/'))
+        .waitForExist('.sign-in')
         .click('.sign-in', assert.ifError)
-        .setValue('#at-field-email', _testUser.email)
-        .setValue('#at-field-password', _testUser.password)
-        .submitForm('#at-field-email', assert.ifError)
+        .waitForVisible('.modal-content')
+        .setValue('.accounts-modal #at-field-email', _testUser.email)
+        .setValue('.accounts-modal #at-field-password', _testUser.password)
+        .submitForm('.accounts-modal #at-field-email', assert.ifError)
         .waitForExist('.sign-out')
         .call(callback)
 
     @When "I log in as the non-admin test group user", (callback) ->
       @client
         .url(url.resolve(process.env.ROOT_URL, '/'))
+        .waitForExist('.sign-in')
         .click('.sign-in', assert.ifError)
         .setValue('#at-field-email', _nonAdminTestUser.email)
         .setValue('#at-field-password', _nonAdminTestUser.password)
@@ -69,6 +78,10 @@ do ->
             assert.ifError(error)
             assert.ok(match)
         ).call(callback)
+
+    @Then 'I should see an error toast', ->
+      @browser
+        .waitForVisible '.toast-error'
 
     @Then /^I should( not)? see content "([^"]*)"$/, (shouldNot, text, callback) ->
       @client

@@ -33,11 +33,6 @@ checkMark(center=false)
       color $m-gray
 
 .coding
-  .code-header
-  .code-sub-header
-    checkMark()
-
-.coding
   .code-keyword
     checkMark(true)
 
@@ -82,9 +77,6 @@ checkMark(center=false)
   button
     makeButton(darken($background-secondary, 10%), black, true, true)
 
-.selectable-code
-  cursor pointer
-
 .code-header
   margin-bottom 5px
   font-size 18px
@@ -96,27 +88,15 @@ checkMark(center=false)
     margin-left 35px
     overflow hidden
     text-overflow ellipsis
-  .icon
-    width 25px
-    position absolute
-    left 5px
-    top 5px
-    &::before
-      display block
-      text-align center
   .header-name
     display block
-    padding-left 28px
+    padding-left 5px
   for $color, $index in $annotation-colors
     &.code-header-{$index+1}
-      &.highlighted
-        > span
-          background-color $color
       &.selectable
         > span
           &.selectable-code
             &:hover
-              background-color $color
               transition .2s ease-in-out
             &.selected
               background-color $color
@@ -124,24 +104,23 @@ checkMark(center=false)
           color darken($color, 10%)
           &:hover
             color darken(@color, 10%)
-      &:hover
-        &:after
-          color darken($color, 40%)
+        &:hover
+          &:after
+            color darken($color, 40%)
+
       .code-sub-header
         &.selectable
           > span
-            padding-left 5px
+            padding-left 6px
             background-color transparent
             transition .1s ease-in-out
             &.selectable-code
               &.showing
                 transition .1s ease-in-out
-                background lighten($color, 10%)
                 &:after
                   color darken($color, 20%)
                   centerVertically()
               &:hover
-                background-color $color
                 transition .2s ease-in-out
             &.selected
               background-color $color
@@ -152,7 +131,6 @@ checkMark(center=false)
         &:hover
           &:after
             color darken($color, 20%)
-          > span
             &:after
               color darken($color, 30%)
               top 2px
@@ -161,8 +139,11 @@ checkMark(center=false)
           > span
             border-bottom 1px solid lighten($color, 80%)
             transition .1s ease-in-out
+            &:last-of-type
+              border 0
           &.selectable
             > span
+              pointer()
               &:hover
                 background-color lighten($color, 20%)
                 transition .1s ease-in-out
@@ -173,7 +154,6 @@ checkMark(center=false)
               &::after
                 centerVertically()
                 color darken($color, 20%)
-
 
 .code-sub-headers
 .code-keywords
@@ -195,6 +175,17 @@ checkMark(center=false)
 
 .code-keywords
   padding-left 10px
+  
+.delete-keyword-button, .delete-subheader-button, .delete-header-button
+  centerVertically()
+  right 20px
+  font-size 1.5em
+  color $m-gray
+  &:hover
+    color $delete
+
+.delete-subheader-button, .delete-header-button
+  right 40px
 
 .code-keyword
   font-size 13px
@@ -242,10 +233,12 @@ checkMark(center=false)
 // Management
 
 .code-management-container
-  min-height 600px
-  padding 0
+  position relative
+  min-height 700px
   border 1px solid $m-gray
-  border-radius 3px
+  border-top 0
+  border-bottom-right-radius 3px
+  border-bottom-left-radius 3px
   overflow hidden
 
 .code-list-header
@@ -257,7 +250,7 @@ checkMark(center=false)
   right 0
   padding 10px
   background $sub-header-BG
-  border-bottom 1px solid lighten($primary-light, 60%)
+  border-bottom 2px solid lighten($primary-light, 60%)
   .add-code
     centerVertically(true)
     pointer()
@@ -268,11 +261,9 @@ checkMark(center=false)
       color $secondary
 
 .code-list-wrap
-  float left
   position relative
-  width 33.33%
-  min-height 600px
-  border-right 1px solid $m-gray
+  min-height 700px
+  border-right 1px solid lighten($primary-light, 60%)
   &:last-of-type
     border-right 0
 
@@ -280,18 +271,23 @@ checkMark(center=false)
   margin-bottom 0
 
 .code-list-container
-  overflow-x scroll
+  overflow-x auto
   position absolute
   top 0
   bottom 0
   left 0
   right 0
-  padding 50px 0 75px 0
+  margin 50px 0 0 0
+  padding-bottom 50px
   li
+    position:relative
     padding 10px
-    border-bottom 1px solid lighten($l-gray, 20%)
+    &
+    &:last-of-type
+      border-bottom 1px solid lighten($l-gray, 20%)
     &.selected
       background lighten($background-secondary, 20%)
+      font-weight bold
       &::after
         color $d-gray
     &::after
@@ -312,11 +308,25 @@ checkMark(center=false)
     &::after
       content ''
 
-.code-details
-  min-height 60px
-  padding 15px
-  background alpha($sub-header-BG, 80%)
-  position absolute
-  bottom 0
-  left 0
-  right 0
+.adding-code
+  padding 15px 10px
+  position relative
+  background $sub-header-BG
+  border-bottom 1px solid lighten($primary-light, 60%)
+  input
+    margin 0 0 10px 0
+  .add
+    width 75%
+    float left
+
+  .cancel
+    width 23%
+    float right
+
+  .close
+    @extend .icon
+    position absolute
+    right 5px
+    top 5px
+    content '\f00d'
+

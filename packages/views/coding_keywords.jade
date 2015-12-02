@@ -4,38 +4,60 @@ template(name="codingKeywords")
       h1 Code Management
 
   .container.code-management-container
-    .code-list-wrap
-      .code-list-header
-        h4 Headers
-        i.add-code.fa.fa-plus
-      .code-list-container
-        ul.code-list.list.list-unstyled.level-1
-          each headers
-            li.code.list-link.code-level-1(class="{{selected 'header'}}")= header
-
-    .code-list-wrap
-      unless currentlySelectedHeader
-        +curtain
-      .code-list-header
-        h4 Sub-Headers
-        i.add-code.fa.fa-plus
-      .code-list-container
-        if currentlySelectedHeader
-          ul.code-list.list.list-unstyled.level-2
-            each subHeaders
-              li.code.list-link.code-level-2(class="{{selected 'subHeader'}}")= subHeader
-
-    .code-list-wrap
-      unless currentlySelectedSubHeader
-        +curtain
-      .code-list-header
-        h4 Keywords
-        i.add-code.fa.fa-plus
-      .code-list-container
-        if currentlySelectedSubHeader
-          ul.code-list.list.list-unstyled.level-3
-            each keywords
-              li.code.list-link.code-level-3.not-clickable= keyword
+    if Template.subscriptionsReady
+      .row
+        .code-list-wrap.col-sm-4
+          .code-list-header
+            h4 Headers
+            i.add-code.fa.fa-plus
+          .code-list-container
+            ul.code-list.list.list-unstyled.level-1
+              each headers
+                li.code.list-link.code-level-1(class="{{selected 'header'}}" data-id=_id)
+                  span= label
+                  button.btn-plain.delete-header-button(data-toggle="modal" data-header-id=_id data-target="#confirm-delete-header-modal")
+                    i.fa.fa-trash-o
+            +deleteHeaderModal(headerToDelete=headerToDelete)
+        .code-list-wrap.col-sm-4
+          unless currentlySelectedHeader
+            +curtain
+          .code-list-header
+            h4 Sub-Headers
+            i.add-code.fa.fa-plus
+          .code-list-container
+            if currentlySelectedHeader
+              ul.code-list.list.list-unstyled.level-2
+                each subHeaders
+                  li.code.list-link.code-level-2(class="{{selected 'subHeader'}}" data-id=_id)
+                    span= label
+                    button.btn-plain.delete-subheader-button(data-toggle="modal" data-subheader-id=_id data-target="#confirm-delete-subheader-modal")
+                      i.fa.fa-trash-o
+            +deleteSubHeaderModal(subHeaderToDelete=subHeaderToDelete)
+        .code-list-wrap.col-sm-4
+          unless currentlySelectedSubHeader
+            +curtain
+          .code-list-header
+            h4 Keywords
+            unless addingKeyword
+              i.add-code.add-keyword.fa.fa-plus
+          .code-list-container
+            if currentlySelectedSubHeader
+              if addingKeyword
+                .adding-code.clearfix
+                  form(id="new-keyword-form")
+                    input.form-control.code(name="keyword" placeholder="Enter a keyword")
+                    button.add.btn.btn-primary.btn-block(type="submit") Add keyword
+                    button.cancel.btn.btn-default(type="button" class="cancel-keyword") Cancel
+              if keywords
+                ul.code-list.list.list-unstyled.level-3
+                  each keywords
+                    li.code.list-link.code-level-3.not-clickable
+                      span= label
+                      button.btn-plain.delete-keyword-button(data-toggle="modal" data-keyword-id=_id data-target="#confirm-delete-keyword-modal" )
+                        i.fa.fa-trash-o
+                +deleteKeywordModal(keywordToDelete=keywordToDelete)
+    else
+      .loading
 
 template(name="curtain")
   .curtain-white
