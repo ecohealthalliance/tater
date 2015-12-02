@@ -8,7 +8,7 @@ if Meteor.isClient
       Groups.find()
 
     group: () ->
-      Template.instance().data.group.get()
+      Groups.findOne(Template.instance().data.group.get())
 
   Template.userForm.events
 
