@@ -12,7 +12,7 @@ do ->
 
     @When "I click the new group link", (callback) ->
       @browser
-        .waitForExist('.groups-table')
+        .waitForExist('.new-group-link')
         .click('.new-group-link', assert.ifError)
         .waitForExist('#new-group-form')
         .call(callback)

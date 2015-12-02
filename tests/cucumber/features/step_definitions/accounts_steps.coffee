@@ -42,7 +42,7 @@ do ->
     @When "I hide my email address from my profile", (callback) ->
       @browser
         .url(url.resolve(process.env.ROOT_URL, '/profile/edit'))
-        .waitForExist('#profile-edit-form')
+        .waitForExist('#edit-profile-form')
         .click("#profile-email-hidden")
         .submitForm('#profile-fullname', assert.ifError)
         .call(callback)
@@ -50,7 +50,7 @@ do ->
     @When /^I fill out the profile edit form with fullName "([^"]*)"$/, (fullName, callback) ->
       @browser
         .url(url.resolve(process.env.ROOT_URL, '/profile/edit'))
-        .waitForExist('#profile-edit-form')
+        .waitForExist('#edit-profile-form')
         .setValue('#profile-fullname', fullName)
         .setValue('#profile-jobtitle', 'User Tester')
         .setValue('#profile-bio', 'I am a test user')
@@ -60,7 +60,7 @@ do ->
     @When /^I view my public profile$/, (callback) ->
       @browser
         .url(url.resolve(process.env.ROOT_URL, '/profile/edit'))
-        .waitForExist('#profile-edit-form')
+        .waitForExist('#edit-profile-form')
         .click('.profile-detail-link')
         .waitForExist('.profile-detail')
         .call(callback)
@@ -147,7 +147,7 @@ do ->
     @When 'I open the change password modal', (callback) ->
       @browser
         .click('nav .admin-settings', assert.ifError)
-        .waitForExist('nav .admin-settings .dropdown-menu')
+        .waitForVisible('.dropdown-menu')
         .click('.dropdown-menu .change-password', assert.ifError)
         .waitForExist('.accounts-modal.modal.in')
         .call(callback)

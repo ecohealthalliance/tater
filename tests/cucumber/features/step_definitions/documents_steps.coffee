@@ -64,7 +64,7 @@ do ->
 
     @When /^I confirm the document deletion/, ->
       @browser
-        .waitForExist('#confirm-delete-document-modal', assert.ifError)
+        .waitForVisible('#confirm-delete-document-modal', assert.ifError)
         .click("#confirm-delete-document", assert.ifError)
 
     @When /^I fill out the new document form with title "([^"]*)"( and select the test group)?$/, (title, selectGroup) ->
@@ -153,4 +153,3 @@ do ->
         .getHTML '.document-list', (error, response) ->
           match = response.toString().match(documentName)
           assert.ok(match)
-

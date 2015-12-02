@@ -87,7 +87,7 @@ if Meteor.isClient
       instance.headerToDelete.set(Headers.findOne(headerId))
 
     'hidden.bs.modal .modal': (event, instance) ->
-      # since we are using a collection that exists only for this controller for keywords 
+      # since we are using a collection that exists only for this controller for keywords
       # we need to rebind the keywords in order to get changes to show on the page after an update
       setKeywords(instance.selectedSubHeader.get())
 

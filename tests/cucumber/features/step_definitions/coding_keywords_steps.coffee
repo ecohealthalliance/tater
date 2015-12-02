@@ -28,7 +28,6 @@ do ->
       @browser
         .waitForVisible('.code-search')
         .setValue('.code-search', search)
-        .waitForExist('.filteredCodes')
 
     @Then /^I should see (\d+) keywords$/, (number) ->
       @client
@@ -50,7 +49,9 @@ do ->
 
     @When 'I delete a keyword', () ->
       @client
+        .click('.close')
         .waitForVisible('.level-3')
+        .pause(2000)
         .click('.level-3 .fa-trash-o')
         .waitForVisible('#confirm-delete-keyword-modal')
         .click('#confirm-delete-keyword')
@@ -60,7 +61,9 @@ do ->
 
     @When 'I delete a sub-header', () ->
       @client
+        .click('.close')
         .waitForVisible('.level-2')
+        .pause(2000)
         .click('.level-2 .fa-trash-o')
         .waitForVisible('#confirm-delete-subheader-modal')
         .click('#confirm-delete-subheader')
@@ -69,7 +72,9 @@ do ->
 
     @When 'I delete a header', () ->
       @client
+        .click('.close')
         .waitForVisible('.level-1')
+        .pause(2000)
         .click('.level-1 .fa-trash-o')
         .waitForVisible('#confirm-delete-header-modal')
         .click('#confirm-delete-header')
