@@ -28,7 +28,8 @@ Feature: Coding Keywords
     And I delete a header
     Then I should see an error toast
     When I delete a sub-header
-    And I delete a header
+    Then I should see 0 sub-headers
+    When I delete a header
     Then I should see 0 headers
 
   @codingKeywords
