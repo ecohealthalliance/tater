@@ -176,13 +176,16 @@ checkMark(center=false)
 .code-keywords
   padding-left 10px
   
-.delete-keyword-button
+.delete-keyword-button, .delete-subheader-button, .delete-header-button
   centerVertically()
   right 20px
   font-size 1.5em
   color $m-gray
   &:hover
     color $delete
+
+.delete-subheader-button, .delete-header-button
+  right 40px
 
 .code-keyword
   font-size 13px

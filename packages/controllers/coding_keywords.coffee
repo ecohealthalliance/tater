@@ -2,18 +2,20 @@ if Meteor.isClient
 
   Template.codingKeywords.onCreated ->
     @subscribe('codingKeywords')
-    @subHeaders = new Meteor.Collection(null)
     @keywords = new Meteor.Collection(null)
+    @subHeaders = new Meteor.Collection(null)
     @selectedCodes = new ReactiveDict()
     @addingCode = new ReactiveDict()
-    @keywordToDelete = new ReactiveVar('')
+    @keywordToDelete = new ReactiveVar()
+    @subHeaderToDelete = new ReactiveVar()
+    @headerToDelete = new ReactiveVar()
 
   Template.codingKeywords.helpers
     headers: ->
       Headers.find()
 
     subHeaders: ->
-      Template.instance().subHeaders.find()
+      SubHeaders.find(headerId: Template.instance().selectedCodes.get('headerId'))
 
     keywords: ->
       Template.instance().keywords.find()
@@ -41,10 +43,15 @@ if Meteor.isClient
     keywordToDelete: ->
       Template.instance().keywordToDelete.get()
 
+    subHeaderToDelete: ->
+      Template.instance().subHeaderToDelete.get()
+
+    headerToDelete: ->
+      Template.instance().headerToDelete.get()
+
 
   setKeywords = (selectedSubHeaderId) ->
     instance = Template.instance()
-    #instance.selectedCodes.set('subHeaderId', selectedSubHeaderId)
     instance.keywords.remove({})
     keywords = CodingKeywords.find({'subHeaderId': selectedSubHeaderId})
     _.each keywords.fetch(), (keyword) ->
@@ -55,8 +62,8 @@ if Meteor.isClient
       selectedHeaderId = event.currentTarget.getAttribute('data-id')
       if selectedHeaderId != instance.selectedCodes.get('headerId')
         instance.selectedCodes.set('headerId', selectedHeaderId)
-        instance.selectedCodes.set('subHeaderId', '')
-        instance.selectedCodes.set('keywordId', '')
+        instance.selectedCodes.set('subHeaderId', null)
+        instance.selectedCodes.set('keywordId', null)
         instance.subHeaders.remove({})
         instance.keywords.remove({})
         instance.addingCode.set('keyword', false)
@@ -83,6 +90,19 @@ if Meteor.isClient
     'click .add-code': (event, instance) ->
       level = $(event.target).data('level')
       instance.addingCode.set(level, not instance.addingCode.get(level))
+
+    'click .delete-subheader-button': (event, instance) ->
+      subHeaderId = event.target.parentElement.getAttribute("data-subheader-id")
+      instance.subHeaderToDelete.set(SubHeaders.findOne(subHeaderId))
+
+    'click .delete-header-button': (event, instance) ->
+      headerId = event.target.parentElement.getAttribute("data-header-id")
+      instance.headerToDelete.set(Headers.findOne(headerId))
+
+    'hidden.bs.modal .modal': (event, instance) ->
+      # since we are using a collection that exists only for this controller for keywords
+      # we need to rebind the keywords in order to get changes to show on the page after an update
+      setKeywords(instance.selectedCodes.get('subHeaderId'))
 
     'click .adding-code .cancel': (event, instance) ->
       level = $(event.target).data('level')
