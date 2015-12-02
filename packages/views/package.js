@@ -15,6 +15,7 @@ Package.onUse(function(api) {
   api.use('aslagle:reactive-table');
   api.addFiles('delete_document_modal.jade');
   api.addFiles('delete_keyword_modal.jade');
+  api.addFiles('delete_subheader_modal.jade');
   api.addFiles('accounts_modal.jade');
   api.addFiles('accounts_header_buttons.jade');
   api.addFiles('splash_page.jade', 'client');
