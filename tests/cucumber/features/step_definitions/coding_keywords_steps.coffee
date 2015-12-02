@@ -29,12 +29,6 @@ do ->
         .waitForVisible('.document-list')
         .click('.document a')
 
-    # @Then /^I should see (\d+) keywords$/, (number) ->
-    #   @browser
-    #     .waitForVisible('.selectable-code')
-    #     .elements ".code-keyword", (error, elements) ->
-    #       assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
-
     @When 'I type "$search" in the coding keyword search', (search) ->
       @browser
         .waitForVisible('.code-search')
@@ -69,14 +63,12 @@ do ->
 
     @Then /^I should( not)? see coding keyword search results$/, (noResults) ->
       @browser
-        .waitForExist('.annotations')
-        .getHTML '.annotations', (error, response) ->
-          console.log "response: ", response
+        .waitForExist('.code-list')
+        .getHTML '.code-list', (error, response) ->
           if noResults
-            console.log "response: ", response
-            assert.notOk(response.toString().match('data-annotation-id'), "Results found")
+            assert.notOk(response.toString().match('selectable-code'), "Results found")
           else
-            assert.ok(response.toString().match('data-annotation-id'), "No results found")
+            assert.ok(response.toString().match('selectable-code'), "No results found")
 
     @When "I click the Add Keyword button", ->
       @browser
