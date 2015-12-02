@@ -13,8 +13,11 @@ template(name="codingKeywords")
           .code-list-container
             ul.code-list.list.list-unstyled.level-1
               each headers
-                li.code.list-link.code-level-1(class="{{selected 'header'}}" data-id="{{_id}}")= label
-
+                li.code.list-link.code-level-1(class="{{selected 'header'}}" data-id=_id)
+                  span= label
+                  button.btn-plain.delete-header-button(data-toggle="modal" data-header-id=_id data-target="#confirm-delete-header-modal")
+                    i.fa.fa-trash-o
+            +deleteHeaderModal(headerToDelete=headerToDelete)
         .code-list-wrap.col-sm-4
           unless currentlySelectedHeader
             +curtain

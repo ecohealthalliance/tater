@@ -27,6 +27,7 @@ Package.onUse(function(api) {
   api.addFiles('delete_document_modal.coffee', ['client', 'server']);
   api.addFiles('delete_keyword_modal.coffee', ['client', 'server']);
   api.addFiles('delete_subheader_modal.coffee', ['client', 'server']);
+  api.addFiles('delete_header_modal.coffee', ['client', 'server']);
   api.addFiles('toastr.coffee', 'client');
   api.addFiles('header.coffee', 'client');
   api.addFiles('accounts_modal.coffee', 'client');

@@ -9,6 +9,7 @@ if Meteor.isClient
     @addingKeyword = new ReactiveVar(false)
     @keywordToDelete = new ReactiveVar()
     @subHeaderToDelete = new ReactiveVar()
+    @headerToDelete = new ReactiveVar()
 
   Template.codingKeywords.helpers
     headers: () ->
@@ -46,6 +47,9 @@ if Meteor.isClient
     subHeaderToDelete: ->
       Template.instance().subHeaderToDelete.get()
 
+    headerToDelete: ->
+      Template.instance().headerToDelete.get()
+
   setKeywords = (selectedSubHeader) ->
     instance = Template.instance()
     instance.selectedSubHeader.set(selectedSubHeader)
@@ -77,6 +81,10 @@ if Meteor.isClient
     'click .delete-subheader-button': (event, instance) ->
       subHeaderId = event.target.parentElement.getAttribute("data-subheader-id")
       instance.subHeaderToDelete.set(SubHeaders.findOne(subHeaderId))
+
+    'click .delete-header-button': (event, instance) ->
+      headerId = event.target.parentElement.getAttribute("data-header-id")
+      instance.headerToDelete.set(Headers.findOne(headerId))
 
     'hidden.bs.modal .modal': (event, instance) ->
       # since we are using a collection that exists only for this controller for keywords 
