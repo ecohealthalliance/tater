@@ -1,4 +1,3 @@
-@dev
 Feature: Coding Keywords
 
   Background:
