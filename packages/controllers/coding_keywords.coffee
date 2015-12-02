@@ -2,20 +2,20 @@ if Meteor.isClient
 
   Template.codingKeywords.onCreated ->
     @subscribe('codingKeywords')
-    @subHeaders = new Meteor.Collection(null)
     @keywords = new Meteor.Collection(null)
     @selectedHeader = new ReactiveVar('')
     @selectedSubHeader = new ReactiveVar('')
     @selectedKeyword = new ReactiveVar('')
     @addingKeyword = new ReactiveVar(false)
     @keywordToDelete = new ReactiveVar()
+    @subHeaderToDelete = new ReactiveVar()
 
   Template.codingKeywords.helpers
     headers: () ->
       Headers.find()
 
     subHeaders: ->
-      Template.instance().subHeaders.find()
+      SubHeaders.find(headerId: Template.instance().selectedHeader.get()?._id)
 
     keywords: ->
       Template.instance().keywords.find()
@@ -43,6 +43,9 @@ if Meteor.isClient
     keywordToDelete: ->
       Template.instance().keywordToDelete.get()
 
+    subHeaderToDelete: ->
+      Template.instance().subHeaderToDelete.get()
+
   setKeywords = (selectedSubHeader) ->
     instance = Template.instance()
     instance.selectedSubHeader.set(selectedSubHeader)
@@ -59,11 +62,7 @@ if Meteor.isClient
         instance.selectedHeader.set(selectedHeader)
         instance.selectedSubHeader.set(null)
         instance.selectedKeyword.set(null)
-        instance.subHeaders.remove({})
         instance.keywords.remove({})
-        subHeaders = SubHeaders.find({headerId: selectedHeaderId})
-        _.each subHeaders.fetch(), (subHeader) ->
-          instance.subHeaders.insert subHeader
 
     'click .code-level-2': (event, instance) ->
       selectedSubHeaderId = event.currentTarget.getAttribute('data-id')
@@ -75,7 +74,11 @@ if Meteor.isClient
       keywordId = event.target.parentElement.getAttribute("data-keyword-id")
       instance.keywordToDelete.set(CodingKeywords.findOne(keywordId))
 
-    'hidden.bs.modal #confirm-delete-keyword-modal': (event, instance) ->
+    'click .delete-subheader-button': (event, instance) ->
+      subHeaderId = event.target.parentElement.getAttribute("data-subheader-id")
+      instance.subHeaderToDelete.set(SubHeaders.findOne(subHeaderId))
+
+    'hidden.bs.modal .modal': (event, instance) ->
       # since we are using a collection that exists only for this controller for keywords 
       # we need to rebind the keywords in order to get changes to show on the page after an update
       setKeywords(instance.selectedSubHeader.get())

@@ -1,0 +1,13 @@
+template(name="deleteSubHeaderModal")
+  #confirm-delete-subheader-modal.modal.fade
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+            i.fa.fa-times-circle
+        .modal-body
+          h3#subheaderModal Confirmation
+          p Delete subheader "{{subHeaderToDelete.label}}"?
+        .modal-footer
+          button.btn.btn-default(data-dismiss='modal' aria-hidden='true') Close
+          button.btn.btn-danger#confirm-delete-subheader(data-dismiss='modal' aria-hidden='true') Delete
