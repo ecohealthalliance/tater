@@ -79,6 +79,10 @@ do ->
             assert.ok(match)
         ).call(callback)
 
+    @Then 'I should see an error toast', ->
+      @browser
+        .waitForVisible '.toast-error'
+
     @Then /^I should( not)? see content "([^"]*)"$/, (shouldNot, text, callback) ->
       @client
         .waitForVisible('body *')
