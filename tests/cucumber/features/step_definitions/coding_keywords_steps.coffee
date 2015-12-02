@@ -24,17 +24,16 @@ do ->
           .waitForVisible('.level-2')
           .click('.code-level-2')
 
-    @When /^I click the first document$/, (level) -> 
+    @Then /^I click the first document$/, () -> 
       @browser
         .waitForVisible('.document-list')
         .click('.document a')
-        .waitForVisible('.code-list')
 
-    @Then /^I should not see the keyword "([^"]*)"$/, (keyword) ->
-      @browser
-        .waitForVisible('.selectable-code')
-        .elements '.selectable-code:contains("' + keyword + '")', (error, elements) ->
-          assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal 0")
+    # @Then /^I should see (\d+) keywords$/, (number) ->
+    #   @browser
+    #     .waitForVisible('.selectable-code')
+    #     .elements ".code-keyword", (error, elements) ->
+    #       assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
     @When 'I type "$search" in the coding keyword search', (search) ->
       @browser
@@ -44,8 +43,14 @@ do ->
 
     @Then /^I should see (\d+) keywords$/, (number) ->
       @client
-        .waitForExist('.level-3', assert.ifError)
-        .elements '.code-level-3:not(.disabled)', (error, elements) ->
+        .waitForExist('.level-3, .code-keywords', assert.ifError)
+        .elements '.code-keyword, .code-level-3:not(.disabled)', (error, elements) ->
+          assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
+
+    @Then /^I should see (\d+) annotations$/, (number) ->
+      @client
+        .waitForExist('.annotations', assert.ifError)
+        .elements '.annotations li', (error, elements) ->
           assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
     @Then /^I should see (\d+) archived keywords$/, (number) ->

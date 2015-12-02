@@ -27,7 +27,7 @@ if Meteor.isClient
           query.push {'label': text}
 
         # Find Coding Keywords, SubHeaders, and Headers that match the query
-        codingKeywordResults = CodingKeywords.find({$and: query}).fetch()
+        codingKeywordResults = CodingKeywords.find({$and: query, archived: {$ne: true}}).fetch()
         subHeaderResults = SubHeaders.find({$and: query}).fetch()
         headerResults = Headers.find({$and: query}).fetch()
 
@@ -42,7 +42,7 @@ if Meteor.isClient
         headerIds = _.pluck(headerResults, '_id')
         childSubHeaders = SubHeaders.find({headerId: {$in: headerIds}}).fetch()
         childOrResultSubHeaders = _.union(childSubHeaders, subHeaderResults)
-        childKeywords = CodingKeywords.find(subHeaderId: {$in: _.pluck(childOrResultSubHeaders, '_id')}).fetch()
+        childKeywords = CodingKeywords.find(subHeaderId: {$in: _.pluck(childOrResultSubHeaders, '_id'), archived: {$ne: true}}).fetch()
 
         filteredCodes = codingKeywordResults.concat(childKeywords)
         filteredSubHeaders = subHeaderResults.concat(parentSubHeaders).concat(childSubHeaders)
@@ -86,7 +86,7 @@ if Meteor.isClient
         _.filter keywords, (keyword) =>
           keyword?.subHeaderId == subHeaderId
       else
-        CodingKeywords.find(subHeaderId: subHeaderId)
+        CodingKeywords.find({subHeaderId: subHeaderId, archived: {$ne: true}})
 
     selectedHeader: (codeId) ->
       if Template.instance().data.selectedHeaders?.findOne(@_id)
@@ -140,7 +140,7 @@ if Meteor.isServer
     user = Meteor.users.findOne({_id: @userId})
     if user
       annotations = Annotations.find(QueryHelpers.limitQueryToUserDocs(keywordQuery, user))
-      codingKeywords = CodingKeywords.find({_id: {$in: _.uniq(_.pluck(annotations.fetch(), 'codeId'))}})
+      codingKeywords = CodingKeywords.find({_id: {$in: _.uniq(_.pluck(annotations.fetch(), 'codeId'))}, archived: {$ne: true}})
       subHeaders = SubHeaders.find({_id: {$in: _.uniq(_.pluck(codingKeywords.fetch(), 'subHeaderId'))}})
       headers = Headers.find({_id: {$in: _.uniq(_.pluck(subHeaders.fetch(), 'headerId'))}})
       [codingKeywords, subHeaders, headers]

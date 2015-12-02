@@ -3,6 +3,7 @@ Feature: Coding Keywords
 
   Background:
     Given there is a test user in the database
+    And there is a test group in the database
     And there is a test document in the database
 
   @codingKeywords
@@ -48,4 +49,5 @@ Feature: Coding Keywords
     And I should see 1 archived keywords
     When I navigate to "/documents"
     And I click the first document
-    Then I should not see the keyword "Test Keyword1"
+    Then I should see 2 keywords
+    And I should see 0 annotations

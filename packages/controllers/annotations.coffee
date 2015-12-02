@@ -68,7 +68,7 @@ if Meteor.isClient
 
       annotationsByCode =
         _.map _.groupBy(annotations, 'codeId'), (annotations, codeId) ->
-          code: CodingKeywords.findOne({_id: codeId})
+          code: CodingKeywords.findOne({_id: codeId, archived: {$ne: true}})
           annotations: annotations
 
       sortedAnnotations =
@@ -235,7 +235,7 @@ if Meteor.isClient
 
       instance.filtering.set(true)
       subHeaders = SubHeaders.find({headerId: selectedHeaderId}).fetch()
-      codeKeywords = CodingKeywords.find({subHeaderId: {$in: _.pluck(subHeaders, '_id')}}).fetch()
+      codeKeywords = CodingKeywords.find({subHeaderId: {$in: _.pluck(subHeaders, '_id')}, archived: {$ne: true}}).fetch()
 
       if currentlySelected
         instance.selectedHeaders.remove(selectedHeader)
@@ -257,7 +257,7 @@ if Meteor.isClient
       currentlySelected = instance.selectedSubHeaders.findOne(selectedSubHeaderId)
 
       instance.filtering.set(true)
-      codeKeywords = CodingKeywords.find({subHeaderId: selectedSubHeaderId}).fetch()
+      codeKeywords = CodingKeywords.find({subHeaderId: selectedSubHeaderId, archived: {$ne: true}}).fetch()
 
       if currentlySelected
         instance.selectedSubHeaders.remove(selectedSubHeader)
@@ -271,7 +271,7 @@ if Meteor.isClient
     'click .selectable-keyword': (event, instance) ->
       resetPage()
       selectedCodeKeywordId  = event.currentTarget.getAttribute('data-id')
-      selectedCodeKeyword = CodingKeywords.findOne(selectedCodeKeywordId)
+      selectedCodeKeyword = CodingKeywords.findOne({_id: selectedCodeKeywordId, archived: {$ne: true}})
       currentlySelected = instance.selectedCodes.findOne(selectedCodeKeywordId)
       keyword = selectedCodeKeyword?.keyword
 
