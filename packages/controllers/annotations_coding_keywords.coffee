@@ -27,7 +27,7 @@ if Meteor.isClient
           query.push {'label': text}
 
         # Find Coding Keywords, SubHeaders, and Headers that match the query
-        codingKeywordResults = CodingKeywords.find({$and: query, archived: {$ne: true}}).fetch()
+        codingKeywordResults = CodingKeywords.find({$and: query}).fetch()
         subHeaderResults = SubHeaders.find({$and: query}).fetch()
         headerResults = Headers.find({$and: query}).fetch()
 
@@ -42,7 +42,7 @@ if Meteor.isClient
         headerIds = _.pluck(headerResults, '_id')
         childSubHeaders = SubHeaders.find({headerId: {$in: headerIds}}).fetch()
         childOrResultSubHeaders = _.union(childSubHeaders, subHeaderResults)
-        childKeywords = CodingKeywords.find(subHeaderId: {$in: _.pluck(childOrResultSubHeaders, '_id'), archived: {$ne: true}}).fetch()
+        childKeywords = CodingKeywords.find(subHeaderId: {$in: _.pluck(childOrResultSubHeaders, '_id')}).fetch()
 
         filteredCodes = codingKeywordResults.concat(childKeywords)
         filteredSubHeaders = subHeaderResults.concat(parentSubHeaders).concat(childSubHeaders)
