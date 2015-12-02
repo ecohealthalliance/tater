@@ -58,7 +58,7 @@ if Meteor.isClient
   setKeywords = (selectedSubHeaderId) ->
     instance = Template.instance()
     instance.keywords.remove({})
-    keywords = CodingKeywords.find({'subHeaderId': selectedSubHeader._id}, {sort: {archived: 1}})
+    keywords = CodingKeywords.find({'subHeaderId': selectedSubHeaderId}, {sort: {archived: 1}})
     _.each keywords.fetch(), (keyword) ->
       instance.keywords.insert keyword
 
