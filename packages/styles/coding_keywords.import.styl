@@ -308,6 +308,21 @@ checkMark(center=false)
     &::after
       content ''
 
+.code-details
+  min-height 60px
+  padding 15px
+  background alpha($sub-header-BG, 80%)
+  position absolute
+  bottom 0
+  left 0
+  right 0
+
+.disabled
+  color lighten($primary-light, 70%)
+  
+.disabled span::after
+  content ' (archived)'
+  
 .adding-code
   padding 15px 10px
   position relative

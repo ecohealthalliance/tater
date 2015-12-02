@@ -1,9 +1,9 @@
 if Meteor.isClient
 
   Template.codingKeywords.onCreated ->
-    @subscribe('codingKeywords')
-    @keywords = new Meteor.Collection(null)
+    @subscribe('archivedCodingKeywords')
     @subHeaders = new Meteor.Collection(null)
+    @keywords = new Meteor.Collection(null)
     @selectedCodes = new ReactiveDict()
     @addingCode = new ReactiveDict()
     @keywordToDelete = new ReactiveVar()
@@ -27,6 +27,10 @@ if Meteor.isClient
       else
         if @_id == Template.instance().selectedCodes.get('subHeaderId')
           'selected'
+
+    archived: () ->
+      if @archived
+        'disabled'
 
     currentlySelectedHeader: ->
       Template.instance().selectedCodes.get('headerId')
@@ -53,7 +57,7 @@ if Meteor.isClient
   setKeywords = (selectedSubHeaderId) ->
     instance = Template.instance()
     instance.keywords.remove({})
-    keywords = CodingKeywords.find({'subHeaderId': selectedSubHeaderId})
+    keywords = CodingKeywords.find({'subHeaderId': selectedSubHeaderId}, {sort: {archived: 1}})
     _.each keywords.fetch(), (keyword) ->
       instance.keywords.insert keyword
 
@@ -74,7 +78,6 @@ if Meteor.isClient
 
     'click .code-level-2': (event, instance) ->
       selectedSubHeaderId = event.currentTarget.getAttribute('data-id')
-
       if selectedSubHeaderId != instance.selectedCodes.get('subHeaderId')
         instance.selectedCodes.set('subHeaderId', selectedSubHeaderId)
         instance.selectedCodes.set('keywordId', '')
@@ -87,6 +90,10 @@ if Meteor.isClient
         else
           instance.addingCode.set('keyword', true)
 
+    'click .delete-header-button': (event, instance) ->
+      headerId = event.target.parentElement.getAttribute("data-header-id")
+      instance.headerToDelete.set(Headers.findOne(headerId))
+
     'click .add-code': (event, instance) ->
       level = $(event.target).data('level')
       instance.addingCode.set(level, not instance.addingCode.get(level))
@@ -94,10 +101,6 @@ if Meteor.isClient
     'click .delete-subheader-button': (event, instance) ->
       subHeaderId = event.target.parentElement.getAttribute("data-subheader-id")
       instance.subHeaderToDelete.set(SubHeaders.findOne(subHeaderId))
-
-    'click .delete-header-button': (event, instance) ->
-      headerId = event.target.parentElement.getAttribute("data-header-id")
-      instance.headerToDelete.set(Headers.findOne(headerId))
 
     'hidden.bs.modal .modal': (event, instance) ->
       # since we are using a collection that exists only for this controller for keywords
