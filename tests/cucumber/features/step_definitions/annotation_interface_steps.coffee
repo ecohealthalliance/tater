@@ -15,10 +15,10 @@ do ->
     @When 'I navigate to the annotation interface for the test document', ->
       @browser
         .url(url.resolve(process.env.ROOT_URL, "/documents"))
-        .waitForExist('.document-list', assert.ifError)
-        .waitForVisible('.list-link', assert.ifError)
-        .click('.list-link', assert.ifError)
-        .waitForVisible('.document-detail-container', assert.ifError)
+        .waitForExist('.document-list')
+        .waitForVisible('.list-link')
+        .click('.list-link')
+        .waitForVisible('.document-detail-container')
 
     @Then 'I should see the test document title', ->
       @browser
@@ -50,9 +50,22 @@ do ->
             assert(!response.match("no-results"))
             assert(response.match("<li"))
 
-    @When 'I remove all annotations', ->
-      @browser
-        .waitForExist('.delete-annotation', assert.ifError)
-        .moveToObject('.annotations > li')
-        .waitForVisible('.delete-annotation', assert.ifError)
-        .click('.delete-annotation')
+    @When 'I remove all annotations', (callback)->
+      brChain = @browser
+      # recursive function that deletes one annotation
+      # on each iteration.
+      helper = ->
+        brChain = brChain
+          .waitForExist('.delete-annotation')
+          .moveToObject('.annotations > li')
+          .waitForVisible('.delete-annotation')
+          .click('.delete-annotation')
+          .pause(1000)
+          .isVisible('.delete-annotation')
+        brChain
+          .then (annotationsVisible)->
+            if annotationsVisible
+              helper()
+            else
+              brChain.call(callback)
+      helper()

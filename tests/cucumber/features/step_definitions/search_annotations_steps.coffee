@@ -19,15 +19,14 @@ do ->
     @Given 'there is a test annotation in the database', ->
       @server.call('createTestAnnotation', {})
 
-    @Given /^there are (\d+) test annotations in the database$/, (number, callback) ->
-      _(number).times =>
+    @Given /^there are (\d+) test annotations in the database$/, (number) ->
+      Promise.all _.range(number).map =>
         @server.call('createTestAnnotation', {})
-      callback()
 
     @When 'I visit the search annotations page', ->
       @browser
         .url(url.resolve(process.env.ROOT_URL, "/annotations"))
-        .waitForExist('.annotations-list-container', assert.ifError)
+        .waitForExist('.annotations-list-container')
 
     @Then /^I should( not)? see the test annotation$/, (noAnnotations) ->
       @browser
@@ -39,7 +38,7 @@ do ->
 
     @Then /^I should see (\d+) test annotations$/, (number) ->
       @client
-        .waitForExist('.annotation-detail', assert.ifError)
+        .waitForExist('.annotation-detail')
         .elements '.annotation-detail', (error, elements) ->
           assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
@@ -63,6 +62,7 @@ do ->
 
     @When /^I go to the next page of annotations$/, ->
       @browser
-        .waitForExist('.annotation-detail', assert.ifError)
+        .waitForExist('.annotation-detail')
         .execute ->
           $("a:contains('>')").click()
+        .pause(1000)
