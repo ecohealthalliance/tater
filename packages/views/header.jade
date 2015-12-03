@@ -35,6 +35,8 @@ template(name="header")
                   li
                     a(href="{{path route='admin'}}" class="{{isActiveRoute 'admin'}}")
                       span Admin
-
+                  li
+                    a(href="{{path route='codingKeywords'}}" class="{{isActiveRoute 'codingKeywords'}}")
+                      span Coding Keywords
               +accountsHeaderButtons state=accountsState
   +accountsModal state=accountsState
