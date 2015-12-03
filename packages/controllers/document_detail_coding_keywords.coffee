@@ -39,7 +39,7 @@ if Meteor.isClient
         headerIds = _.pluck(headerResults, '_id')
         childSubHeaders = SubHeaders.find({headerId: {$in: headerIds}}).fetch()
         childOrResultSubHeaders = _.union(childSubHeaders, subHeaderResults)
-        childKeywords = CodingKeywords.find(subHeaderId: {$in: _.pluck(childOrResultSubHeaders, '_id')}).fetch()
+        childKeywords = CodingKeywords.find({subHeaderId: {$in: _.pluck(childOrResultSubHeaders, '_id')}}).fetch()
 
         filteredCodes = codingKeywordResults.concat(childKeywords)
         filteredSubHeaders = subHeaderResults.concat(parentSubHeaders).concat(childSubHeaders)
@@ -85,7 +85,7 @@ if Meteor.isClient
         _.filter keywords, (keyword) =>
           keyword?.subHeaderId == subHeaderId
       else
-        CodingKeywords.find(subHeaderId: subHeaderId)
+        CodingKeywords.find({subHeaderId: subHeaderId})
 
   Template.documentDetailCodingKeywords.events
 
@@ -113,7 +113,16 @@ if Meteor.isServer
     [
       Headers.find()
       SubHeaders.find()
+      CodingKeywords.find({caseCount: {$ne: true}, archived: {$ne: true}})
+    ]
+
+  # Published name is somewhat misleading - this includes both archived and 
+  # unarchived keywords.  Named it this way so people will think twice before using.
+  Meteor.publish 'archivedCodingKeywords', () ->
+    [
+      Headers.find()
+      SubHeaders.find()
       CodingKeywords.find(caseCount: {$ne: true})
     ]
   Meteor.publish 'caseCountCodingKeywords', () ->
-    CodingKeywords.find(caseCount: true)
+    CodingKeywords.find({caseCount: true, archived: {$ne: true}})

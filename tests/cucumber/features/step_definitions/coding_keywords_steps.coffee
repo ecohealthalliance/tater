@@ -24,35 +24,82 @@ do ->
           .waitForVisible('.level-2')
           .click('.code-level-2')
 
+    @Then /^I click the first document$/, -> 
+      @browser
+        .waitForVisible('.document-list .document a')
+        .click('.document a')
+
     @When 'I type "$search" in the coding keyword search', (search) ->
       @browser
         .waitForVisible('.code-search')
         .setValue('.code-search', search)
-        .waitForExist('.filteredCodes')
 
     @Then /^I should see (\d+) keywords$/, (number) ->
       @client
-        .waitForExist('.level-3', assert.ifError)
-        .elements '.code-level-3', (error, elements) ->
+        .waitForExist('.level-3, .code-keywords')
+        .elements '.code-keyword, .code-level-3:not(.disabled)', (error, elements) ->
+          assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
+
+    @Then /^I should see (\d+) annotations$/, (number) ->
+      @client
+        .waitForExist('.annotations')
+        .elements '.annotations li', (error, elements) ->
+          assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
+
+    @Then /^I should see (\d+) archived keywords$/, (number) ->
+      @client
+        .waitForExist('.level-3')
+        .elements '.code-level-3.disabled', (error, elements) ->
+          assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
+
+    @Then /^I should see (\d+) sub\-headers/, (number) ->
+      @client
+        .waitForExist('.level-2')
+        .elements '.code-level-2', (error, elements) ->
+          assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
+
+    @Then /^I should see (\d+) headers/, (number) ->
+      @client
+        .waitForExist('.level-1')
+        .elements '.code-level-1', (error, elements) ->
           assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
     @When 'I delete a keyword', () ->
       @client
-        .waitForVisible('.level-3')
-        .click('.fa-trash-o')
+        .waitForVisible('.level-3 .fa-trash-o')
+        .click('.level-3 .fa-trash-o')
         .waitForVisible('#confirm-delete-keyword-modal')
         .click('#confirm-delete-keyword')
         .waitForVisible('.toast-message')
+        # wait for modal to fade
+        .waitForVisible('.modal-backdrop', 1000, true)
 
+    @When 'I delete a sub-header', () ->
+      @client
+        .waitForVisible('.level-2 .fa-trash-o')
+        .click('.level-2 .fa-trash-o')
+        .waitForVisible('#confirm-delete-subheader-modal')
+        .click('#confirm-delete-subheader')
+        # wait for modal to fade
+        .waitForVisible('.modal-backdrop', 1000, true)
+
+    @When 'I delete a header', () ->
+      @client
+        .waitForVisible('.level-1 .fa-trash-o')
+        .click('.level-1 .fa-trash-o')
+        .waitForVisible('#confirm-delete-header-modal')
+        .click('#confirm-delete-header')
+        # wait for modal to fade
+        .waitForVisible('.modal-backdrop', 1000, true)
 
     @Then /^I should( not)? see coding keyword search results$/, (noResults) ->
-      @browser
-        .waitForExist('.code-list')
-        .getHTML '.code-list', (error, response) ->
-          if noResults
-            assert.notOk(response.toString().match('selectable-code'), "Results found")
-          else
-            assert.ok(response.toString().match('selectable-code'), "No results found")
+      if noResults
+        @browser
+          .waitForExist('.code-list')
+          .waitForExist('.selectable-code', 1000, true)
+      else
+        @browser
+          .waitForExist('.code-list .selectable-code')
 
     @When "I click the Add Keyword button", ->
       @browser

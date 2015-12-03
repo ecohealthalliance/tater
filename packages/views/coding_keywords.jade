@@ -9,48 +9,77 @@ template(name="codingKeywords")
         .code-list-wrap.col-sm-4
           .code-list-header
             h4 Headers
-            i.add-code.fa.fa-plus
+            i.add-code.fa.fa-plus(data-level="header" class="{{#if addingCode 'header'}}active{{/if}}")
           .code-list-container
+            if addingCode 'header'
+              .adding-code.clearfix
+                +new_header_form
             ul.code-list.list.list-unstyled.level-1
               each headers
-                li.code.list-link.code-level-1(class="{{selected 'header'}}" data-id="{{_id}}")= label
-
+                li.code.list-link.code-level-1(class="{{selected 'header'}}" data-id=_id)
+                  span= label
+                  button.btn-plain.delete-header-button(data-toggle="modal" data-header-id=_id data-target="#confirm-delete-header-modal")
+                    i.fa.fa-trash-o
+            +deleteHeaderModal(headerToDelete=headerToDelete)
         .code-list-wrap.col-sm-4
           unless currentlySelectedHeader
             +curtain
           .code-list-header
             h4 Sub-Headers
-            i.add-code.fa.fa-plus
+            i.add-code.fa.fa-plus(data-level="subHeader" class="{{#if addingCode 'subHeader'}}active{{/if}}")
           .code-list-container
             if currentlySelectedHeader
+              if addingCode 'subHeader'
+                .adding-code.clearfix
+                  +new_subHeader_form
               ul.code-list.list.list-unstyled.level-2
                 each subHeaders
-                  li.code.list-link.code-level-2(class="{{selected 'subHeader'}}" data-id="{{_id}}")= label
+                  li.code.list-link.code-level-2(class="{{selected 'subHeader'}}" data-id=_id)
+                    span= label
+                    button.btn-plain.delete-subheader-button(data-toggle="modal" data-subheader-id=_id data-target="#confirm-delete-subheader-modal")
+                      i.fa.fa-trash-o
+            +deleteSubHeaderModal(subHeaderToDelete=subHeaderToDelete)
         .code-list-wrap.col-sm-4
           unless currentlySelectedSubHeader
             +curtain
           .code-list-header
             h4 Keywords
             unless addingKeyword
-              i.add-code.add-keyword.fa.fa-plus
+              i.add-code.add-keyword.fa.fa-plus(data-level="keyword" class="{{#if addingCode 'keyword'}}active{{/if}}")
           .code-list-container
             if currentlySelectedSubHeader
-              if addingKeyword
+              if addingCode 'keyword'
                 .adding-code.clearfix
-                  form(id="new-keyword-form")
-                    input.form-control.code(name="keyword" placeholder="Enter a keyword")
-                    button.add.btn.btn-primary.btn-block(type="submit") Add keyword
-                    button.cancel.btn.btn-default(type="button" class="cancel-keyword") Cancel
+                  +new_keyword_form
               if keywords
                 ul.code-list.list.list-unstyled.level-3
                   each keywords
-                    li.code.list-link.code-level-3.not-clickable
+                    li.code.code-level-3.not-clickable(class="{{archived}}")
                       span= label
-                      button.btn-plain.delete-keyword-button(data-toggle="modal" data-keyword-id=_id data-target="#confirm-delete-keyword-modal" )
-                        i.fa.fa-trash-o
+                      unless archived
+                        button.btn-plain.delete-keyword-button(data-toggle="modal" data-keyword-id=_id data-target="#confirm-delete-keyword-modal" )
+                          i.fa.fa-trash-o
                 +deleteKeywordModal(keywordToDelete=keywordToDelete)
     else
       .loading
 
 template(name="curtain")
   .curtain-white
+
+template(name="new_header_form")
+  form(id="new-header-form")
+    input.form-control.code(type="text" name="header" placeholder="Enter a header")
+    button.cancel.btn.btn-default(type="button" data-level="header") Cancel
+    button.add.btn.btn-primary.btn-block(type="submit" data-level="header") Add Header
+
+template(name="new_subHeader_form")
+  form(id="new-subHeader-form")
+    input.form-control.code(type="text" name="subHeader" placeholder="Enter a sub-header")
+    button.cancel.btn.btn-default(type="button" data-level="subHeader") Cancel
+    button.add.btn.btn-primary.btn-block(type="submit" data-level="subHeader") Add Sub-Header
+
+template(name="new_keyword_form")
+  form(id="new-keyword-form")
+    input.form-control.code(type="text" name="keyword" placeholder="Enter a keyword")
+    button.cancel.btn.btn-default(type="button" data-level="keyword") Cancel
+    button.add.btn.btn-primary.btn-block(type="submit" data-level="keyword") Add keyword
