@@ -1,12 +1,30 @@
 if Meteor.isClient
 
   Template.codingKeywords.onCreated ->
-    @subscribe('Headers')
     @selectedCodes = new ReactiveDict()
     @addingCode = new ReactiveDict()
     @keywordToDelete = new ReactiveVar()
     @subHeaderToDelete = new ReactiveVar()
     @headerToDelete = new ReactiveVar()
+    @headersLoading = new ReactiveVar(true)
+    @subHeadersLoading = new ReactiveVar(false)
+    @keywordsLoading = new ReactiveVar(false)
+
+  Template.codingKeywords.onRendered ->
+    instance = Template.instance()
+    @subscribe 'headers', ->
+      instance.headersLoading.set(false)
+
+    @autorun ->
+      selectedHeaderId = instance.selectedCodes.get('headerId')
+      instance.subHeadersLoading.set(true)
+      Meteor.subscribe 'subHeaders', selectedHeaderId, ->
+        instance.subHeadersLoading.set(false)
+    @autorun ->
+      selectedSubHeaderId = instance.selectedCodes.get('subHeaderId')
+      instance.keywordsLoading.set(true)
+      Meteor.subscribe 'keywords', selectedSubHeaderId, ->
+        instance.keywordsLoading.set(false)
 
   Template.codingKeywords.helpers
     headers: ->
@@ -14,13 +32,10 @@ if Meteor.isClient
 
     subHeaders: ->
       selectedHeaderId = Template.instance().selectedCodes.get('headerId')
-      Meteor.subscribe 'subHeaders', selectedHeaderId
       SubHeaders.find headerId: selectedHeaderId
 
     keywords: ->
-      instance = Template.instance()
-      selectedSubHeaderId = instance.selectedCodes.get('subHeaderId')
-      Meteor.subscribe 'Keywords', selectedSubHeaderId
+      selectedSubHeaderId = Template.instance().selectedCodes.get('subHeaderId')
       CodingKeywords.find subHeaderId: selectedSubHeaderId
 
     selected: (level) ->
@@ -52,6 +67,15 @@ if Meteor.isClient
 
     headerToDelete: ->
       Template.instance().headerToDelete.get()
+
+    headersLoading: ->
+      Template.instance().headersLoading.get()
+
+    subHeadersLoading: ->
+      Template.instance().subHeadersLoading.get()
+
+    keywordsLoading: ->
+      Template.instance().keywordsLoading.get()
 
   Template.codingKeywords.events
     'click .code-level-1': (event, instance) ->
@@ -253,7 +277,7 @@ Meteor.methods
 
 if Meteor.isServer
 
-  Meteor.publish 'Headers', ->
+  Meteor.publish 'headers', ->
     if @userId
       Headers.find()
     else
@@ -266,7 +290,7 @@ if Meteor.isServer
     else
       @ready()
 
-  Meteor.publish 'Keywords', (subHeaderId) ->
+  Meteor.publish 'keywords', (subHeaderId) ->
     if @userId
       if subHeaderId
         CodingKeywords.find subHeaderId: subHeaderId
