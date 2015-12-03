@@ -14,7 +14,6 @@ if Meteor.isClient
     instance = Template.instance()
     @subscribe 'headers', ->
       instance.headersLoading.set(false)
-
     @autorun ->
       selectedHeaderId = instance.selectedCodes.get('headerId')
       instance.subHeadersLoading.set(true)

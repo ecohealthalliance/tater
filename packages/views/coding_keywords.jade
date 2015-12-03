@@ -15,7 +15,7 @@ template(name="codingKeywords")
               .adding-code.clearfix
                 +new_header_form
             if headersLoading
-              span Loading...
+              .loading
             else
               if headers
                 ul.code-list.list.list-unstyled.level-1
@@ -37,7 +37,7 @@ template(name="codingKeywords")
                 .adding-code.clearfix
                   +new_subHeader_form
               if subHeadersLoading
-                span Loading...
+                .loading
               else
                 if subHeaders
                   ul.code-list.list.list-unstyled.level-2
@@ -60,7 +60,7 @@ template(name="codingKeywords")
                 .adding-code.clearfix
                   +new_keyword_form
               if subHeadersLoading
-                span Loading...
+                .loading
               else
                 if keywords
                   ul.code-list.list.list-unstyled.level-3
