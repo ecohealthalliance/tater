@@ -1,9 +1,7 @@
 if Meteor.isClient
 
   Template.codingKeywords.onCreated ->
-    @subscribe('archivedCodingKeywords')
-    @subHeaders = new Meteor.Collection(null)
-    @keywords = new Meteor.Collection(null)
+    @subscribe('Headers')
     @selectedCodes = new ReactiveDict()
     @addingCode = new ReactiveDict()
     @keywordToDelete = new ReactiveVar()
@@ -15,10 +13,15 @@ if Meteor.isClient
       Headers.find()
 
     subHeaders: ->
-      SubHeaders.find(headerId: Template.instance().selectedCodes.get('headerId'))
+      selectedHeaderId = Template.instance().selectedCodes.get('headerId')
+      Meteor.subscribe 'subHeaders', selectedHeaderId
+      SubHeaders.find headerId: selectedHeaderId
 
     keywords: ->
-      Template.instance().keywords.find()
+      instance = Template.instance()
+      selectedSubHeaderId = instance.selectedCodes.get('subHeaderId')
+      Meteor.subscribe 'Keywords', selectedSubHeaderId
+      CodingKeywords.find subHeaderId: selectedSubHeaderId
 
     selected: (level) ->
       if level == 'header'
@@ -38,9 +41,6 @@ if Meteor.isClient
     currentlySelectedSubHeader: ->
       Template.instance().selectedCodes.get('subHeaderId')
 
-    currentlySelectedKeyword: ->
-      Template.instance().selectedCodes.get('keywordId')
-
     addingCode: (level) ->
       Template.instance().addingCode.get(level)
 
@@ -53,14 +53,6 @@ if Meteor.isClient
     headerToDelete: ->
       Template.instance().headerToDelete.get()
 
-
-  setKeywords = (selectedSubHeaderId) ->
-    instance = Template.instance()
-    instance.keywords.remove({})
-    keywords = CodingKeywords.find({'subHeaderId': selectedSubHeaderId}, {sort: {archived: 1}})
-    _.each keywords.fetch(), (keyword) ->
-      instance.keywords.insert keyword
-
   Template.codingKeywords.events
     'click .code-level-1': (event, instance) ->
       selectedHeaderId = event.currentTarget.getAttribute('data-id')
@@ -68,44 +60,27 @@ if Meteor.isClient
         instance.selectedCodes.set('headerId', selectedHeaderId)
         instance.selectedCodes.set('subHeaderId', null)
         instance.selectedCodes.set('keywordId', null)
-        instance.subHeaders.remove({})
-        instance.keywords.remove({})
         instance.addingCode.set('keyword', false)
         instance.addingCode.set('subHeader', false)
-        subHeaders = SubHeaders.find({headerId: selectedHeaderId})
-        _.each subHeaders.fetch(), (subHeader) ->
-          instance.subHeaders.insert subHeader
 
     'click .code-level-2': (event, instance) ->
       selectedSubHeaderId = event.currentTarget.getAttribute('data-id')
       if selectedSubHeaderId != instance.selectedCodes.get('subHeaderId')
         instance.selectedCodes.set('subHeaderId', selectedSubHeaderId)
         instance.selectedCodes.set('keywordId', '')
-        instance.keywords.remove({})
         instance.addingCode.set('keyword', false)
-        keywords = CodingKeywords.find({subHeaderId: selectedSubHeaderId})
-        if keywords.count()
-          _.each keywords.fetch(), (keyword) ->
-            instance.keywords.insert keyword
-        else
-          instance.addingCode.set('keyword', true)
 
     'click .delete-header-button': (event, instance) ->
       headerId = event.target.parentElement.getAttribute("data-header-id")
       instance.headerToDelete.set(Headers.findOne(headerId))
 
-    'click .add-code': (event, instance) ->
-      level = $(event.target).data('level')
-      instance.addingCode.set(level, not instance.addingCode.get(level))
-
     'click .delete-subheader-button': (event, instance) ->
       subHeaderId = event.target.parentElement.getAttribute("data-subheader-id")
       instance.subHeaderToDelete.set(SubHeaders.findOne(subHeaderId))
 
-    'hidden.bs.modal .modal': (event, instance) ->
-      # since we are using a collection that exists only for this controller for keywords
-      # we need to rebind the keywords in order to get changes to show on the page after an update
-      setKeywords(instance.selectedCodes.get('subHeaderId'))
+    'click .add-code': (event, instance) ->
+      level = $(event.target).data('level')
+      instance.addingCode.set(level, not instance.addingCode.get(level))
 
     'click .adding-code .cancel': (event, instance) ->
       level = $(event.target).data('level')
@@ -146,7 +121,6 @@ if Meteor.isClient
         if error
           toastr.error("Error: #{error.message}")
         else
-          instance.subHeaders.insert subHeaderProps
           toastr.success("Sub-Header added")
           form.subHeader.value = ''
         form.subHeader.focus()
@@ -164,7 +138,6 @@ if Meteor.isClient
         if error
           toastr.error("Error: #{error.message}")
         else
-          instance.keywords.insert keywordProps
           toastr.success("Keyword added")
           form.keyword.value = ''
         form.keyword.focus()
@@ -172,11 +145,6 @@ if Meteor.isClient
     'click .delete-keyword-button': (event, instance) ->
       keywordId = event.target.parentElement.getAttribute("data-keyword-id")
       instance.keywordToDelete.set(CodingKeywords.findOne(keywordId))
-
-    'hidden.bs.modal #confirm-delete-keyword-modal': (event, instance) ->
-      # since we are using a collection that exists only for this controller for keywords
-      # we need to rebind the keywords in order to get changes to show on the page after an update
-      setKeywords(instance.selectedCodes.get('subHeaderId'))
 
   Template.new_header_form.onRendered ->
     @$("input").focus()
@@ -245,7 +213,9 @@ _validateHeaderProperties = (headerProps) ->
 
   true
 
+
 Meteor.methods
+
   addHeader: (headerProps) ->
     if Meteor.users.findOne(@userId)?.admin
       _headerProps =
@@ -279,3 +249,26 @@ Meteor.methods
         CodingKeywords.insert _keywordProps
     else
       throw new Meteor.Error('Unauthorized')
+
+
+if Meteor.isServer
+
+  Meteor.publish 'Headers', ->
+    if @userId
+      Headers.find()
+    else
+      @ready()
+
+  Meteor.publish 'subHeaders', (headerId) ->
+    if @userId
+      if headerId
+        SubHeaders.find headerId: headerId
+    else
+      @ready()
+
+  Meteor.publish 'Keywords', (subHeaderId) ->
+    if @userId
+      if subHeaderId
+        CodingKeywords.find subHeaderId: subHeaderId
+    else
+      @ready()
