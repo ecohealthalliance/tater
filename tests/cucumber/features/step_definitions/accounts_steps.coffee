@@ -134,6 +134,7 @@ do ->
       @browser
         .waitForVisible('.modal')
         .click('.confirm-remove-user')
+        .waitForVisible('.modal-backdrop', 1000, true)
 
     @When 'I open the change password modal', ->
       @browser
