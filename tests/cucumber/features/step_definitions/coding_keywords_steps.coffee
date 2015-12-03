@@ -24,6 +24,11 @@ do ->
           .waitForVisible('.level-2')
           .click('.code-level-2')
 
+    @Then /^I click the first document$/, -> 
+      @browser
+        .waitForVisible('.document-list .document a')
+        .click('.document a')
+
     @When 'I type "$search" in the coding keyword search', (search) ->
       @browser
         .waitForVisible('.code-search')
@@ -31,8 +36,20 @@ do ->
 
     @Then /^I should see (\d+) keywords$/, (number) ->
       @client
+        .waitForExist('.level-3, .code-keywords')
+        .elements '.code-keyword, .code-level-3:not(.disabled)', (error, elements) ->
+          assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
+
+    @Then /^I should see (\d+) annotations$/, (number) ->
+      @client
+        .waitForExist('.annotations')
+        .elements '.annotations li', (error, elements) ->
+          assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
+
+    @Then /^I should see (\d+) archived keywords$/, (number) ->
+      @client
         .waitForExist('.level-3')
-        .elements '.code-level-3', (error, elements) ->
+        .elements '.code-level-3.disabled', (error, elements) ->
           assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
     @Then /^I should see (\d+) sub\-headers/, (number) ->

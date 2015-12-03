@@ -294,7 +294,7 @@ if Meteor.isClient
     'click .selectable-keyword': (event, instance) ->
       resetPage()
       selectedCodeKeywordId  = event.currentTarget.getAttribute('data-id')
-      selectedCodeKeyword = CodingKeywords.findOne(selectedCodeKeywordId)
+      selectedCodeKeyword = CodingKeywords.findOne({_id: selectedCodeKeywordId})
       currentlySelected = instance.selectedCodes.findOne(selectedCodeKeywordId)
       keyword = selectedCodeKeyword?.keyword
 

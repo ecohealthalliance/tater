@@ -11,6 +11,6 @@ Feature: Groups
     And I fill out the new group form with name "Test Group"
     Then I should see a "Success" toast
     And I should see content "Test Group"
-    When I click on the group link
-    Then I should see content "Test Group"
+    When I click on the test group
+    Then I should be on the test group document page
     And I should not see content "(Code Accessible)"

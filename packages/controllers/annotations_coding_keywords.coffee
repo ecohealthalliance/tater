@@ -86,7 +86,7 @@ if Meteor.isClient
         _.filter keywords, (keyword) =>
           keyword?.subHeaderId == subHeaderId
       else
-        CodingKeywords.find(subHeaderId: subHeaderId)
+        CodingKeywords.find({subHeaderId: subHeaderId})
 
     selectedHeader: (codeId) ->
       if Template.instance().data.selectedHeaders?.findOne(@_id)
@@ -140,7 +140,7 @@ if Meteor.isServer
     user = Meteor.users.findOne({_id: @userId})
     if user
       annotations = Annotations.find(QueryHelpers.limitQueryToUserDocs(keywordQuery, user))
-      codingKeywords = CodingKeywords.find({_id: {$in: _.uniq(_.pluck(annotations.fetch(), 'codeId'))}})
+      codingKeywords = CodingKeywords.find({_id: {$in: _.uniq(_.pluck(annotations.fetch(), 'codeId'))}, archived: {$ne: true}})
       subHeaders = SubHeaders.find({_id: {$in: _.uniq(_.pluck(codingKeywords.fetch(), 'subHeaderId'))}})
       headers = Headers.find({_id: {$in: _.uniq(_.pluck(subHeaders.fetch(), 'headerId'))}})
       [codingKeywords, subHeaders, headers]

@@ -23,7 +23,19 @@ do ->
         .setValue('#group-description', 'This is an group.')
       if codeAccessible
         brChain = brChain.click('#group-code-accessible')
-      brChain = brChain.submitForm('#new-group-form')
+      brChain.submitForm('#new-group-form')
+
+    @When "I click on the test group", ->
+      @browser
+        .waitForExist('.groups-table')
+        .click('span.group-detail')
+
+    @Then "I should be on the test group document page", ->
+      @browser
+        .waitForVisible('.group-documents')
+        .getHTML '.group-documents .group-name', (error, response) ->
+          match = response.toString().match("Test Group")
+          assert.ok(match)
 
     @When /^I click on the group link$/, ->
       @browser
