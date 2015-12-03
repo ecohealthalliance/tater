@@ -49,46 +49,40 @@ do ->
 
     @When 'I delete a keyword', () ->
       @client
-        .click('.close')
-        .waitForVisible('.level-3')
-        .pause(2000)
+        .waitForVisible('.level-3 .fa-trash-o')
         .click('.level-3 .fa-trash-o')
         .waitForVisible('#confirm-delete-keyword-modal')
         .click('#confirm-delete-keyword')
         .waitForVisible('.toast-message')
         # wait for modal to fade
-        .waitForVisible('.modal-backdrop', 1000, false)
+        .waitForVisible('.modal-backdrop', 1000, true)
 
     @When 'I delete a sub-header', () ->
       @client
-        .click('.close')
-        .waitForVisible('.level-2')
-        .pause(2000)
+        .waitForVisible('.level-2 .fa-trash-o')
         .click('.level-2 .fa-trash-o')
         .waitForVisible('#confirm-delete-subheader-modal')
         .click('#confirm-delete-subheader')
         # wait for modal to fade
-        .waitForVisible('.modal-backdrop', 1000, false)
+        .waitForVisible('.modal-backdrop', 1000, true)
 
     @When 'I delete a header', () ->
       @client
-        .click('.close')
-        .waitForVisible('.level-1')
-        .pause(2000)
+        .waitForVisible('.level-1 .fa-trash-o')
         .click('.level-1 .fa-trash-o')
         .waitForVisible('#confirm-delete-header-modal')
         .click('#confirm-delete-header')
         # wait for modal to fade
-        .waitForVisible('.modal-backdrop', 1000, false)
+        .waitForVisible('.modal-backdrop', 1000, true)
 
     @Then /^I should( not)? see coding keyword search results$/, (noResults) ->
-      @browser
-        .waitForExist('.code-list')
-        .getHTML '.code-list', (error, response) ->
-          if noResults
-            assert.notOk(response.toString().match('selectable-code'), "Results found")
-          else
-            assert.ok(response.toString().match('selectable-code'), "No results found")
+      if noResults
+        @browser
+          .waitForExist('.code-list')
+          .waitForExist('.selectable-code', 1000, true)
+      else
+        @browser
+          .waitForExist('.code-list .selectable-code')
 
     @When "I click the Add Keyword button", ->
       @browser
