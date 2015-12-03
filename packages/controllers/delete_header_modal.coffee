@@ -21,6 +21,9 @@ if Meteor.isServer
       if not header
         throw new Meteor.Error("Header does not exist.")
       else if subHeader
+        # CodingKeywords.update id,
+        #   $set:
+        #     archived: true
         throw new Meteor.Error("Headers with subheaders cannot be deleted.")
       else
         Headers.remove(id)

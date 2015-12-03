@@ -35,16 +35,16 @@ do ->
         .setValue('.code-search', search)
         .waitForExist('.filteredCodes')
 
-    @Then /^I should see (\d+) keywords$/, (number) ->
-      @client
-        .waitForExist('.level-3, .code-keywords', assert.ifError)
-        .elements '.code-keyword, .code-level-3:not(.disabled)', (error, elements) ->
-          assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
-
     @Then /^I should see (\d+) annotations$/, (number) ->
       @client
         .waitForExist('.annotations', assert.ifError)
         .elements '.annotations li', (error, elements) ->
+          assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
+
+    @Then /^I should see (\d+) keywords$/, (number) ->
+      @client
+        .waitForExist('.level-3, .code-keywords', assert.ifError)
+        .elements '.code-keyword, .code-level-3:not(.disabled)', (error, elements) ->
           assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
     @Then /^I should see (\d+) archived keywords$/, (number) ->
@@ -53,10 +53,15 @@ do ->
         .elements '.code-level-3.disabled', (error, elements) ->
           assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
-    @Then /^I should see (\d+) sub\-headers/, (number) ->
+    @Then /^I should see (\d+)( archived)? sub\-headers/, (number, archived) ->
+      selector = '.code-level-2'
+      if archived
+        selector += '.disabled'
+      else
+        selector += ':not(.disabled)'
       @client
         .waitForExist('.level-2')
-        .elements '.code-level-2', (error, elements) ->
+        .elements selector, (error, elements) ->
           assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
     @Then /^I should see (\d+) headers/, (number) ->

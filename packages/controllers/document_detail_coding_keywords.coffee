@@ -112,7 +112,7 @@ if Meteor.isServer
   Meteor.publish 'codingKeywords', () ->
     [
       Headers.find()
-      SubHeaders.find()
+      SubHeaders.find({archived: {$ne: true}})
       CodingKeywords.find({caseCount: {$ne: true}, archived: {$ne: true}})
     ]
 
