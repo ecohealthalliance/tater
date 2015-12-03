@@ -1,7 +1,8 @@
 template(name="documentDetailCodingKeywords")
   .code-search-container.pane-head(class="pane-head-l")
     input.code-search.form-control(type="text" placeholder="Search Code Keywords")
-    i.fa.fa-times-circle.clear-search
+    if searching
+      i.fa.fa-times-circle.clear-search
   .coding-container.pane(class="pane-l")
     ul.list-unstyled.code-list(class=action)
       if Template.subscriptionsReady

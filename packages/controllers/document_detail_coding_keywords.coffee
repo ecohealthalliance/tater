@@ -87,20 +87,22 @@ if Meteor.isClient
       else
         CodingKeywords.find({subHeaderId: subHeaderId})
 
+    searching: ->
+      Template.instance().searching.get()
+
   Template.documentDetailCodingKeywords.events
 
-    'keyup .code-search': _.debounce ((e, instance) ->
-      e.preventDefault()
-      searchText = e.target.value
-      if searchText.length > 1 then instance.searching.set true
-      else instance.searching.set false
-      instance.searchText.set e.target.value
+    'input .code-search': _.debounce ((e, instance) ->
+        e.preventDefault()
+        searchText = e.target.value
+        instance.searchText.set e.target.value
       ), 100
+    'input .code-search-container .code-search': (e, instance) ->
+        searchText = e.target.value
+        instance.searching.set searchText.length > 0
 
-    'click .clear-search': (e, instance) ->
-      instance.searching.set false
-      instance.searchText.set ''
-      $('.code-search').val('')
+    'click .code-search-container .clear-search': (e, instance) ->
+      $('.code-search-container .code-search').val('').trigger('input').focus()
 
     'click .code-header > i': (e) ->
       $(e.target).toggleClass('down up').siblings('.code-sub-headers').toggleClass('hidden')
@@ -116,7 +118,7 @@ if Meteor.isServer
       CodingKeywords.find({caseCount: {$ne: true}, archived: {$ne: true}})
     ]
 
-  # Published name is somewhat misleading - this includes both archived and 
+  # Published name is somewhat misleading - this includes both archived and
   # unarchived keywords.  Named it this way so people will think twice before using.
   Meteor.publish 'archivedCodingKeywords', () ->
     [

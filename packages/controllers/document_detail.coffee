@@ -28,6 +28,7 @@ if Meteor.isClient
     @endOffset = new ReactiveVar()
     @annotations = new ReactiveVar()
     @searchText = new ReactiveVar('')
+    @searching = new ReactiveVar(false)
     @temporaryAnnotation = new ReactiveVar(new Annotation())
     @selectedAnnotation = new ReactiveVar({id: @data.annotationId, onLoad: true})
 
@@ -64,19 +65,19 @@ if Meteor.isClient
           scrollToAnnotation(id, false)
 
   Template.documentDetail.helpers
-    'document': ->
+    document: ->
       Documents.findOne({ _id: @documentId })
 
-    'annotations': ->
+    annotations: ->
       Template.instance().annotations.get()
 
-    'accessCode': ->
+    accessCode: ->
       Template.instance().accessCode
 
-    'annotationUserEmail': ->
+    annotationUserEmail: ->
       @userEmail()
 
-    'annotationLayers': ->
+    annotationLayers: ->
       temporaryAnnotation = Template.instance().temporaryAnnotation.get()
       annotations = Annotations.find({documentId: @documentId}).fetch()
       if temporaryAnnotation.startOffset >= 0
@@ -88,22 +89,22 @@ if Meteor.isClient
         Spacebars.SafeString(annotatedBody)
       annotationLayers
 
-    'positionInformation': ->
+    positionInformation: ->
       "#{@startOffset} - #{@endOffset}"
 
-    'header': ->
+    header: ->
       @header()
 
-    'subHeader': ->
+    subHeader: ->
       @subHeader()
 
-    'keyword': ->
+    keyword: ->
       @keyword()
 
-    'color': ->
+    color: ->
       @color()
 
-    'code': ->
+    code: ->
       if @header() and @subHeader() and @keyword()
         Spacebars.SafeString("<span class='header'>#{@header()}</span> : <span class='sub-header'>#{@subHeader()}</span> : <span class='keyword'>#{@keyword()}</span>")
       else if @subHeader() and not @keyword()
@@ -113,12 +114,15 @@ if Meteor.isClient
       else
         ''
 
-    'selected': ->
+    selected: ->
       id = Template.instance().selectedAnnotation.get()?.id
       if @_id is id
         'selected'
       else if id
         'not-selected'
+
+    searching: ->
+      Template.instance().searching.get()
 
   Template.documentDetail.events
     'mousedown .document-container': (event, instance) ->
@@ -169,7 +173,16 @@ if Meteor.isClient
         temporaryAnnotation.set({startOffset: null, endOffset: null})
         instance.temporaryAnnotation.set(temporaryAnnotation)
 
-    'keyup .annotation-search': _.debounce ((e, instance) -> instance.searchText.set e.target.value), 200
+    'input .annotation-search': _.debounce ((e, instance) ->
+        searchText = e.target.value
+        instance.searchText.set e.target.value
+      ), 200
+    'input .annotation-search-container .annotation-search': (e, instance) ->
+        searchText = e.target.value
+        instance.searching.set searchText.length > 0
+
+    'click .annotation-search-container .clear-search': (e, instance) ->
+      $('.annotation-search-container .annotation-search').val('').trigger('input').focus()
 
     'click .delete-annotation': (event, instance) ->
       event.stopImmediatePropagation()
@@ -230,43 +243,43 @@ if Meteor.isServer
     else
       @ready()
 
-  Meteor.methods
-    createAnnotation: (attributes, code) ->
-      document = Documents.findOne(attributes.documentId)
-      group = Groups.findOne({_id: document.groupId})
-      user = Meteor.users.findOne(@userId)
-      accessible = (code and document.codeAccessible()) or (user and group?.viewableByUser(user))
-      if accessible
-        annotation = new Annotation()
-        annotation.set(attributes)
-        annotation.set(userId: @userId)
-        annotation.set(accessCode: code)
-        annotation.save ->
-          document.set("annotated", Annotations.find({documentId: document._id}).count())
-          document.save()
-          annotation
-      else
-        throw 'Unauthorized'
+Meteor.methods
+  createAnnotation: (attributes, code) ->
+    document = Documents.findOne(attributes.documentId)
+    group = Groups.findOne({_id: document.groupId})
+    user = Meteor.users.findOne(@userId)
+    accessible = (code and document.codeAccessible()) or (user and group?.viewableByUser(user))
+    if accessible
+      annotation = new Annotation()
+      annotation.set(attributes)
+      annotation.set(userId: @userId)
+      annotation.set(accessCode: code)
+      annotation.save ->
+        document.set("annotated", Annotations.find({documentId: document._id}).count())
+        document.save()
+        annotation
+    else
+      throw 'Unauthorized'
 
-    deleteAnnotation: (annotationId, code) ->
-      annotation = Annotations.findOne(annotationId)
-      document = Documents.findOne(annotation.documentId)
-      group = Groups.findOne({_id: document.groupId})
-      user = Meteor.users.findOne(@userId)
-      accessibleViaCode = (code and document.codeAccessible() and (code is annotation.accessCode))
-      accessibleViaUser = (user and group?.viewableByUser(user))
-      if accessibleViaCode or accessibleViaUser
-        annotation.remove ->
-          document.set("annotated", Annotations.find({documentId: document._id}).count())
-          document.save()
-          annotation
-      else
-        throw 'Unauthorized'
+  deleteAnnotation: (annotationId, code) ->
+    annotation = Annotations.findOne(annotationId)
+    document = Documents.findOne(annotation.documentId)
+    group = Groups.findOne({_id: document.groupId})
+    user = Meteor.users.findOne(@userId)
+    accessibleViaCode = (code and document.codeAccessible() and (code is annotation.accessCode))
+    accessibleViaUser = (user and group?.viewableByUser(user))
+    if accessibleViaCode or accessibleViaUser
+      annotation.remove ->
+        document.set("annotated", Annotations.find({documentId: document._id}).count())
+        document.save()
+        annotation
+    else
+      throw 'Unauthorized'
 
-    toggleAnnotationFlag: (annotationId) ->
-      annotation = Annotations.findOne(annotationId)
-      if annotation.flagged
-        annotation.set(flagged: false)
-      else
-        annotation.set(flagged: true)
-      annotation.save()
+  toggleAnnotationFlag: (annotationId) ->
+    annotation = Annotations.findOne(annotationId)
+    if annotation.flagged
+      annotation.set(flagged: false)
+    else
+      annotation.set(flagged: true)
+    annotation.save()
