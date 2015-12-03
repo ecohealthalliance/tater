@@ -9,3 +9,6 @@ go = (route, params, query) ->
 
 path = (route, params, query) ->
   FlowRouter.go route, params, query
+
+reloadPage = ->
+  FlowRouter.reload()

@@ -9,10 +9,11 @@ Package.onUse(function(api) {
   api.versionsFrom('1.1.0.2');
   api.use('coffeescript');
   api.use('templating');
-  api.use('meteorhacks:flow-router@1.9.0');
+  api.use('kadira:flow-router');
 
   api.addFiles('helpers.coffee', 'client');
   api.export('go', 'client');
+  api.export('reloadPage', 'client');
 });
 
 

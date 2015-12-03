@@ -2,7 +2,8 @@
 Manual annotation interface
 
 ## Testing
-First install the Java Runtime Environment: https://support.apple.com/kb/DL1572?locale=en_US
+First install the Java Runtime Environment:
+http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html
 
 Also install spacejam (for running unit tests via command line interface): `npm install -g spacejam`
 
@@ -10,11 +11,11 @@ To run model unit tests:
 `spacejam test-packages packages/models/`
 
 To run end-to-end tests:
-`VELOCITY_CI=1 CHIMP_OPTIONS="--browser=chrome --no-screenshotsOnError" meteor --test`
+`VELOCITY_CI=1 CHIMP_OPTIONS="--browser=chrome --chai --sync=false" meteor --test`
 
 To run a single test:
 Put the tag `@dev` immediately above the test, then start your meteor server by running
-`CHIMP_OPTIONS="--tags=@dev --browser=chrome --no-screenshotsOnError" meteor`
+`CHIMP_OPTIONS="--watch --watchTags=@dev --browser=chrome --chai --sync=false" meteor`
 
 ## Copying production database to local machine
 First get the file `infrastructure.pem` from another EHA developer and place it in `~/.ssh`

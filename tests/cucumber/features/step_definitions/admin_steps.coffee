@@ -9,9 +9,9 @@ do ->
 
     @When "I click on the test user", ->
       @browser
-        .waitForVisible('.users-table', assert.ifError)
-        .click('.users-table .reactive-table tr', assert.ifError)
+        .waitForVisible('.users-table')
+        .click('.users-table .reactive-table tbody tr')
 
     @Then "I should be on the user profile page", ->
       @browser
-        .waitForExist('.profile-detail', assert.ifError)
+        .waitForVisible('.profile-detail')

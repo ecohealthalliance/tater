@@ -10,22 +10,20 @@ do ->
     @Given /^there is a( code-accessible)? test group in the database$/, (codeAccessible) ->
       @server.call('createTestGroup', codeAccessible: Boolean(codeAccessible))
 
-    @When "I click the new group link", (callback) ->
+    @When "I click the new group link", ->
       @browser
-        .waitForExist('.groups-table')
+        .waitForExist('.new-group-link')
         .click('.new-group-link')
         .waitForExist('#new-group-form')
-        .call(callback)
 
     @When /^I fill out the new group form with name "([^"]*)"( and make it code-accessible)?$/, (name, codeAccessible) ->
-      @browser
+      brChain = @browser
         .waitForExist('#new-group-form')
         .setValue('#group-name', name)
         .setValue('#group-description', 'This is an group.')
       if codeAccessible
-        @browser.click('#group-code-accessible')
-      @browser.submitForm('#new-group-form')
-
+        brChain = brChain.click('#group-code-accessible')
+      brChain.submitForm('#new-group-form')
 
     @When "I click on the test group", ->
       @browser
@@ -34,18 +32,25 @@ do ->
 
     @Then "I should be on the test group document page", ->
       @browser
-        .waitForExist('.documents')
+        .waitForVisible('.group-documents')
+        .getHTML '.group-documents .group-name', (error, response) ->
+          match = response.toString().match("Test Group")
+          assert.ok(match)
 
-    @When /^I navigate to the test group page$/, (callback) ->
+    @When /^I click on the group link$/, ->
+      @browser
+        .waitForExist('.group-list')
+        .click(".group-list a.list-link")
+        .waitForVisible('.documents')
+
+    @When /^I navigate to the test group page$/, ->
       @browser
         .url(url.resolve(process.env.ROOT_URL, "/groups/fakegroupid"))
         .waitForExist('.group-detail')
-        .call(callback)
 
-    @Then /^I should be on the test group page$/, (callback) ->
+    @Then /^I should be on the test group page$/, ->
       @browser
-        .waitForVisible('.group-detail', assert.ifError)
+        .waitForVisible('.group-detail')
         .getHTML '.group-detail h1', (error, response) ->
           match = response.toString().match("Test Group")
           assert.ok(match)
-        .call(callback)

@@ -8,7 +8,7 @@ do ->
 
     url = require('url')
 
-    @Then /^I should see content "([^"]*)" as "([^"]*)" element in the Recent Documents list$/, (docTitle, position, callback) ->
+    @Then /^I should see content "([^"]*)" as "([^"]*)" element in the Recent Documents list$/, (docTitle, position) ->
       @browser
         .waitForExist('.recent-documents')
         .execute ((position) ->
@@ -20,4 +20,3 @@ do ->
         .then (response) ->
           match = response.value.toString().match(docTitle)
           assert.ok(match)
-        .call(callback)
