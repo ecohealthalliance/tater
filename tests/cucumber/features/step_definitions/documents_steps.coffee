@@ -142,7 +142,7 @@ do ->
         .execute ->
           $("a:contains('>')").click()
         # wait for the page to change
-        .pause(1000)
+        .pause(2000)
 
     @When /^I search for a document with the title of "([^"]*)"$/, (documentName) ->
       @browser

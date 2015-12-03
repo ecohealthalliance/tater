@@ -52,10 +52,10 @@ do ->
       @client
         .url(url.resolve(process.env.ROOT_URL, '/'))
         .waitForExist('.sign-in')
-        .click('.sign-in', assert.ifError)
+        .click('.sign-in')
         .setValue('#at-field-email', _nonAdminTestUser.email)
         .setValue('#at-field-password', _nonAdminTestUser.password)
-        .submitForm('#at-field-email', assert.ifError)
+        .submitForm('#at-field-email')
         .waitForExist('.sign-out')
 
     @When /^I navigate to "([^"]*)"$/, (relativePath) ->
@@ -67,13 +67,13 @@ do ->
         .waitForExist('[href="/admin"]')
         .click('[href="/admin"]')
 
-    @Then /^I should see the "([^"]*)" link highlighted in the header$/, (linkText, callback) ->
+    @Then /^I should see the "([^"]*)" link highlighted in the header$/, (linkText) ->
       @client
         .waitForExist('.navbar-nav')
         .getHTML('.navbar-nav .active', (error, response) ->
           match = response?.toString().match(linkText)
           assert.ok(match)
-        ).call(callback)
+        )
 
     @Then /^I should( not)? see a "([^"]*)" toast$/, (noToast, message) ->
       @browser
