@@ -17,6 +17,7 @@ template(name="codingKeywords")
             ul.code-list.list.list-unstyled.level-1
               each headers
                 li.code.list-link.code-level-1(class="{{selected 'header'}}" data-id=_id)
+                  i.fa.fa-square(style="color:#{color}")
                   span= label
                   button.btn-plain.delete-header-button(data-toggle="modal" data-header-id=_id data-target="#confirm-delete-header-modal")
                     i.fa.fa-trash-o
@@ -69,17 +70,18 @@ template(name="curtain")
 template(name="new_header_form")
   form(id="new-header-form")
     input.form-control.code(type="text" name="header" placeholder="Enter a header")
-    button.cancel.btn.btn-default(type="button" data-level="header") Cancel
+    input.form-control.color-picker(type="text" name="color")
     button.add.btn.btn-primary.btn-block(type="submit" data-level="header") Add Header
+    button.cancel.btn.btn-default(type="button" data-level="header") Cancel
 
 template(name="new_subHeader_form")
   form(id="new-subHeader-form")
     input.form-control.code(type="text" name="subHeader" placeholder="Enter a sub-header")
-    button.cancel.btn.btn-default(type="button" data-level="subHeader") Cancel
     button.add.btn.btn-primary.btn-block(type="submit" data-level="subHeader") Add Sub-Header
+    button.cancel.btn.btn-default(type="button" data-level="subHeader") Cancel
 
 template(name="new_keyword_form")
   form(id="new-keyword-form")
     input.form-control.code(type="text" name="keyword" placeholder="Enter a keyword")
-    button.cancel.btn.btn-default(type="button" data-level="keyword") Cancel
     button.add.btn.btn-primary.btn-block(type="submit" data-level="keyword") Add keyword
+    button.cancel.btn.btn-default(type="button" data-level="keyword") Cancel

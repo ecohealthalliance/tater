@@ -122,13 +122,14 @@ if Meteor.isClient
       form = event.target
       headerProps =
         label: form.header.value
+        color: form.color.value
 
       Meteor.call 'addHeader', headerProps, (error, response) ->
         if error
           toastr.error("Error: #{error.message}")
         else
           toastr.success("Header added")
-          form.header.value = ''
+          form.reset()
         form.header.focus()
 
     'submit #new-subHeader-form': (event, instance) ->
@@ -176,7 +177,8 @@ if Meteor.isClient
       setKeywords(instance.selectedCodes.get('subHeaderId'))
 
   Template.new_header_form.onRendered ->
-    @$("input").focus()
+    @$("input[name=header]").focus()
+    @$('.color-picker').colorpicker()
 
   Template.new_subHeader_form.onRendered ->
     @$("input").focus()
@@ -247,7 +249,7 @@ Meteor.methods
     if Meteor.users.findOne(@userId)?.admin
       _headerProps =
         label: headerProps.label?.trim()
-        color: 1 # TODO
+        color: headerProps.color
 
       if _validateHeaderProperties(_headerProps)
         Headers.insert _headerProps

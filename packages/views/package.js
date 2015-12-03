@@ -13,6 +13,7 @@ Package.onUse(function(api) {
   api.use('tater:accounts');
   api.use('tater:route-helpers');
   api.use('aslagle:reactive-table');
+  api.use('risul:bootstrap-colorpicker');
   api.addFiles('delete_document_modal.jade');
   api.addFiles('delete_keyword_modal.jade');
   api.addFiles('delete_subheader_modal.jade');
