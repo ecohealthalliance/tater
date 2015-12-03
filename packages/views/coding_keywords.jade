@@ -34,7 +34,7 @@ template(name="codingKeywords")
                   +new_subHeader_form
               ul.code-list.list.list-unstyled.level-2
                 each subHeaders
-                  li.code.list-link.code-level-2(class="{{selected 'subHeader'}}" data-id=_id).not-clickable(class="{{archived}}")
+                  li.code.list-link.code-level-2(class="{{selected 'subHeader'}} {{archived}}" data-id=_id)
                     span= label
                     unless archived
                       button.btn-plain.delete-subheader-button(data-toggle="modal" data-subheader-id=_id data-target="#confirm-delete-subheader-modal")
