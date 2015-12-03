@@ -65,4 +65,4 @@ do ->
         .waitForExist('.annotation-detail')
         .execute ->
           $("a:contains('>')").click()
-        .pause(1000)
+        .pause(2000)
