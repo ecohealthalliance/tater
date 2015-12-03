@@ -11,7 +11,7 @@ To run model unit tests:
 `spacejam test-packages packages/models/`
 
 To run end-to-end tests:
-`VELOCITY_CI=1 CHIMP_OPTIONS="--browser=chrome --chai --sync=false meteor --test`
+`VELOCITY_CI=1 CHIMP_OPTIONS="--browser=chrome --chai --sync=false" meteor --test`
 
 To run a single test:
 Put the tag `@dev` immediately above the test, then start your meteor server by running
