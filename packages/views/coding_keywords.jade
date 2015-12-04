@@ -20,7 +20,7 @@ template(name="codingKeywords")
               if headers
                 ul.code-list.list.list-unstyled.level-1
                   each headers
-                    li.code.list-link.code-level-1(class="{{selected 'header'}}" data-id=_id)
+                    li.code.list-link.code-level-1(class="{{selected 'header'}} header-color-#{color}" data-id=_id)
                       span= label
                       button.btn-plain.delete-header-button(data-toggle="modal" data-header-id=_id data-target="#confirm-delete-header-modal")
                         i.fa.fa-trash-o
