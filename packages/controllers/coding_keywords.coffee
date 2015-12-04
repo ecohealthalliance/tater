@@ -15,7 +15,7 @@ if Meteor.isClient
       Headers.find()
 
     subHeaders: ->
-      SubHeaders.find(headerId: Template.instance().selectedCodes.get('headerId'))
+      SubHeaders.find({headerId: Template.instance().selectedCodes.get('headerId')}, {sort: {archived: 1}})
 
     keywords: ->
       Template.instance().keywords.find()
@@ -72,7 +72,7 @@ if Meteor.isClient
         instance.keywords.remove({})
         instance.addingCode.set('keyword', false)
         instance.addingCode.set('subHeader', false)
-        subHeaders = SubHeaders.find({headerId: selectedHeaderId})
+        subHeaders = SubHeaders.find({headerId: selectedHeaderId},{sort: {archived: 1}})
         _.each subHeaders.fetch(), (subHeader) ->
           instance.subHeaders.insert subHeader
 
