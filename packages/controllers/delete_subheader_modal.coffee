@@ -10,6 +10,7 @@ if Meteor.isClient
         else
           toastr.success("Success")
 
+
 Meteor.methods
   deleteSubHeader: (id) ->
     if not Meteor.user()?.admin

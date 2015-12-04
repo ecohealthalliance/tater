@@ -9,6 +9,7 @@ if Meteor.isClient
         else
           toastr.success("Success")
 
+
 Meteor.methods
   deleteDocument: (documentId) ->
     document = Documents.findOne(documentId)

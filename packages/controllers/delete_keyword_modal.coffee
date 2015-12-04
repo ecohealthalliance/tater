@@ -15,6 +15,7 @@ if Meteor.isClient
         else
           toastr.success("Success")
 
+
 Meteor.methods
   deleteKeyword: (keywordId) ->
     user = Meteor.user()
