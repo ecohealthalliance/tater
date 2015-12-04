@@ -108,3 +108,12 @@ do ->
           .waitForVisible("input[name=#{level}]")
           .setValue("input[name=#{level}]", code)
           .submitForm("input[name=#{level}]")
+
+    @Then /^I should( not)? see coding keyword search results$/, (noResults) ->
+      if noResults
+        @browser
+          .waitForExist('.code-list')
+          .waitForExist('.selectable-code', 1000, true)
+      else
+        @browser
+          .waitForExist('.code-list .selectable-code')
