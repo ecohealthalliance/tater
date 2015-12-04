@@ -31,22 +31,21 @@ if Meteor.isClient
           toastr.success("Success")
           go 'documentDetail', {_id: response}
 
-if Meteor.isServer
-  Meteor.methods
-    createDocument: (fields) ->
-      if @userId
-        group = Groups.findOne({_id: fields.groupId})
-        user = Meteor.user()
-        if group?.viewableByUser(user)
-          document = new Document()
-          document.set(fields)
+Meteor.methods
+  createDocument: (fields) ->
+    if @userId
+      group = Groups.findOne({_id: fields.groupId})
+      user = Meteor.user()
+      if group?.viewableByUser(user)
+        document = new Document()
+        document.set(fields)
 
-          if document.validate()
-            document.save ->
-              document
-          else
-            document.throwValidationException()
+        if document.validate()
+          document.save ->
+            document
         else
-          throw "Unauthorized"
+          document.throwValidationException()
       else
-        throw "Not logged in"
+        throw "Unauthorized"
+    else
+      throw "Not logged in"

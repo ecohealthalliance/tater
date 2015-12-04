@@ -18,9 +18,10 @@ template(name="documentDetail")
                   .document-annotations
                     pre.document-text= this
       .annotation-search-container.pane-head.pane-head-r
-        input.annotation-search.form-control(type="text" placeholder="Search Annotations")
-        if searching
-          i.fa.fa-times-circle.clear-search
+        if Template.subscriptionsReady
+          input.annotation-search.form-control(type="text" placeholder="Search Annotations")
+          if searching
+            i.fa.fa-times-circle.clear-search
       .annotation-container.pane.pane-r
         ul.annotations.list-unstyled
           if Template.subscriptionsReady
@@ -39,11 +40,16 @@ template(name="documentDetail")
                 .delete-annotation.btn-delete(data-annotation-id=_id)
                   i.fa.fa-times-circle
             else
-              .no-results
-                i.fa.fa-search
-                p Sorry, no annotations found
+              if searching
+                .no-results
+                  i.fa.fa-search
+                  p Sorry, no annotations found.
+              else
+                .no-results
+                  p No annotations currently present.
           else
             .loading
+
   #completionCodeModal.modal.fade
     .modal-dialog
       .modal-content

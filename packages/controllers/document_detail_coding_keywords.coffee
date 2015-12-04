@@ -95,7 +95,7 @@ if Meteor.isClient
     'input .code-search': _.debounce ((e, instance) ->
         e.preventDefault()
         searchText = e.target.value
-        instance.searchText.set e.target.value
+        instance.searchText.set searchText
       ), 100
     'input .code-search-container .code-search': (e, instance) ->
         searchText = e.target.value

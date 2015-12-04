@@ -25,7 +25,7 @@ install:
 	npm install -g spacejam
 
 data:
-	./scripts/restore_database
+	./.scripts/restore_database
 
 build:
 	rm -fr build/
