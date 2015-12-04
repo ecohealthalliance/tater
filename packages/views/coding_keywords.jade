@@ -54,7 +54,7 @@ template(name="codingKeywords")
               i.add-code.add-keyword.fa.fa-plus(data-level="keyword" class="{{#if addingCode 'keyword'}}active{{/if}}")
           .code-management-list-container
             if currentlySelectedSubHeader
-              if subHeadersLoading
+              if keywordsLoading
                 .loading
               else
                 if addingCode 'keyword'
