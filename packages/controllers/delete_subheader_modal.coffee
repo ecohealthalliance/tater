@@ -22,7 +22,6 @@ if Meteor.isServer
       if not subheader
         throw new Meteor.Error("Subheader does not exist.")
       else if codingKeyword
-        # throw new Meteor.Error("Subheaders with keywords cannot be deleted.")
         SubHeaders.update id,
           $set:
             archived: true
