@@ -62,7 +62,6 @@ loading($positioned=true)
   @extend .icon
   if $positioned
     centerPosition()
-    position absolute
     top 50%
     left 50%
     z-index $cosmos-layer
@@ -132,6 +131,7 @@ buttonHover($hoverBG, $bg=none)
     color white
 
 centerPosition($h=-50%, $v=-50%)
+  position absolute
   transform translate($h, $v)
 
 centerVertically(position=true)

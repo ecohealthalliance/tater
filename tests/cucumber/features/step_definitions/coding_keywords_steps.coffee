@@ -24,7 +24,7 @@ do ->
           .waitForVisible('.level-2')
           .click('.code-level-2')
 
-    @Then /^I click the first document$/, -> 
+    @Then /^I click the first document$/, ->
       @browser
         .waitForVisible('.document-list .document a')
         .click('.document a')
@@ -92,42 +92,19 @@ do ->
         # wait for modal to fade
         .waitForVisible('.modal-backdrop', 1000, true)
 
-    @Then /^I should( not)? see coding keyword search results$/, (noResults) ->
-      if noResults
+    @When /^I add the "([^"]*)" "([^"]*)"$/, (level, code) ->
+      if level == "header"
         @browser
-          .waitForExist('.code-list')
-          .waitForExist('.selectable-code', 1000, true)
+          .waitForVisible(".add-#{level}")
+          .click(".add-#{level}")
+          .waitForVisible("input[name=#{level}]")
+          .setValue("input[name=#{level}]", code)
+          .click(".header-colors li:first-child")
+          .submitForm("input[name=#{level}]")
       else
         @browser
-          .waitForExist('.code-list .selectable-code')
-
-    @When "I click the Add Keyword button", ->
-      @browser
-        .waitForExist('.add-keyword')
-        .click('.add-keyword')
-
-    @When 'I add the header "$header"', (header) ->
-      @browser
-        .waitForVisible('input[name="header"]')
-        .setValue('input[name="header"]', header)
-        .submitForm('input[name="header"]')
-        .click('.close')
-
-    @Then 'I should be able to find "$text" in the keyword table', (text) ->
-      @browser
-        .waitForVisible('.keyword-table .reactive-table-input')
-        .setValue('.keyword-table .reactive-table-input', text)
-        .pause(2000)
-        .getHTML '.keyword-table tbody', (error, response) ->
-          assert.ok(response.toString().match(text), "Text not found")
-
-    @When /^I click the add "([^"]*)" button$/, (level) ->
-      @browser
-        .waitForVisible(".add-#{level}")
-        .click(".add-#{level}")
-
-    @When /^I add the "([^"]*)" "([^"]*)"$/, (level, code) ->
-      @browser
-        .waitForVisible("input[name=#{level}]")
-        .setValue("input[name=#{level}]", code)
-        .submitForm("input[name=#{level}]")
+          .waitForVisible(".add-#{level}")
+          .click(".add-#{level}")
+          .waitForVisible("input[name=#{level}]")
+          .setValue("input[name=#{level}]", code)
+          .submitForm("input[name=#{level}]")
