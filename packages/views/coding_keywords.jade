@@ -33,12 +33,13 @@ template(name="codingKeywords")
               if addingCode 'subHeader'
                 .adding-code.clearfix
                   +new_subHeader_form
-              ul.code-list.list.list-unstyled.level-2
-                each subHeaders
-                  li.code.list-link.code-level-2(class="{{selected 'subHeader'}}" data-id=_id)
-                    span= label
-                    button.btn-plain.delete-subheader-button(data-toggle="modal" data-subheader-id=_id data-target="#confirm-delete-subheader-modal")
-                      i.fa.fa-trash-o
+              if subHeaders
+                ul.code-list.list.list-unstyled.level-2
+                  each subHeaders
+                    li.code.list-link.code-level-2(class="{{selected 'subHeader'}}" data-id=_id)
+                      span= label
+                      button.btn-plain.delete-subheader-button(data-toggle="modal" data-subheader-id=_id data-target="#confirm-delete-subheader-modal")
+                        i.fa.fa-trash-o
             +deleteSubHeaderModal(subHeaderToDelete=subHeaderToDelete)
 
         .code-list-wrap.col-sm-4
@@ -58,7 +59,7 @@ template(name="codingKeywords")
                   each keywords
                     li.code.list-link.code-level-3.not-clickable
                       span= label
-                      button.btn-plain.delete-keyword-button(data-toggle="modal" data-keyword-id=_id data-target="#confirm-delete-keyword-modal" )
+                      button.btn-plain.delete-keyword-button(data-toggle="modal" data-keyword-id=_id data-target="#confirm-delete-keyword-modal")
                         i.fa.fa-trash-o
                 +deleteKeywordModal(keywordToDelete=keywordToDelete)
     else

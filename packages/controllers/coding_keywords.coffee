@@ -72,8 +72,12 @@ if Meteor.isClient
         instance.addingCode.set('keyword', false)
         instance.addingCode.set('subHeader', false)
         subHeaders = SubHeaders.find({headerId: selectedHeaderId})
-        _.each subHeaders.fetch(), (subHeader) ->
-          instance.subHeaders.insert subHeader
+        if subHeaders.count()
+          _.each subHeaders.fetch(), (subHeader) ->
+            instance.subHeaders.insert subHeader
+        else
+          instance.addingCode.set('subHeader', true)
+
 
     'click .code-level-2': (event, instance) ->
       selectedSubHeaderId = event.currentTarget.getAttribute('data-id')

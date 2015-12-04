@@ -258,17 +258,6 @@ checkMark(center=false)
   margin 50px 0 0 0
   padding-bottom 50px
   z-index $bottom-layer
-  .code
-    padding-right 70px
-    pointer()
-
-  .not-clickable
-    cursor auto
-    &:hover
-      background none
-      color inherit
-    &::after
-      content ''
 
 .code-list-header
   position absolute
@@ -294,7 +283,8 @@ checkMark(center=false)
   margin-bottom 0
   li
     position relative
-    padding 10px
+    pointer()
+    padding 10px 10px 10px 70px
     &:hover
       color black
     &
@@ -305,6 +295,13 @@ checkMark(center=false)
       font-weight bold
       &::after
         color $d-gray
+    &.not-clickable
+      cursor auto
+      &:hover
+        background none
+        color inherit
+      &::after
+        content ''
     &::after
       @extend .icon
       content '\f054'
