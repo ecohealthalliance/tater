@@ -10,7 +10,10 @@ if Meteor.isClient
 
   Template.accountsHeaderButtons.events
     'click .sign-out' : (evt, instance) ->
-      Meteor.logout()
+      Meteor.logout (err) ->
+        if err
+          throw err
+        reloadPage()
     'click .sign-in' : (evt, instance) ->
       @state.set("signIn")
       $('.accounts-modal').modal('show')

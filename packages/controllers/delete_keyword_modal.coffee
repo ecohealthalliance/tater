@@ -11,25 +11,26 @@ if Meteor.isClient
       keywordId = event.target.getAttribute('data-keyword-id')
       Meteor.call 'deleteKeyword', keywordId, (error) ->
         if error
-          toastr.error(error.error)
-          console.log error
+          toastr.error(error.message)
         else
           toastr.success("Success")
 
-if Meteor.isServer
-  Meteor.methods
-    deleteKeyword: (keywordId) ->
-      user = Meteor.user()
-      if user?.admin
-        codingKeyword = CodingKeywords.findOne(keywordId)
-        timesUsed = Annotations.find
-          codeId: keywordId
-        .count()
-        if !codingKeyword
-          throw new Meteor.Error("Keyword does not exist.")
-        else if timesUsed > 0
-          throw new Meteor.Error("Keyword is in use - it cannot be deleted.")
-        else
-          CodingKeywords.remove codingKeyword._id
+
+Meteor.methods
+  deleteKeyword: (keywordId) ->
+    user = Meteor.user()
+    if user?.admin
+      codingKeyword = CodingKeywords.findOne(keywordId)
+      timesUsed = Annotations.find
+        codeId: keywordId
+      .count()
+      if !codingKeyword
+        throw new Meteor.Error("Keyword does not exist.")
+      else if timesUsed > 0
+        CodingKeywords.update codingKeyword._id,
+          $set:
+            archived: true
       else
-        throw new Meteor.Error("Unauthorized")
+        CodingKeywords.remove codingKeyword._id
+    else
+      throw new Meteor.Error("Only admins can delete keywords.")

@@ -24,16 +24,32 @@ do ->
           .waitForVisible('.level-2')
           .click('.code-level-2')
 
+    @Then /^I click the first document$/, ->
+      @browser
+        .waitForVisible('.document-list .document a')
+        .click('.document a')
+
     @When 'I type "$search" in the coding keyword search', (search) ->
       @browser
         .waitForVisible('.code-search')
         .setValue('.code-search', search)
-        .waitForExist('.filteredCodes')
 
     @Then /^I should see (\d+) keywords$/, (number) ->
       @client
+        .waitForExist('.level-3, .code-keywords')
+        .elements '.code-keyword, .code-level-3:not(.disabled)', (error, elements) ->
+          assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
+
+    @Then /^I should see (\d+) annotations$/, (number) ->
+      @client
+        .waitForExist('.annotations')
+        .elements '.annotations li', (error, elements) ->
+          assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
+
+    @Then /^I should see (\d+) archived keywords$/, (number) ->
+      @client
         .waitForExist('.level-3')
-        .elements '.code-level-3', (error, elements) ->
+        .elements '.code-level-3.disabled', (error, elements) ->
           assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
     @Then /^I should see (\d+) sub\-headers/, (number) ->
@@ -50,31 +66,31 @@ do ->
 
     @When 'I delete a keyword', () ->
       @client
-        .waitForVisible('.level-3')
+        .waitForVisible('.level-3 .fa-trash-o')
         .click('.level-3 .fa-trash-o')
         .waitForVisible('#confirm-delete-keyword-modal')
         .click('#confirm-delete-keyword')
         .waitForVisible('.toast-message')
         # wait for modal to fade
-        .waitForVisible('.modal-backdrop', 1000, false)
+        .waitForVisible('.modal-backdrop', 1000, true)
 
     @When 'I delete a sub-header', () ->
       @client
-        .waitForVisible('.level-2')
+        .waitForVisible('.level-2 .fa-trash-o')
         .click('.level-2 .fa-trash-o')
         .waitForVisible('#confirm-delete-subheader-modal')
         .click('#confirm-delete-subheader')
         # wait for modal to fade
-        .waitForVisible('.modal-backdrop', 1000, false)
+        .waitForVisible('.modal-backdrop', 1000, true)
 
     @When 'I delete a header', () ->
       @client
-        .waitForVisible('.level-1')
+        .waitForVisible('.level-1 .fa-trash-o')
         .click('.level-1 .fa-trash-o')
         .waitForVisible('#confirm-delete-header-modal')
         .click('#confirm-delete-header')
         # wait for modal to fade
-        .waitForVisible('.modal-backdrop', 1000, false)
+        .waitForVisible('.modal-backdrop', 1000, true)
 
     @When /^I add the "([^"]*)" "([^"]*)"$/, (level, code) ->
       if level == "header"

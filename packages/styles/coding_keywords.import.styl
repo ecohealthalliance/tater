@@ -283,8 +283,8 @@ checkMark(center=false)
   margin-bottom 0
   li
     position relative
+    padding 10px 70px 10px 10px
     pointer()
-    padding 10px 10px 10px 70px
     &:hover
       color black
     &
@@ -295,7 +295,10 @@ checkMark(center=false)
       font-weight bold
       &::after
         color $d-gray
+    &.list-link
+      padding 10px 70px 10px 10px
     &.not-clickable
+      padding 10px 50px 10px 10px
       cursor auto
       &:hover
         background none
@@ -336,6 +339,21 @@ checkMark(center=false)
       &::after
         opacity 1
         font-size  1.5em
+
+.code-details
+  min-height 60px
+  padding 15px
+  background alpha($sub-header-BG, 80%)
+  position absolute
+  bottom 0
+  left 0
+  right 0
+
+.disabled
+  color lighten($primary-light, 70%)
+
+.disabled span::after
+  content ' (archived)'
 
 .adding-code
   padding 15px 10px

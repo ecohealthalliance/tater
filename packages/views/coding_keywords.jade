@@ -14,14 +14,17 @@ template(name="codingKeywords")
             if addingCode 'header'
               .adding-code.clearfix
                 +new_header_form headers=headers codeColor=codeColor
-            ul.code-list.list.list-unstyled.level-1
-              each headers
-                li.code.list-link.code-level-1(class="{{selected 'header'}} header-color-#{color}" data-id=_id)
-                  span.swatch(class="color-#{color}")
-                  span= label
-                  button.btn-plain.delete-header-button(data-toggle="modal" data-header-id=_id data-target="#confirm-delete-header-modal")
-                    i.fa.fa-trash-o
-            +deleteHeaderModal(headerToDelete=headerToDelete)
+            if headersLoading
+              .loading
+            else
+              if headers
+                ul.code-list.list.list-unstyled.level-1
+                  each headers
+                    li.code.list-link.code-level-1(class="{{selected 'header'}}" data-id=_id)
+                      span= label
+                      button.btn-plain.delete-header-button(data-toggle="modal" data-header-id=_id data-target="#confirm-delete-header-modal")
+                        i.fa.fa-trash-o
+                +deleteHeaderModal(headerToDelete=headerToDelete)
         .code-list-wrap.col-sm-4
           unless currentlySelectedHeader
             +curtain
@@ -33,15 +36,17 @@ template(name="codingKeywords")
               if addingCode 'subHeader'
                 .adding-code.clearfix
                   +new_subHeader_form
-              if subHeaders
-                ul.code-list.list.list-unstyled.level-2
-                  each subHeaders
-                    li.code.list-link.code-level-2(class="{{selected 'subHeader'}}" data-id=_id)
-                      span= label
-                      button.btn-plain.delete-subheader-button(data-toggle="modal" data-subheader-id=_id data-target="#confirm-delete-subheader-modal")
-                        i.fa.fa-trash-o
-            +deleteSubHeaderModal(subHeaderToDelete=subHeaderToDelete)
-
+              if subHeadersLoading
+                .loading
+              else
+                if subHeaders
+                  ul.code-list.list.list-unstyled.level-2
+                    each subHeaders
+                      li.code.list-link.code-level-2(class="{{selected 'subHeader'}}" data-id=_id)
+                        span= label
+                        button.btn-plain.delete-subheader-button(data-toggle="modal" data-subheader-id=_id data-target="#confirm-delete-subheader-modal")
+                          i.fa.fa-trash-o
+                  +deleteSubHeaderModal(subHeaderToDelete=subHeaderToDelete)
         .code-list-wrap.col-sm-4
           unless currentlySelectedSubHeader
             +curtain
@@ -54,14 +59,18 @@ template(name="codingKeywords")
               if addingCode 'keyword'
                 .adding-code.clearfix
                   +new_keyword_form
-              if keywords
-                ul.code-list.list.list-unstyled.level-3
-                  each keywords
-                    li.code.list-link.code-level-3.not-clickable
-                      span= label
-                      button.btn-plain.delete-keyword-button(data-toggle="modal" data-keyword-id=_id data-target="#confirm-delete-keyword-modal")
-                        i.fa.fa-trash-o
-                +deleteKeywordModal(keywordToDelete=keywordToDelete)
+              if subHeadersLoading
+                .loading
+              else
+                if keywords
+                  ul.code-list.list.list-unstyled.level-3
+                    each keywords
+                      li.code.code-level-3.not-clickable(class="{{archived}}")
+                        span= label
+                        unless archived
+                          button.btn-plain.delete-keyword-button(data-toggle="modal" data-keyword-id=_id data-target="#confirm-delete-keyword-modal" )
+                            i.fa.fa-trash-o
+                  +deleteKeywordModal(keywordToDelete=keywordToDelete)
     else
       .loading
 
