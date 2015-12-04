@@ -12,7 +12,7 @@ if Meteor.isClient
 
   Template.codingKeywords.helpers
     headers: ->
-      Headers.find()
+      Headers.find({}, {sort: {archived: 1}})
 
     subHeaders: ->
       SubHeaders.find({headerId: Template.instance().selectedCodes.get('headerId')}, {sort: {archived: 1}})

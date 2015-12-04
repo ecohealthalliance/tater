@@ -16,10 +16,11 @@ template(name="codingKeywords")
                 +new_header_form
             ul.code-list.list.list-unstyled.level-1
               each headers
-                li.code.list-link.code-level-1(class="{{selected 'header'}}" data-id=_id)
+                li.code.list-link.code-level-1(class="{{selected 'header'}} {{archived}}" data-id=_id)
                   span= label
-                  button.btn-plain.delete-header-button(data-toggle="modal" data-header-id=_id data-target="#confirm-delete-header-modal")
-                    i.fa.fa-trash-o
+                  unless archived
+                    button.btn-plain.delete-header-button(data-toggle="modal" data-header-id=_id data-target="#confirm-delete-header-modal")
+                      i.fa.fa-trash-o
             +deleteHeaderModal(headerToDelete=headerToDelete)
         .code-list-wrap.col-sm-4
           unless currentlySelectedHeader

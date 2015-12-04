@@ -17,13 +17,21 @@ if Meteor.isServer
       if not _.isString(id)
         throw new Meteor.Error("You must specify a header id.")
       header = Headers.findOne(id)
-      subHeader = SubHeaders.findOne(headerId: id)
+      subHeaders = SubHeaders.find(headerId: id).fetch()
       if not header
         throw new Meteor.Error("Header does not exist.")
-      else if subHeader
-        # CodingKeywords.update id,
-        #   $set:
-        #     archived: true
-        throw new Meteor.Error("Headers with subheaders cannot be deleted.")
+      else if subHeaders
+        Headers.update id,
+          $set:
+            archived: true        
+        SubHeaders.update {headerId: id},
+          {$set:
+            archived: true}
+          {multi: true}
+        CodingKeywords.update {subHeaderId: {$in: _.pluck(subHeaders, "_id")}},
+          {$set:
+            archived: true}
+          {multi: true}        
+        # throw new Meteor.Error("Headers with subheaders cannot be deleted.")
       else
         Headers.remove(id)
