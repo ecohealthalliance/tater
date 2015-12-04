@@ -163,8 +163,10 @@ if Meteor.isClient
       form = event.target
       keywordProps =
         headerId: instance.selectedCodes.get('headerId')
-        subHeaderId: +instance.selectedCodes.get('subHeaderId')
+        subHeaderId: instance.selectedCodes.get('subHeaderId')
         label: form.keyword.value
+
+      console.log instance.selectedCodes.get('subHeaderId')
 
       Meteor.call 'addKeyword', keywordProps, (error, response) ->
         if error
@@ -257,6 +259,8 @@ _validateSubHeaderProperties = (subHeaderProps) ->
 _validateHeaderProperties = (headerProps) ->
   if not headerProps.label
     throw new Meteor.Error('Header is empty')
+  if not headerProps.color
+    throw new Meteor.Error('Header color has not been chosen')
 
   if Headers.findOne(
     label: headerProps.label

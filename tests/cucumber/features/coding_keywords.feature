@@ -68,10 +68,13 @@ Feature: Coding Keywords
     When I log in as the test user
     And I navigate to "/codingKeywords"
     Then I should see content "Test Header"
+    When I add the "header" "Another Test Header"
+    Then I should see content "Another Test Header"
     When I click on a "header"
     Then I should see content "Test Sub-Header"
-    When I click on a "sub-header"
+    And I add the "subHeader" "Another Test Sub-Header"
+    Then I should see content "Another Test Sub-Header"
+    When I click on a "subHeader"
     Then I should see content "Test Keyword"
-    When I click the add "keyword" button
-    And I add the "keyword" "Bur Bur"
-    Then I should see content "Bur Bur"
+    When I add the "keyword" "Another Test Keyword"
+    Then I should see content "Another Test Keyword"
