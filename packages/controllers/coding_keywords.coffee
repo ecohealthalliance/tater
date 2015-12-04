@@ -20,11 +20,20 @@ if Meteor.isClient
       instance.subHeadersLoading.set(true)
       Meteor.subscribe 'subHeaders', selectedHeaderId, ->
         instance.subHeadersLoading.set(false)
+        if SubHeaders.findOne({ headerId: selectedHeaderId})
+          instance.addingCode.set('subHeader', false)
+        else
+          instance.addingCode.set('subHeader', true)
+
     @autorun ->
       selectedSubHeaderId = instance.selectedCodes.get('subHeaderId')
       instance.keywordsLoading.set(true)
       Meteor.subscribe 'keywords', selectedSubHeaderId, ->
         instance.keywordsLoading.set(false)
+        if CodingKeywords.findOne({ subHeaderId: selectedSubHeaderId})
+          instance.addingCode.set('keyword', false)
+        else
+          instance.addingCode.set('keyword', true)
 
   Template.codingKeywords.helpers
     headers: ->
@@ -32,23 +41,11 @@ if Meteor.isClient
 
     subHeaders: ->
       selectedHeaderId = Template.instance().selectedCodes.get('headerId')
-      subHeaders = SubHeaders.find headerId: selectedHeaderId
-      addingCode = Template.instance().addingCode
-      if not subHeaders.count()
-        addingCode.set('subHeader', true)
-      else
-        addingCode.set('subHeader', false)
-      subHeaders
+      SubHeaders.find headerId: selectedHeaderId
 
     keywords: ->
       selectedSubHeaderId = Template.instance().selectedCodes.get('subHeaderId')
-      keywords = CodingKeywords.find subHeaderId: selectedSubHeaderId
-      addingCode = Template.instance().addingCode
-      if not keywords.count()
-        addingCode.set('keyword', true)
-      else
-        addingCode.set('keyword', false)
-      keywords
+      CodingKeywords.find subHeaderId: selectedSubHeaderId
 
     selected: (level) ->
       if level == 'header'
@@ -61,6 +58,9 @@ if Meteor.isClient
     archived: () ->
       if @archived
         'disabled'
+
+    selectedCodes: ->
+      Template.instance().selectedCodes
 
     currentlySelectedHeader: ->
       Template.instance().selectedCodes.get('headerId')
@@ -169,6 +169,7 @@ if Meteor.isClient
         else
           toastr.success("Sub-Header added")
           form.subHeader.value = ''
+          instance.addingCode.set('subHeader', true)
         form.subHeader.focus()
 
     'submit #new-keyword-form': (event, instance) ->
@@ -185,6 +186,7 @@ if Meteor.isClient
           toastr.error("Error: #{error.message}")
         else
           toastr.success("Keyword added")
+          instance.addingCode.set('keyword', true)
           form.keyword.value = ''
         form.keyword.focus()
 

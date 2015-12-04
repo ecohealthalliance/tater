@@ -8,6 +8,7 @@ if Meteor.isClient
           console.log error
         else
           toastr.success("Success")
+          instance.data.selectedCodes.set('headerId', false)
 
 
 Meteor.methods
