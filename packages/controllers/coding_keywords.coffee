@@ -118,6 +118,10 @@ if Meteor.isClient
       subHeaderId = event.target.parentElement.getAttribute("data-subheader-id")
       instance.subHeaderToDelete.set(SubHeaders.findOne(subHeaderId))
 
+    'click .delete-keyword-button': (event, instance) ->
+      keywordId = event.target.parentElement.getAttribute("data-keyword-id")
+      instance.keywordToDelete.set(CodingKeywords.findOne(keywordId))
+
     'click .add-code': (event, instance) ->
       level = $(event.target).data('level')
       instance.addingCode.set(level, not instance.addingCode.get(level))
@@ -183,15 +187,6 @@ if Meteor.isClient
           toastr.success("Keyword added")
           form.keyword.value = ''
         form.keyword.focus()
-
-    'click .delete-keyword-button': (event, instance) ->
-      keywordId = event.target.parentElement.getAttribute("data-keyword-id")
-      instance.keywordToDelete.set(CodingKeywords.findOne(keywordId))
-
-    'hidden.bs.modal #confirm-delete-keyword-modal': (event, instance) ->
-      # since we are using a collection that exists only for this controller for keywords
-      # we need to rebind the keywords in order to get changes to show on the page after an update
-      setKeywords(instance.selectedCodes.get('subHeaderId'))
 
   Template.new_header_form.onCreated ->
     @codeColor = Template.instance().data.codeColor

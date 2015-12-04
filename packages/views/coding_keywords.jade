@@ -11,12 +11,12 @@ template(name="codingKeywords")
             h4 Headers
             i.add-code.add-header.fa.fa-plus(data-level="header" class="{{#if addingCode 'header'}}active{{/if}}")
           .code-management-list-container
-            if addingCode 'header'
-              .adding-code.clearfix
-                +new_header_form headers=headers codeColor=codeColor
             if headersLoading
               .loading
             else
+              if addingCode 'header'
+                .adding-code.clearfix
+                  +new_header_form headers=headers codeColor=codeColor
               if headers
                 ul.code-list.list.list-unstyled.level-1
                   each headers
@@ -24,7 +24,6 @@ template(name="codingKeywords")
                       span= label
                       button.btn-plain.delete-header-button(data-toggle="modal" data-header-id=_id data-target="#confirm-delete-header-modal")
                         i.fa.fa-trash-o
-                +deleteHeaderModal(headerToDelete=headerToDelete)
         .code-management-list-wrap.col-sm-4
           unless currentlySelectedHeader
             +curtain
@@ -33,12 +32,12 @@ template(name="codingKeywords")
             i.add-code.add-subHeader.fa.fa-plus(data-level="subHeader" class="{{#if addingCode 'subHeader'}}active{{/if}}")
           .code-management-list-container
             if currentlySelectedHeader
-              if addingCode 'subHeader'
-                .adding-code.clearfix
-                  +new_subHeader_form
               if subHeadersLoading
                 .loading
               else
+                if addingCode 'subHeader'
+                  .adding-code.clearfix
+                    +new_subHeader_form
                 if subHeaders
                   ul.code-list.list.list-unstyled.level-2
                     each subHeaders
@@ -46,7 +45,6 @@ template(name="codingKeywords")
                         span= label
                         button.btn-plain.delete-subheader-button(data-toggle="modal" data-subheader-id=_id data-target="#confirm-delete-subheader-modal")
                           i.fa.fa-trash-o
-                  +deleteSubHeaderModal(subHeaderToDelete=subHeaderToDelete)
         .code-management-list-wrap.col-sm-4
           unless currentlySelectedSubHeader
             +curtain
@@ -56,12 +54,12 @@ template(name="codingKeywords")
               i.add-code.add-keyword.fa.fa-plus(data-level="keyword" class="{{#if addingCode 'keyword'}}active{{/if}}")
           .code-management-list-container
             if currentlySelectedSubHeader
-              if addingCode 'keyword'
-                .adding-code.clearfix
-                  +new_keyword_form
               if subHeadersLoading
                 .loading
               else
+                if addingCode 'keyword'
+                  .adding-code.clearfix
+                    +new_keyword_form
                 if keywords
                   ul.code-list.list.list-unstyled.level-3
                     each keywords
@@ -70,9 +68,12 @@ template(name="codingKeywords")
                         unless archived
                           button.btn-plain.delete-keyword-button(data-toggle="modal" data-keyword-id=_id data-target="#confirm-delete-keyword-modal" )
                             i.fa.fa-trash-o
-                  +deleteKeywordModal(keywordToDelete=keywordToDelete)
     else
       .loading
+
+  +deleteHeaderModal(headerToDelete=headerToDelete)
+  +deleteSubHeaderModal(subHeaderToDelete=subHeaderToDelete)
+  +deleteKeywordModal(keywordToDelete=keywordToDelete)
 
 template(name="curtain")
   .curtain-white
