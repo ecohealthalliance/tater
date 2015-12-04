@@ -241,14 +241,14 @@ checkMark(center=false)
   border-bottom-left-radius 3px
   overflow hidden
 
-.code-list-wrap
+.code-management-list-wrap
   position relative
   min-height 700px
   border-right 1px solid lighten($primary-light, 60%)
   &:last-of-type
     border-right 0
 
-.code-list-container
+.code-management-list-container
   overflow-x auto
   position absolute
   top 0
@@ -258,8 +258,40 @@ checkMark(center=false)
   margin 50px 0 0 0
   padding-bottom 50px
   z-index $bottom-layer
+  .code-list
+    margin-bottom 0
+    li
+      position relative
+      padding 10px 70px 10px 10px
+      pointer()
+      &:hover
+        color black
+      &
+      &:last-of-type
+        border-bottom 1px solid lighten($l-gray, 20%)
+      &.selected
+        background lighten($background-secondary, 20%)
+        font-weight bold
+        &::after
+          color $d-gray
+      &.list-link
+        padding 10px 70px 10px 10px
+      &.not-clickable
+        padding 10px 50px 10px 10px
+        cursor auto
+        &:hover
+          background none
+          color inherit
+        &::after
+          content ''
+      &::after
+        @extend .icon
+        content '\f054'
+        centerVertically(true)
+        right 15px
+        color $l-gray
 
-.code-list-header
+.code-management-list-header
   position absolute
   max-height 50px
   z-index $bottom-layer
@@ -278,39 +310,6 @@ checkMark(center=false)
     &:hover
     &.active
       color $secondary
-
-.code-list
-  margin-bottom 0
-  li
-    position relative
-    padding 10px 70px 10px 10px
-    pointer()
-    &:hover
-      color black
-    &
-    &:last-of-type
-      border-bottom 1px solid lighten($l-gray, 20%)
-    &.selected
-      background lighten($background-secondary, 20%)
-      font-weight bold
-      &::after
-        color $d-gray
-    &.list-link
-      padding 10px 70px 10px 10px
-    &.not-clickable
-      padding 10px 50px 10px 10px
-      cursor auto
-      &:hover
-        background none
-        color inherit
-      &::after
-        content ''
-    &::after
-      @extend .icon
-      content '\f054'
-      centerVertically(true)
-      right 15px
-      color $l-gray
 
 .header-colors
   margin-bottom 15px
