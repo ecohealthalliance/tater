@@ -3,6 +3,6 @@ Headers = Astro.Class
   name: 'Headers'
   collection: Headers
   fields:
-    color: 'string'
+    color: 'number'
     label: 'string'
   behaviors: ['timestamp']

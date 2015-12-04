@@ -9,6 +9,7 @@ if Meteor.isClient
     @keywordToDelete = new ReactiveVar()
     @subHeaderToDelete = new ReactiveVar()
     @headerToDelete = new ReactiveVar()
+    @codeColor = new ReactiveVar('')
 
   Template.codingKeywords.helpers
     headers: ->
@@ -49,6 +50,8 @@ if Meteor.isClient
     headerToDelete: ->
       Template.instance().headerToDelete.get()
 
+    codeColor: ->
+      Template.instance().codeColor
 
   setKeywords = (selectedSubHeaderId) ->
     instance = Template.instance()
@@ -122,7 +125,7 @@ if Meteor.isClient
       form = event.target
       headerProps =
         label: form.header.value
-        color: form.color.value
+        color: instance.codeColor?.get()
 
       Meteor.call 'addHeader', headerProps, (error, response) ->
         if error
@@ -130,6 +133,7 @@ if Meteor.isClient
         else
           toastr.success("Header added")
           form.reset()
+          instance.codeColor?.set('')
         form.header.focus()
 
     'submit #new-subHeader-form': (event, instance) ->
@@ -155,7 +159,7 @@ if Meteor.isClient
       form = event.target
       keywordProps =
         headerId: instance.selectedCodes.get('headerId')
-        subHeaderId: instance.selectedCodes.get('subHeaderId')
+        subHeaderId: +instance.selectedCodes.get('subHeaderId')
         label: form.keyword.value
 
       Meteor.call 'addKeyword', keywordProps, (error, response) ->
@@ -176,17 +180,29 @@ if Meteor.isClient
       # we need to rebind the keywords in order to get changes to show on the page after an update
       setKeywords(instance.selectedCodes.get('subHeaderId'))
 
+  Template.new_header_form.onCreated ->
+    @codeColor = Template.instance().data.codeColor
+
   Template.new_header_form.onRendered ->
     @$("input[name=header]").focus()
-    @$('.color-picker').colorpicker()
+
+  Template.new_header_form.helpers
+    selectedColor: (color) ->
+      if color == Template.instance().codeColor.get()
+        'selected'
+
+    availableHeaderColors: ->
+      [1,2,3,4,5,6,7,8]
+
+  Template.new_header_form.events
+    'click .header-colors li': (event, instance) ->
+      instance.codeColor.set($(event.currentTarget).data('color'))
 
   Template.new_subHeader_form.onRendered ->
     @$("input").focus()
 
   Template.new_keyword_form.onRendered ->
     @$("input").focus()
-
-
 
 _validateHeader = (headerId) ->
   if not Headers.findOne(headerId)
