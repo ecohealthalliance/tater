@@ -20,7 +20,7 @@ if Meteor.isServer
       subHeaders = SubHeaders.find(headerId: id).fetch()
       if not header
         throw new Meteor.Error("Header does not exist.")
-      else if subHeaders
+      else if subHeaders.length > 0
         Headers.update id,
           $set:
             archived: true        

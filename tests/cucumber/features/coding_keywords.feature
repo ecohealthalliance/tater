@@ -1,3 +1,4 @@
+@dev
 Feature: Coding Keywords
   Background:
     Given there is a test user in the database
@@ -26,9 +27,7 @@ Feature: Coding Keywords
     When I click on a "sub-header"
     Then I should see 1 keywords
     When I delete a keyword
-    And I delete a header
-    Then I should see an error toast
-    When I delete a sub-header
+    And I delete a sub-header
     Then I should see 0 sub-headers
     When I delete a header
     Then I should see 0 headers
@@ -121,8 +120,7 @@ Feature: Coding Keywords
     Then I should see 3 keywords
     And I should see 0 archived keywords
     When I delete a header
-    Then I should see 1 sub-headers
-    And I should see 1 archived sub-headers
+    Then I should see 1 archived sub-headers
     And I should see 3 archived keywords
     When I navigate to "/documents"
     And I click the first document
