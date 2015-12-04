@@ -355,50 +355,48 @@ if Meteor.isClient
       else if header is 'Human Animal Contact' then 'fa-paw'
 
 
-if Meteor.isServer
-
-  Meteor.methods
-    generateCsv: (query) ->
-      user = Meteor.users.findOne({_id: @userId})
-      codeInaccessibleGroups = Groups.find({codeAccessible: {$ne: true}})
-      if user
-        if user?.admin
-          codeInaccessibleGroupIds = _.pluck(codeInaccessibleGroups.fetch(), '_id')
-          documents = Documents.find({groupId: {$in: codeInaccessibleGroupIds}})
-        else if user
-          documents = Documents.find({ groupId: user.group })
-        docIds = documents.map((d)-> d._id)
-        if query.documentId
-          if _.isString query.documentId
-            userDocIds = [query.documentId]
-          else if query.documentId.$in
-            userDocIds = query.documentId.$in
-          else
-            throw Meteor.Error("Query is not supported")
-          if _.difference(userDocIds, docIds).length > 0
-            throw Meteor.Error("Invalid docIds")
+Meteor.methods
+  generateCsv: (query) ->
+    user = Meteor.users.findOne({_id: @userId})
+    codeInaccessibleGroups = Groups.find({codeAccessible: {$ne: true}})
+    if user
+      if user?.admin
+        codeInaccessibleGroupIds = _.pluck(codeInaccessibleGroups.fetch(), '_id')
+        documents = Documents.find({groupId: {$in: codeInaccessibleGroupIds}})
+      else if user
+        documents = Documents.find({ groupId: user.group })
+      docIds = documents.map((d)-> d._id)
+      if query.documentId
+        if _.isString query.documentId
+          userDocIds = [query.documentId]
+        else if query.documentId.$in
+          userDocIds = query.documentId.$in
         else
-          query.documentId = {$in: docIds}
-        headerGetters =
-          documentId: (annotation)-> annotation.documentId
-          userEmail: (annotation)-> annotation.userEmail()
-          header: (annotation)-> annotation.header()
-          subHeader: (annotation)-> annotation.subHeader()
-          keyword: (annotation)-> annotation.keyword()
-          text: (annotation)-> annotation.text().string
-          flagged: (annotation)-> Boolean(annotation.flagged)
-          createdAt: (annotation)-> annotation.createdAt
-        # This BOM is needed to make modern versions of Excel open the CSV
-        # using the correct encoding.
-        # See: http://stackoverflow.com/questions/155097/microsoft-excel-mangles-diacritics-in-csv-files
-        excelBOM = '\uFEFF'
-        excelBOM + Baby.unparse
-          fields: _.keys(headerGetters)
-          data: Annotations.find(query).map((annotation)->
-            _.map(headerGetters, (getValue, header)->
-              getValue(annotation)
-            )
+          throw Meteor.Error("Query is not supported")
+        if _.difference(userDocIds, docIds).length > 0
+          throw Meteor.Error("Invalid docIds")
+      else
+        query.documentId = {$in: docIds}
+      headerGetters =
+        documentId: (annotation)-> annotation.documentId
+        userEmail: (annotation)-> annotation.userEmail()
+        header: (annotation)-> annotation.header()
+        subHeader: (annotation)-> annotation.subHeader()
+        keyword: (annotation)-> annotation.keyword()
+        text: (annotation)-> annotation.text().string
+        flagged: (annotation)-> Boolean(annotation.flagged)
+        createdAt: (annotation)-> annotation.createdAt
+      # This BOM is needed to make modern versions of Excel open the CSV
+      # using the correct encoding.
+      # See: http://stackoverflow.com/questions/155097/microsoft-excel-mangles-diacritics-in-csv-files
+      excelBOM = '\uFEFF'
+      excelBOM + Baby.unparse
+        fields: _.keys(headerGetters)
+        data: Annotations.find(query).map((annotation)->
+          _.map(headerGetters, (getValue, header)->
+            getValue(annotation)
           )
+        )
 
 if Meteor.isServer
 

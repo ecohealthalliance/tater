@@ -1,7 +1,9 @@
 template(name="annotationsCodingKeywords")
   .code-search-container.pane-head.pane-head-r
-    input.code-search.form-control(type="text" placeholder="Search Code Keywords")
-    i.fa.fa-times-circle.clear-search
+    if Template.subscriptionsReady
+      input.code-search.form-control(type="text" placeholder="Search Code Keywords")
+      if searching
+        i.fa.fa-times-circle.clear-search
   .coding-container.pane.pane-r
     ul.list-unstyled.code-list.listing
       if selectedCodes
@@ -24,9 +26,13 @@ template(name="annotationsCodingKeywords")
                           li.code-keyword.selectable
                             span.selectable-code.selectable-keyword(data-id=_id class="{{selectedKeyword}}")= label
         else
-          .no-results
-            i.fa.fa-search
-            p Sorry, no codes found
+          if searching
+            .no-results
+              i.fa.fa-search
+              p Sorry, no codes found.
+          else
+            .no-results
+              p No codes currently present.
         unless selectableHeaders
           p.text-center Select a group or document to view keywords
 

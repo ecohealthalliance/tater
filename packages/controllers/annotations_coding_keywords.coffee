@@ -1,5 +1,5 @@
 if Meteor.isClient
-  SelectableCodes = new Meteor.Collection("SelectableCodes")
+  SelectableCodes = new Meteor.Collection('SelectableCodes')
 
   Template.annotationsCodingKeywords.onCreated ->
     @searchText = new ReactiveVar('')
@@ -103,20 +103,23 @@ if Meteor.isClient
     selectedCodes: ->
       Template.instance().data.selectedCodes?.find().count()
 
+    searching: ->
+      Template.instance().searching.get()
+
+
   Template.annotationsCodingKeywords.events
 
-    'keyup .code-search': _.debounce ((e, instance) ->
-      e.preventDefault()
-      searchText = e.target.value
-      if searchText.length > 1 then instance.searching.set true
-      else instance.searching.set false
-      instance.searchText.set e.target.value
+    'input .code-search': _.debounce ((e, instance) ->
+        e.preventDefault()
+        searchText = e.target.value
+        instance.searchText.set searchText
       ), 100
+    'input .code-search-container .code-search': (e, instance) ->
+        searchText = e.target.value
+        instance.searching.set searchText.length > 0
 
     'click .clear-search': (e, instance) ->
-      instance.searching.set false
-      instance.searchText.set ''
-      $('.code-search').val('')
+      $('.code-search-container .code-search').val('').trigger('input').focus()
 
     'click .code-header > i': (e) ->
       $(e.target).toggleClass('down up').siblings('.code-sub-headers').toggleClass('hidden')

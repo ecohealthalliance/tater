@@ -22,11 +22,13 @@ if Meteor.isClient
         else
           toastr.success("Success")
 
-if Meteor.isServer
-  Meteor.methods
-    updateProfile: (fields) ->
-      userProfile = UserProfiles.findOne({userId: this.userId})
-      userProfile.update(fields)
 
+Meteor.methods
+  updateProfile: (fields) ->
+    userProfile = UserProfiles.findOne({userId: this.userId})
+    userProfile.update(fields)
+
+
+if Meteor.isServer
   Meteor.publish 'currentUserProfile', ->
     UserProfiles.find({userId: this.userId})
