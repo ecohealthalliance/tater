@@ -53,15 +53,18 @@ template(name="codingKeywords")
               if addingCode 'keyword'
                 .adding-code.clearfix
                   +new_keyword_form
-              if keywords
-                ul.code-list.list.list-unstyled.level-3
-                  each keywords
-                    li.code.code-level-3.not-clickable(class="{{archived}}")
-                      span= label
-                      unless archived
-                        button.btn-plain.delete-keyword-button(data-toggle="modal" data-keyword-id=_id data-target="#confirm-delete-keyword-modal" )
-                          i.fa.fa-trash-o
-                +deleteKeywordModal(keywordToDelete=keywordToDelete)
+              if subHeadersLoading
+                .loading
+              else
+                if keywords
+                  ul.code-list.list.list-unstyled.level-3
+                    each keywords
+                      li.code.code-level-3.not-clickable(class="{{archived}}")
+                        span= label
+                        unless archived
+                          button.btn-plain.delete-keyword-button(data-toggle="modal" data-keyword-id=_id data-target="#confirm-delete-keyword-modal" )
+                            i.fa.fa-trash-o
+                  +deleteKeywordModal(keywordToDelete=keywordToDelete)
     else
       .loading
 

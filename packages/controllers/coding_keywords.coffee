@@ -1,24 +1,41 @@
 if Meteor.isClient
 
   Template.codingKeywords.onCreated ->
-    @subscribe('archivedCodingKeywords')
-    @subHeaders = new Meteor.Collection(null)
-    @keywords = new Meteor.Collection(null)
     @selectedCodes = new ReactiveDict()
     @addingCode = new ReactiveDict()
     @keywordToDelete = new ReactiveVar()
     @subHeaderToDelete = new ReactiveVar()
     @headerToDelete = new ReactiveVar()
+    @headersLoading = new ReactiveVar(true)
+    @subHeadersLoading = new ReactiveVar(false)
+    @keywordsLoading = new ReactiveVar(false)
+
+  Template.codingKeywords.onRendered ->
+    instance = Template.instance()
+    @subscribe 'headers', ->
+      instance.headersLoading.set(false)
+    @autorun ->
+      selectedHeaderId = instance.selectedCodes.get('headerId')
+      instance.subHeadersLoading.set(true)
+      Meteor.subscribe 'subHeaders', selectedHeaderId, ->
+        instance.subHeadersLoading.set(false)
+    @autorun ->
+      selectedSubHeaderId = instance.selectedCodes.get('subHeaderId')
+      instance.keywordsLoading.set(true)
+      Meteor.subscribe 'keywords', selectedSubHeaderId, ->
+        instance.keywordsLoading.set(false)
 
   Template.codingKeywords.helpers
     headers: ->
       Headers.find({}, {sort: {archived: 1}})
 
     subHeaders: ->
-      SubHeaders.find({headerId: Template.instance().selectedCodes.get('headerId')}, {sort: {archived: 1}})
+      selectedHeaderId = Template.instance().selectedCodes.get('headerId')
+      SubHeaders.find {headerId: selectedHeaderId}, {sort: {archived: 1}}
 
     keywords: ->
-      Template.instance().keywords.find()
+      selectedSubHeaderId = Template.instance().selectedCodes.get('subHeaderId')
+      CodingKeywords.find subHeaderId: selectedSubHeaderId
 
     selected: (level) ->
       if level == 'header'
@@ -38,9 +55,6 @@ if Meteor.isClient
     currentlySelectedSubHeader: ->
       Template.instance().selectedCodes.get('subHeaderId')
 
-    currentlySelectedKeyword: ->
-      Template.instance().selectedCodes.get('keywordId')
-
     addingCode: (level) ->
       Template.instance().addingCode.get(level)
 
@@ -53,13 +67,14 @@ if Meteor.isClient
     headerToDelete: ->
       Template.instance().headerToDelete.get()
 
+    headersLoading: ->
+      Template.instance().headersLoading.get()
 
-  setKeywords = (selectedSubHeaderId) ->
-    instance = Template.instance()
-    instance.keywords.remove({})
-    keywords = CodingKeywords.find({'subHeaderId': selectedSubHeaderId}, {sort: {archived: 1}})
-    _.each keywords.fetch(), (keyword) ->
-      instance.keywords.insert keyword
+    subHeadersLoading: ->
+      Template.instance().subHeadersLoading.get()
+
+    keywordsLoading: ->
+      Template.instance().keywordsLoading.get()
 
   Template.codingKeywords.events
     'click .code-level-1': (event, instance) ->
@@ -68,8 +83,6 @@ if Meteor.isClient
         instance.selectedCodes.set('headerId', selectedHeaderId)
         instance.selectedCodes.set('subHeaderId', null)
         instance.selectedCodes.set('keywordId', null)
-        instance.subHeaders.remove({})
-        instance.keywords.remove({})
         instance.addingCode.set('keyword', false)
         instance.addingCode.set('subHeader', false)
         subHeaders = SubHeaders.find({headerId: selectedHeaderId},{sort: {archived: 1}})
@@ -81,31 +94,19 @@ if Meteor.isClient
       if selectedSubHeaderId != instance.selectedCodes.get('subHeaderId')
         instance.selectedCodes.set('subHeaderId', selectedSubHeaderId)
         instance.selectedCodes.set('keywordId', '')
-        instance.keywords.remove({})
         instance.addingCode.set('keyword', false)
-        keywords = CodingKeywords.find({subHeaderId: selectedSubHeaderId})
-        if keywords.count()
-          _.each keywords.fetch(), (keyword) ->
-            instance.keywords.insert keyword
-        else
-          instance.addingCode.set('keyword', true)
 
     'click .delete-header-button': (event, instance) ->
       headerId = event.target.parentElement.getAttribute("data-header-id")
       instance.headerToDelete.set(Headers.findOne(headerId))
 
-    'click .add-code': (event, instance) ->
-      level = $(event.target).data('level')
-      instance.addingCode.set(level, not instance.addingCode.get(level))
-
     'click .delete-subheader-button': (event, instance) ->
       subHeaderId = event.target.parentElement.getAttribute("data-subheader-id")
       instance.subHeaderToDelete.set(SubHeaders.findOne(subHeaderId))
 
-    'hidden.bs.modal .modal': (event, instance) ->
-      # since we are using a collection that exists only for this controller for keywords
-      # we need to rebind the keywords in order to get changes to show on the page after an update
-      setKeywords(instance.selectedCodes.get('subHeaderId'))
+    'click .add-code': (event, instance) ->
+      level = $(event.target).data('level')
+      instance.addingCode.set(level, not instance.addingCode.get(level))
 
     'click .adding-code .cancel': (event, instance) ->
       level = $(event.target).data('level')
@@ -146,7 +147,6 @@ if Meteor.isClient
         if error
           toastr.error("Error: #{error.message}")
         else
-          instance.subHeaders.insert subHeaderProps
           toastr.success("Sub-Header added")
           form.subHeader.value = ''
         form.subHeader.focus()
@@ -164,7 +164,6 @@ if Meteor.isClient
         if error
           toastr.error("Error: #{error.message}")
         else
-          instance.keywords.insert keywordProps
           toastr.success("Keyword added")
           form.keyword.value = ''
         form.keyword.focus()
@@ -172,11 +171,6 @@ if Meteor.isClient
     'click .delete-keyword-button': (event, instance) ->
       keywordId = event.target.parentElement.getAttribute("data-keyword-id")
       instance.keywordToDelete.set(CodingKeywords.findOne(keywordId))
-
-    'hidden.bs.modal #confirm-delete-keyword-modal': (event, instance) ->
-      # since we are using a collection that exists only for this controller for keywords
-      # we need to rebind the keywords in order to get changes to show on the page after an update
-      setKeywords(instance.selectedCodes.get('subHeaderId'))
 
   Template.new_header_form.onRendered ->
     @$("input").focus()
@@ -245,7 +239,9 @@ _validateHeaderProperties = (headerProps) ->
 
   true
 
+
 Meteor.methods
+
   addHeader: (headerProps) ->
     if Meteor.users.findOne(@userId)?.admin
       _headerProps =
@@ -279,3 +275,26 @@ Meteor.methods
         CodingKeywords.insert _keywordProps
     else
       throw new Meteor.Error('Unauthorized')
+
+
+if Meteor.isServer
+
+  Meteor.publish 'headers', ->
+    if @userId
+      Headers.find()
+    else
+      @ready()
+
+  Meteor.publish 'subHeaders', (headerId) ->
+    if @userId
+      if headerId
+        SubHeaders.find headerId: headerId
+    else
+      @ready()
+
+  Meteor.publish 'keywords', (subHeaderId) ->
+    if @userId
+      if subHeaderId
+        CodingKeywords.find subHeaderId: subHeaderId
+    else
+      @ready()
