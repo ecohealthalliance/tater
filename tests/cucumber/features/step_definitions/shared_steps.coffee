@@ -11,9 +11,9 @@ do ->
     @Before (callback) ->
       @server.call('reset')
       @client.url(url.resolve(process.env.ROOT_URL, '/'), callback)
-      @client.execute( ->
-        Meteor.logout()
-      )
+        .execute (->
+          Meteor.logout()
+        ), callback
 
     _testUser = {email: 'test@example.com', password: 'password'}
 
@@ -33,7 +33,7 @@ do ->
         .then (codeId) ->
           that.server.call('createTestAnnotation', {codeId: codeId})
           codeId
-          
+
     @Given 'there is a group in the database with id "$id"', (id)->
       @server.call('createTestGroup', _id: id)
 

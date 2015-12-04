@@ -2,13 +2,13 @@ if Meteor.isClient
   Template.deleteSubHeaderModal.events
     'click #confirm-delete-subheader': (event, instance) ->
       id = instance.data.subHeaderToDelete.get()?._id
-      console.log id
       Meteor.call 'deleteSubHeader', id, (error) ->
         if error
           toastr.error("Error: #{error.message}")
           console.log error
         else
           toastr.success("Success")
+          instance.data.selectedCodes.set('subHeaderId', false)
 
 
 Meteor.methods
