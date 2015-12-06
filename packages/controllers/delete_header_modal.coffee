@@ -11,6 +11,7 @@ if Meteor.isClient
           unless Headers.findOne(id)
             instance.data.selectedCodes.set('headerId', null)
           toastr.success("Success")
+          
 if Meteor.isServer
   Meteor.methods
     deleteHeader: (id) ->
