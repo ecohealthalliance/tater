@@ -8,17 +8,17 @@ if Meteor.isClient
     @headerToDelete = new ReactiveVar()
     @codeColor = new ReactiveVar('')
     @headersLoading = new ReactiveVar(true)
-    @subHeadersLoading = new ReactiveVar(false)
+    @subHeadersLoading = new ReactiveVar(true)
     @keywordsLoading = new ReactiveVar(false)
 
   Template.codingKeywords.onRendered ->
     instance = Template.instance()
     @subscribe 'headers', ->
+      instance.addingCode.set('header', Headers.find().fetch().length == 0)
       instance.headersLoading.set(false)
     @autorun ->
       selectedHeaderId = instance.selectedCodes.get('headerId')
-      instance.subHeadersLoading.set(true)
-      instance.addingCode.set('header', Headers.find().fetch().length == 0)
+      # instance.subHeadersLoading.set(true)
       console.log 'selectedHeaderId 1', selectedHeaderId
       Meteor.subscribe 'subHeaders', selectedHeaderId, ->
         console.log 'selectedHeaderId 2', selectedHeaderId
