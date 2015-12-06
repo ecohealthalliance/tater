@@ -18,10 +18,7 @@ if Meteor.isClient
       instance.headersLoading.set(false)
     @autorun ->
       selectedHeaderId = instance.selectedCodes.get('headerId')
-      # instance.subHeadersLoading.set(true)
-      console.log 'selectedHeaderId 1', selectedHeaderId
       Meteor.subscribe 'subHeaders', selectedHeaderId, ->
-        console.log 'selectedHeaderId 2', selectedHeaderId
         instance.subHeadersLoading.set(false)
         if SubHeaders.findOne({ headerId: selectedHeaderId})
           instance.addingCode.set('subHeader', false)
