@@ -11,7 +11,6 @@ if Meteor.isClient
       Groups.findOne(Template.instance().data.group.get())
 
   Template.userForm.events
-
     'submit form': (event, template) ->
       event.preventDefault()
       event.stopImmediatePropagation()
@@ -38,12 +37,12 @@ if Meteor.isClient
           form.reset()
           $('.modal').modal('hide')
 
-if Meteor.isServer
-  Meteor.methods
-    addGroupUser: (fields) ->
-      if Meteor.user()?.admin
-        Accounts.createUser
-          email : fields.email
-          password : fields.password
-          admin: fields.admin
-          group: fields.groupId
+
+Meteor.methods
+  addGroupUser: (fields) ->
+    if Meteor.user()?.admin
+      Accounts.createUser
+        email : fields.email
+        password : fields.password
+        admin: fields.admin
+        group: fields.groupId

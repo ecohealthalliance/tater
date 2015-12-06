@@ -15,14 +15,14 @@ if Meteor.isClient
           toastr.success("Success")
           go 'admin'
 
-if Meteor.isServer
-  Meteor.methods
-    createGroup: (fields) ->
-      if this.userId
-        group = new Group()
-        group.set(fields)
-        group.set('createdById', this.userId)
-        group.save ->
-          group
-      else
-        throw "Not logged in"
+
+Meteor.methods
+  createGroup: (fields) ->
+    if this.userId
+      group = new Group()
+      group.set(fields)
+      group.set('createdById', this.userId)
+      group.save ->
+        group
+    else
+      throw "Not logged in"

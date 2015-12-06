@@ -175,7 +175,7 @@ checkMark(center=false)
 
 .code-keywords
   padding-left 10px
-  
+
 .delete-keyword-button, .delete-subheader-button, .delete-header-button
   centerVertically()
   right 20px
@@ -241,36 +241,14 @@ checkMark(center=false)
   border-bottom-left-radius 3px
   overflow hidden
 
-.code-list-header
-  position absolute
-  max-height 50px
-  z-index $mid-layer
-  top 0
-  left 0
-  right 0
-  padding 10px
-  background $sub-header-BG
-  border-bottom 2px solid lighten($primary-light, 60%)
-  .add-code
-    centerVertically(true)
-    pointer()
-    right 10px
-    font-size 1.5em
-    color $d-gray
-    &:hover, &.active
-      color $secondary
-
-.code-list-wrap
+.code-management-list-wrap
   position relative
   min-height 700px
   border-right 1px solid lighten($primary-light, 60%)
   &:last-of-type
     border-right 0
 
-.code-list
-  margin-bottom 0
-
-.code-list-container
+.code-management-list-container
   overflow-x auto
   position absolute
   top 0
@@ -279,34 +257,87 @@ checkMark(center=false)
   right 0
   margin 50px 0 0 0
   padding-bottom 50px
-  li
-    position:relative
-    padding 10px
-    &
-    &:last-of-type
-      border-bottom 1px solid lighten($l-gray, 20%)
-    &.selected
-      background lighten($background-secondary, 20%)
-      font-weight bold
+  z-index $bottom-layer
+  .code-list
+    margin-bottom 0
+    li
+      position relative
+      padding 10px 70px 10px 10px
+      pointer()
+      &:hover
+        color black
+      &
+      &:last-of-type
+        border-bottom 1px solid lighten($l-gray, 20%)
+      &.selected
+        background lighten($background-secondary, 20%)
+        font-weight bold
+        &::after
+          color $d-gray
+      &.list-link
+        padding 10px 70px 10px 10px
+      &.not-clickable
+        padding 10px 50px 10px 10px
+        cursor auto
+        &:hover
+          background none
+          color inherit
+        &::after
+          content ''
       &::after
-        color $d-gray
-    &::after
-      @extend .icon
-      content '\f054'
-      centerVertically(true)
-      right 15px
-      color $l-gray
+        @extend .icon
+        content '\f054'
+        centerVertically(true)
+        right 15px
+        color $l-gray
 
-  .code
+.code-management-list-header
+  position absolute
+  max-height 50px
+  z-index $bottom-layer
+  top 0
+  left 0
+  right 0
+  padding 10px
+  background $sub-header-BG
+  border-bottom 2px solid lighten($primary-light, 60%)
+  [class^='add']
+    centerVertically(true)
     pointer()
-
-  .not-clickable
-    cursor auto
+    right 10px
+    font-size 1.5em
+    color $d-gray
     &:hover
-      background none
-      color inherit
+    &.active
+      color $secondary
+
+.header-colors
+  margin-bottom 15px
+  li
+    position relative
+    display inline-block
+    width 23%
+    height 30px
+    margin 1%
+    border-radius 3px
+    border 2px solid transparent
+    pointer()
     &::after
-      content ''
+      centerPosition()
+      @extend .icon
+      top 50%
+      left 50%
+      content '\f00c'
+      color white
+      font-size  0em
+      opacity 0
+      transition .15s
+
+    &.selected
+      border 2px solid #666
+      &::after
+        opacity 1
+        font-size  1.5em
 
 .code-details
   min-height 60px
@@ -322,21 +353,20 @@ checkMark(center=false)
   
 .disabled span::after
   content ' (archived)'
-  
+
 .adding-code
   padding 15px 10px
   position relative
-  background $sub-header-BG
   border-bottom 1px solid lighten($primary-light, 60%)
   input
     margin 0 0 10px 0
   .add
     width 75%
-    float left
+    float right
 
   .cancel
     width 23%
-    float right
+    float left
 
   .close
     @extend .icon
@@ -344,3 +374,9 @@ checkMark(center=false)
     right 5px
     top 5px
     content '\f00d'
+
+for $color, $index in $annotation-colors
+  .color-swatch-{$index+1}
+    background-color $color
+  .header-color-{$index+1}
+    border-left 12px solid $color

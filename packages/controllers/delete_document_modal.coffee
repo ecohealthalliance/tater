@@ -9,18 +9,18 @@ if Meteor.isClient
         else
           toastr.success("Success")
 
-if Meteor.isServer
-  Meteor.methods
-    deleteDocument: (documentId) ->
-      document = Documents.findOne(documentId)
-      if document
-        group = Groups.findOne({_id: document.groupId})
-        user = Meteor.users.findOne(@userId)
-        accessible = (user and group?.viewableByUser(user))
-        if accessible
-          Documents.remove({_id: documentId})
-          Annotations.remove({documentId: documentId})
-        else
-          throw new Meteor.Error("Document is not accessible.")
+
+Meteor.methods
+  deleteDocument: (documentId) ->
+    document = Documents.findOne(documentId)
+    if document
+      group = Groups.findOne({_id: document.groupId})
+      user = Meteor.users.findOne(@userId)
+      accessible = (user and group?.viewableByUser(user))
+      if accessible
+        Documents.remove({_id: documentId})
+        Annotations.remove({documentId: documentId})
       else
-        throw new Meteor.Error("Document does not exist.")
+        throw new Meteor.Error("Document is not accessible.")
+    else
+      throw new Meteor.Error("Document does not exist.")

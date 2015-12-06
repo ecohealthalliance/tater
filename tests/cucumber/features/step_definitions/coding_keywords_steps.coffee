@@ -24,7 +24,7 @@ do ->
           .waitForVisible('.level-2')
           .click('.code-level-2')
 
-    @Then /^I click the first document$/, -> 
+    @Then /^I click the first document$/, ->
       @browser
         .waitForVisible('.document-list .document a')
         .click('.document a')
@@ -79,7 +79,8 @@ do ->
       @client
         .waitForVisible('.level-3 .fa-trash-o')
         .click('.level-3 .fa-trash-o')
-        .waitForVisible('#confirm-delete-keyword-modal')
+        
+        .waitForVisible('#confirm-delete-keyword')
         .click('#confirm-delete-keyword')
         .waitForVisible('.toast-message')
         # wait for modal to fade
@@ -89,7 +90,7 @@ do ->
       @client
         .waitForVisible('.level-2 .fa-trash-o')
         .click('.level-2 .fa-trash-o')
-        .waitForVisible('#confirm-delete-subheader-modal')
+        .waitForVisible('#confirm-delete-subheader')
         .click('#confirm-delete-subheader')
         # wait for modal to fade
         .waitForVisible('.modal-backdrop', 1000, true)
@@ -98,10 +99,27 @@ do ->
       @client
         .waitForVisible('.level-1 .fa-trash-o')
         .click('.level-1 .fa-trash-o')
-        .waitForVisible('#confirm-delete-header-modal')
+        .waitForVisible('#confirm-delete-header')
         .click('#confirm-delete-header')
         # wait for modal to fade
         .waitForVisible('.modal-backdrop', 1000, true)
+
+    @When /^I add the "([^"]*)" "([^"]*)"$/, (level, code) ->
+      if level == "header"
+        @browser
+          .waitForVisible(".add-#{level}")
+          .click(".add-#{level}")
+          .waitForVisible("input[name=#{level}]")
+          .setValue("input[name=#{level}]", code)
+          .click(".header-colors li:first-child")
+          .submitForm("input[name=#{level}]")
+      else
+        @browser
+          .waitForVisible(".add-#{level}")
+          .click(".add-#{level}")
+          .waitForVisible("input[name=#{level}]")
+          .setValue("input[name=#{level}]", code)
+          .submitForm("input[name=#{level}]")
 
     @Then /^I should( not)? see coding keyword search results$/, (noResults) ->
       if noResults
@@ -111,34 +129,3 @@ do ->
       else
         @browser
           .waitForExist('.code-list .selectable-code')
-
-    @When "I click the Add Keyword button", ->
-      @browser
-        .waitForExist('.add-keyword')
-        .click('.add-keyword')
-
-    @When 'I add the header "$header"', (header) ->
-      @browser
-        .waitForVisible('input[name="header"]')
-        .setValue('input[name="header"]', header)
-        .submitForm('input[name="header"]')
-        .click('.close')
-
-    @Then 'I should be able to find "$text" in the keyword table', (text) ->
-      @browser
-        .waitForVisible('.keyword-table .reactive-table-input')
-        .setValue('.keyword-table .reactive-table-input', text)
-        .pause(2000)
-        .getHTML '.keyword-table tbody', (error, response) ->
-          assert.ok(response.toString().match(text), "Text not found")
-
-    @When /^I click the add "([^"]*)" button$/, (level) ->
-      @browser
-        .waitForVisible(".add-#{level}")
-        .click(".add-#{level}")
-
-    @When /^I add the "([^"]*)" "([^"]*)"$/, (level, code) ->
-      @browser
-        .waitForVisible("input[name=#{level}]")
-        .setValue("input[name=#{level}]", code)
-        .submitForm("input[name=#{level}]")

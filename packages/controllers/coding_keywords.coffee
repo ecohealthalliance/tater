@@ -6,6 +6,7 @@ if Meteor.isClient
     @keywordToDelete = new ReactiveVar()
     @subHeaderToDelete = new ReactiveVar()
     @headerToDelete = new ReactiveVar()
+    @codeColor = new ReactiveVar('')
     @headersLoading = new ReactiveVar(true)
     @subHeadersLoading = new ReactiveVar(false)
     @keywordsLoading = new ReactiveVar(false)
@@ -17,13 +18,25 @@ if Meteor.isClient
     @autorun ->
       selectedHeaderId = instance.selectedCodes.get('headerId')
       instance.subHeadersLoading.set(true)
+      instance.addingCode.set('header', Headers.find().fetch().length == 0)
+      console.log 'selectedHeaderId 1', selectedHeaderId
       Meteor.subscribe 'subHeaders', selectedHeaderId, ->
+        console.log 'selectedHeaderId 2', selectedHeaderId
         instance.subHeadersLoading.set(false)
+        if SubHeaders.findOne({ headerId: selectedHeaderId})
+          instance.addingCode.set('subHeader', false)
+        else
+          instance.addingCode.set('subHeader', true)
+
     @autorun ->
       selectedSubHeaderId = instance.selectedCodes.get('subHeaderId')
       instance.keywordsLoading.set(true)
       Meteor.subscribe 'keywords', selectedSubHeaderId, ->
         instance.keywordsLoading.set(false)
+        if CodingKeywords.findOne({ subHeaderId: selectedSubHeaderId})
+          instance.addingCode.set('keyword', false)
+        else
+          instance.addingCode.set('keyword', true)
 
   Template.codingKeywords.helpers
     headers: ->
@@ -31,11 +44,11 @@ if Meteor.isClient
 
     subHeaders: ->
       selectedHeaderId = Template.instance().selectedCodes.get('headerId')
-      SubHeaders.find {headerId: selectedHeaderId}, {sort: {archived: 1}}
+      SubHeaders.find({headerId: selectedHeaderId}, {sort: {archived: 1}})
 
     keywords: ->
       selectedSubHeaderId = Template.instance().selectedCodes.get('subHeaderId')
-      CodingKeywords.find subHeaderId: selectedSubHeaderId
+      CodingKeywords.find({subHeaderId: selectedSubHeaderId}, {sort: {archived: 1}})
 
     selected: (level) ->
       if level == 'header'
@@ -48,6 +61,9 @@ if Meteor.isClient
     archived: () ->
       if @archived
         'disabled'
+
+    selectedCodes: ->
+      Template.instance().selectedCodes
 
     currentlySelectedHeader: ->
       Template.instance().selectedCodes.get('headerId')
@@ -66,6 +82,9 @@ if Meteor.isClient
 
     headerToDelete: ->
       Template.instance().headerToDelete.get()
+
+    codeColor: ->
+      Template.instance().codeColor
 
     headersLoading: ->
       Template.instance().headersLoading.get()
@@ -104,6 +123,10 @@ if Meteor.isClient
       subHeaderId = event.target.parentElement.getAttribute("data-subheader-id")
       instance.subHeaderToDelete.set(SubHeaders.findOne(subHeaderId))
 
+    'click .delete-keyword-button': (event, instance) ->
+      keywordId = event.target.parentElement.getAttribute("data-keyword-id")
+      instance.keywordToDelete.set(CodingKeywords.findOne(keywordId))
+
     'click .add-code': (event, instance) ->
       level = $(event.target).data('level')
       instance.addingCode.set(level, not instance.addingCode.get(level))
@@ -126,13 +149,15 @@ if Meteor.isClient
       form = event.target
       headerProps =
         label: form.header.value
+        color: instance.codeColor?.get()
 
       Meteor.call 'addHeader', headerProps, (error, response) ->
         if error
           toastr.error("Error: #{error.message}")
         else
           toastr.success("Header added")
-          form.header.value = ''
+          form.reset()
+          instance.codeColor?.set('')
         form.header.focus()
 
     'submit #new-subHeader-form': (event, instance) ->
@@ -149,6 +174,7 @@ if Meteor.isClient
         else
           toastr.success("Sub-Header added")
           form.subHeader.value = ''
+          instance.addingCode.set('subHeader', true)
         form.subHeader.focus()
 
     'submit #new-keyword-form': (event, instance) ->
@@ -165,23 +191,33 @@ if Meteor.isClient
           toastr.error("Error: #{error.message}")
         else
           toastr.success("Keyword added")
+          instance.addingCode.set('keyword', true)
           form.keyword.value = ''
         form.keyword.focus()
 
-    'click .delete-keyword-button': (event, instance) ->
-      keywordId = event.target.parentElement.getAttribute("data-keyword-id")
-      instance.keywordToDelete.set(CodingKeywords.findOne(keywordId))
+  Template.new_header_form.onCreated ->
+    @codeColor = Template.instance().data.codeColor
 
   Template.new_header_form.onRendered ->
-    @$("input").focus()
+    @$("input[name=header]").focus()
+
+  Template.new_header_form.helpers
+    selectedColor: (color) ->
+      if color == Template.instance().codeColor.get()
+        'selected'
+
+    availableHeaderColors: ->
+      [1,2,3,4,5,6,7,8]
+
+  Template.new_header_form.events
+    'click .header-colors li': (event, instance) ->
+      instance.codeColor.set($(event.currentTarget).data('color'))
 
   Template.new_subHeader_form.onRendered ->
     @$("input").focus()
 
   Template.new_keyword_form.onRendered ->
     @$("input").focus()
-
-
 
 _validateHeader = (headerId) ->
   if not Headers.findOne(headerId)
@@ -232,6 +268,8 @@ _validateSubHeaderProperties = (subHeaderProps) ->
 _validateHeaderProperties = (headerProps) ->
   if not headerProps.label
     throw new Meteor.Error('Header is empty')
+  if not headerProps.color
+    throw new Meteor.Error('Header color has not been chosen')
 
   if Headers.findOne(
     label: headerProps.label
@@ -246,7 +284,7 @@ Meteor.methods
     if Meteor.users.findOne(@userId)?.admin
       _headerProps =
         label: headerProps.label?.trim()
-        color: 1 # TODO
+        color: headerProps.color
 
       if _validateHeaderProperties(_headerProps)
         Headers.insert _headerProps

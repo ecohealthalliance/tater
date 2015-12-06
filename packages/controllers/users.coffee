@@ -73,14 +73,14 @@ if Meteor.isClient
       go 'profileDetail', {_id: profileId}
 
 
+Meteor.methods
+  removeUser: (userId) ->
+    if Meteor.users.findOne(@userId)?.admin
+      Meteor.users.remove userId
+    else
+      throw 'Unauthorized'
+
+
 if Meteor.isServer
-
-  Meteor.methods
-    removeUser: (userId) ->
-      if Meteor.users.findOne(@userId)?.admin
-        Meteor.users.remove userId
-      else
-        throw 'Unauthorized'
-
   Meteor.publish 'userProfiles', ->
     UserProfiles.find()

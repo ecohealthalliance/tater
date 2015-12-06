@@ -79,6 +79,7 @@ if Meteor.isClient
 
   Template.document.onCreated ->
     @document = new Document(_.pick(@data, _.keys(Document.getFields())))
+
   Template.document.helpers
     groupName: ->
       Template.instance().document.groupName()
