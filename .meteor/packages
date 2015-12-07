@@ -10,6 +10,7 @@ xolvio:cucumber
 tater:models
 tater:fixtures
 tater:accounts
+tater:data
 aslagle:reactive-table
 zimme:active-route
 standard-minifiers
