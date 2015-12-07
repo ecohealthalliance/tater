@@ -86,6 +86,12 @@ do ->
         # wait for modal to fade
         .waitForVisible('.modal-backdrop', 1000, true)
 
+    @When 'I unarchive a keyword', () ->
+      @client
+        .waitForVisible('.level-3 .fa-reply')
+        .click('.level-3 .fa-reply')
+        .waitForVisible('.toast-message')
+
     @When 'I delete a sub-header', () ->
       @client
         .waitForVisible('.level-2 .fa-trash-o')
