@@ -4,7 +4,6 @@ Meteor.methods
       headerId = Headers.insert
         label: headerLabel or "Header"
         color: 1
-        admin: true
       subHeaderId = SubHeaders.insert
         headerId: headerId
         label: subHeaderLabel or "Sub-Header"
