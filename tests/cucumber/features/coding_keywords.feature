@@ -59,7 +59,6 @@ Feature: Coding Keywords
     When I delete a keyword
     Then I should see 1 keywords
 
-  @dev
   Scenario: Adding coding keywords
     Given there is a coding keyword with header "Test Header", sub-header "Test Sub-Header" and keyword "Test Keyword" in the database
     When I log in as the test user
