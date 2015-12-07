@@ -24,6 +24,10 @@ Then run `./scripts/restore_database`
 ## Setting up a default user for an empty database
 In the browser console, run `Meteor.call('createDefaultUser', YOUR_USERNAME, YOUR_PASSWORD)`
 
+## Adding initial coding keywords for an empty database
+In the browser console, run `Meteor.call("createDefaultCodes")`
+or `Meteor.call("createDefaultCodes", "uno", "dos", "tres")`
+
 ## Building the docker image, and running the container
 Build the app with the shell script  
 `./build.sh`
