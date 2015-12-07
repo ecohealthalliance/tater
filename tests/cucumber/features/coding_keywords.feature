@@ -59,6 +59,7 @@ Feature: Coding Keywords
     When I delete a keyword
     Then I should see 1 keywords
 
+  @codingKeywords
   Scenario: Adding coding keywords
     Given there is a coding keyword with header "Test Header", sub-header "Test Sub-Header" and keyword "Test Keyword" in the database
     When I log in as the test user
@@ -72,7 +73,7 @@ Feature: Coding Keywords
     And I add the "keyword" "Another Test Keyword"
     Then I should see content "Another Test Keyword"
 
-  @dev
+  @codingKeywords
   Scenario: Archiving coding keywords that are in use
     Given there is an annotation with codingKeyword header "Test Header", subHeader "Test Sub-Header" and key "Test Keyword1"
     And there is a coding keyword with header "Test Header", sub-header "Test Sub-Header" and keyword "Test Keyword2" in the database
