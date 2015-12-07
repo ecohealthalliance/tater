@@ -5,4 +5,5 @@ Headers = Astro.Class
   fields:
     color: 'number'
     label: 'string'
+    archived: 'boolean'
   behaviors: ['timestamp']

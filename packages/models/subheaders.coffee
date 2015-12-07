@@ -5,4 +5,5 @@ SubHeaders = Astro.Class
   fields:
     headerId: 'string'
     label: 'string'
+    archived: 'boolean'
   behaviors: ['timestamp']

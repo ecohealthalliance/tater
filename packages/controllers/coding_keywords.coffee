@@ -8,16 +8,16 @@ if Meteor.isClient
     @headerToDelete = new ReactiveVar()
     @codeColor = new ReactiveVar('')
     @headersLoading = new ReactiveVar(true)
-    @subHeadersLoading = new ReactiveVar(false)
+    @subHeadersLoading = new ReactiveVar(true)
     @keywordsLoading = new ReactiveVar(false)
 
   Template.codingKeywords.onRendered ->
     instance = Template.instance()
     @subscribe 'headers', ->
+      instance.addingCode.set('header', Headers.find().fetch().length == 0)
       instance.headersLoading.set(false)
     @autorun ->
       selectedHeaderId = instance.selectedCodes.get('headerId')
-      instance.subHeadersLoading.set(true)
       Meteor.subscribe 'subHeaders', selectedHeaderId, ->
         instance.subHeadersLoading.set(false)
         if SubHeaders.findOne({ headerId: selectedHeaderId})
@@ -37,15 +37,15 @@ if Meteor.isClient
 
   Template.codingKeywords.helpers
     headers: ->
-      Headers.find()
+      Headers.find({}, {sort: {archived: 1}})
 
     subHeaders: ->
       selectedHeaderId = Template.instance().selectedCodes.get('headerId')
-      SubHeaders.find headerId: selectedHeaderId
+      SubHeaders.find({headerId: selectedHeaderId}, {sort: {archived: 1}})
 
     keywords: ->
       selectedSubHeaderId = Template.instance().selectedCodes.get('subHeaderId')
-      CodingKeywords.find subHeaderId: selectedSubHeaderId
+      CodingKeywords.find({subHeaderId: selectedSubHeaderId}, {sort: {archived: 1}})
 
     selected: (level) ->
       if level == 'header'
@@ -101,7 +101,7 @@ if Meteor.isClient
         instance.selectedCodes.set('keywordId', null)
         instance.addingCode.set('keyword', false)
         instance.addingCode.set('subHeader', false)
-        subHeaders = SubHeaders.find({headerId: selectedHeaderId})
+        subHeaders = SubHeaders.find({headerId: selectedHeaderId},{sort: {archived: 1}})
 
     'click .code-level-2': (event, instance) ->
       selectedSubHeaderId = event.currentTarget.getAttribute('data-id')

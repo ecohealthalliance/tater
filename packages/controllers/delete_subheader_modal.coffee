@@ -7,9 +7,9 @@ if Meteor.isClient
           toastr.error("Error: #{error.message}")
           console.log error
         else
+          unless SubHeaders.findOne(id)
+            instance.data.selectedCodes.set('subHeaderId', null)
           toastr.success("Success")
-          instance.data.selectedCodes.set('subHeaderId', false)
-
 
 Meteor.methods
   deleteSubHeader: (id) ->
@@ -22,6 +22,12 @@ Meteor.methods
     if not subheader
       throw new Meteor.Error("Subheader does not exist.")
     else if codingKeyword
-      throw new Meteor.Error("Subheaders with keywords cannot be deleted.")
+      SubHeaders.update id,
+        $set:
+          archived: true
+      CodingKeywords.update {subHeaderId: id},
+        {$set:
+          archived: true}
+        {multi: true}
     else
       SubHeaders.remove(id)
