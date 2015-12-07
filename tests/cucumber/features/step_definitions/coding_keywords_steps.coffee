@@ -48,7 +48,7 @@ do ->
 
     @Then /^I should see (\d+) keywords$/, (number) ->
       @client
-        .waitForExist('.level-3, .code-keywords', assert.ifError)
+        .waitForExist('.level-3, .code-keywords')
         .elements '.code-keyword, .code-level-3:not(.disabled)', (error, elements) ->
           assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
