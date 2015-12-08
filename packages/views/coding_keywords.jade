@@ -42,8 +42,11 @@ template(name="codingKeywords")
                   each subHeaders
                     li.code.list-link.code-level-2(class="{{selected 'subHeader'}} {{archived}}" data-id=_id)
                       span= label
-                      unless archived
-                        button.btn-plain.delete-subheader-button(data-toggle="modal" data-subheader-id=_id data-target="#confirm-delete-subheader-modal")
+                      if archived
+                        button.btn-plain.unarchive-subheader-button.subheader-button(data-subheader-id=_id)
+                          i.fa.fa-reply
+                      else
+                        button.btn-plain.delete-subheader-button.subheader-button(data-toggle="modal" data-subheader-id=_id data-target="#confirm-delete-subheader-modal")
                           i.fa.fa-trash-o
         .code-management-list-wrap.col-sm-4
           unless currentlySelectedSubHeader

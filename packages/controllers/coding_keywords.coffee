@@ -130,6 +130,14 @@ if Meteor.isClient
         else
           toastr.success("Keyword restored")
 
+    'click .unarchive-subheader-button': (event, instance) ->
+      subHeaderId = event.target.parentElement.getAttribute("data-subheader-id")
+      Meteor.call 'unarchiveSubHeader', subHeaderId, (error, instance) ->
+        if error
+          toastr.error("Error: #{error.message}")
+        else
+          toastr.success("Sub-Header restored")
+
     'click .add-code': (event, instance) ->
       level = $(event.target).data('level')
       instance.addingCode.set(level, not instance.addingCode.get(level))
@@ -325,6 +333,19 @@ Meteor.methods
     else
       throw new Meteor.Error('Unauthorized')
 
+  unarchiveSubHeader: (subHeaderId) ->
+    if Meteor.users.findOne(@userId)?.admin
+      SubHeaders.update subHeaderId,
+        $set: 
+          archived: false
+      CodingKeywords.update {subHeaderId: subHeaderId},
+        {
+          $set:
+            archived: false
+        },
+        {multi: true}
+    else
+      throw new Meteor.Error('Unauthorized')
 
 if Meteor.isServer
 
