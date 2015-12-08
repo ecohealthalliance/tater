@@ -358,13 +358,13 @@ if Meteor.isClient
 Meteor.methods
   generateCsv: (query) ->
     user = Meteor.users.findOne({_id: @userId})
-    codeInaccessibleGroups = Groups.find({codeAccessible: {$ne: true}})
+    groups = Groups.find()
     if user
       if user?.admin
-        codeInaccessibleGroupIds = _.pluck(codeInaccessibleGroups.fetch(), '_id')
-        documents = Documents.find({groupId: {$in: codeInaccessibleGroupIds}})
+        groupIds = _.pluck(groups.fetch(), '_id')
+        documents = Documents.find({groupId: {$in: groupIds}})
       else if user
-        documents = Documents.find({ groupId: user.group })
+        documents = Documents.find({groupId: user.group})
       docIds = documents.map((d)-> d._id)
       if query.documentId
         if _.isString query.documentId
@@ -402,17 +402,17 @@ if Meteor.isServer
 
   Meteor.publish 'groupsAndDocuments', ->
     user = Meteor.users.findOne({_id: @userId})
-    codeInaccessibleGroups = Groups.find({codeAccessible: {$ne: true}})
+    groups = Groups.find()
     if user
       if user?.admin
-        codeInaccessibleGroupIds = _.pluck(codeInaccessibleGroups.fetch(), '_id')
-        documents = Documents.find({groupId: {$in: codeInaccessibleGroupIds}})
+        groupIds = _.pluck(groups.fetch(), '_id')
+        documents = Documents.find({groupId: {$in: groupIds}})
       else if user
         documents = Documents.find({ groupId: user.group })
       docIds = documents.map((d)-> d._id)
       [
         documents
-        codeInaccessibleGroups
+        groups
       ]
     else
       @ready()
