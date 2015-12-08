@@ -79,7 +79,7 @@ do ->
       @client
         .waitForVisible('.level-3 .fa-trash-o')
         .click('.level-3 .fa-trash-o')
-        
+
         .waitForVisible('#confirm-delete-keyword')
         .click('#confirm-delete-keyword')
         .waitForVisible('.toast-message')
@@ -101,8 +101,8 @@ do ->
         .click('.level-1 .fa-trash-o')
         .waitForVisible('#confirm-delete-header')
         .click('#confirm-delete-header')
-        # wait for modal to fade
-        .waitForVisible('.modal-backdrop', 1000, true)
+        # wait for modal to fade in
+        .waitForVisible('.modal-backdrop', 3000, true)
 
     @When /^I add the "([^"]*)" "([^"]*)"$/, (level, code) ->
       if level == "header"

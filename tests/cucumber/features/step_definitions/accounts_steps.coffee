@@ -125,12 +125,12 @@ do ->
         .submitForm('#at-field-email')
         .waitForExist('.sign-out')
 
-    @When /^I click the remove user link$/, ->
+    @When 'I click the remove user link', ->
       @browser
         .waitForVisible('.remove-user')
-        .click(".remove-user")
+        .click('.remove-user')
 
-    @When /^I confirm the account deletion$/, ->
+    @When 'I confirm the account deletion', ->
       @browser
         .waitForVisible('.modal')
         .click('.confirm-remove-user')

@@ -53,13 +53,14 @@ do ->
         .waitForVisible('.new-document-link')
         .click(".new-document-link")
 
-    @When /^I click on the Delete Document button$/, ->
+    @When 'I click on the Delete Document button', ->
       @browser
         .waitForVisible('.delete-document-button')
-        .click(".delete-document-button i")
+        .click(".delete-document-button")
 
-    @When /^I confirm the document deletion/, ->
+    @When 'I confirm the document deletion', ->
       @browser
+        .pause(1000) # Give the modal box time to reveal itself
         .waitForVisible('#confirm-delete-document-modal')
         .click("#confirm-delete-document")
 
