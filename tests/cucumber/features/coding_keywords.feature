@@ -140,4 +140,25 @@ Feature: Coding Keywords
     Then I should see 1 keywords
     And I should see 0 annotations
 
+  @codingKeywords
+  Scenario: Unarchiving coding keywords that have been archived
+    Given there is an annotation with codingKeyword header "Test Header", subHeader "Test Sub-Header" and key "Test Keyword1"
+    When I log in as the test user
+    And I navigate to "/codingKeywords"
+    When I click on a "header"
+    And I click on a "sub-header"
+    Then I should see 1 keywords
+    And I should see 0 archived keywords
+    When I delete a keyword
+    Then I should see 0 keywords
+    And I should see 1 archived keywords
+    When I unarchive a keyword
+    Then I should see 1 keywords
+    And I should see 0 archived keywords
+    When I navigate to "/documents"
+    And I click the first document
+    Then I should see 1 keywords
+    And I should see 1 annotations
+
+
 

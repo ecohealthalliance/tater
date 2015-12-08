@@ -55,9 +55,6 @@ if Meteor.isClient
         if @_id == Template.instance().selectedCodes.get('subHeaderId')
           'selected'
 
-    archived: () ->
-      if @archived
-        'disabled'
 
     selectedCodes: ->
       Template.instance().selectedCodes
@@ -121,6 +118,14 @@ if Meteor.isClient
     'click .delete-keyword-button': (event, instance) ->
       keywordId = event.target.parentElement.getAttribute("data-keyword-id")
       instance.keywordToDelete.set(CodingKeywords.findOne(keywordId))
+
+    'click .unarchive-keyword-button': (event, instance) ->
+      keywordId = event.target.parentElement.getAttribute("data-keyword-id")
+      Meteor.call 'unarchiveKeyword', keywordId, (error, instance) ->
+        if error
+          toastr.error("Error: #{error.message}")
+        else
+          toastr.success("Keyword restored")
 
     'click .add-code': (event, instance) ->
       level = $(event.target).data('level')
@@ -306,6 +311,14 @@ Meteor.methods
 
       if _validateKeywordProperties(_keywordProps)
         CodingKeywords.insert _keywordProps
+    else
+      throw new Meteor.Error('Unauthorized')
+
+  unarchiveKeyword: (keywordId) ->
+    if Meteor.users.findOne(@userId)?.admin
+      CodingKeywords.update keywordId,
+        $set: 
+          archived: false
     else
       throw new Meteor.Error('Unauthorized')
 
