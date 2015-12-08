@@ -82,7 +82,7 @@ do ->
         
         .waitForVisible('#confirm-delete-keyword')
         .click('#confirm-delete-keyword')
-        .waitForVisible('.toast-message')
+        .waitForVisible('.toast-success')
         # wait for modal to fade
         .waitForVisible('.modal-backdrop', 1000, true)
 
@@ -90,7 +90,7 @@ do ->
       @client
         .waitForVisible('.level-3 .fa-reply')
         .click('.level-3 .fa-reply')
-        .waitForVisible('.toast-message')
+        .waitForVisible('.toast-success')
 
     @When 'I delete a sub-header', () ->
       @client
