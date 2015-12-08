@@ -69,10 +69,15 @@ do ->
         .elements selector, (error, elements) ->
           assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
-    @Then /^I should see (\d+) headers/, (number) ->
+    @Then /^I should see (\d+)( archived)? headers/, (number, archived) ->
+      selector = '.code-level-1'
+      if archived
+        selector += '.disabled'
+      else
+        selector += ':not(.disabled)'
       @client
         .waitForExist('.level-1')
-        .elements '.code-level-1', (error, elements) ->
+        .elements selector, (error, elements) ->
           assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
     @When 'I delete a keyword', () ->
@@ -96,6 +101,12 @@ do ->
       @client
         .waitForVisible('.level-2 .fa-reply')
         .click('.level-2 .fa-reply')
+        .waitForVisible('.toast-success')
+
+    @When 'I unarchive a header', () ->
+      @client
+        .waitForVisible('.level-1 .fa-reply')
+        .click('.level-1 .fa-reply')
         .waitForVisible('.toast-success')
 
     @When 'I delete a sub-header', () ->

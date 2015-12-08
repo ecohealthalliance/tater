@@ -185,3 +185,27 @@ Feature: Coding Keywords
     And I click the first document
     Then I should see 1 keywords
     And I should see 1 annotations
+
+  @codingKeywords
+  Scenario: Unarchiving headers that have been archived
+    Given there is an annotation with codingKeyword header "Test Header", subHeader "Test Sub-Header" and key "Test Keyword1"
+    When I log in as the test user
+    And I navigate to "/codingKeywords"
+    Then I should see content "Test Header"
+    When I click on a "header"
+    Then I should see content "Test Sub-Header"
+    When I click on a "sub-header"
+    Then I should see 1 keywords
+    And I should see 0 archived keywords
+    When I delete a header
+    Then I should see 0 headers
+    And I should see 1 archived headers
+    And I should see 1 archived sub-headers
+    And I should see 1 archived keywords
+    When I unarchive a header
+    Then I should see 1 headers
+    And I should see 1 keywords
+    When I navigate to "/documents"
+    And I click the first document
+    Then I should see 1 keywords
+    And I should see 1 annotations
