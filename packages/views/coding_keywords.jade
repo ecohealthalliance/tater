@@ -19,7 +19,7 @@ template(name="codingKeywords")
                   +new_header_form headers=headers codeColor=codeColor
               ul.code-list.list.list-unstyled.level-1
                 each headers
-                  li.code.list-link.code-level-1(class="{{selected 'header'}} {{archived}} header-color-#{color}" data-id=_id)
+                  li.code.list-link.code-level-1(class="{{selected 'header'}} {{#if archived}}disabled{{/if}} header-color-#{color}" data-id=_id)
                     span= label
                     unless archived
                       button.btn-plain.delete-header-button(data-toggle="modal" data-header-id=_id data-target="#confirm-delete-header-modal")
@@ -40,7 +40,7 @@ template(name="codingKeywords")
                     +new_subHeader_form
                 ul.code-list.list.list-unstyled.level-2
                   each subHeaders
-                    li.code.list-link.code-level-2(class="{{selected 'subHeader'}} {{archived}}" data-id=_id)
+                    li.code.list-link.code-level-2(class="{{selected 'subHeader'}} {{#if archived}}disabled{{/if}}" data-id=_id)
                       span= label
                       unless archived
                         button.btn-plain.delete-subheader-button(data-toggle="modal" data-subheader-id=_id data-target="#confirm-delete-subheader-modal")
@@ -62,9 +62,9 @@ template(name="codingKeywords")
                     +new_keyword_form
                 ul.code-list.list.list-unstyled.level-3
                   each keywords
-                    li.code.code-level-3.not-clickable(class="{{archived}}")
+                    li.code.code-level-3.not-clickable(class="{{#if archived}}disabled{{/if}}")
                       span= label
-                      if archived != true
+                      if archived
                         button.btn-plain.unarchive-keyword-button.keyword-button(data-keyword-id=_id)
                           i.fa.fa-reply
                       else

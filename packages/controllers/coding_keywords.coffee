@@ -55,9 +55,6 @@ if Meteor.isClient
         if @_id == Template.instance().selectedCodes.get('subHeaderId')
           'selected'
 
-    archived: () ->
-      if @archived
-        'disabled'
 
     selectedCodes: ->
       Template.instance().selectedCodes
