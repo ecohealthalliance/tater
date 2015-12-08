@@ -1,4 +1,3 @@
-@dev
 Feature: Coding Keywords
   Background:
     Given there is a test user in the database
