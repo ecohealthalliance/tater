@@ -46,19 +46,19 @@ do ->
         .elements '.annotations li', (error, elements) ->
           assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
-    @Then /^I should see (\d+) keywords$/, (number) ->
+    @Then /^I should see (\d+) keywords?$/, (number) ->
       @client
         .waitForExist('.level-3, .code-keywords')
         .elements '.code-keyword, .code-level-3:not(.disabled)', (error, elements) ->
           assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
-    @Then /^I should see (\d+) archived keywords$/, (number) ->
+    @Then /^I should see (\d+) archived keywords?$/, (number) ->
       @client
         .waitForExist('.level-3')
         .elements '.code-level-3.disabled', (error, elements) ->
           assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
-    @Then /^I should see (\d+)( archived)? sub\-headers/, (number, archived) ->
+    @Then /^I should see (\d+)( archived)? sub\-headers?$/, (number, archived) ->
       selector = '.code-level-2'
       if archived
         selector += '.disabled'
@@ -75,34 +75,37 @@ do ->
         .elements '.code-level-1', (error, elements) ->
           assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
-    @When 'I delete a keyword', () ->
+    @When 'I delete a keyword', ->
       @client
+        .execute -> $('body').addClass "robot" # Disable CSS3 animations
         .waitForVisible('.level-3 .fa-trash-o')
         .click('.level-3 .fa-trash-o')
 
         .waitForVisible('#confirm-delete-keyword')
         .click('#confirm-delete-keyword')
         .waitForVisible('.toast-message')
-        # wait for modal to fade
-        .waitForVisible('.modal-backdrop', 1000, true)
+        # wait for modal to fade out
+        .waitForVisible('.modal-backdrop', 2000, true)
 
-    @When 'I delete a sub-header', () ->
+    @When 'I delete a sub-header', ->
       @client
+        .execute -> $('body').addClass "robot" # Disable CSS3 animations
         .waitForVisible('.level-2 .fa-trash-o')
         .click('.level-2 .fa-trash-o')
         .waitForVisible('#confirm-delete-subheader')
         .click('#confirm-delete-subheader')
-        # wait for modal to fade
-        .waitForVisible('.modal-backdrop', 1000, true)
+        # wait for modal to fade out
+        .waitForVisible('.modal-backdrop', 2000, true)
 
-    @When 'I delete a header', () ->
+    @When 'I delete a header', ->
       @client
+        .execute -> $('body').addClass "robot" # Disable CSS3 animations
         .waitForVisible('.level-1 .fa-trash-o')
         .click('.level-1 .fa-trash-o')
         .waitForVisible('#confirm-delete-header')
         .click('#confirm-delete-header')
-        # wait for modal to fade in
-        .waitForVisible('.modal-backdrop', 3000, true)
+        # wait for modal to fade out
+        .waitForVisible('.modal-backdrop', 2000, true)
 
     @When /^I add the "([^"]*)" "([^"]*)"$/, (level, code) ->
       if level == "header"

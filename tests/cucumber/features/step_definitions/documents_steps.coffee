@@ -10,7 +10,7 @@ do ->
     @Given /^there is a test document with title "([^"]*)" in group "([^"]*)"$/, (title, groupId) ->
       @server.call('createTestDocument', {title: title, groupId: groupId})
 
-    @Given "there is a test document with title \"$title\" in the database", (title) ->
+    @Given 'there is a test document with title "$title" in the database', (title) ->
       @server.call('createTestDocument', {title: title, groupId: 'fakegroupid', _id: 'fakedocid'})
 
     @Given /^there is a document with title "([^"]*)" in the test group$/, (title) ->
@@ -38,7 +38,7 @@ do ->
         .click('.group-documents-link')
         .waitForExist('.documents')
 
-    @When /^I navigate to the test group documents page$/, ->
+    @When 'I navigate to the test group documents page', ->
       @browser
         .url(url.resolve(process.env.ROOT_URL, "/groups/fakegroupid/documents"))
         .waitForVisible('.group-documents')
@@ -48,19 +48,19 @@ do ->
         .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid?generateCode=true"))
         .waitForExist('.document-container')
 
-    @When /^I click on the New Document link$/, ->
+    @When 'I click on the New Document link', ->
       @browser
         .waitForVisible('.new-document-link')
         .click(".new-document-link")
 
     @When 'I click on the Delete Document button', ->
       @browser
+        .execute -> $('body').addClass "robot" # Disable CSS3 animations
         .waitForVisible('.delete-document-button')
         .click(".delete-document-button")
 
     @When 'I confirm the document deletion', ->
       @browser
-        .pause(1000) # Give the modal box time to reveal itself
         .waitForVisible('#confirm-delete-document-modal')
         .click("#confirm-delete-document")
 
@@ -75,18 +75,18 @@ do ->
         .submitForm('#new-document-form')
         .waitForVisible('.document-detail-container')
 
-    @Then /^I should be on the test group documents page$/, ->
+    @Then 'I should be on the test group documents page', ->
       @browser
         .waitForVisible('.group-documents')
         .getHTML '.group-documents .group-name', (error, response) ->
           match = response.toString().match("Test Group")
           assert.ok(match)
 
-    @Then /^I should be on the admin documents page$/, ->
+    @Then 'I should be on the admin documents page', ->
       @browser
         .waitForVisible('.documents')
 
-    @When /^I click on the Add Document link in the header$/, ->
+    @When 'I click on the Add Document link in the header', ->
       @browser
         .waitForExist('.header-documents-link')
         .click('.new-document')
@@ -137,13 +137,12 @@ do ->
         .elements '.document-title', (error, elements) ->
           assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
-    @When /^I go to the next page of documents$/, ->
+    @When 'I go to the next page of documents', ->
       @browser
         .waitForExist('.document-title')
         .execute ->
           $("a:contains('>')").click()
-        # wait for the page to change
-        .pause(2000)
+        .pause(2000) # wait for the page to change
 
     @When /^I search for a document with the title of "([^"]*)"$/, (documentName) ->
       @browser

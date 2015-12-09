@@ -53,7 +53,7 @@ do ->
         .setValue('#profile-bio', 'I am a test user')
         .submitForm('#profile-fullname')
 
-    @When /^I view my public profile$/, ->
+    @When 'I view my public profile', ->
       @browser
         .url(url.resolve(process.env.ROOT_URL, '/profile/edit'))
         .waitForExist('#edit-profile-form')
@@ -83,6 +83,7 @@ do ->
 
     @When 'I create a user account for "$email"', (email) ->
       @browser
+        .execute -> $('body').addClass "robot" # Disable CSS3 animations
         .waitForVisible('.add-user')
         .click('.add-user')
         .pause(500)
@@ -92,11 +93,12 @@ do ->
         .setValue('#add-group-user-modal .user-password', 'testuser')
         .setValue('#add-group-user-modal .user-password-confirm', 'testuser')
         .submitForm('#add-group-user-modal .user-email')
-        .pause(1000)
         .waitForVisible('.toast-success')
+        .pause(1500)
 
     @When 'I create an admin user account for "$email"', (email) ->
       @browser
+        .execute -> $('body').addClass "robot" # Disable CSS3 animations
         .waitForVisible('.add-admin')
         .click('.add-admin')
         .pause(500)
@@ -106,8 +108,8 @@ do ->
         .setValue('#add-admin-modal .user-password', 'testuser')
         .setValue('#add-admin-modal .user-password-confirm', 'testuser')
         .submitForm('#add-admin-modal .user-email')
-        .pause(1000)
         .waitForVisible('.toast-success')
+        .pause(1500)
 
     @When 'I log out', ->
       @browser
@@ -118,6 +120,7 @@ do ->
 
     @When 'I log in as "$email"', (email) ->
       @browser
+        .execute -> $('body').addClass "robot" # Disable CSS3 animations
         .click('.sign-in')
         .waitForExist('.accounts-modal.modal.in')
         .setValue('#at-field-email', email)
@@ -153,6 +156,7 @@ do ->
 
     @When 'I log in with my new password', ->
       @browser
+        .execute -> $('body').addClass "robot" # Disable CSS3 animations
         .click('.sign-in')
         .waitForExist('.accounts-modal.modal.in')
         .setValue('#at-field-email', 'test@example.com')

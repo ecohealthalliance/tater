@@ -44,14 +44,14 @@ do ->
     @Given 'there is a group in the database with id "$id"', (id)->
       @server.call('createTestGroup', _id: id)
 
-    @When "I log in as the test user", (callback) ->
+    @When "I log in as the test user", ->
       @client
         .url(url.resolve(process.env.ROOT_URL, '/'))
         .waitForVisible('.content-wrap #at-pwd-form')
         .setValue('.content-wrap #at-field-email', _testUser.email)
         .setValue('.content-wrap #at-field-password', _testUser.password)
         .submitForm('.content-wrap #at-field-email')
-        .waitForExist('.sign-out', callback)
+        .waitForExist('.sign-out')
 
     @When "I log in as the non-admin test group user", ->
       @client
@@ -99,7 +99,7 @@ do ->
 
     @Then /^I should( not)? see content "([^"]*)"$/, (shouldNot, text) ->
       @client
-        .pause 3000 # Give Meteor some time to populate the <body>
+        .pause 4000 # Give Meteor some time to populate the <body>
         .getHTML 'body', (error, response) ->
           match = response.toString().match(text)
           if shouldNot
