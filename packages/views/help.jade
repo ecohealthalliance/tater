@@ -1,8 +1,158 @@
 template(name="help")
-  .view-header.secondary-bg.space-btm-2
+  .view-header.primary-bg.space-btm-2
     .container
-      h1.inline Help Index
-  .container
+      h1.inline Help
+  .container.help-container
     .row
-      .col-md-8
-        p Helpful content.
+      .col-sm-3.help-nav-wrap
+        ul.help-nav.nav.list-group.hidden-xs(data-spy="affix" id="nav")
+          li.list-group-item
+            a(href="#topic-1") Documents
+            ul.list-group
+              li.list-group-item
+                a(href="#uploading") Uploading
+              li.list-group-item
+                a(href="#annotating") Annotating
+              li.list-group-item
+                a(href="#viewing") Viewing
+              li.list-group-item
+                a(href="#removing") Removing
+
+          li.list-group-item
+            a(href="#annotations") Annotations
+
+          li.list-group-item
+            a(href="#account-management") Account Management
+            ul.list-group
+              li.list-group-item
+                a(href="#change-password") Change password
+              li.list-group-item
+                a(href="#edit-profile") Edit profile
+
+          if isAdmin
+            li.list-group-item
+              a(href="#user-roles") User Roles
+            li.list-group-item
+              a(href="#group-management") Group Management
+              ul
+                li.list-group-item
+                  a(href="#creating-groups") Creating groups
+                li.list-group-item
+                  a(href="#user-management") User Management
+            li.list-group-item
+              a(href="#coding-keyword-management") Coding Keyword Management
+              ul
+                li.list-group-item
+                  a(href="#adding") Adding
+                li.list-group-item
+                  a(href="#archiving-deleting") Archiving &amp; Deleting
+                li.list-group-item
+                  a(href="#unarchiving") Unarchiving
+
+      .col-sm-9.help-content
+        .help-section#topic-1
+          h3 Documents
+          .help-section#uploading
+            h4 Uploading
+            p To add a document, click the button “New Document” on the top of the page, right of the Tater logo. Fill out the new document form, naming the document in the “Title” section, entering the text of the document in the “Body” section and selecting the Group of the document using the dropdown menu “Group”. Select “Save” to create the document and you will be automatically navigated to the annotation interface.
+          .help-section#annotating
+            h4 Annotating
+            p The annotation interface displays three separate columns: code keywords, the body of the document text, and annotations within the document. On the left-hand side all code keywords are listed in a three-layer hierarchical manner with keywords nested under headers and sub-headers. To expose the keywords within groups and subgroups, click the arrow. You can also search for a specific keyword using the search bar above the keyword groups.
+
+            p To annotate a section of text, highlight the text by selecting it with your mouse. Once you have highlighted the desired text, click on the keyword you would like to annotate with. The text will then be highlighted with the corresponding color of the keyword and a colored annotation will pop up in the right-hand column of the interface. Each annotation shows the coded keyword and the email of the user account that added that annotation.( Note: Annotations added by admin account users will not display the user email.) To view the body of text associated with a specific annotation, simply click on the annotation in the right-hand column and you will be guided to the highlighted text in your document. You will also have the ability to flag specific annotations of particular importance.
+
+            p All activity in the annotation interface is automatically saved to the document.
+
+            .row
+              .col-sm-6
+                h5 Flagging an Annotation
+                p To flag an annotation, click the #[i(class='fa fa-times-circle-o' title='flag icon')] in the lower left-hand corner of the annotation. Once flagged, a flag icon will appear on the annotation throughout the application. Users can choose to view only flagged annotations on the Annotations Page.
+              .col-sm-6
+                h5 Removing an Annotation
+                p To delete an annotation, click the #[i(class='fa fa-times-circle-o' title ='x')] button on the top right-hand corner of the annotation.
+
+          .help-section#viewing
+            h4 Viewing
+            p Admin user accounts can navigate to a specific document in two ways. First, you can access a list of all documents by clicking “Documents” on the navigation menu. This will navigate you to a page listing all Tater documents. The group name of each document can be found to the right of the document name in italics. Click on the document name to open this document in the annotation interface.
+
+            p Admin user accounts can also navigate to a document through the “Groups” section on the Admin page. Click on the group name you are interested in and you will be forwarded to the group page listing all of the documents within that group. Click on the document name to open the annotation interface for this document.
+
+          .help-section#removing
+            h4 Removing
+            p To delete a document, click the trash can icon to the right of the document name. A confirmation window will pop up asking you to confirm deleting this document.
+
+        .help-section#annotations
+          h3 Annotations
+          p To view annotated text across documents, click “Search Annotations” on the navigation menu. This page displays three separate columns: documents, annotations, and code keywords. On the left-hand side all of the Tater document groups and documents are listed. To view all of the annotated text of a specific code keyword header, sub-header or keyword itself in all Tater documents, click on the keyword in the right-hand column. To view all of the annotated text in specific documents or document groups, simply click the document name(s) and the annotations will appear in the annotations column. Each annotation includes its code keyword, the specific text annotated from the document, the document name (lower left-hand side) and the user email of the account that created the annotations (lower right-hand side). Annotations are grouped and listed according to keywords. To view all annotations from multiple documents, select all of the documents you are interested in. To deselect a document, simply click on it’s name again. To deselect all documents, click the X button found to the right of the Documents column title.
+
+          p Once you have selected the documents you are interested in, you can filter the annotations by keyword. To only see annotations of a specific code keyword header, sub-header or keyword itself, click on the keyword in the right-hand column. You also have the ability to search for a specific keyword using the search function in the keyword column. To deselect keywords, click “Clear Selected Codes” in the keyword column.
+
+        .help-section#account-management
+          h3 Account Management
+          .help-section#change-password
+            h4 Change password
+            p To change your password, click “Account” (“‘Full Name’”) and then “Change Password”. Enter your previous password and then your new password twice and click “Update password”. Now, your password has been updated.
+          .help-section#edit-profile
+            h4 Edit profile
+            p To edit your public profile, click “Account” on the navigation menu and then select “Edit Profile”. If you wish, you may fill in the fields “Full Name”,  “Job Title” and “Biography”. If you want to hide your email address from other Tater users, select “Hide Email Address?”. Be sure to click “Save” to save all account profile changes. Other Tater users will be able to view your public profile; you may view your public profile by clicking “View Public Profile”. Note: “Account” button will change to your full name in the navigation menu if you fill in the “Full Name” field.
+
+        if isAdmin
+          .help-section#user-roles
+            h3 User Roles
+
+            table.table
+              thead
+                th Admin User Accounts
+                th Regular User Accounts
+              tbody
+                tr
+                  td Group: Admins
+                  td Group: Assigned to a specific group by an admin user
+                tr
+                  td Create groups
+                  td Cannot create groups
+                tr
+                  td Ability to view, add and delete both admin and regular users
+                  td Ability to view both admin and regular users. Cannot add nor delete any type of user.
+                tr
+                  td Have code management access: the ability to view, add, delete and archive coding keyword headers, sub-headers and keywords
+                  td Do not have code management access
+                tr
+                  td Have the ability to view, annotate and delete all documents
+                  td Have the ability to view, annotate and delete only the documents in their specific group
+                tr
+                  td Have the ability to analyze all annotations across all documents
+                  td Have the ability to analyze all annotations across only the documents in their specific group
+
+
+
+          .help-section#group-management
+            h3 Group Management
+            p.featured Tater groups are siloed collections of documents. It is important to establish your groups before adding regular (non-admin) Tater users because groups are access-specific; regular Tater users are assigned to a specific group and can only view/edit/delete documents within that specific group. Regular users are not able to access any documents outside of their specific group.
+
+            .help-section#creating-groups
+              h4 Creating Groups
+
+              p To add a group, navigate to the Admin page and select the button “Create” next to the “Groups” section title. You will be directed to a new page where you must enter the group Name. You may also include a short description of the group in the “Description” section on this page. Once you have created a group, you can begin creating regular Tater user accounts.
+
+            .help-section#user-management
+              h4 User Management
+
+              h5 Creating Admin Users
+              p Admin Tater users have the ability to view, add and delete both admin and regular Tater users. To view all users navigate to the Admin page by clicking “Admin” on the navigation menu and navigate to the section titled “Users”. Users are displayed with their Tater group and email. To add an admin user account, click “Create New Admin User”. Enter the new email and a temporary password. Send the new admin user individual their temporary password and instruct them to log into Tater and update their password.
+
+              h5 Creating Regular Users
+              p To add a regular Tater user, navigate to the Groups section on the Admin page. Decide which group you would like to add a user to and select the *icon* on the right-hand side aligned with that specific group. Enter the new email and a temporary password. Send the new user individual their temporary password and instruct them to log into Tater and update their password.
+
+              h5 Removing Users
+              p To delete a user, navigate to the Admin page and scroll down to the “Users” section. Click the *icon* on the righthand side aligned with the individual user you wish to delete.
+
+
+          .help-section#coding-keyword-management
+            h3 Coding Keyword Management
+            .help-section#adding
+              h4 Adding
+            .help-section#archiving-deleting
+              h4 Archiving &amp; Deleting
+            .help-section#unarchiving
+              h4 Unarchiving
