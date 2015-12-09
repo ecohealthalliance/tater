@@ -3,7 +3,7 @@
 // mongo localhost:3001/meteor addHeaderIds.js
 var keywordsUpdated = 0;
 db.keywords.find({
-    headerId: { $eq: null },
+    headerId: null,
     subHeaderId: { $ne: null }
 }).forEach(function(keyword){
     var headerId = db.subHeaders.findOne({_id: keyword.subHeaderId}).headerId;
