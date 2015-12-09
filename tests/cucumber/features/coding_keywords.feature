@@ -180,6 +180,17 @@ Feature: Coding Keywords
     Then I should see 1 keywords
     And I should see 1 annotations
 
+  Scenario: Cannot unarchive a keyword with an archived sub-header
+    Given there is an annotation with codingKeyword header "Test Header", subHeader "Test Sub-Header" and key "Test Keyword1"
+    When I log in as the test user
+    And I navigate to "/codingKeywords"
+    When I click on a "header"
+    And I click on a "sub-header"
+    And I delete a sub-header
+    Then I should see 1 archived sub-headers
+    And I should see 1 archived keywords
+    And I should not see the unarchive button
+
   @codingKeywords
   Scenario: Unarchiving headers that have been archived
     Given there is an annotation with codingKeyword header "Test Header", subHeader "Test Sub-Header" and key "Test Keyword1"

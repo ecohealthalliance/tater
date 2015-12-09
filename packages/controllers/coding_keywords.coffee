@@ -55,6 +55,13 @@ if Meteor.isClient
         if @_id == Template.instance().selectedCodes.get('subHeaderId')
           'selected'
 
+    unarchived: ->
+      !@archived
+
+    restorable: ->
+      header = Headers.findOne(Template.instance().selectedCodes.get('headerId'))
+      subHeader = SubHeaders.findOne(Template.instance().selectedCodes.get('subHeaderId'))
+      @archived && !header.archived && !subHeader.archived
 
     selectedCodes: ->
       Template.instance().selectedCodes

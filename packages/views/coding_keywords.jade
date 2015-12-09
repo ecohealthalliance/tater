@@ -70,10 +70,10 @@ template(name="codingKeywords")
                   each keywords
                     li.code.code-level-3.not-clickable(class="{{#if archived}}disabled{{/if}}")
                       span= label
-                      if archived
+                      if restorable
                         button.btn-plain.unarchive-keyword-button.keyword-button(data-keyword-id=_id)
                           i.fa.fa-reply
-                      else
+                      else if unarchived
                         button.btn-plain.delete-keyword-button.keyword-button(data-toggle="modal" data-keyword-id=_id data-target="#confirm-delete-keyword-modal" )
                           i.fa.fa-trash-o
     else
