@@ -11,6 +11,7 @@
 
 .help-container
   position relative
+  font-size 15px
   .list-group
     border 0
     li
@@ -22,8 +23,8 @@
     padding 0
     .list-group
       padding-left 15px
-      padding-right 15px
       margin-bottom 5px
+      margin-top 5px
       li
         padding 0
         margin-bottom 2px
@@ -49,15 +50,62 @@
         color $primary
         border 0
         > a
+          position relative
           margin-top 3px
           margin-bottom 3px
           margin-left -10px
-          padding 5px 10px
-          color $primary
+          padding 5px 25px 5px 10px
           font-weight bold
           background $background-secondary
           border-radius 3px
           text-decoration none
+          &::after
+            content '\f06e'
+            @extend .icon
+            centerVertically(true)
+            right 10px
+            color darken($background-secondary, 20%)
+
+.help-content
+  maring-bottom 150px
+  .interface-image
+    display block
+    margin 40px auto
+    max-width 90%
+  .fa
+    font-size 1.25em
+  p
+    line-height 1.5em
+  h2
+    color $primary
+    font-size 2.5em
+    margin-bottom 25px
+  h3
+    body-font()
+    font-size 1.75em
+    font-weight 700
+    padding-bottom 5px
+    margin-bottom 12px
+    border-bottom 2px solid alpha($secondary, 20%)
+  h4
+    body-font()
+    font-size 1.25em
+    font-weight 600
+    color $dd-gray
+  .button-ref
+    font-weight 600
+    font-style italic
+  .note
+    font-weight 600
+    display block
+    margin 15px 0
+    color $primary
+    &:before
+      @extend .icon
+      font-size 1.25em
+      content '\f249'
+      margin-right 10px
+      vertical-align middle
 
 .affix
   top 20px
@@ -65,5 +113,10 @@
     width 180px
 
 .help-content
-  > .help-section
-    margin-bottom 60px
+  margin-bottom 100px
+  .help-topic-group
+    margin-bottom 80px
+  .help-topic
+    margin-bottom 40px
+    padding-left 30px
+
