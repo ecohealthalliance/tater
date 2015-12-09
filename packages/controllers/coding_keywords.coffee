@@ -127,6 +127,22 @@ if Meteor.isClient
         else
           toastr.success("Keyword restored")
 
+    'click .unarchive-subheader-button': (event, instance) ->
+      subHeaderId = event.target.parentElement.getAttribute("data-subheader-id")
+      Meteor.call 'unarchiveSubHeader', subHeaderId, (error, instance) ->
+        if error
+          toastr.error("Error: #{error.message}")
+        else
+          toastr.success("Sub-Header restored")
+
+    'click .unarchive-header-button': (event, instance) ->
+      headerId = event.target.parentElement.getAttribute("data-header-id")
+      Meteor.call 'unarchiveHeader', headerId, (error, instance) ->
+        if error
+          toastr.error("Error: #{error.message}")
+        else
+          toastr.success("Header restored")
+
     'click .add-code': (event, instance) ->
       level = $(event.target).data('level')
       instance.addingCode.set(level, not instance.addingCode.get(level))
@@ -322,6 +338,44 @@ Meteor.methods
     else
       throw new Meteor.Error('Unauthorized')
 
+  unarchiveSubHeader: (subHeaderId) ->
+    if Meteor.users.findOne(@userId)?.admin
+      SubHeaders.update subHeaderId,
+        $set: 
+          archived: false
+      CodingKeywords.update {subHeaderId: subHeaderId},
+        {
+          $set:
+            archived: false
+        },
+        {multi: true}
+    else
+      throw new Meteor.Error('Unauthorized')
+
+  unarchiveHeader: (headerId) ->
+    if Meteor.users.findOne(@userId)?.admin
+      Headers.update headerId,
+        $set:
+          archived: false
+      SubHeaders.update {headerId: headerId},
+        {
+          $set:
+            archived: false
+        },
+        {multi: true}
+      CodingKeywords.update {
+          # The headerId property is undefined in some cases
+          # so for now we're using the subHeaderIds
+          subHeaderId:
+            $in: SubHeaders.find(headerId: headerId).map (x)-> x._id
+        },
+        {
+          $set:
+            archived: false
+        },
+        {multi: true}
+    else
+      throw new Meteor.Error('Unauthorized')
 
 if Meteor.isServer
 
