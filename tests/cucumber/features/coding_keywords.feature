@@ -169,9 +169,7 @@ Feature: Coding Keywords
     Given there is an annotation with codingKeyword header "Test Header", subHeader "Test Sub-Header" and key "Test Keyword1"
     When I log in as the test user
     And I navigate to "/codingKeywords"
-    Then I should see content "Test Header"
     When I click on a "header"
-    Then I should see content "Test Sub-Header"
     When I click on a "sub-header"
     Then I should see 1 keywords
     And I should see 0 archived keywords
@@ -191,9 +189,7 @@ Feature: Coding Keywords
     Given there is an annotation with codingKeyword header "Test Header", subHeader "Test Sub-Header" and key "Test Keyword1"
     When I log in as the test user
     And I navigate to "/codingKeywords"
-    Then I should see content "Test Header"
     When I click on a "header"
-    Then I should see content "Test Sub-Header"
     When I click on a "sub-header"
     Then I should see 1 keywords
     And I should see 0 archived keywords
