@@ -16,7 +16,7 @@ template(name="codingKeywords")
             else
               if addingCode 'header'
                 .adding-code.clearfix
-                  +new_header_form headers=headers codeColor=codeColor
+                  +newHeaderForm headers=headers codeColor=codeColor
               ul.code-list.list.list-unstyled.level-1
                 each headers
                   li.code.list-link.code-level-1(class="{{selected 'header'}} {{#if archived}}disabled{{/if}} header-color-#{color}" data-id=_id)
@@ -40,7 +40,7 @@ template(name="codingKeywords")
               else
                 if addingCode 'subHeader'
                   .adding-code.clearfix
-                    +new_subHeader_form
+                    +newSubheaderForm
                 ul.code-list.list.list-unstyled.level-2
                   each subHeaders
                     li.code.list-link.code-level-2(class="{{selected 'subHeader'}} {{#if archived}}disabled{{/if}}" data-id=_id)
@@ -65,7 +65,7 @@ template(name="codingKeywords")
               else
                 if addingCode 'keyword'
                   .adding-code.clearfix
-                    +new_keyword_form
+                    +newKeywordForm
                 ul.code-list.list.list-unstyled.level-3
                   each keywords
                     li.code.code-level-3.not-clickable(class="{{#if archived}}disabled{{/if}}")
@@ -86,7 +86,7 @@ template(name="codingKeywords")
 template(name="curtain")
   .curtain-white
 
-template(name="new_header_form")
+template(name="newHeaderForm")
   form(id="new-header-form")
     input.form-control.code(type="text" name="header" placeholder="Enter a header" autocomplete="off")
     ul.header-colors.list-unstyled
@@ -96,13 +96,13 @@ template(name="new_header_form")
       button.add.btn.btn-primary.btn-block(type="submit" data-level="header") Add Header
       button.cancel.btn.btn-default(type="button" data-level="header") Cancel
 
-template(name="new_subHeader_form")
+template(name="newSubheaderForm")
   form(id="new-subHeader-form")
     input.form-control.code(type="text" name="subHeader" placeholder="Enter a sub-header" autocomplete="off")
     button.add.btn.btn-primary.btn-block(type="submit" data-level="subHeader") Add Sub-Header
     button.cancel.btn.btn-default(type="button" data-level="subHeader") Cancel
 
-template(name="new_keyword_form")
+template(name="newKeywordForm")
   form(id="new-keyword-form")
     input.form-control.code(type="text" name="keyword" placeholder="Enter a keyword" autocomplete="off")
     button.add.btn.btn-primary.btn-block(type="submit" data-level="keyword") Add keyword

@@ -218,13 +218,13 @@ if Meteor.isClient
           form.keyword.value = ''
         form.keyword.focus()
 
-  Template.new_header_form.onCreated ->
+  Template.newHeaderForm.onCreated ->
     @codeColor = Template.instance().data.codeColor
 
-  Template.new_header_form.onRendered ->
+  Template.newHeaderForm.onRendered ->
     @$("input[name=header]").focus()
 
-  Template.new_header_form.helpers
+  Template.newHeaderForm.helpers
     selectedColor: (color) ->
       if color == Template.instance().codeColor.get()
         'selected'
@@ -232,14 +232,14 @@ if Meteor.isClient
     availableHeaderColors: ->
       [1,2,3,4,5,6,7,8]
 
-  Template.new_header_form.events
+  Template.newHeaderForm.events
     'click .header-colors li': (event, instance) ->
       instance.codeColor.set($(event.currentTarget).data('color'))
 
-  Template.new_subHeader_form.onRendered ->
+  Template.newSubheaderForm.onRendered ->
     @$("input").focus()
 
-  Template.new_keyword_form.onRendered ->
+  Template.newKeywordForm.onRendered ->
     @$("input").focus()
 
 _validateHeader = (headerId) ->
