@@ -92,6 +92,12 @@ do ->
         .click('.level-3 .fa-reply')
         .waitForVisible('.toast-success')
 
+    @When 'I unarchive a sub-header', () ->
+      @client
+        .waitForVisible('.level-2 .fa-reply')
+        .click('.level-2 .fa-reply')
+        .waitForVisible('.toast-success')
+
     @When 'I delete a sub-header', () ->
       @client
         .waitForVisible('.level-2 .fa-trash-o')
