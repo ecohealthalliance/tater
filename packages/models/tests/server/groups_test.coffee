@@ -25,11 +25,6 @@ describe 'Group', ->
     group.save
     expect(group.createdById).to.eq('fakeid')
 
-  it 'includes codeAccessible', ->
-    group.set('codeAccessible', true)
-    group.save
-    expect(group.codeAccessible).to.eq(true)
-
   it 'includes createdAt', ->
     group.save
     expect(group.createdAt).not.to.be.an('undefined')

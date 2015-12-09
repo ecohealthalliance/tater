@@ -43,11 +43,6 @@ do ->
         .url(url.resolve(process.env.ROOT_URL, "/groups/fakegroupid/documents"))
         .waitForVisible('.group-documents')
 
-    @When "I navigate to the test document with an access code", ->
-      @browser
-        .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid?generateCode=true"))
-        .waitForExist('.document-container')
-
     @When /^I click on the New Document link$/, ->
       @browser
         .waitForVisible('.new-document-link')
@@ -97,12 +92,6 @@ do ->
         .click('.finished-annotating')
         .pause(10000)
         .waitForVisible('.modal.in')
-
-    @Then "I should see an access code in a modal", ->
-      @browser
-        .getHTML '#completionCodeModal', (error, response) ->
-          assert.notOk(error)
-          assert.ok(response.toString().match("Code:"))
 
     @Then "I should see that \"$documentName\" is in the test group", (documentName) ->
       @browser
