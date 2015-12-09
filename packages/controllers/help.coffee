@@ -1,4 +1,9 @@
 if Meteor.isClient
+
+  Retina
+    retinajs: true
+    attribute : 'data-retina'
+
   Template.help.onRendered ->
     $('body').attr('data-spy', 'scroll').attr('data-target', '.help-nav-wrap')
     $('.help-nav').affix
