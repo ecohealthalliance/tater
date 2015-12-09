@@ -358,11 +358,9 @@ if Meteor.isClient
 Meteor.methods
   generateCsv: (query) ->
     user = Meteor.users.findOne({_id: @userId})
-    groups = Groups.find()
     if user
       if user?.admin
-        groupIds = _.pluck(groups.fetch(), '_id')
-        documents = Documents.find({groupId: {$in: groupIds}})
+        documents = Documents.find()
       else if user
         documents = Documents.find({groupId: user.group})
       docIds = documents.map((d)-> d._id)
@@ -405,8 +403,7 @@ if Meteor.isServer
     groups = Groups.find()
     if user
       if user?.admin
-        groupIds = _.pluck(groups.fetch(), '_id')
-        documents = Documents.find({groupId: {$in: groupIds}})
+        documents = Documents.find()
       else if user
         documents = Documents.find({ groupId: user.group })
       docIds = documents.map((d)-> d._id)

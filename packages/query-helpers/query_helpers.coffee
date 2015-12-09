@@ -3,9 +3,7 @@ QueryHelpers = {}
 # has access to.
 QueryHelpers.userDocsQuery = (user, options)->
   if user?.admin
-    groups = Groups.find()
-    groupIds = _.pluck(groups.fetch(), '_id')
-    { groupId: {$in: groupIds} }
+    {}
   else
     { groupId: user.group }
 # Add a documentId: { $in: ... } clause to the given query object
