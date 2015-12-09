@@ -144,6 +144,11 @@ do ->
           .setValue("input[name=#{level}]", code)
           .submitForm("input[name=#{level}]")
 
+    @Then /^I should not see the unarchive button$/, () ->
+      @browser
+        .waitForExist('.level-3')
+        .waitForExist('.level-3 .fa-reply', 1000, true)
+
     @Then /^I should( not)? see coding keyword search results$/, (noResults) ->
       if noResults
         @browser
