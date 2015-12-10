@@ -12,9 +12,8 @@ if Meteor.isClient
 
   Template.help.events
     'click .help-nav li a': (event) ->
-      console.log event.target.hash
-
       event.preventDefault()
+      $(event.target).parent().addClass('active')
       $('html,body').animate
         scrollTop:
           $(event.target.hash).offset().top
