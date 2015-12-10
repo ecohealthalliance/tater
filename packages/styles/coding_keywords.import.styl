@@ -83,6 +83,7 @@ checkMark(center=false)
   font-weight 800
   color $body-text
   > span
+    pointer()
     display block
     position relative
     margin-left 35px
@@ -98,6 +99,7 @@ checkMark(center=false)
           &.selectable-code
             &:hover
               transition .2s ease-in-out
+              background-color lighten($color, 20%)
             &.selected
               background-color $color
         > i
@@ -111,6 +113,7 @@ checkMark(center=false)
       .code-sub-header
         &.selectable
           > span
+            pointer()
             padding-left 6px
             background-color transparent
             transition .1s ease-in-out
@@ -122,6 +125,7 @@ checkMark(center=false)
                   centerVertically()
               &:hover
                 transition .2s ease-in-out
+                background-color lighten($color, 20%)
             &.selected
               background-color $color
           > i
