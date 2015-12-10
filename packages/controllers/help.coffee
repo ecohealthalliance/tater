@@ -5,7 +5,7 @@ if Meteor.isClient
     attribute : 'data-retina'
 
   Template.help.onRendered ->
-    $('body').attr('data-spy', 'scroll').attr('data-target', '.help-nav-wrap')
+    $("body").scrollspy({target: ".help-nav-wrap"})
     $('.help-nav').affix
       offset:
         top: $('.help-nav').offset().top - 20
