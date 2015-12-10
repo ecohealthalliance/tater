@@ -10,13 +10,13 @@ template(name="help")
             a(href="#documents") Documents
             ul.list-group
               li.list-group-item
-                a(href="#uploading") Uploading
+                a(href="#uploading-documents") Uploading
               li.list-group-item
-                a(href="#annotating") Annotating
+                a(href="#annotating-documents") Annotating
               li.list-group-item
-                a(href="#viewing") Viewing
+                a(href="#viewing-documents") Viewing
               li.list-group-item
-                a(href="#removing") Removing
+                a(href="#removing-documents") Deleting
 
           li.list-group-item
             a(href="#annotations") Annotations
@@ -54,50 +54,51 @@ template(name="help")
       .col-sm-9.help-content
         .help-topic-group#documents
           h2 Documents
-          .help-topic#uploading
+          .help-topic#uploading-documents
             h3 Uploading
-            p To add a document, click the #[span(class="button-ref") New Document] button on the top of the page, right of the Tater logo. Fill out the new document form, naming the document in the #[i Title] section, entering the text of the document in the #[i Body] section and selecting the Group of the document using the dropdown menu #[i Group]. Click #[span(class="button-ref")  Save] to create the document and you will be automatically navigated to the annotation interface.
-          .help-topic#annotating
+            p To add a document, click the #[span(class="button-ref") New Document] button on the top of the page, right of the Tater logo. Fill out the new document form, naming the document in the #[i Title] section, entering the text of the document in the #[i Body] section and selecting the Group of the document using the dropdown menu. Click #[span(class="button-ref")  Save] to create the document and you will be sent to the annotation interface.
+          .help-topic#annotating-documents
             h3 Annotating
-            p The annotation interface displays three separate columns: code keywords, the body of the document text, and annotations within the document. On the left-hand side all code keywords are listed in a three-layer hierarchical manner with keywords nested under headers and sub-headers. To expose the keywords within groups and subgroups, click the arrow. You can also search for a specific keyword using the search bar above the keyword groups.
+            p The annotation interface displays three separate columns: code keywords, the body of the document text, and annotations within the document. On the left-hand side all code keywords are listed in a three-layer hierarchical manner with keywords nested under headers and sub-headers. To hide/expose the keywords within groups and subgroups, click the #[i(class="fa fa-chevron-circle-down" title="Arrow")]. You can also search for a specific keyword using the search bar above the keyword groups.
 
-            img.interface-image(src='images/help/document-interface.jpg' data-retina='images/help/document-interface@2x.jpg')
+            img.interface-image(src="images/help/document-interface.jpg" data-retina="images/help/document-interface@2x.jpg")
 
-            p To annotate a section of text, highlight the text by selecting it with your mouse. Once you have highlighted the desired text, click on the keyword you would like to annotate with. The text will then be highlighted with the corresponding color of the keyword and a colored annotation will pop up in the right-hand column of the interface. Each annotation shows the coded keyword and the email of the user account that added that annotation. #[span(class='note') Note: Annotations added by admin account users will not display the user email.]
+            p To annotate a section of text, highlight the text by selecting it with your mouse. Once you have highlighted the desired text, click on the keyword with which you would like to annotate. The text will then be highlighted with the corresponding color of the keyword and a colored annotation will appear in the right-hand column of the interface. Each annotation shows the coded keyword and the email of the user account that added that annotation. #[span(class="note") Note: Annotations added by admin account users will not display the user email.]
 
-            p To view the body of text associated with a specific annotation, simply click on the annotation in the right-hand column and you will be guided to the highlighted text in your document. You will also have the ability to flag specific annotations of particular importance.
-
-            p All activity in the annotation interface is automatically saved to the document.
+            p To view the text associated with a specific annotation, simply click on the annotation in the right-hand column and you will be guided to the highlighted text in the document.
 
             .row
               .col-sm-7
                 h4 Flagging an Annotation
-                p To flag an annotation, click the #[i(class='fa fa-times-circle-o' title='flag icon')] in the lower left-hand corner of the annotation. Once flagged, a flag icon will appear on the annotation throughout the application. Users can choose to view only flagged annotations on the Annotations Page.
+                P.space-btm-1 Tater users can flag specific annotations to indicate importance.
+                p To flag an annotation, click the #[i(class="fa fa-flag-o" title="Flag Icon")] in the lower left-hand corner of the annotation. Once flagged, a flag icon will appear on the annotation throughout the application. Users can choose to view only flagged annotations on the Annotations Page.
 
-                h4 Removing an Annotation
-                p To delete an annotation, click the #[i(class='fa fa-times-circle-o' title ='x')] button on the top right-hand corner of the annotation.
+                h4 Deleting an Annotation
+                p To delete an annotation, click the #[i(class="fa fa-times-circle" title ="X")] button on the top right-hand corner of the annotation.
               .col-sm-5
-                img(src='images/help/annotations.jpg' data-retina='images/help/annotations@2x.jpg')
+                img(src="images/help/annotations.jpg" data-retina="images/help/annotations@2x.jpg")
 
-          .help-topic#viewing
+            p #[span(class="note") Note: All activity in the annotation interface is automatically saved to the document.]
+
+          .help-topic#viewing-documents
             h3 Viewing
-            p Admin user accounts can navigate to a specific document in two ways. First, you can access a list of all documents by clicking #[span(class="button-ref") Documents] on the navigation menu. This will navigate you to a page listing all Tater documents. The group name of each document can be found to the right of the document name in italics. Click on the document name to open this document in the annotation interface.
+            p Admins can navigate to a specific document in two ways. First, you can access a list of all documents by clicking #[span(class="button-ref") Documents] in the navigation menu. This will navigate you to a page listing all Tater documents. The group name of each document can be found to the right of the document name in italics. Click on the document's name to open it in the annotation interface.
 
-            p Admin user accounts can also navigate to a document through the #[i Groups] section on the Admin page. Click on the group name you are interested in and you will be forwarded to the group page listing all of the documents within that group. Click on the document name to open the annotation interface for this document.
+            p Admins can also navigate to a document through the #[i Groups] section on the Admin page. Click on the group name you are interested in and you will be forwarded to the group page listing all of the documents within that group. Click on the document's name to open it in the annotation interface.
 
-          .help-topic#removing
-            h3 Removing
-            p To delete a document, click the trash can icon to the right of the document name. A confirmation window will pop up asking you to confirm deleting this document.
+          .help-topic#deleting-documents
+            h3 Deleting
+            p To delete a document, click the #[i(class="fa fa-trash" title="Trash Can")] icon to the right of the document name. A window will appear asking you to confirm you want to delete the document.
 
         .help-topic-group#annotations
           h2 Annotations
-          p To view annotated text across documents, click #[span(class="button-ref") Annotations] on the navigation menu. This page displays three separate columns: documents, annotations, and code keywords. On the left-hand side all of the Tater document groups and documents are listed. To view all of the annotated text of a specific code keyword header, sub-header or keyword itself in all Tater documents, click on the keyword in the right-hand column.
+          p To view annotated text across documents, click #[span(class="button-ref") Annotations] in the navigation menu. This page displays three separate columns: #[i documents], #[i annotations], and #[i code keywords]. In the #[i documents] column (left) admins see a list of all groups and documents. Regular users see all documents in their group. In the #[i annotations] column (middle) users see a list of annotations from selected groups/documents. In the #[i code keyword] column (right) users see a list of code keywords with which to filter the annotations.
 
-          img.interface-image(src='images/help/annotations-interface.jpg' data-retina='images/help/annotations-interface@2x.jpg')
+          img.interface-image(src="images/help/annotations-interface.jpg" data-retina="images/help/annotations-interface@2x.jpg")
 
           p To view all of the annotated text in specific documents or document groups, simply click the document name(s) and the annotations will appear in the annotations column. Each annotation includes its code keyword, the specific text annotated from the document, the document name (lower left-hand side) and the user email of the account that created the annotations (lower right-hand side). Annotations are grouped and listed according to keywords.
 
-          p To view all annotations from multiple documents, select all of the documents you are interested in. To deselect a document, simply click on it’s name again. To deselect all documents, click the #[i(class="fa fa-times-circle")] button found to the right of the Documents column title.
+          p To view all annotations from multiple documents, select all of the documents you are interested in. To deselect a document, simply click on it’s name again. To deselect all documents, click the #[i(class="fa fa-times-circle" title="Remove")] button found to the right of the Documents column title.
 
           p Once you have selected the documents you are interested in, you can filter the annotations by keyword. To only see annotations of a specific code keyword header, sub-header or keyword itself, click on the keyword in the right-hand column. You also have the ability to search for a specific keyword using the search function in the keyword column. To deselect keywords, click #[span(class="button-ref") Clear Selected Codes] in the keyword column.
 
@@ -105,15 +106,15 @@ template(name="help")
           h2 Account Management
           .help-topic#change-password
             h3 Change password
-            p To change your password, click #[span(class="button-ref") Account] (#[i ‘Full Name’]) and then #[i Change Password]. Enter your previous password and then your new password twice and click #[i Update password]. Now, your password has been updated.
+            p To change your password, click #[span(class="button-ref") Account] in the navigation bar and then #[i Change Password]. Enter your previous password and then your new password twice and click #[i Update password]. Now, your password has been updated.
           .help-topic#edit-profile
             h3 Edit profile
-            p To edit your public profile, click #[span(class="button-ref") Account] on the navigation menu and then select #[i Edit Profile]. If you wish, you may fill in the fields Full Name],  #[i Job Title] and #[i Biography]. If you want to hide your email address from other Tater users, select #[i Hide Email Address?]. Be sure to click #[i Save] to save all account profile changes. Other Tater users will be able to view your public profile; you may view your public profile by clicking #[span(class="button-ref") View Public Profile]. #[span(class="note") Note: The #[span(class="button-ref") account] button will change to your full name in the navigation menu if you fill in the #[i Full Name] field.]
+            p To edit your public profile, click #[span(class="button-ref") Account] or #[span(class="button-ref") your name] in the navigation menu and then select #[i Edit Profile]. If you wish, you may fill in the fields #[i Full Name],  #[i Job Title] and #[i Biography]. If you want to hide your email address from other Tater users, select #[i Hide Email Address?]. Be sure to click #[i Save] to save all account profile changes. Other Tater users will be able to view your public profile; you may view your public profile by clicking #[span(class="button-ref") View Public Profile]. #[span(class="note") Note: The #[span(class="button-ref") account] button will change to your full name in the navigation menu if you fill in the #[i Full Name] field.]
 
         if isAdmin
           .help-topic-group#user-types
             h2 User Types
-            p There are two types of Tater users: Admin users and Regular users. Admin users have the capability to create and manage multiple different Tater projects and are typically Principal Investigators or Project/Program Coordinators. Regular users are assigned to a specific Tater project and are only able view, annotate and analyze documents within that project. Admin Tater user accounts differ from regular Tater user accounts in several ways:
+            p There are two types of Tater users: Admin users and Regular users. Admin users have the capability to create and manage multiple different Tater projects and are typically Principal Investigators or Project/Program Coordinators. Regular users are assigned to a specific Tater project and are only able view, annotate and analyze documents within that project. Admin user accounts differ from regular user accounts in several ways:
 
             table.table
               thead
@@ -137,11 +138,11 @@ template(name="help")
                   td Have the ability to view, annotate and delete only the documents in their specific group
                 tr
                   td Have the ability to analyze all annotations across all documents
-                  td Have the ability to analyze all annotations across only the documents in their specific group
+                  td Have the ability to analyze only the annotations on documents in their specific group
 
           .help-topic-group#group-management
             h2 Group Management
-            p.featured Tater groups are siloed collections of documents. It is important to establish your groups before adding regular (non-admin) Tater users because groups are access-specific; regular Tater users are assigned to a specific group and can only view/edit/delete documents within that specific group. Regular users are not able to access any documents outside of their specific group.
+            p.featured Tater groups are siloed collections of documents. It is important to establish your groups before adding regular users. Regular users are assigned to a specific group and can only view/edit/delete documents within that specific group. Regular users are not able to access any documents outside of their specific group.
 
             .help-topic#creating-groups
               h3 Creating Groups
@@ -152,13 +153,13 @@ template(name="help")
               h3 User Management
 
               h4 Creating Admin Users
-              p Admin Tater users have the ability to view, add and delete both admin and regular Tater users. To view all users navigate to the Admin page by clicking #[span(class="button-ref") Admin] on the navigation menu and navigate to the section titled #[i Users]. Users are displayed with their Tater group and email. To add an admin user account, click #[span(class="button-ref") Create New Admin User]. Enter the new email and a temporary password. Send the new admin user individual their temporary password and instruct them to log into Tater and update their password.
+              p Admin users have the ability to view, add and delete both admin and regular users. To view all users navigate to the Admin page by clicking #[span(class="button-ref") Admin] on the navigation menu and navigate to the section titled #[i Users]. Users are displayed with their Tater group and email. To add an admin user account, click #[span(class="button-ref") Create New Admin User]. Enter the user's email and a temporary password. Click the #[span(class="button-ref") Add User] button to add the user to the system. Send the new admin their temporary password and instruct them to log into Tater and update their password.
 
               h4 Creating Regular Users
-              p To add a regular Tater user, navigate to the Groups section on the Admin page. Decide which group you would like to add a user to and click the #[i(class='fa fa-user-plus')] icon on the right-hand side aligned with that specific group. Enter the new email and a temporary password. Send the new user individual their temporary password and instruct them to log into Tater and update their password.
+              p To add a regular Tater user, navigate to the Groups section on the Admin page. Decide which group you would like to add a user to and click the #[i(class="fa fa-user-plus" title="Add User")] icon on the right-hand side aligned with that specific group. Enter the new email and a temporary password. Send the new user individual their temporary password and instruct them to log into Tater and update their password.
 
               h4 Removing Users
-              p To remove a user, navigate to the Admin page and scroll down to the #[i Users] section. Click the #[i(class='fa fa-user-times')] on the righthand side aligned with the individual user you wish to remove.
+              p To remove a user, navigate to the Admin page and scroll down to the #[i Users] section. Click the #[i(class="fa fa-user-times" title="Remove User")] icon on the righthand side aligned with the individual user you wish to remove.
 
 
           .help-topic-group#coding-keyword-management
@@ -166,7 +167,7 @@ template(name="help")
             h2 Coding Keyword Management
             p To view, add, and modify coding keywords click #[span(class="button-ref") Coding Keywords] in the navigation menu. Tater is packaged with a default coding set as an introduction to Tater’s coding keyword structure and hierarchy.
 
-            img.interface-image(src='images/help/coding-keyword-management.jpg' data-retina='images/help/coding-keyword-management@2x.jpg')
+            img.interface-image(src="images/help/coding-keyword-management.jpg" data-retina="images/help/coding-keyword-management@2x.jpg")
 
             .help-topic#viewing-coding-keywords
               h3 Viewing
@@ -174,15 +175,15 @@ template(name="help")
 
             .help-topic#adding-coding-keywords
               h3 Adding
-              p In order to add coding keywords, they must have a sub-header and a header. To add any level, click on the #[i(class='fa fa-plus')] icon at the upper-right corner of the code’s pane. Enter a name and click the add button. Header’s require a color which will represent its coding keywords throughout the application. Select a color by clicking one of the colored boxes.
-              img.interface-image(src='images/help/adding.jpg' data-retina='images/help/adding@2x.jpg')
+              p In order to add coding keywords, they must have a sub-header and a header. To add any level, click on the #[i(class="fa fa-plus" title="Plus")] icon at the upper-right corner of the code’s column. Enter a name and click the add button. Header’s require a color which will represent its coding keywords throughout the application. Select a color by clicking one of the colored boxes.
+              img.interface-image(src="images/help/adding.jpg" data-retina="images/help/adding@2x.jpg")
 
             .help-topic#archiving-deleting-coding-keywords
               h3 Archiving &amp; Deleting
-              p If a coding keyword has not been used to annotate a document, it can be deleted by clicking on the #[i(class="fa fa-trash")] icon. Otherwise the keyword will be archived. Archived codes remain in the application, but moved to the bottom of the list and grayed on the coding keyword page. They are also removed from the list available codes in the annotation interface and thus unavailable for annotating future documents.
+              p If a coding keyword has not been used to annotate a document, it can be deleted by clicking on the #[i(class="fa fa-trash" class="Trash Can")] icon. Otherwise the keyword will be archived. Archived codes remain in the application, but moved to the bottom of the list and grayed on the coding keyword page. They are also removed from the list available codes in the annotation interface and thus unavailable for annotating future documents.
 
-              p If a header is archived, all of its sub-headers and their keywords will be archived and removed from the list of available codes used to annotate a document.
+              p If a header is archived, all of its sub-headers and their keywords will be archived and removed from the list of codes available for annotating documents.
 
             .help-topic#unarchiving-coding-keywords
               h3 Unarchiving
-              p In the event the decision is made to revive an archived header, sub-header or code in the future, simply unarchive by clicking the #[i(class="fa fa-mail-reply")] icon. If unarchiving a coding keyword, the code will then become available in the annotation interface. When unarchiving header or sub-headers, the header and all associated coding keywords  will become available.
+              p In the event the decision is made to revive an archived header, sub-header or code in the future, simply unarchive by clicking the #[i(class="fa fa-mail-reply" title="Unarchive")] icon. If unarchiving a coding keyword, the code will then become available in the annotation interface. When unarchiving header or sub-headers, the header and all associated coding keywords  will become available.
