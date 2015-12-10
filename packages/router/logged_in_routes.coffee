@@ -95,3 +95,9 @@ loggedIn.route '/annotations',
   action: () ->
     BlazeLayout.render 'layout',
       main: 'annotations'
+
+loggedIn.route '/help',
+  name: 'help'
+  action: () ->
+    BlazeLayout.render 'layout',
+      main: 'help'

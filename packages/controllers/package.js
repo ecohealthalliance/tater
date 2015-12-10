@@ -53,4 +53,5 @@ Package.onUse(function(api) {
   api.addFiles('random_document.coffee', ['client', 'server']);
   api.addFiles('splash_page.coffee', ['client', 'server']);
   api.addFiles('reset_password.coffee', ['client', 'server']);
+  api.addFiles('help.coffee', ['client']);
 });
