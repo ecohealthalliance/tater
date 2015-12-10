@@ -23,8 +23,8 @@ Feature: Documents
     And I log in as "non@admin.com"
     And I click on the Add Document link in the header
     And I fill out the new document form with title "Test Document"
-    Then I should see content "Test Document"
     And I should see a "Success" toast
+    Then I should see content "Test Document"
 
   @documents
   Scenario: Viewing all documents as an admin
@@ -63,8 +63,8 @@ Feature: Documents
     When I log in as the test user
     And I click on the Add Document link in the header
     And I fill out the new document form with title "Test Document" and select the test group
-    And I should see content "Test Document"
     And I should see a "Success" toast
+    And I should see content "Test Document"
     When I navigate to "/admin"
     And I click on the test group
     Then I should see content "Test Document"

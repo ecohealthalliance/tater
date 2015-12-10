@@ -38,6 +38,4 @@ Package.onUse(function(api) {
   api.addFiles('annotations.import.styl');
 
   api.addFiles('main.styl');
-
-  api.addFiles('robot.import.styl');
 });

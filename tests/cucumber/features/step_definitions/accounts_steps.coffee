@@ -83,7 +83,6 @@ do ->
 
     @When 'I create a user account for "$email"', (email) ->
       @browser
-        .execute -> $('body').addClass "robot" # Disable CSS3 animations
         .waitForVisible('.add-user')
         .click('.add-user')
         .pause(500)
@@ -98,7 +97,6 @@ do ->
 
     @When 'I create an admin user account for "$email"', (email) ->
       @browser
-        .execute -> $('body').addClass "robot" # Disable CSS3 animations
         .waitForVisible('.add-admin')
         .click('.add-admin')
         .pause(500)
@@ -120,7 +118,6 @@ do ->
 
     @When 'I log in as "$email"', (email) ->
       @browser
-        .execute -> $('body').addClass "robot" # Disable CSS3 animations
         .click('.sign-in')
         .waitForExist('.accounts-modal.modal.in')
         .setValue('#at-field-email', email)
@@ -137,7 +134,7 @@ do ->
       @browser
         .waitForVisible('.modal')
         .click('.confirm-remove-user')
-        .waitForVisible('.modal-backdrop', 1000, true)
+        .waitForVisible('.modal-backdrop', 2000, true)
 
     @When 'I open the change password modal', ->
       @browser
@@ -156,7 +153,6 @@ do ->
 
     @When 'I log in with my new password', ->
       @browser
-        .execute -> $('body').addClass "robot" # Disable CSS3 animations
         .click('.sign-in')
         .waitForExist('.accounts-modal.modal.in')
         .setValue('#at-field-email', 'test@example.com')

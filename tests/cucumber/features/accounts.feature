@@ -39,7 +39,7 @@ Feature: Accounts
     And I log in as "mr@potato.head"
     Then I am logged in
 
-  @dev
+  @accounts
   Scenario: Creating an account for another admin user
     Given there is a test user in the database
     When I log in as the test user

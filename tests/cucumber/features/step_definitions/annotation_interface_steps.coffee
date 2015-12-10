@@ -60,7 +60,7 @@ do ->
           .moveToObject('.annotations > li')
           .waitForVisible('.delete-annotation')
           .click('.delete-annotation')
-          .pause(1000)
+          .pause(2000)
           .isVisible('.delete-annotation')
         brChain
           .then (annotationsVisible)->

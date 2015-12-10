@@ -24,10 +24,10 @@ do ->
           Meteor.logout()
         ), callback
 
-    @Given /^there is a test user in the database/, ->
+    @Given 'there is a test user in the database', ->
       @server.call('createTestUser', _testUser)
 
-    @Given /^there is a group in the database/, ->
+    @Given 'there is a group in the database', ->
       @server.call('createTestGroup')
 
     @Given 'there is a test document in the database', ->
@@ -72,7 +72,8 @@ do ->
         .waitForExist('a[href="/admin"]')
         .click('a[href="/admin"]')
 
-    @Then /^I should see the "([^"]*)" link highlighted in the header$/, (linkText) ->
+    @Then /^I should see the "([^"]*)" link highlighted in the header$/,
+    (linkText) ->
       @client
         .waitForExist('.navbar-nav')
         .getHTML('.navbar-nav .active', (error, response) ->
@@ -99,9 +100,9 @@ do ->
 
     @Then /^I should( not)? see content "([^"]*)"$/, (shouldNot, text) ->
       @client
-        .pause 4000 # Give Meteor some time to populate the <body>
-        .getHTML 'body', (error, response) ->
-          match = response.toString().match(text)
+        .pause 8000 # Give Meteor enough time to populate the <body>
+        .getHTML 'body', (error, html) ->
+          match = html?.toString().match(text)
           if shouldNot
             assert.notOk(match)
           else

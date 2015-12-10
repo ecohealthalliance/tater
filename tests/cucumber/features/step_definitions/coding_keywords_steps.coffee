@@ -77,7 +77,6 @@ do ->
 
     @When 'I delete a keyword', ->
       @client
-        .execute -> $('body').addClass "robot" # Disable CSS3 animations
         .waitForVisible('.level-3 .fa-trash-o')
         .click('.level-3 .fa-trash-o')
 
@@ -89,7 +88,6 @@ do ->
 
     @When 'I delete a sub-header', ->
       @client
-        .execute -> $('body').addClass "robot" # Disable CSS3 animations
         .waitForVisible('.level-2 .fa-trash-o')
         .click('.level-2 .fa-trash-o')
         .waitForVisible('#confirm-delete-subheader')
@@ -99,7 +97,6 @@ do ->
 
     @When 'I delete a header', ->
       @client
-        .execute -> $('body').addClass "robot" # Disable CSS3 animations
         .waitForVisible('.level-1 .fa-trash-o')
         .click('.level-1 .fa-trash-o')
         .waitForVisible('#confirm-delete-header')
