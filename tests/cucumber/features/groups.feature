@@ -13,4 +13,3 @@ Feature: Groups
     And I should see content "Test Group"
     When I click on the test group
     Then I should be on the test group document page
-    And I should not see content "(Code Accessible)"

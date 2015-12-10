@@ -10,7 +10,5 @@ template(name="groupDocuments")
         p.group-name
           span Group:
           | #{group.name}
-          if group.codeAccessible
-            | (Code Accessible)
     .container
       +documentList group=group

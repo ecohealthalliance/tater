@@ -69,24 +69,46 @@ do ->
         .elements selector, (error, elements) ->
           assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
-    @Then /^I should see (\d+) headers/, (number) ->
+    @Then /^I should see (\d+)( archived)? headers/, (number, archived) ->
+      selector = '.code-level-1'
+      if archived
+        selector += '.disabled'
+      else
+        selector += ':not(.disabled)'
       @client
         .waitForExist('.level-1')
-        .elements '.code-level-1', (error, elements) ->
+        .elements selector, (error, elements) ->
           assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
     @When 'I delete a keyword', ->
       @client
         .waitForVisible('.level-3 .fa-trash-o')
         .click('.level-3 .fa-trash-o')
-
         .waitForVisible('#confirm-delete-keyword')
         .click('#confirm-delete-keyword')
-        .waitForVisible('.toast-message')
-        # wait for modal to fade out
+        .waitForVisible('.toast-success')
+        # wait for modal to fade
         .waitForVisible('.modal-backdrop', 2000, true)
 
-    @When 'I delete a sub-header', ->
+    @When 'I unarchive a keyword', () ->
+      @client
+        .waitForVisible('.level-3 .fa-reply')
+        .click('.level-3 .fa-reply')
+        .waitForVisible('.toast-success')
+
+    @When 'I unarchive a sub-header', () ->
+      @client
+        .waitForVisible('.level-2 .fa-reply')
+        .click('.level-2 .fa-reply')
+        .waitForVisible('.toast-success')
+
+    @When 'I unarchive a header', () ->
+      @client
+        .waitForVisible('.level-1 .fa-reply')
+        .click('.level-1 .fa-reply')
+        .waitForVisible('.toast-success')
+
+    @When 'I delete a sub-header', () ->
       @client
         .waitForVisible('.level-2 .fa-trash-o')
         .click('.level-2 .fa-trash-o')
@@ -120,6 +142,11 @@ do ->
           .waitForVisible("input[name=#{level}]")
           .setValue("input[name=#{level}]", code)
           .submitForm("input[name=#{level}]")
+
+    @Then /^I should not see the unarchive button$/, () ->
+      @browser
+        .waitForExist('.level-3')
+        .waitForExist('.level-3 .fa-reply', 1000, true)
 
     @Then /^I should( not)? see coding keyword search results$/, (noResults) ->
       if noResults

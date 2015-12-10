@@ -139,3 +139,76 @@ Feature: Coding Keywords
     And I click the first document
     Then I should see 1 keywords
     And I should see 0 annotations
+
+  @codingKeywords
+  Scenario: Unarchiving coding keywords that have been archived
+    Given there is an annotation with codingKeyword header "Test Header", subHeader "Test Sub-Header" and key "Test Keyword1"
+    When I log in as the test user
+    And I navigate to "/codingKeywords"
+    When I click on a "header"
+    And I click on a "sub-header"
+    Then I should see 1 keywords
+    And I should see 0 archived keywords
+    When I delete a keyword
+    Then I should see 0 keywords
+    And I should see 1 archived keywords
+    When I unarchive a keyword
+    Then I should see 1 keywords
+    And I should see 0 archived keywords
+    When I navigate to "/documents"
+    And I click the first document
+    Then I should see 1 keywords
+    And I should see 1 annotations
+
+  @codingKeywords
+  Scenario: Unarchiving sub-headers that have been archived
+    Given there is an annotation with codingKeyword header "Test Header", subHeader "Test Sub-Header" and key "Test Keyword1"
+    When I log in as the test user
+    And I navigate to "/codingKeywords"
+    When I click on a "header"
+    When I click on a "sub-header"
+    Then I should see 1 keywords
+    And I should see 0 archived keywords
+    When I delete a sub-header
+    Then I should see 0 sub-headers
+    And I should see 1 archived sub-headers
+    And I should see 1 archived keywords
+    When I unarchive a sub-header
+    Then I should see 1 sub-headers
+    When I navigate to "/documents"
+    And I click the first document
+    Then I should see 1 keywords
+    And I should see 1 annotations
+
+  Scenario: Cannot unarchive a keyword with an archived sub-header
+    Given there is an annotation with codingKeyword header "Test Header", subHeader "Test Sub-Header" and key "Test Keyword1"
+    When I log in as the test user
+    And I navigate to "/codingKeywords"
+    When I click on a "header"
+    And I click on a "sub-header"
+    And I delete a sub-header
+    Then I should see 1 archived sub-headers
+    And I should see 1 archived keywords
+    And I should not see the unarchive button
+
+  @codingKeywords
+  Scenario: Unarchiving headers that have been archived
+    Given there is an annotation with codingKeyword header "Test Header", subHeader "Test Sub-Header" and key "Test Keyword1"
+    When I log in as the test user
+    And I navigate to "/codingKeywords"
+    When I click on a "header"
+    When I click on a "sub-header"
+    Then I should see 1 keywords
+    And I should see 0 archived keywords
+    When I delete a header
+    Then I should see 0 headers
+    And I should see 1 archived headers
+    And I should see 1 archived sub-headers
+    And I should see 1 archived keywords
+    When I unarchive a header
+    Then I should see 1 headers
+    And I should see 1 keywords
+    When I navigate to "/documents"
+    And I click the first document
+    Then I should see 1 keywords
+    And I should see 1 annotations

@@ -71,7 +71,7 @@ Feature: Documents
 
   @documents
   Scenario: Deleting a document
-    Given there is a code-accessible test group in the database
+    Given there is a test group in the database
     And there is a document with title "Test Document" in the test group
     When I log in as the test user
     When I navigate to "/admin"

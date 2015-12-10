@@ -22,9 +22,7 @@ DocumentListPages = new Meteor.Pagination Documents,
       {
         $and: [
           userFilters
-          QueryHelpers.userDocsQuery(
-            user,
-            { showCodeAccessible: Boolean(userFilters.groupId) })
+          QueryHelpers.userDocsQuery(user)
         ]
       },
       {

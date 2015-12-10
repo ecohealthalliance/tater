@@ -3,12 +3,7 @@ QueryHelpers = {}
 # has access to.
 QueryHelpers.userDocsQuery = (user, options)->
   if user?.admin
-    if options?.showCodeAccessible
-      {}
-    else
-      codeInaccessibleGroups = Groups.find({codeAccessible: {$ne: true}})
-      codeInaccessibleGroupIds = _.pluck(codeInaccessibleGroups.fetch(), '_id')
-      { groupId: {$in: codeInaccessibleGroupIds} }
+    {}
   else
     { groupId: user.group }
 # Add a documentId: { $in: ... } clause to the given query object

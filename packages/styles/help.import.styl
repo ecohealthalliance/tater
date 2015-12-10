@@ -1,0 +1,122 @@
+.help-nav-wrap
+  padding 0
+  .nav
+    a
+      color $body-text
+      display block
+      &:focus
+      &:hover
+        text-decoration none
+
+.help-container
+  position relative
+  font-size 15px
+  .list-group
+    border 0
+    li
+      border 0
+
+.help-nav
+  float none
+  li
+    padding 0
+    .list-group
+      padding-left 15px
+      margin-bottom 5px
+      margin-top 5px
+      li
+        padding 0
+        margin-bottom 2px
+  > li
+    margin-bottom 20px
+  > li > a
+    font-size 110%
+    font-weight bold
+    padding 0
+    &:hover
+    &:focus
+      background none
+  a
+    padding 0
+
+  .list-group-item
+    background none
+    &.active
+      &
+      &:focus
+      &:hover
+        background none
+        color $primary
+        border 0
+        > a
+          position relative
+          margin-top 3px
+          margin-bottom 3px
+          margin-left -10px
+          padding 5px 35px 5px 10px
+          font-weight bold
+          background $background-secondary
+          border-radius 3px
+          text-decoration none
+          &::after
+            content '\f06e'
+            @extend .icon
+            centerVertically(true)
+            right 10px
+            color darken($background-secondary, 20%)
+
+.help-content
+  maring-bottom 150px
+  .interface-image
+    display block
+    margin 40px auto
+    max-width 90%
+  .fa
+    font-size 1.25em
+  p
+    line-height 1.6em
+    margin-bottom 1.4em
+  h2
+    color $primary
+    font-size 2.5em
+    margin-bottom 25px
+  h3
+    body-font()
+    font-size 1.75em
+    font-weight 700
+    padding-bottom 5px
+    margin-bottom 12px
+    border-bottom 2px solid alpha($secondary, 20%)
+  h4
+    body-font()
+    font-size 1.25em
+    font-weight 600
+    color $dd-gray
+  .button-ref
+    font-weight 600
+    font-style italic
+  .note
+    font-weight 600
+    display block
+    margin 15px 0
+    color $primary
+    &:before
+      @extend .icon
+      font-size 1.25em
+      content '\f249'
+      margin-right 10px
+      vertical-align middle
+
+.affix
+  top 20px
+  +below(3)
+    width 180px
+
+.help-content
+  margin-bottom 100px
+  .help-topic-group
+    margin-bottom 80px
+  .help-topic
+    margin-bottom 40px
+    padding-left 30px
+

@@ -1,7 +1,7 @@
 template(name="documentDetail")
   if document
     .document-detail-container
-      +documentDetailCodingKeywords action='coding' accessCode=accessCode location='left'
+      +documentDetailCodingKeywords
       .document-heading.pane-head.pane-head-m
         h1.document-title= document.title
         if accessCode

@@ -55,9 +55,13 @@ if Meteor.isClient
         if @_id == Template.instance().selectedCodes.get('subHeaderId')
           'selected'
 
-    archived: () ->
-      if @archived
-        'disabled'
+    unarchived: ->
+      !@archived
+
+    restorable: ->
+      header = Headers.findOne(Template.instance().selectedCodes.get('headerId'))
+      subHeader = SubHeaders.findOne(Template.instance().selectedCodes.get('subHeaderId'))
+      @archived && !header.archived && !subHeader.archived
 
     selectedCodes: ->
       Template.instance().selectedCodes
@@ -121,6 +125,30 @@ if Meteor.isClient
     'click .delete-keyword-button': (event, instance) ->
       keywordId = event.target.parentElement.getAttribute("data-keyword-id")
       instance.keywordToDelete.set(CodingKeywords.findOne(keywordId))
+
+    'click .unarchive-keyword-button': (event, instance) ->
+      keywordId = event.target.parentElement.getAttribute("data-keyword-id")
+      Meteor.call 'unarchiveKeyword', keywordId, (error, instance) ->
+        if error
+          toastr.error("Error: #{error.message}")
+        else
+          toastr.success("Keyword restored")
+
+    'click .unarchive-subheader-button': (event, instance) ->
+      subHeaderId = event.target.parentElement.getAttribute("data-subheader-id")
+      Meteor.call 'unarchiveSubHeader', subHeaderId, (error, instance) ->
+        if error
+          toastr.error("Error: #{error.message}")
+        else
+          toastr.success("Sub-Header restored")
+
+    'click .unarchive-header-button': (event, instance) ->
+      headerId = event.target.parentElement.getAttribute("data-header-id")
+      Meteor.call 'unarchiveHeader', headerId, (error, instance) ->
+        if error
+          toastr.error("Error: #{error.message}")
+        else
+          toastr.success("Header restored")
 
     'click .add-code': (event, instance) ->
       level = $(event.target).data('level')
@@ -190,13 +218,13 @@ if Meteor.isClient
           form.keyword.value = ''
         form.keyword.focus()
 
-  Template.new_header_form.onCreated ->
+  Template.newHeaderForm.onCreated ->
     @codeColor = Template.instance().data.codeColor
 
-  Template.new_header_form.onRendered ->
+  Template.newHeaderForm.onRendered ->
     @$("input[name=header]").focus()
 
-  Template.new_header_form.helpers
+  Template.newHeaderForm.helpers
     selectedColor: (color) ->
       if color == Template.instance().codeColor.get()
         'selected'
@@ -204,14 +232,14 @@ if Meteor.isClient
     availableHeaderColors: ->
       [1,2,3,4,5,6,7,8]
 
-  Template.new_header_form.events
+  Template.newHeaderForm.events
     'click .header-colors li': (event, instance) ->
       instance.codeColor.set($(event.currentTarget).data('color'))
 
-  Template.new_subHeader_form.onRendered ->
+  Template.newSubheaderForm.onRendered ->
     @$("input").focus()
 
-  Template.new_keyword_form.onRendered ->
+  Template.newKeywordForm.onRendered ->
     @$("input").focus()
 
 _validateHeader = (headerId) ->
@@ -309,6 +337,52 @@ Meteor.methods
     else
       throw new Meteor.Error('Unauthorized')
 
+  unarchiveKeyword: (keywordId) ->
+    if Meteor.users.findOne(@userId)?.admin
+      CodingKeywords.update keywordId,
+        $set: 
+          archived: false
+    else
+      throw new Meteor.Error('Unauthorized')
+
+  unarchiveSubHeader: (subHeaderId) ->
+    if Meteor.users.findOne(@userId)?.admin
+      SubHeaders.update subHeaderId,
+        $set: 
+          archived: false
+      CodingKeywords.update {subHeaderId: subHeaderId},
+        {
+          $set:
+            archived: false
+        },
+        {multi: true}
+    else
+      throw new Meteor.Error('Unauthorized')
+
+  unarchiveHeader: (headerId) ->
+    if Meteor.users.findOne(@userId)?.admin
+      Headers.update headerId,
+        $set:
+          archived: false
+      SubHeaders.update {headerId: headerId},
+        {
+          $set:
+            archived: false
+        },
+        {multi: true}
+      CodingKeywords.update {
+          # The headerId property is undefined in some cases
+          # so for now we're using the subHeaderIds
+          subHeaderId:
+            $in: SubHeaders.find(headerId: headerId).map (x)-> x._id
+        },
+        {
+          $set:
+            archived: false
+        },
+        {multi: true}
+    else
+      throw new Meteor.Error('Unauthorized')
 
 if Meteor.isServer
 
