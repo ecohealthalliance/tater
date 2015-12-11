@@ -11,15 +11,16 @@ To run model unit tests:
 `spacejam test-packages packages/models/`
 
 To run end-to-end tests:
-`VELOCITY_CI=1 CHIMP_OPTIONS="--browser=chrome --chai --sync=false" meteor --test`
+`make test`
 
 To run a single test:
 Put the tag `@dev` immediately above the test, then start your meteor server by running
-`CHIMP_OPTIONS="--watch --watchTags=@dev --browser=chrome --chai --sync=false" meteor`
+`make devtest`
 
 ## Copying production database to local machine
 First get the file `infrastructure.pem` from another EHA developer and place it in `~/.ssh`
-Then run `./scripts/restore_database`
+Start your meteor server
+Then run `make data`
 
 ## Setting up a default user for an empty database
 In the browser console, run `Meteor.call('createDefaultUser', YOUR_USERNAME, YOUR_PASSWORD)`
