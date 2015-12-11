@@ -5,22 +5,29 @@ do ->
 
   module.exports = ->
 
-    url = require('url')
-    _test_document = {title: "Test Document", body: "This is a doc for testing", _id: "fakedocumentid"}
+    url = require 'url'
+
+    _test_document =
+      _id:   "fakedocumentid"
+      title: "Test Document"
+      body:  "This is a doc for testing"
+
+    _testUser =
+      email:    'test@example.com'
+      password: 'password'
+
 
     @Before (callback) ->
       @server.call('reset')
-      @client.url(url.resolve(process.env.ROOT_URL, '/'), callback)
+      @client.url(url.resolve(process.env.ROOT_URL, '/'))
         .execute (->
           Meteor.logout()
         ), callback
 
-    _testUser = {email: 'test@example.com', password: 'password'}
-
-    @Given /^there is a test user in the database/, ->
+    @Given 'there is a test user in the database', ->
       @server.call('createTestUser', _testUser)
 
-    @Given /^there is a group in the database/, ->
+    @Given 'there is a group in the database', ->
       @server.call('createTestGroup')
 
     @Given 'there is a test document in the database', ->
@@ -40,12 +47,10 @@ do ->
     @When "I log in as the test user", ->
       @client
         .url(url.resolve(process.env.ROOT_URL, '/'))
-        .waitForExist('.sign-in')
-        .click('.sign-in')
-        .waitForVisible('.modal-content')
-        .setValue('.accounts-modal #at-field-email', _testUser.email)
-        .setValue('.accounts-modal #at-field-password', _testUser.password)
-        .submitForm('.accounts-modal #at-field-email')
+        .waitForVisible('.content-wrap #at-pwd-form')
+        .setValue('.content-wrap #at-field-email', _testUser.email)
+        .setValue('.content-wrap #at-field-password', _testUser.password)
+        .submitForm('.content-wrap #at-field-email')
         .waitForExist('.sign-out')
 
     @When "I log in as the non-admin test group user", ->
@@ -64,10 +69,11 @@ do ->
 
     @When 'I navigate to the admin page', ->
       @client
-        .waitForExist('[href="/admin"]')
-        .click('[href="/admin"]')
+        .waitForExist('a[href="/admin"]')
+        .click('a[href="/admin"]')
 
-    @Then /^I should see the "([^"]*)" link highlighted in the header$/, (linkText) ->
+    @Then /^I should see the "([^"]*)" link highlighted in the header$/,
+    (linkText) ->
       @client
         .waitForExist('.navbar-nav')
         .getHTML('.navbar-nav .active', (error, response) ->
@@ -77,7 +83,7 @@ do ->
 
     @Then /^I should( not)? see a "([^"]*)" toast$/, (noToast, message) ->
       @browser
-        .waitForVisible('body *')
+        .waitForVisible('.toast')
         # This causes a warning if no toast is visible
         .getHTML('.toast', (error, response) ->
           match = response?.toString().match(message)
@@ -94,9 +100,9 @@ do ->
 
     @Then /^I should( not)? see content "([^"]*)"$/, (shouldNot, text) ->
       @client
-        .waitForVisible('body *')
-        .getHTML 'body', (error, response) ->
-          match = response.toString().match(text)
+        .pause 8000 # Give Meteor enough time to populate the <body>
+        .getHTML 'body', (error, html) ->
+          match = html?.toString().match(text)
           if shouldNot
             assert.notOk(match)
           else

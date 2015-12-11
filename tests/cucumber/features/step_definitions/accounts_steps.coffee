@@ -53,7 +53,7 @@ do ->
         .setValue('#profile-bio', 'I am a test user')
         .submitForm('#profile-fullname')
 
-    @When /^I view my public profile$/, ->
+    @When 'I view my public profile', ->
       @browser
         .url(url.resolve(process.env.ROOT_URL, '/profile/edit'))
         .waitForExist('#edit-profile-form')
@@ -92,8 +92,8 @@ do ->
         .setValue('#add-group-user-modal .user-password', 'testuser')
         .setValue('#add-group-user-modal .user-password-confirm', 'testuser')
         .submitForm('#add-group-user-modal .user-email')
-        .pause(1000)
         .waitForVisible('.toast-success')
+        .pause(1500)
 
     @When 'I create an admin user account for "$email"', (email) ->
       @browser
@@ -106,8 +106,8 @@ do ->
         .setValue('#add-admin-modal .user-password', 'testuser')
         .setValue('#add-admin-modal .user-password-confirm', 'testuser')
         .submitForm('#add-admin-modal .user-email')
-        .pause(1000)
         .waitForVisible('.toast-success')
+        .pause(1500)
 
     @When 'I log out', ->
       @browser
@@ -125,16 +125,16 @@ do ->
         .submitForm('#at-field-email')
         .waitForExist('.sign-out')
 
-    @When /^I click the remove user link$/, ->
+    @When 'I click the remove user link', ->
       @browser
         .waitForVisible('.remove-user')
-        .click(".remove-user")
+        .click('.remove-user')
 
-    @When /^I confirm the account deletion$/, ->
+    @When 'I confirm the account deletion', ->
       @browser
         .waitForVisible('.modal')
         .click('.confirm-remove-user')
-        .waitForVisible('.modal-backdrop', 1000, true)
+        .waitForVisible('.modal-backdrop', 2000, true)
 
     @When 'I open the change password modal', ->
       @browser

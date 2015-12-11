@@ -8,22 +8,22 @@ do ->
     url = require('url')
 
     @Given /^there is a test document with title "([^"]*)" in group "([^"]*)"$/, (title, groupId) ->
-      @server.call('createTestDocument', {title: title, groupId: groupId})
+      @server.call 'createTestDocument', title: title, groupId: groupId
 
-    @Given "there is a test document with title \"$title\" in the database", (title) ->
-      @server.call('createTestDocument', {title: title, groupId: 'fakegroupid', _id: 'fakedocid'})
+    @Given 'there is a test document with title "$title" in the database', (title) ->
+      @server.call 'createTestDocument', title: title, groupId: 'fakegroupid', _id: 'fakedocid'
 
     @Given /^there is a document with title "([^"]*)" in the test group$/, (title) ->
-      @server.call('createTestDocument', {title: title, groupId: 'fakegroupid', _id: 'fakedocid'})
+      @server.call 'createTestDocument', title: title, groupId: 'fakegroupid', _id: 'fakedocid'
 
     @Given /^there are (\d+) documents in the "([^"]*)" group$/, (number, groupId, callback) ->
       _(number).times (index)=>
-        @server.call('createTestDocument', {title: 'document ' + index, groupId: groupId})
+        @server.call 'createTestDocument', title: 'document ' + index, groupId: groupId
       callback()
 
     @Given /^there are (\d+) documents in the database$/, (number, callback) ->
       _(number).times (index)=>
-        @server.call('createTestDocument', {title: 'document ' + index})
+        @server.call 'createTestDocument', title: 'document ' + index
       callback()
 
     @When "I click the documents header link", ->
@@ -38,22 +38,27 @@ do ->
         .click('.group-documents-link')
         .waitForExist('.documents')
 
-    @When /^I navigate to the test group documents page$/, ->
+    @When 'I navigate to the test group documents page', ->
       @browser
         .url(url.resolve(process.env.ROOT_URL, "/groups/fakegroupid/documents"))
         .waitForVisible('.group-documents')
 
-    @When /^I click on the New Document link$/, ->
+    @When 'I navigate to the test document with an access code', ->
+      @browser
+        .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid?generateCode=true"))
+        .waitForExist('.document-container')
+
+    @When 'I click on the New Document link', ->
       @browser
         .waitForVisible('.new-document-link')
         .click(".new-document-link")
 
-    @When /^I click on the Delete Document button$/, ->
+    @When 'I click on the Delete Document button', ->
       @browser
         .waitForVisible('.delete-document-button')
-        .click(".delete-document-button i")
+        .click(".delete-document-button")
 
-    @When /^I confirm the document deletion/, ->
+    @When 'I confirm the document deletion', ->
       @browser
         .waitForVisible('#confirm-delete-document-modal')
         .click("#confirm-delete-document")
@@ -69,18 +74,18 @@ do ->
         .submitForm('#new-document-form')
         .waitForVisible('.document-detail-container')
 
-    @Then /^I should be on the test group documents page$/, ->
+    @Then 'I should be on the test group documents page', ->
       @browser
         .waitForVisible('.group-documents')
         .getHTML '.group-documents .group-name', (error, response) ->
           match = response.toString().match("Test Group")
           assert.ok(match)
 
-    @Then /^I should be on the admin documents page$/, ->
+    @Then 'I should be on the admin documents page', ->
       @browser
         .waitForVisible('.documents')
 
-    @When /^I click on the Add Document link in the header$/, ->
+    @When 'I click on the Add Document link in the header', ->
       @browser
         .waitForExist('.header-documents-link')
         .click('.new-document')
@@ -93,7 +98,13 @@ do ->
         .pause(10000)
         .waitForVisible('.modal.in')
 
-    @Then "I should see that \"$documentName\" is in the test group", (documentName) ->
+    @Then "I should see an access code in a modal", ->
+      @browser
+        .getHTML '#completionCodeModal', (error, response) ->
+          assert.notOk(error)
+          assert.ok(response.toString().match("Code:"))
+
+    @Then 'I should see that "$documentName" is in the test group', (documentName) ->
       @browser
         .waitForVisible('.documents')
         .getHTML '.document-list', (error, response) ->
@@ -114,7 +125,7 @@ do ->
           else
             assert.ok(matchAnnotationMark, "No annotations found")
 
-    @When "I navigate to the document which has annotations", ->
+    @When 'I navigate to the document which has annotations', ->
       @browser
         .click(".document .list-link")
         .waitForVisible(".document-text")
@@ -125,13 +136,12 @@ do ->
         .elements '.document-title', (error, elements) ->
           assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
-    @When /^I go to the next page of documents$/, ->
+    @When 'I go to the next page of documents', ->
       @browser
         .waitForExist('.document-title')
         .execute ->
           $("a:contains('>')").click()
-        # wait for the page to change
-        .pause(2000)
+        .pause(2000) # wait for the page to change
 
     @When /^I search for a document with the title of "([^"]*)"$/, (documentName) ->
       @browser

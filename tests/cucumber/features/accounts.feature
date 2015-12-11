@@ -5,7 +5,6 @@ Feature: Accounts
     Given there is a test user in the database
     When I log in as the test user
     And I navigate to "/profile/edit"
-    Then I should not see a "Success" toast
     When I fill out the profile edit form with fullName "Test Name"
     Then I should see a "Success" toast
     When I view my public profile

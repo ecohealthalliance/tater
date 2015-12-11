@@ -22,6 +22,7 @@ devtest:
 	CHIMP_OPTIONS="--tags=@dev --browser=chrome --chai --sync=false" meteor
 
 install:
+	curl https://install.meteor.com | sh
 	npm install -g spacejam
 
 data:

@@ -24,7 +24,7 @@ Feature: Coding Keywords
     When I click on a "header"
     Then I should see content "Test Sub-Header"
     When I click on a "sub-header"
-    Then I should see 1 keywords
+    Then I should see 1 keyword
     When I delete a keyword
     And I delete a sub-header
     Then I should see 0 sub-headers
@@ -40,7 +40,7 @@ Feature: Coding Keywords
     When I click on a "header"
     Then I should see content "Test Sub-Header"
     When I click on a "sub-header"
-    Then I should see 1 keywords
+    Then I should see 1 keyword
     When I delete a keyword
     And I delete a sub-header
     Then I should see 0 sub-headers
@@ -57,7 +57,7 @@ Feature: Coding Keywords
     When I click on a "sub-header"
     Then I should see 2 keywords
     When I delete a keyword
-    Then I should see 1 keywords
+    Then I should see 1 keyword
 
   @codingKeywords
   Scenario: Adding coding keywords

@@ -40,7 +40,8 @@ do ->
       @client
         .waitForExist('.annotation-detail')
         .elements '.annotation-detail', (error, elements) ->
-          assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
+          assert(elements.value.length == parseInt(number),
+            "Expected #{elements.value.length} to equal #{number}")
 
     @When 'I select the test group', ->
       @browser
@@ -58,11 +59,12 @@ do ->
       @browser
         .waitForExist '#download-csv-modal .btn-primary'
         .getHTML '#download-csv-modal .btn-primary', (error, response) ->
-          assert(response.search(encodeURIComponent(csvData)) >= 0, "Expected #{response} to match #{encodeURIComponent(csvData)}")
+          assert(response.search(encodeURIComponent(csvData)) >= 0,
+            "Expected #{response} to match #{encodeURIComponent(csvData)}")
 
-    @When /^I go to the next page of annotations$/, ->
+    @When 'I go to the next page of annotations', ->
       @browser
-        .waitForExist('.annotation-detail')
-        .execute ->
-          $("a:contains('>')").click()
-        .pause(2000)
+        .waitForVisible('ul.pagination li:nth-last-child(2):not(.disabled)')
+        .execute -> # Can't just use .click() because it may not be visible
+          $('ul.pagination li:nth-last-child(2):not(.disabled) a').click()
+        .pause(2000) # Give Meteor a moment to update the list
