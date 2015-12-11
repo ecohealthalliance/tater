@@ -19,8 +19,8 @@ Put the tag `@dev` immediately above the test, then start your meteor server by 
 
 ## Copying production database to local machine
 First get the file `infrastructure.pem` from another EHA developer and place it in `~/.ssh`
-Start your meteor server
-Then run `make data`
+
+Start your meteor server, then run `make data`
 
 ## Setting up a default user for an empty database
 In the browser console, run `Meteor.call('createDefaultUser', YOUR_USERNAME, YOUR_PASSWORD)`
