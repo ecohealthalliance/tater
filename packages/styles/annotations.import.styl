@@ -1,8 +1,14 @@
+.annotations-list-container
+  .pagesCont
+    margin-top -30px
+    margin-bottom 20px
+    min-height 300px
+
 .annotation-list-heading
   width 55%
   padding-right 20px
 
-.annotation-group
+.annotation-details-wrap
   h3
     body-font()
     padding-left 15px
@@ -12,6 +18,7 @@
     &.color-{$index+1}
       h3
         color darken($color, 20%)
+        margin-top 30px
       .annotation-detail
         background-color lighten($color,80%)
         border-top 2px solid transparent

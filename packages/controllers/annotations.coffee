@@ -321,7 +321,7 @@ if Meteor.isClient
     prevAnnotationCodeText = @$(@.firstNode).prev().find("h3").text()
     annotationCodeText = @$("h3").text()
     if prevAnnotationCodeText == annotationCodeText
-      @$("h3").hide()
+      @$("h3").addClass('hidden')
 
   Template.annotation.helpers
     annotatedText: ->
@@ -340,7 +340,6 @@ if Meteor.isClient
       subHeader = code?.subHeaderLabel()
       keyword = code?.label
       Spacebars.SafeString("<span class='header'>#{header}</span> : <span class='sub-header'>#{subHeader}</span> : <span class='keyword'>#{keyword}</span>")
-
     icon: ->
       header = Template.instance().code?.header
       if header is 'Human Movement' then 'fa-bus'

@@ -32,9 +32,9 @@ do ->
       @browser
         .getHTML '.annotations-list-container', (error, response) ->
           if noAnnotations
-            assert(!response.match('li class=\"annotation-detail\"'))
+            assert(!response.match('div class=\"annotation-detail\"'))
           else
-            assert(response.match('li class=\"annotation-detail\"'))
+            assert(response.match('div class=\"annotation-detail\"'))
 
     @Then /^I should see (\d+) test annotations$/, (number) ->
       @client
