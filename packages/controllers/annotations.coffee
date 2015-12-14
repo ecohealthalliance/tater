@@ -203,16 +203,11 @@ if Meteor.isClient
       resetPage()
       instance.showFlagged.set(!instance.showFlagged.get())
 
-    'click .annotation-detail': (event, instance) ->
-      annotationId  = event.currentTarget.getAttribute('data-annotation-id')
-      documentId    = event.currentTarget.getAttribute('data-doc-id')
-      go "documentDetailWithAnnotation", {"_id": documentId, "annotationId" : annotationId}
-
     'click .document-selector': (event, instance) ->
       resetKeywords()
       selectedDocID = $(event.currentTarget).data('id')
       documents = instance.documents
-      docQuery = {docID:selectedDocID}
+      docQuery = docID: selectedDocID
       if documents.find(docQuery).count()
         documents.remove(docQuery)
       else
@@ -232,7 +227,7 @@ if Meteor.isClient
         showGroup = true
 
       _.each groupDocs.fetch(), (doc) ->
-        docQuery = {docID:doc._id}
+        docQuery = docID: doc._id
         if showGroup
           selectedDocs.insert(docQuery)
         else

@@ -81,8 +81,10 @@ template(name="annotation")
       span.icon.fa(class=icon)
       | #{codeString}
     ul.list-unstyled
-      li.annotation-detail(data-annotation-id=_id, data-doc-id= documentId)
-        p= annotatedText
+      li.annotation-detail
+        p=annotatedText
+        a.link(href='/documents/{{documentId}}/{{_id}}')
+          i.fa.fa-eye
         .details.clearfix
           span.document-title= documentTitle
           spna.user-email= user
