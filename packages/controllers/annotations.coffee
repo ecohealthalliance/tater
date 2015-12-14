@@ -340,14 +340,6 @@ if Meteor.isClient
       subHeader = code?.subHeaderLabel()
       keyword = code?.label
       Spacebars.SafeString("<span class='header'>#{header}</span> : <span class='sub-header'>#{subHeader}</span> : <span class='keyword'>#{keyword}</span>")
-    icon: ->
-      header = Template.instance().code?.header
-      if header is 'Human Movement' then 'fa-bus'
-      else if header is 'Socioeconomics' then 'fa-money'
-      else if header is 'Biosecurity in Human Environments' then 'fa-lock'
-      else if header is 'Illness Medical Care/Treatment and Death' then 'fa-medkit'
-      else if header is 'Human Animal Contact' then 'fa-paw'
-
 
 Meteor.methods
   generateCsv: (query) ->
