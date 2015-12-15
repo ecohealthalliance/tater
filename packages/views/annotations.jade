@@ -46,10 +46,10 @@ template(name="annotations")
               i.fa.fa-download
               span Generate CSV
       .annotations-list-container.pane.pane-m
-        +pages
-        +pagesNav
         unless documentSelected
           p.text-center Select a group or document to view annotations
+        +pages
+        +pagesNav
       +annotationsCodingKeywords(
         selectedCodes=selectedCodes
         selectedHeaders=selectedHeaders
@@ -76,13 +76,13 @@ template(name="annotations")
               h4 Generating CSV file
 
 template(name="annotation")
-  .annotation-group(class="color-#{codeColor}")
-    h3
-      span.icon.fa(class=icon)
-      | #{codeString}
-    ul.list-unstyled
-      li.annotation-detail(data-annotation-id=_id, data-doc-id= documentId)
-        p= annotatedText
-        .details.clearfix
-          span.document-title= documentTitle
-          spna.user-email= user
+  .annotation-details-wrap(class="color-#{codeColor}")
+    h3 #{codeString}
+    .annotation-detail
+      p=annotatedText
+      a.link(href='/documents/{{documentId}}/{{_id}}')
+        i.fa.fa-eye
+        | View
+      .details.clearfix
+        span.document-title= documentTitle
+        spna.user-email= user

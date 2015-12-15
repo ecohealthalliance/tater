@@ -203,16 +203,11 @@ if Meteor.isClient
       resetPage()
       instance.showFlagged.set(!instance.showFlagged.get())
 
-    'click .annotation-detail': (event, instance) ->
-      annotationId  = event.currentTarget.getAttribute('data-annotation-id')
-      documentId    = event.currentTarget.getAttribute('data-doc-id')
-      go "documentDetailWithAnnotation", {"_id": documentId, "annotationId" : annotationId}
-
     'click .document-selector': (event, instance) ->
       resetKeywords()
       selectedDocID = $(event.currentTarget).data('id')
       documents = instance.documents
-      docQuery = {docID:selectedDocID}
+      docQuery = docID: selectedDocID
       if documents.find(docQuery).count()
         documents.remove(docQuery)
       else
@@ -232,7 +227,7 @@ if Meteor.isClient
         showGroup = true
 
       _.each groupDocs.fetch(), (doc) ->
-        docQuery = {docID:doc._id}
+        docQuery = docID: doc._id
         if showGroup
           selectedDocs.insert(docQuery)
         else
@@ -326,7 +321,7 @@ if Meteor.isClient
     prevAnnotationCodeText = @$(@.firstNode).prev().find("h3").text()
     annotationCodeText = @$("h3").text()
     if prevAnnotationCodeText == annotationCodeText
-      @$("h3").hide()
+      @$("h3").addClass('hidden')
 
   Template.annotation.helpers
     annotatedText: ->
@@ -345,15 +340,6 @@ if Meteor.isClient
       subHeader = code?.subHeaderLabel()
       keyword = code?.label
       Spacebars.SafeString("<span class='header'>#{header}</span> : <span class='sub-header'>#{subHeader}</span> : <span class='keyword'>#{keyword}</span>")
-
-    icon: ->
-      header = Template.instance().code?.header
-      if header is 'Human Movement' then 'fa-bus'
-      else if header is 'Socioeconomics' then 'fa-money'
-      else if header is 'Biosecurity in Human Environments' then 'fa-lock'
-      else if header is 'Illness Medical Care/Treatment and Death' then 'fa-medkit'
-      else if header is 'Human Animal Contact' then 'fa-paw'
-
 
 Meteor.methods
   generateCsv: (query) ->
