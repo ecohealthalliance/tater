@@ -10,13 +10,13 @@ if Meteor.isClient
   scrollToAnnotation = (annotationId, scrollList) ->
     $annotationText = $(".document-text span[data-annotation-id='#{annotationId}']")
     $annotationInList = $("ul.annotations li[data-annotation-id='#{annotationId}']")
-    unless scrollList
-      $('.document-container').animate { scrollTop: ($annotationText.position().top - $annotationInList.position().top + ($annotationText.height() / 2) + 45) }, 1000, 'easeInOutQuint'
-    else
+    if scrollList
       annotationDocTop  = $annotationSpanElement(annotationId).position()?.top + 10
       annotationListTop = $annotationInList.position()?.top - 85
       $('.document-container').animate { scrollTop: annotationDocTop }, 1000, 'easeInOutQuint'
       $('.annotation-container').animate { scrollTop: annotationListTop }, 1000, 'easeInOutQuint'
+    else
+      $('.document-container').animate { scrollTop: ($annotationText.position().top - $annotationInList.position().top + ($annotationText.height() / 2) + 45) }, 1000, 'easeInOutQuint'
 
   Template.documentDetail.onCreated ->
     @subscribe('documentDetail', @data.documentId)
@@ -54,10 +54,11 @@ if Meteor.isClient
       id = selectedAnnotation.id
       if id
         if selectedAnnotation.onLoad
-          setTimeout (->
-            scrollToAnnotation(id, true)
-            highlightText(id)
-            ), 400
+          if Annotations.findOne(id)
+            setTimeout (->
+                scrollToAnnotation(id, true)
+                highlightText(id)
+              ), 1000
         else
           highlightText(id)
           scrollToAnnotation(id, false)
@@ -199,6 +200,8 @@ if Meteor.isClient
       annotationId = target.getAttribute('data-annotation-id')
       Meteor.call('toggleAnnotationFlag', annotationId)
 
+
+
 if Meteor.isServer
   Meteor.publish 'documentDetail', (id) ->
     document = Documents.findOne(id)
@@ -268,8 +271,5 @@ Meteor.methods
 
   toggleAnnotationFlag: (annotationId) ->
     annotation = Annotations.findOne(annotationId)
-    if annotation.flagged
-      annotation.set(flagged: false)
-    else
-      annotation.set(flagged: true)
+    annotation.set(flagged: not annotation.flagged)
     annotation.save()
