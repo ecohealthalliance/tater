@@ -7,17 +7,23 @@ if Meteor.isClient
     $(".document-text span").addClass('not-highlighted')
     $annotationSpanElement(annotationId).addClass('highlighted').removeClass('not-highlighted')
 
-  scrollToAnnotation = (annotationId, scrollList) ->
+  scrollToAnnotation = (annotationId) ->
+    annotationToScrollTo = $("ul.annotations li[data-annotation-id='#{annotationId}']")
+    annotationListTop = annotationToScrollTo.position()?.top - 85
+    $('.annotation-container').animate { scrollTop: annotationListTop }, 1000, 'easeInOutQuint'
+
+
+  scrollToTextAnnotation = (annotationId, scrollList) ->
     $annotationText = $(".document-text span[data-annotation-id='#{annotationId}']")
     $annotationInList = $("ul.annotations li[data-annotation-id='#{annotationId}']")
-    if scrollList
+    unless scrollList
+      $('.document-container').animate { scrollTop: ($annotationText.position().top - $annotationInList.offset().top + ($annotationText.height() / 2) + 45) }, 1000, 'easeInOutQuint'
+    else
       annotationDocTop  = $annotationSpanElement(annotationId).position()?.top + 10
       annotationListTop = $annotationInList.position()?.top - 85
       $('.document-container').animate { scrollTop: annotationDocTop }, 1000, 'easeInOutQuint'
       $('.annotation-container').animate { scrollTop: annotationListTop }, 1000, 'easeInOutQuint'
-    else
-      $('.document-container').animate { scrollTop: ($annotationText.position().top - $annotationInList.position().top + ($annotationText.height() / 2) + 45) }, 1000, 'easeInOutQuint'
-
+      
   Template.documentDetail.onCreated ->
     @subscribe('documentDetail', @data.documentId)
     @subscribe('docAnnotations', @data.documentId)
@@ -27,8 +33,6 @@ if Meteor.isClient
     @annotations = new ReactiveVar()
     @searchText = new ReactiveVar('')
     @searching = new ReactiveVar(false)
-    @xCoord = new ReactiveVar()
-    @yCoord = new ReactiveVar()
     @temporaryAnnotation = new ReactiveVar(new Annotation())
     @selectedAnnotation = new ReactiveVar({id: @data.annotationId, onLoad: true})
 
@@ -57,15 +61,23 @@ if Meteor.isClient
       if id
         if selectedAnnotation.noScroll
             highlightText(id)
+            scrollToAnnotation(id)
         else if selectedAnnotation.onLoad
+<<<<<<< HEAD
           if Annotations.findOne(id)
             setTimeout (->
                 scrollToAnnotation(id, true)
                 highlightText(id)
               ), 1000
+=======
+          setTimeout (->
+            scrollToTextAnnotation(id, true)
+            highlightText(id)
+            ), 400
+>>>>>>> d70eda7... working version without generating 'click' triggers
         else
           highlightText(id)
-          scrollToAnnotation(id, false)
+          scrollToTextAnnotation(id, false)
 
   Template.documentDetail.helpers
     document: ->
@@ -144,25 +156,25 @@ if Meteor.isClient
       annotationId = event.currentTarget.getAttribute('data-annotation-id')
       instance.selectedAnnotation.set({id: annotationId, noScroll: true})
 
-
-    'click .document-annotations': (event, instance) ->
-      $(event.currentTarget).hide()
-      elementAtPoint = document.elementFromPoint(instance.xCoord.get(), instance.yCoord.get())
-      # if $(elementAtPoint).hasClass('annotation-highlight')
-      $(elementAtPoint).trigger("click")
-      $(event.currentTarget).show()
-      $('.document-wrapper > .document-text').show()
-
-
-    #When the document wrapper is clicked, 
+    # When the document wrapper is clicked, process all document-annotaiton 
+    # layers that are below the current layer and look for a highlight that
+    # would be below the click coordinates.
     'click .document-wrapper': (event, instance) ->
-      # if event.clientX && event.clientY
-      instance.xCoord.set(event.clientX)
-      instance.yCoord.set(event.clientY)
+      # hide the top most layer before we begin processing annotation layers
       $('.document-wrapper > .document-text').hide()
-      elementAtPoint = document.elementFromPoint(instance.xCoord.get(), instance.yCoord.get())
-      $(elementAtPoint).trigger("click");
-      $('.document-wrapper > .document-text').show()
+      $('.document-annotations').each () ->
+        # elementAtPoint = document.elementFromPoint(event.clientX, event.clientY)
+        elementAtPoint = document.elementFromPoint(event.pageX, event.pageY)
+        console.log event.pageX, event.pageY
+        console.log elementAtPoint
+        if $(elementAtPoint).hasClass('annotation-highlight')
+          $(elementAtPoint).trigger("click")
+        if $(elementAtPoint).hasClass('document-text')
+          # hide current annotation layer so we can click the layer below it
+          $(elementAtPoint).hide()
+      #show all the layers we hid
+      $('.document-annotations').show()
+      $('.document-text').show()
 
     'click .document-detail-container': (event, instance) =>
       instance.startOffset.set(null)
