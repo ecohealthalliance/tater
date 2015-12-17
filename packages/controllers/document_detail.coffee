@@ -63,18 +63,11 @@ if Meteor.isClient
             highlightText(id)
             scrollToAnnotation(id)
         else if selectedAnnotation.onLoad
-<<<<<<< HEAD
           if Annotations.findOne(id)
             setTimeout (->
                 scrollToAnnotation(id, true)
                 highlightText(id)
               ), 1000
-=======
-          setTimeout (->
-            scrollToTextAnnotation(id, true)
-            highlightText(id)
-            ), 400
->>>>>>> d70eda7... working version without generating 'click' triggers
         else
           highlightText(id)
           scrollToTextAnnotation(id, false)
@@ -163,10 +156,7 @@ if Meteor.isClient
       # hide the top most layer before we begin processing annotation layers
       $('.document-wrapper > .document-text').hide()
       $('.document-annotations').each () ->
-        # elementAtPoint = document.elementFromPoint(event.clientX, event.clientY)
         elementAtPoint = document.elementFromPoint(event.pageX, event.pageY)
-        console.log event.pageX, event.pageY
-        console.log elementAtPoint
         if $(elementAtPoint).hasClass('annotation-highlight')
           $(elementAtPoint).trigger("click")
         if $(elementAtPoint).hasClass('document-text')

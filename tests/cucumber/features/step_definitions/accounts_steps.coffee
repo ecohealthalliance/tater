@@ -159,14 +159,3 @@ do ->
         .setValue('#at-field-password', 'newPassword')
         .submitForm('#at-field-email')
         .waitForExist('.sign-out')
-
-    @When 'I click on some highlighted text', ->
-      @browser
-        .moveToObject('.document-wrapper',5,5)
-        .click('.document-wrapper')
-        # .waitForExist('.annotation-highlight')
-        # .click('.annotation-highlight')
-
-    @Then 'the annotation should be selected', ->
-      @browser
-        .waitForExist('.annotations li.selected')
