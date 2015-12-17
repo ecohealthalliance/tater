@@ -27,6 +27,8 @@ if Meteor.isClient
     @annotations = new ReactiveVar()
     @searchText = new ReactiveVar('')
     @searching = new ReactiveVar(false)
+    @xCoord = new ReactiveVar()
+    @yCoord = new ReactiveVar()
     @temporaryAnnotation = new ReactiveVar(new Annotation())
     @selectedAnnotation = new ReactiveVar({id: @data.annotationId, onLoad: true})
 
@@ -53,7 +55,9 @@ if Meteor.isClient
       selectedAnnotation = instance.selectedAnnotation.get()
       id = selectedAnnotation.id
       if id
-        if selectedAnnotation.onLoad
+        if selectedAnnotation.noScroll
+            highlightText(id)
+        else if selectedAnnotation.onLoad
           if Annotations.findOne(id)
             setTimeout (->
                 scrollToAnnotation(id, true)
@@ -87,9 +91,6 @@ if Meteor.isClient
         annotatedBody = document.textWithAnnotation(annotation)
         Spacebars.SafeString(annotatedBody)
       annotationLayers
-
-    positionInformation: ->
-      "#{@startOffset} - #{@endOffset}"
 
     header: ->
       @header()
@@ -138,6 +139,30 @@ if Meteor.isClient
         selectedAnnotation.set({id: null})
         $annotationSpanElement(annotationId).removeClass('highlighted')
         $(".document-annotations span").removeClass('not-highlighted')
+
+    'click .annotation-highlight': (event, instance) ->
+      annotationId = event.currentTarget.getAttribute('data-annotation-id')
+      instance.selectedAnnotation.set({id: annotationId, noScroll: true})
+
+
+    'click .document-annotations': (event, instance) ->
+      $(event.currentTarget).hide()
+      elementAtPoint = document.elementFromPoint(instance.xCoord.get(), instance.yCoord.get())
+      # if $(elementAtPoint).hasClass('annotation-highlight')
+      $(elementAtPoint).trigger("click")
+      $(event.currentTarget).show()
+      $('.document-wrapper > .document-text').show()
+
+
+    #When the document wrapper is clicked, 
+    'click .document-wrapper': (event, instance) ->
+      # if event.clientX && event.clientY
+      instance.xCoord.set(event.clientX)
+      instance.yCoord.set(event.clientY)
+      $('.document-wrapper > .document-text').hide()
+      elementAtPoint = document.elementFromPoint(instance.xCoord.get(), instance.yCoord.get())
+      $(elementAtPoint).trigger("click");
+      $('.document-wrapper > .document-text').show()
 
     'click .document-detail-container': (event, instance) =>
       instance.startOffset.set(null)
