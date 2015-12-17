@@ -7,17 +7,23 @@ if Meteor.isClient
     $(".document-text span").addClass('not-highlighted')
     $annotationSpanElement(annotationId).addClass('highlighted').removeClass('not-highlighted')
 
-  scrollToAnnotation = (annotationId, scrollList) ->
+  scrollToAnnotation = (annotationId) ->
+    annotationToScrollTo = $("ul.annotations li[data-annotation-id='#{annotationId}']")
+    annotationListTop = annotationToScrollTo.position()?.top - 85
+    $('.annotation-container').animate { scrollTop: annotationListTop }, 1000, 'easeInOutQuint'
+
+
+  scrollToTextAnnotation = (annotationId, scrollList) ->
     $annotationText = $(".document-text span[data-annotation-id='#{annotationId}']")
     $annotationInList = $("ul.annotations li[data-annotation-id='#{annotationId}']")
-    if scrollList
+    unless scrollList
+      $('.document-container').animate { scrollTop: ($annotationText.position().top - $annotationInList.offset().top + ($annotationText.height() / 2) + 45) }, 1000, 'easeInOutQuint'
+    else
       annotationDocTop  = $annotationSpanElement(annotationId).position()?.top + 10
       annotationListTop = $annotationInList.position()?.top - 85
       $('.document-container').animate { scrollTop: annotationDocTop }, 1000, 'easeInOutQuint'
       $('.annotation-container').animate { scrollTop: annotationListTop }, 1000, 'easeInOutQuint'
-    else
-      $('.document-container').animate { scrollTop: ($annotationText.position().top - $annotationInList.position().top + ($annotationText.height() / 2) + 45) }, 1000, 'easeInOutQuint'
-
+      
   Template.documentDetail.onCreated ->
     @subscribe('documentDetail', @data.documentId)
     @subscribe('docAnnotations', @data.documentId)
@@ -53,7 +59,10 @@ if Meteor.isClient
       selectedAnnotation = instance.selectedAnnotation.get()
       id = selectedAnnotation.id
       if id
-        if selectedAnnotation.onLoad
+        if selectedAnnotation.noScroll
+            highlightText(id)
+            scrollToAnnotation(id)
+        else if selectedAnnotation.onLoad
           if Annotations.findOne(id)
             setTimeout (->
                 scrollToAnnotation(id, true)
@@ -61,7 +70,7 @@ if Meteor.isClient
               ), 1000
         else
           highlightText(id)
-          scrollToAnnotation(id, false)
+          scrollToTextAnnotation(id, false)
 
   Template.documentDetail.helpers
     document: ->
@@ -87,9 +96,6 @@ if Meteor.isClient
         annotatedBody = document.textWithAnnotation(annotation)
         Spacebars.SafeString(annotatedBody)
       annotationLayers
-
-    positionInformation: ->
-      "#{@startOffset} - #{@endOffset}"
 
     header: ->
       @header()
@@ -138,6 +144,27 @@ if Meteor.isClient
         selectedAnnotation.set({id: null})
         $annotationSpanElement(annotationId).removeClass('highlighted')
         $(".document-annotations span").removeClass('not-highlighted')
+
+    'click .annotation-highlight': (event, instance) ->
+      annotationId = event.currentTarget.getAttribute('data-annotation-id')
+      instance.selectedAnnotation.set({id: annotationId, noScroll: true})
+
+    # When the document wrapper is clicked, process all document-annotaiton 
+    # layers that are below the current layer and look for a highlight that
+    # would be below the click coordinates.
+    'click .document-wrapper': (event, instance) ->
+      # hide the top most layer before we begin processing annotation layers
+      $('.document-wrapper > .document-text').hide()
+      $('.document-annotations').each () ->
+        elementAtPoint = document.elementFromPoint(event.pageX, event.pageY)
+        if $(elementAtPoint).hasClass('annotation-highlight')
+          $(elementAtPoint).trigger("click")
+        if $(elementAtPoint).hasClass('document-text')
+          # hide current annotation layer so we can click the layer below it
+          $(elementAtPoint).hide()
+      #show all the layers we hid
+      $('.document-annotations').show()
+      $('.document-text').show()
 
     'click .document-detail-container': (event, instance) =>
       instance.startOffset.set(null)

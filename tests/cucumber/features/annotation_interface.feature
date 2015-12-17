@@ -1,5 +1,4 @@
 Feature: Annotation interface
-
   Background:
     Given there is a test user in the database
     And there is a test group in the database
