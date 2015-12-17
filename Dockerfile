@@ -8,8 +8,8 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selectio
 
 #Install apt package dependencies
 RUN echo "deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) main universe" >> /etc/apt/sources.list
-RUN apt-get update
-RUN apt-get -y install wget curl python make g++ git
+RUN apt-get clean all && apt-get update
+RUN apt-get -y install wget curl python make g++ git mongodb supervisor
 RUN apt-get clean all
 
 #Install nodejs
@@ -27,6 +27,7 @@ ENV PATH $PATH:/meteor
 ADD run.sh /run.sh
 ADD ./build/bundle /tater
 ADD ./revision.txt /revision.txt
+ADD supervisor-mongod.conf /etc/supervisor/conf.d/mongod.conf
 
 #Prepare for production
 LABEL app="tater-frontend"
