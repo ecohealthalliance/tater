@@ -1,9 +1,10 @@
 template(name="annotationsCodingKeywords")
   .code-search-container.pane-head.pane-head-r
     if Template.subscriptionsReady
-      input.code-search.form-control(type="text" placeholder="Search Code Keywords")
-      if searching
-        i.fa.fa-times-circle.clear-search
+      if hasCodes
+        input.code-search.form-control(type="text" placeholder="Search Code Keywords")
+        if searching
+          i.fa.fa-times-circle.clear-search
   .coding-container.pane.pane-r
     ul.list-unstyled.code-list.listing
       if selectedCodes

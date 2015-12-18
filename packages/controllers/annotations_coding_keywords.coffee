@@ -57,16 +57,19 @@ if Meteor.isClient
         instance.filteredCodes.set null
 
   Template.annotationsCodingKeywords.helpers
-    searching: () ->
+    searching: ->
       Template.instance().searching.get()
 
-    filteredCodes: () ->
+    hasCodes: ->
+      CodingKeywords.find().count() > 0
+
+    filteredCodes: ->
       Template.instance().filteredCodes.get()
 
-    code: () ->
+    code: ->
       Spacebars.SafeString("<span class='header'>#{@headerLabel()}</span> : <span class='sub-header'>#{@subHeaderLabel()}</span> : <span class='keyword'>#{@label}</span>")
 
-    selectableHeaders: () ->
+    selectableHeaders: ->
       if Template.instance().filteredHeaders.get()
         Template.instance().filteredHeaders.get()
       else
