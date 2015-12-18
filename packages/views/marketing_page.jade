@@ -7,7 +7,7 @@ template(name="marketingPage")
             h1.tag-line Gain #[span(class='highlighted') in-depth insight] from your #[span qualitative data]
             p Tater is an easy to use annotation application that enables users to annotate documents and discover trends and patterns.
             button.btn.action-call Become a beta tester
-            button.btn.video Watch video
+            button.btn.video(data-toggle="modal" data-target="#video-modal" ) Watch video
           .col-sm-6
             img.annotated-docs-img(src='images/marketing/annotated-docs.svg')
     section
@@ -49,4 +49,15 @@ template(name="marketingPage")
                   img(src='images/marketing/csv.svg')
                   p Export annotation data in CSV format for further research and qualitative analysis
 
-    +footer
+    #video-modal.modal.fade(tabindex="-1" role="dialog")
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button.close(type="button" data-dismiss="modal" aria-label="Close")
+              i.fa.fa-times-circle
+            .embed-responsive.embed-responsive-16by9
+              iframe.embed-responsive-item(
+                src="https://www.youtube.com/embed/z8sHKXWXXME"
+                frameborder="0"
+                allowfullscreen)
+  +footer
