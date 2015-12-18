@@ -10,7 +10,7 @@ template(name="documentDetailCodingKeywords")
         each headers
           if ../accessCode
             li.code-header.count.highlighted.selectable(class='code-header-#{color}')
-              span.header-name.selectable-code(data-id=_id)= label
+              span.header-name.selectable-code= label
           else
             li.code-header.coding.highlighted.selectable(class='code-header-#{color}')
               i.up
@@ -19,7 +19,7 @@ template(name="documentDetailCodingKeywords")
                 each subHeaders _id
                   li.code-sub-header.selectable
                     i.up
-                    span.selectable-code.showing(data-id=_id)= label
+                    span.selectable-code.showing= label
                     ul.code-keywords.list-unstyled
                       each keywords _id
                         li.code-keyword.coding.selectable
