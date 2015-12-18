@@ -5,7 +5,9 @@ Annotation = Astro.Class
   fields:
     documentId: 'string'
     userId: 'string'
-    codeId: 'string'
+    codeId:
+      type: 'string'
+      validator: Validators.required()
     startOffset: 'number'
     endOffset: 'number'
     accessCode: 'string'

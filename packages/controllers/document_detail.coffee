@@ -194,7 +194,9 @@ if Meteor.isClient
         attributes['documentId'] = instance.data.documentId
         attributes['startOffset'] = temporaryAnnotation.startOffset
         attributes['endOffset'] = temporaryAnnotation.endOffset
-        Meteor.call('createAnnotation', attributes)
+        Meteor.call 'createAnnotation', attributes, (error, response) ->
+          if error
+            toastr.error("Invalid annotation")
 
         temporaryAnnotation.set({startOffset: null, endOffset: null})
         instance.temporaryAnnotation.set(temporaryAnnotation)
@@ -275,10 +277,13 @@ Meteor.methods
       annotation = new Annotation()
       annotation.set(attributes)
       annotation.set(userId: @userId)
-      annotation.save ->
-        document.set("annotated", Annotations.find({documentId: document._id}).count())
-        document.save()
-        annotation
+      if annotation.validate()
+        annotation.save ->
+          document.set("annotated", Annotations.find({documentId: document._id}).count())
+          document.save()
+          annotation
+      else
+        annotation.throwValidationException()
     else
       throw 'Unauthorized'
 
