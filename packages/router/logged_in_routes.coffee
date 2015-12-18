@@ -48,14 +48,7 @@ loggedIn.route '/documents/:_id',
   action: (params, query) ->
     BlazeLayout.render 'layout',
       main: 'documentDetail'
-      params: {"documentId": params._id, "generateCode": query.generateCode}
-
-loggedIn.route '/documents/:_id/:annotationId',
-  name: 'documentDetailWithAnnotation'
-  action: (params) ->
-    BlazeLayout.render 'layout',
-      main: 'documentDetail'
-      params: {"documentId": params._id, "annotationId" : params.annotationId}
+      params: {"documentId": params._id, "annotationId": query.annotationId}
 
 loggedIn.route '/groups/new',
   name: 'newGroup'
