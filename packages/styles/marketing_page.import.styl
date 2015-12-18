@@ -3,7 +3,9 @@ $red = #F3837D
 $green = #76C5A6
 
 .marketing-page-wrap
-  margin-bottom 100px
+  margin-bottom 50px
+  +above(3)
+    margin-bottom 100px
   h2
   h3
     text-align center
@@ -14,12 +16,17 @@ $green = #76C5A6
 
   section
     margin-bottom 80px
+    &:last-of-type
+      margin-bottom 0
 
   .action-call
   .video
     padding 15px 25px
     font-size 1.3em
-
+    width 100%
+    margin-bottom 20px
+    +above(3)
+      width auto
   .action-call
     background $green
     margin-right 10px
@@ -50,67 +57,105 @@ $green = #76C5A6
     opacity .95
 
 .hero
-  min-height 675px
+  padding 0 20px
   margin-top -20px
   background $blue
+  +above(4)
+    min-height 675px
+    padding 0
 
 .topic-heading
+  width 75%
   margin-bottom 40px
 
 .tag-line
   color white
-  font-size 4.5em
+  font-size 3em
   font-weight 300
   line-height 1.2em
+  +above(3)
+    font-size 4.5em
   .highlighted
     color $red
   span
     font-weight 400
 
 .hero-text
-  padding 130px 0 100px 0
+  padding 50px 0 50px 0
   color white
   font-weight 400
   text-shadow none
+  +above(3)
+    padding-top 130px
+    padding-bottom 100px
   p
-    font-size 1.5em
+    font-size 1.25em
+    +above(3)
+      font-size 1.5em
+
+.annotated-docs-img-wrapper
+  display none
+  +above(4)
+    display block
 
 .annotated-docs-img
   max-height 680px
 
 .annotating
   margin-top 240px
-  padding-top 350px
-  padding-bottom 100px
+  padding-top 50px
+  padding-bottom 50px
   background $ll-gray
   position relative
+  +between(2,3)
+    padding-top 100px
+  +above(3)
+    padding-top 350px
+    padding-bottom 30px
+
 
 .annotation-interface-img
   position absolute
   top -200px
-  width 800px
   left 50%
   transform translate(-50%, 0)
+  width 80%
+  +above(3)
+    width 800px
+
 
 .sub-topic
+  margin-bottom 60px
+  padding 0 35px
+  +between(3,4)
+    margin-bottom 20px
+    padding 0 25px
+  +above(4)
+    padding 0 65px
+
   img
     max-height 100px
-
-.multi-docs
-  background url('../../images/marketing/document-string.svg')
-  background-position center center
-  height 100px
-  width 100%
-
-.sub-topic
-  img
-    max-height 125px
-    margin 0 auto 25px auto
-    display block
+    margin-bottom 20px
+    +above(3)
+      max-height 125px
   p
     font-size 1.2em
     text-align center
 
+.multi-docs
+  background url('../../images/marketing/document-string.svg')
+  background-size 800px
+  background-repeat no-repeat
+  background-position center center
+  height 130px
+  width 100%
+  +above(3)
+    background-size auto
+    height 100px
+
 .analysis
   margin-top 100px
+  .sub-topic
+    +between(1000px,1400px)
+      padding 0 25px
 

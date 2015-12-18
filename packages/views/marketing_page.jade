@@ -3,12 +3,12 @@ template(name="marketingPage")
     section.fluid-container.hero
       .container
         .row
-          .col-sm-6.hero-text
+          .col-md-6.hero-text
             h1.tag-line Gain #[span(class='highlighted') in-depth insight] from your #[span qualitative data]
             p Tater is an easy to use annotation application that enables users to annotate documents and discover trends and patterns.
-            button.btn.action-call Become a beta tester
+            a.btn.action-call(href="#") Become a beta tester
             button.btn.video(data-toggle="modal" data-target="#video-modal" ) Watch video
-          .col-sm-6
+          .col-md-6.annotated-docs-img-wrapper
             img.annotated-docs-img(src='images/marketing/annotated-docs.svg')
     section
       .container.topic-heading
@@ -17,14 +17,14 @@ template(name="marketingPage")
         img.annotation-interface-img(src='images/marketing/annotation-interface.svg')
         .container
           .row
-            .sub-topics.col-sm-8.col-sm-offset-2
+            .sub-topics.col-sm-10.col-sm-offset-1
               .row
-                .col-sm-6.sub-topic
+                .sub-topic.col-sm-6
                   img(src='images/marketing/user-groups.svg')
                   h3.user-groups User Groups
                   p Group members only have access to documents in their group
                   p Multiple users in a group can annotate the same document simultaneously
-                .col-sm-6.sub-topic
+                .sub-topic.col-sm-6
                   img(src='images/marketing/document-storage.svg')
                   h3.document-storage Document Storage
                   p Annotations are dynamically saved while users annotate
@@ -37,7 +37,7 @@ template(name="marketingPage")
         .multi-docs
         .conatiner.analysis
           .row
-            .sub-topics.col-sm-10.col-sm-offset-1
+            .sub-topics.col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2
               .row
                 .col-sm-4.sub-topic
                   img(src='images/marketing/documents.svg')
