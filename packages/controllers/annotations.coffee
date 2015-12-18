@@ -150,6 +150,9 @@ if Meteor.isClient
     documentSelected: ->
       Template.instance().documents.find().count() or Template.instance().selectedGroups.find().count()
 
+    annotationsLoaded: ->
+      Template.instance().annotations.get()
+
     selectedDoc: ->
       if Template.instance().documents.find({docID:@_id}).count()
         'selected'

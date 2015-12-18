@@ -46,7 +46,10 @@ template(name="annotations")
               i.fa.fa-download
               span Generate CSV
       .annotations-list-container.pane.pane-m
-        unless documentSelected
+        if documentSelected
+          unless annotationsLoaded
+            p.no-results.text-center No annotations found.
+        else
           p.text-center Select a group or document to view annotations
         +pages
         +pagesNav
