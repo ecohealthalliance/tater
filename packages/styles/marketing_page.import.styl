@@ -13,11 +13,13 @@ $green = #76C5A6
 
   section
     margin-bottom 80px
+    &:nth-of-type(3)
+      margin-bottom 30px
     &:last-of-type
       margin-bottom 0
 
   .action-call
-  .video
+  .action-call-secondary
     padding 15px 25px
     font-size 1.3em
     width 100%
@@ -30,7 +32,7 @@ $green = #76C5A6
     color black
     &:hover
       background lighten($green, 20%)
-  .video
+  .action-call-secondary
     background none
     border-color $green
     color $l-gray
@@ -102,7 +104,7 @@ $green = #76C5A6
   margin-top 240px
   padding-top 50px
   padding-bottom 50px
-  background $ll-gray
+  background darken($ll-gray, 2%)
   position relative
   +between(2,3)
     padding-top 100px
@@ -156,3 +158,26 @@ $green = #76C5A6
     +between(1000px,1400px)
       padding 0 25px
 
+.info
+  text-align center
+  p
+    margin-bottom 8px
+    color $d-gray
+  .action-call
+    width 40%
+    margin-bottom 30px
+    +below(2)
+      width 100%
+  .action-call-secondary
+    color $d-gray
+    padding-top 10px
+    padding-bottom 10px
+    font-size 1em
+    border-color $m-gray
+    &:hover
+      color $body-text
+      background-color $ll-gray
+    &::before
+      content '\f003'
+    +below(2)
+      width 50%
