@@ -9,6 +9,9 @@ Document = Astro.Class
         Validators.required()
         Validators.minLength(5, 'The title must be at least 5 characters')
       ]
+    lowerTitle: 
+      type: 'string'
+      transient: true
     body:
       type: 'string'
       validator: [
@@ -16,10 +19,19 @@ Document = Astro.Class
         Validators.minLength(20, 'The body must be at least 20 characters')
       ]
     groupId: 'string'
+    group: 
+      type: 'string'
+      transient: true
     annotated:
       type: 'number'
       default: 0
+    createdAt: 'date'
   behaviors: ['timestamp']
+
+  events:
+    afterInit: ->
+      @set 'lowerTitle', @title.toLowerCase()
+      @set 'group', Groups.findOne(@groupId)?.name.toLowerCase()
 
   methods:
     groupName: ->

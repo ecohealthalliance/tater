@@ -8,6 +8,14 @@ template(name="documentList")
       .no-results.space-top-3
         i.fa.fa-search
         .no-documents-found.centered Sorry, no documents found.
+    div.headers
+      span.title-header 
+        h4(data-column='lowerTitle') Title
+      span.date-header 
+        h4(data-column='createdAt') Created
+      span.group-header 
+        h4(data-column='group') Group
+
     ul.list.document-list.list-unstyled
       +pages
     +pagesNav
@@ -16,12 +24,13 @@ template(name="documentList")
 template(name="document")
   li.document
     a.list-link.clearfix(href="{{path route='documentDetail' params=this}}")
-      span.annotation-state
+      div.annotation-state
         if annotated
           i.fa.fa-adjust(data-toggle='tooltip' title='{{annotated}} annotations')
         else
           i.fa.fa-circle-o(data-toggle='tooltip' title='{{annotated}} annotations')
       span.document-title= title
+      span.document-date= createdAt
       span.document-group= groupName
     button.btn-plain.delete-document-button(data-toggle="modal" data-document-id=_id data-target="#confirm-delete-document-modal" )
       i.fa.fa-trash-o

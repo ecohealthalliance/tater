@@ -7,6 +7,7 @@ DocumentListPages = new Meteor.Pagination Documents,
   availableSettings:
     perPage: true
     filters: true
+    sort: true
   auth: (skip, subscription)->
     # Meteor pagination auth functions break filtering.
     # I am using a work around based on the approach here:
@@ -42,6 +43,7 @@ if Meteor.isClient
 
   window.DocumentListPages = DocumentListPages
   Template.documentList.onCreated ->
+    @sortInfo = new ReactiveVar({column: 'createdAt', direction: -1})
     instance = Template.instance()
     instance.group = @data?.group
     if instance.group
@@ -63,6 +65,20 @@ if Meteor.isClient
         "data-document-id",
         event.target.parentElement.getAttribute("data-document-id")
       )
+    'click .headers h4': (event, instance) ->
+      sortInfo = instance.sortInfo.get()
+      currentColumn = $(event.currentTarget).data('column')
+      # if the column name is the same then we are just changing the sort direction
+      if currentColumn == sortInfo.column
+        sortInfo.direction *= -1
+      else
+        sortInfo.column = currentColumn
+        sortInfo.direction = 1
+      newSort = {}
+      newSort[sortInfo.column] = sortInfo.direction
+      console.log newSort
+      DocumentListPages.set
+        sort: newSort
     'keyup .document-search': _.debounce(((event, instance)->
       searchText = $(event.currentTarget).val()
       filters =
