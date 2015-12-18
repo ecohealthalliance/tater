@@ -1,1 +1,44 @@
 template(name="marketingPage")
+  .marketing-page-wrap
+    .fluid-container.hero
+      .container
+        .row
+          .col-sm-6.hero-text
+            h1.tag-line Gain #[span(class='highlighted') in-depth insight] from your qualitative data
+            p Tater is an easy to use annotation application that enables users to annotate documents and discover trends and patterns.
+            button.btn.trial Become a beta tester
+            button.btn.video Watch video
+          .col-sm-6
+
+    .fluid-container.content-block.annotating
+      h2 Quickly and easily annotate your documents with a customizable set of codes.
+      .fluid-container
+        .container
+          .row
+            .sub-topics.col-sm-8.col-sm-offset-2
+              .row
+                .col-sm-6.sub-topic
+                  h3.user-groups User Groups
+                  p Group members only have access to documents in their group
+                  p Multiple users in a group can annotate the same document simultaneously
+                .col-sm-6.sub-topic
+                  h3.document-storage Document Storage
+                  p Annotations are dynamically saved while users annotate
+                  p Group documents are securely stored
+
+    .fluid-container.content-block.analysis
+      h2 Analyze annotations accross multiple documents.
+      .fluid-container
+        .multi-docs
+        .conatiner
+          .row
+            .sub-topics.col-sm-8.col-sm-offset-2
+              .row
+                .col-sm-4.sub-topic
+                  p View annotations in documents by group or in a custom set of documents
+                .col-sm-4.sub-topic
+                  p Filter annotations by code to view themes across documents
+                .col-sm-4.sub-topic
+                  p Export annotation data in CSV format for further research and qualitative analysis
+
+    +footer
