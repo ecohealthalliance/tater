@@ -117,7 +117,6 @@ if Meteor.isClient
       document = Documents.findOne @documentId
       if temporaryAnnotation.startOffset >= 0
         annotations.push temporaryAnnotation
-
       annotationLayers = _.map annotations, (annotation) ->
         annotatedBody = document.textWithAnnotation annotation
         Spacebars.SafeString annotatedBody
