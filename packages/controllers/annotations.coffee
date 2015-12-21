@@ -150,6 +150,10 @@ if Meteor.isClient
     documentSelected: ->
       Template.instance().documents.find().count() or Template.instance().selectedGroups.find().count()
 
+    noAnnotations: ->
+      if Documents.findOne({_id: @_id}).annotated == 0
+        'disabled'
+
     annotationsLoaded: ->
       Template.instance().annotations.get()
 
@@ -165,7 +169,23 @@ if Meteor.isClient
       Groups.find({}, {sort: {name: 1}})
 
     groupDocuments: ->
-      Documents.find({groupId: @_id}, {sort: {title: 1}})
+      # lets us break arrays with annotaitons and without annotations apart and sort 
+      # them separately.  This allows us to keep unannotated documents at the bottom 
+      # of the list and then sort them by title.
+      annotatedDocs = Documents.find({groupId: @_id, annotated: {$gt: 0}}, {sort: {title: 1}}).fetch()
+      unAnnotatedDocs = Documents.find(
+        {
+          $and:[
+            groupId: @_id, 
+            $or: [
+              {annotated: {$lt: 1}},
+              {annotated: {$exists: false}}
+            ]
+          ]
+        }, 
+        {sort: {title: 1}}
+      ).fetch()
+      annotatedDocs.concat(unAnnotatedDocs)
 
     allSelected: ->
       if Template.instance().documents.find().count() == Documents.find().count()
@@ -390,8 +410,6 @@ Meteor.methods
             getValue(annotation)
           )
         )
-
-
 
 if Meteor.isServer
   Meteor.publish 'groupsAndDocuments', ->

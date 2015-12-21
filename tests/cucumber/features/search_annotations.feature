@@ -31,6 +31,12 @@ Feature: Search Annotations Page
     And I visit the search annotations page
     And I select the test group
     Then I should see 10 test annotations
-
     When I go to the next page of annotations
     Then I should see 5 test annotations
+
+  @searchAnnotations
+  Scenario: Documents with no annotations should be greyed out
+    When I log in as the test user
+    And I visit the search annotations page
+    And I expand the test group
+    Then I should see 1 greyed out document

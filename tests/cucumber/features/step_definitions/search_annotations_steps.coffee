@@ -48,6 +48,17 @@ do ->
         .click('.group-selector')
         .waitForExist('.annotation-detail')
 
+    @When 'I expand the test group', ->
+      @browser
+        .click('.down')
+        .waitForExist('.group-docs')
+
+    @Then /^I should see (\d+) greyed out document$/, (number) ->
+      @client
+        .elements '.doc-title.disabled', (error, elements) ->
+          assert(elements.value.length == parseInt(number),
+            "Expected #{elements.value.length} to equal #{number}")
+
     @When 'I click the Download CSV button', ->
       @browser
         .waitForExist('.download-csv')
