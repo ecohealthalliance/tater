@@ -7,19 +7,19 @@ template(name="header")
             a.navbar-brand
               h1 Tater
           else
-            button.navbar-toggle.collapsed(type="button", data-toggle="collapse" data-target=".navbar-collapse") Menu
             a.navbar-brand(href="/")
               h1 Tater
-        unless usingAccessCode
-          .navbar-collapse.collapse
             if currentUser
+              button.navbar-toggle.collapsed(type="button", data-toggle="collapse" data-target=".navbar-collapse") Menu
+        unless usingAccessCode
+          if currentUser
+            .navbar-collapse.collapse
               ul.nav.navbar-nav.navbar-left
                 li
                   a.btn.navbar-btn.new-document(href="{{path route='newDocument'}}")
                     i.fa.fa-file-text-o.icon-left
                     span New Document
-            ul.nav.navbar-nav.navbar-right
-              if currentUser
+              ul.nav.navbar-nav.navbar-right
                 if isAdmin
                   li
                     a.header-documents-link(href="{{path route='documents'}}" class="{{isActiveRoute 'documents'}}")
@@ -38,5 +38,10 @@ template(name="header")
                   li
                     a(href="{{path route='codingKeywords'}}" class="{{isActiveRoute 'codingKeywords'}}")
                       span Coding Keywords
-              +accountsHeaderButtons state=accountsState
+                +accountsHeaderButtons state=accountsState
+          else
+            ul.nav.navbar-nav.navbar-right
+              a.sign-in.btn.navbar-btn
+                span Sign In
+                  i.fa.fa-sign-in
   +accountsModal state=accountsState
