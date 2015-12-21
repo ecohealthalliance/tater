@@ -1,1 +1,69 @@
 template(name="marketingPage")
+  .marketing-page-wrap
+    section.fluid-container.hero
+      .container
+        .row
+          .col-md-6.hero-text
+            h1.tag-line Gain #[span(class='highlighted') in-depth insight] from your #[span qualitative data]
+            p Tater is an easy to use annotation application that enables users to annotate documents and discover trends and patterns.
+            a.btn.action-call(href="mailto:tater-beta@ecohealthalliance.org?subject=Tater Beta Testing") Inquire about beta test
+            button.btn.action-call-secondary(data-toggle="modal" data-target="#video-modal" ) Watch video
+          .col-md-6.annotated-docs-img-wrapper
+            img.annotated-docs-img(src='images/marketing/annotated-docs.svg')
+    section
+      .container.topic-heading
+        h2 Quickly and easily annotate your documents with a customizable set of codes.
+      .fluid-container.content-block.annotating
+        img.annotation-interface-img(src='images/marketing/annotation-interface.svg')
+        .container
+          .row
+            .sub-topics.col-sm-10.col-sm-offset-1
+              .row
+                .sub-topic.col-sm-6
+                  img(src='images/marketing/user-groups.svg')
+                  h3.user-groups User Groups
+                  p Group members only have access to documents in their group
+                  p Multiple users in a group can annotate the same document simultaneously
+                .sub-topic.col-sm-6
+                  img(src='images/marketing/document-storage.svg')
+                  h3.document-storage Document Storage
+                  p Annotations are dynamically saved while users annotate
+                  p Group documents are securely stored
+
+    section
+      .container.topic-heading
+        h2 Analyze annotations across multiple documents.
+      .fluid-container
+        .multi-docs
+        .conatiner.analysis
+          .row
+            .sub-topics.col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2
+              .row
+                .col-sm-4.sub-topic
+                  img(src='images/marketing/documents.svg')
+                  p View annotations in documents by group or in a custom set of documents
+                .col-sm-4.sub-topic
+                  img(src='images/marketing/annotations.svg')
+                  p Filter annotations by code to view themes across documents
+                .col-sm-4.sub-topic
+                  img(src='images/marketing/csv.svg')
+                  p Export annotation data in CSV format for further research and qualitative analysis
+
+    section.container.info
+      a.btn.action-call(href="mailto:tater-beta@ecohealthalliance.org?subject=Tater Beta Testing") Inquire about beta testing
+      p Need more info?
+      a.btn.action-call-secondary(href="mailto:tater-beta@ecohealthalliance.org?subject=Question about Tater") Email us
+
+
+    #video-modal.modal.fade(tabindex="-1" role="dialog")
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button.close(type="button" data-dismiss="modal" aria-label="Close")
+              i.fa.fa-times-circle
+            .embed-responsive.embed-responsive-16by9
+              iframe.embed-responsive-item(
+                src="https://www.youtube.com/embed/z8sHKXWXXME"
+                frameborder="0"
+                allowfullscreen)
+  +footer

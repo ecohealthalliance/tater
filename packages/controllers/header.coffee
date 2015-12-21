@@ -15,3 +15,6 @@ if Meteor.isClient
     'click a' : (e) ->
       if $('.navbar-toggle').is(':visible') and $('.navbar-collapse').hasClass('in') and !$(e.currentTarget).hasClass('dropdown-toggle')
         $('.navbar-collapse').collapse('toggle')
+    'click .sign-in' : (evt, instance) ->
+      instance.accountsState.set("signIn")
+      $('.accounts-modal').modal('show')

@@ -42,6 +42,14 @@ header
         float none
         width 60%
         margin 10px auto
+    &.sign-in
+      position absolute
+      top 0
+      right 15px
+      border 1px solid $secondary
+      color lighten($dd-gray, 10%)
+      +below(1)
+        margin-right 0
 
 .nav
   float right
@@ -53,12 +61,6 @@ header
       border 0
     &.main-nav-last
       margin 0
-    .btn
-      display block
-      float left
-      width 40%
-      margin 15px
-      padding 10px
     &:last-of-type
       border 0
     a
@@ -140,11 +142,12 @@ header
         > li
           > a
             +below(1)
-              color white
+              color $body-text
               font-size 12px
               padding 10px 15px 10px 40px
               &:hover
                 background $primary
+                color white
               &.dropdown-toggle
                 background $primary
   .dropdown-menu
@@ -246,12 +249,13 @@ header
 
 .navbar-collapse
   +below(1)
+    margin-top 10px
     padding-right 0
     padding-bottom 15px
-    border-top 4px solid $secondary-dark
+    border-top 3px solid $primary
     box-shadow none
     &.in
-      border-top 4px solid $secondary-dark
+      border-top 3px solid $primary
       box-shadow none
     &.collapse
     &.collapsing
