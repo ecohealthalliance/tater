@@ -2,5 +2,5 @@
 ssh -i ~/.ssh/infrastructure.pem ubuntu@mongodb01.tater.io mongodump -d eha
 scp -r -i ~/.ssh/infrastructure.pem ubuntu@mongodb01.tater.io:dump/ dump/
 ssh -i ~/.ssh/infrastructure.pem ubuntu@mongodb01.tater.io "rm -rf dump/"
-mongorestore --drop --port 3001 -d meteor dump/tater
+mongorestore --drop --port 3001 -d meteor dump/eha
 rm -rf dump/
