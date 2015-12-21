@@ -24,12 +24,12 @@ template(name="annotations")
                   ul.group-docs.list-unstyled.hidden
                     each groupDocuments
                       li.document-selector(data-id=_id class="{{selectedDoc}}")
-                        span.doc-title #{title}
+                        span.doc-title(class="{{noAnnotations}}") #{title}
           else
             ul.group-docs-list.list-unstyled
               each documents
                 li.document-selector(data-id=_id class="{{selectedDoc}}")
-                  span.doc-title #{title}
+                  span.doc-title(class="{{noAnnotations}}") #{title}
                   if isAdmin
                     span.doc-group=docGroup
         else
