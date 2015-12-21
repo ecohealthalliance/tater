@@ -45,6 +45,11 @@ header
 
 .nav
   float right
+  .sign-in
+    float right
+    border 1px solid $secondary
+    color lighten($dd-gray, 10%)
+    margin-right 15px
   +below(1)
     float none
     border-bottom 1px solid $secondary-light
@@ -53,17 +58,13 @@ header
       border 0
     &.main-nav-last
       margin 0
-    .btn
-      display block
-      float left
-      width 40%
-      margin 15px
-      padding 10px
     &:last-of-type
       border 0
     a
       &:hover
         background $primary
+    .sign-in
+      margin-right 0
 
 .navbar-nav
   +below(1)

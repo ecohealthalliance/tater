@@ -1,35 +1,29 @@
 template(name="accountsHeaderButtons")
-  if currentUser
-    if Template.subscriptionsReady
-      li.dropdown
-        a.dropdown-toggle.admin-settings(href='#' data-toggle='dropdown' aria-expanded='false')
-          span=currentUserName
-          i.fa.fa-sort-desc
-        ul.dropdown-menu(role='menu')
-          li
-            a(href="{{path route='profileEdit'}}")
-              span Edit Profile
-              i.fa.fa-user
-          li
-            a.change-password
-              span Change Password
-              i.fa.fa-key
-          li.divider(role="separator")
-          li
-            a(href="{{path route='help'}}")
-              span Help
-              i.fa.fa-question-circle
-          li
-            a(href='mailto:tater-bugs@ecohealthalliance.org?subject=Tater bug report')
-              span Report a bug
-              i.fa.fa-bug
-          li.divider(role="separator")
-          li
-            a.sign-out
-              span Sign Out
-              i.fa.fa-sign-out
-  else
-    li
-      a.sign-in.btn.navbar-btn
-        span Sign In
-        i.fa.fa-sign-in
+  if Template.subscriptionsReady
+    li.dropdown
+      a.dropdown-toggle.admin-settings(href='#' data-toggle='dropdown' aria-expanded='false')
+        span=currentUserName
+        i.fa.fa-sort-desc
+      ul.dropdown-menu(role='menu')
+        li
+          a(href="{{path route='profileEdit'}}")
+            span Edit Profile
+            i.fa.fa-user
+        li
+          a.change-password
+            span Change Password
+            i.fa.fa-key
+        li.divider(role="separator")
+        li
+          a(href="{{path route='help'}}")
+            span Help
+            i.fa.fa-question-circle
+        li
+          a(href='mailto:tater-bugs@ecohealthalliance.org?subject=Tater bug report')
+            span Report a bug
+            i.fa.fa-bug
+        li.divider(role="separator")
+        li
+          a.sign-out
+            span Sign Out
+            i.fa.fa-sign-out

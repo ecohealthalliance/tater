@@ -47,10 +47,12 @@ do ->
     @When "I log in as the test user", ->
       @client
         .url(url.resolve(process.env.ROOT_URL, '/'))
-        .waitForVisible('.content-wrap #at-pwd-form')
-        .setValue('.content-wrap #at-field-email', _testUser.email)
-        .setValue('.content-wrap #at-field-password', _testUser.password)
-        .submitForm('.content-wrap #at-field-email')
+        .waitForExist('.sign-in')
+        .click('.sign-in')
+        .waitForVisible('.page-wrap #at-pwd-form')
+        .setValue('.page-wrap #at-field-email', _testUser.email)
+        .setValue('.page-wrap #at-field-password', _testUser.password)
+        .submitForm('.page-wrap #at-field-email')
         .waitForExist('.sign-out')
 
     @When "I log in as the non-admin test group user", ->
@@ -58,6 +60,7 @@ do ->
         .url(url.resolve(process.env.ROOT_URL, '/'))
         .waitForExist('.sign-in')
         .click('.sign-in')
+        .waitForVisible('.page-wrap #at-pwd-form')
         .setValue('#at-field-email', _nonAdminTestUser.email)
         .setValue('#at-field-password', _nonAdminTestUser.password)
         .submitForm('#at-field-email')
