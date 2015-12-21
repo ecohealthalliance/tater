@@ -7,10 +7,14 @@ template(name="header")
             a.navbar-brand
               h1 Tater
           else
-            a.navbar-brand(href="/")
+            a.navbar-brand.pull-left(href="/")
               h1 Tater
             if currentUser
-              button.navbar-toggle.collapsed(type="button", data-toggle="collapse" data-target=".navbar-collapse") Menu
+              button.navbar-toggle.collapsed.pull-right(type="button", data-toggle="collapse" data-target=".navbar-collapse") Menu
+            else
+              a.sign-in.btn.navbar-btn
+                span Sign In
+                  i.fa.fa-sign-in
         unless usingAccessCode
           if currentUser
             .navbar-collapse.collapse
@@ -39,9 +43,5 @@ template(name="header")
                     a(href="{{path route='codingKeywords'}}" class="{{isActiveRoute 'codingKeywords'}}")
                       span Coding Keywords
                 +accountsHeaderButtons state=accountsState
-          else
-            ul.nav.navbar-nav.navbar-right
-              a.sign-in.btn.navbar-btn
-                span Sign In
-                  i.fa.fa-sign-in
+
   +accountsModal state=accountsState
