@@ -4,7 +4,7 @@ if Meteor.isClient
 
   Template.documentForm.helpers
     groups: ->
-      Groups.find({})
+      Groups.find({}, { sort: { name: 1 } })
 
   Template.documentForm.events
     'submit #new-document-form': (event, instance) ->
@@ -20,21 +20,21 @@ if Meteor.isClient
       else
         fields.groupId = currentUser.group
 
-      Meteor.call 'createDocument', fields, (error, response) =>
+      Meteor.call 'createDocument', fields, (error, response) ->
         if error
           if error.reason
             for key, value of error.reason
-              toastr.error("Error: " + value)
+              toastr.error('Error: ' + value)
           else
-            toastr.error("Unknown Error")
+            toastr.error('Unknown Error')
         else
-          toastr.success("Success")
-          go 'documentDetail', {_id: response}
+          toastr.success('Success')
+          go 'documentDetail', { _id: response }
 
 Meteor.methods
   createDocument: (fields) ->
     if @userId
-      group = Groups.findOne({_id: fields.groupId})
+      group = Groups.findOne fields.groupId
       user = Meteor.user()
       if group?.viewableByUser(user)
         document = new Document()
@@ -46,6 +46,6 @@ Meteor.methods
         else
           document.throwValidationException()
       else
-        throw "Unauthorized"
+        throw new Meteor.Error('Unauthorized')
     else
-      throw "Not logged in"
+      throw new Meteor.Error('Not logged in')
