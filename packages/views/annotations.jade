@@ -7,7 +7,8 @@ template(name="annotations")
           button.btn-plain.select-all(disabled="{{allSelected}}")
             i.fa.fa-eye
             span Select all
-          button.btn-plain.clear-filters(class="{{selectionState 'class'}}" disabled="{{selectionState 'disabled'}}")
+          button.btn-plain.clear-filters(class="{{selectionState 'class'}}" 
+                                      disabled="{{selectionState 'disabled'}}")
             i.fa.fa-times-circle
             span Clear selection
 
@@ -83,7 +84,8 @@ template(name="annotation")
     h3 #{codeString}
     .annotation-detail
       p=annotatedText
-      a.link(href='/documents/{{documentId}}/{{_id}}')
+      a.link(href="{{path route='documentDetail' \
+                    params=routeData.params query=routeData.query}}")
         i.fa.fa-eye
         | View
       .details.clearfix

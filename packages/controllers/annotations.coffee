@@ -7,7 +7,7 @@ AnnotationsPages = new Meteor.Pagination Annotations,
     # Meteor pagination auth functions break filtering.
     # I am using a work around based on the approach here:
     # https://github.com/alethes/meteor-pages/issues/131
-    user = Meteor.users.findOne({_id: subscription.userId})
+    user = Meteor.users.findOne subscription.userId
     if not user then return false
     userSettings = @userSettings[subscription._session.id] or {}
     userFilters = userSettings.filters or @filters
@@ -91,7 +91,7 @@ if Meteor.isClient
 
       annotationsByCode =
         _.map _.groupBy(annotations, 'codeId'), (annotations, codeId) ->
-          code: CodingKeywords.findOne({_id: codeId})
+          code: CodingKeywords.findOne codeId
           annotations: annotations
 
       sortedAnnotations =
@@ -154,11 +154,11 @@ if Meteor.isClient
       Template.instance().annotations.get()
 
     selectedDoc: ->
-      if Template.instance().documents.find({docID:@_id}).count()
+      if Template.instance().documents.find({docID: @_id}).count()
         'selected'
 
     selectedGroup: ->
-      if Template.instance().selectedGroups.find({id:@_id}).count() and Documents.find({groupId:@_id}).count()
+      if Template.instance().selectedGroups.find({id: @_id}).count() and Documents.find({groupId: @_id}).count()
         'selected'
 
     groups: ->
@@ -241,21 +241,21 @@ if Meteor.isClient
 
     'click .select-all': (event, instance) ->
       _.each Documents.find().fetch(), (doc) ->
-        docQuery = {docID:doc._id}
+        docQuery = docID: doc._id
         unless instance.documents.find(docQuery).count()
           instance.documents.insert(docQuery)
       _.each Groups.find().fetch(), (group) ->
-        unless instance.selectedGroups.find({id:group._id}).count()
-          instance.selectedGroups.insert({id:group._id})
+        unless instance.selectedGroups.find(id: group._id).count()
+          instance.selectedGroups.insert(id: group._id)
 
     'click .selectable-header': (event, instance) ->
       resetPage()
       selectedHeaderId  = event.currentTarget.getAttribute('data-id')
-      selectedHeader = Headers.findOne(selectedHeaderId)
-      currentlySelected = instance.selectedHeaders.findOne(selectedHeaderId)
+      selectedHeader = Headers.findOne selectedHeaderId
+      currentlySelected = instance.selectedHeaders.findOne selectedHeaderId
 
       instance.filtering.set(true)
-      subHeaders = SubHeaders.find({headerId: selectedHeaderId}).fetch()
+      subHeaders = SubHeaders.find(headerId: selectedHeaderId).fetch()
       codeKeywords = CodingKeywords.find({subHeaderId: {$in: _.pluck(subHeaders, '_id')}}).fetch()
 
       if currentlySelected
@@ -274,11 +274,11 @@ if Meteor.isClient
     'click .selectable-subheader': (event, instance) ->
       resetPage()
       selectedSubHeaderId  = event.currentTarget.getAttribute('data-id')
-      selectedSubHeader = SubHeaders.findOne(selectedSubHeaderId)
-      currentlySelected = instance.selectedSubHeaders.findOne(selectedSubHeaderId)
+      selectedSubHeader = SubHeaders.findOne selectedSubHeaderId
+      currentlySelected = instance.selectedSubHeaders.findOne selectedSubHeaderId
 
       instance.filtering.set(true)
-      codeKeywords = CodingKeywords.find({subHeaderId: selectedSubHeaderId}).fetch()
+      codeKeywords = CodingKeywords.find(subHeaderId: selectedSubHeaderId).fetch()
 
       if currentlySelected
         instance.selectedSubHeaders.remove(selectedSubHeader)
@@ -292,8 +292,8 @@ if Meteor.isClient
     'click .selectable-keyword': (event, instance) ->
       resetPage()
       selectedCodeKeywordId  = event.currentTarget.getAttribute('data-id')
-      selectedCodeKeyword = CodingKeywords.findOne({_id: selectedCodeKeywordId})
-      currentlySelected = instance.selectedCodes.findOne(selectedCodeKeywordId)
+      selectedCodeKeyword = CodingKeywords.findOne selectedCodeKeywordId
+      currentlySelected = instance.selectedCodes.findOne selectedCodeKeywordId
       keyword = selectedCodeKeyword?.keyword
 
       instance.filtering.set(true)
@@ -333,6 +333,11 @@ if Meteor.isClient
       Template.instance().document.title
     documentId: ->
       Template.instance().document._id
+    routeData: ->
+      params:
+        _id: Template.instance().document._id
+      query:
+        annotationId: Template.instance().annotation._id
     user: ->
       Template.instance().annotation.userEmail()
     codeColor: ->
@@ -344,14 +349,15 @@ if Meteor.isClient
       keyword = code?.label
       Spacebars.SafeString("<span class='header'>#{header}</span> : <span class='sub-header'>#{subHeader}</span> : <span class='keyword'>#{keyword}</span>")
 
+
 Meteor.methods
   generateCsv: (query) ->
-    user = Meteor.users.findOne({_id: @userId})
-    if user
+    user = Meteor.users.findOne @userId
+    if user?
       if user?.admin
         documents = Documents.find()
-      else if user
-        documents = Documents.find({groupId: user.group})
+      else if user?
+        documents = Documents.find groupId: user.group
       docIds = documents.map((d)-> d._id)
       if query.documentId
         if _.isString query.documentId
@@ -363,7 +369,7 @@ Meteor.methods
         if _.difference(userDocIds, docIds).length > 0
           throw Meteor.Error("Invalid docIds")
       else
-        query.documentId = {$in: docIds}
+        query.documentId = $in: docIds
       headerGetters =
         documentId: (annotation)-> annotation.documentId
         userEmail: (annotation)-> annotation.userEmail()
@@ -385,16 +391,17 @@ Meteor.methods
           )
         )
 
-if Meteor.isServer
 
+
+if Meteor.isServer
   Meteor.publish 'groupsAndDocuments', ->
-    user = Meteor.users.findOne({_id: @userId})
+    user = Meteor.users.findOne @userId
     groups = Groups.find()
-    if user
+    if user?
       if user?.admin
         documents = Documents.find()
-      else if user
-        documents = Documents.find({ groupId: user.group })
+      else if user?
+        documents = Documents.find groupId: user.group
       docIds = documents.map((d)-> d._id)
       [
         documents
