@@ -177,26 +177,28 @@ if Meteor.isClient
       x = event.pageX
       y = event.pageY
       documentWrapper = event.currentTarget
-      children = documentWrapper.getElementsByTagName("div")
-      cl = children.length
+      childrenCount = documentWrapper.childElementCount
       hidden = []
-      hl = 0
+      # Hide the document text so we could click on things beneath it
       documentWrapper.firstChild.style.display = 'none'
       # loop through the annotations
-      while hl < cl
+      i = 0
+      while i < childrenCount
         elementAtPoint = document.elementFromPoint(x, y)
-        if elementAtPoint.nodeName == "SPAN" # it's span.annotation-highlight
+        if elementAtPoint.nodeName == 'SPAN' # it's span.annotation-highlight
           instance.selectedAnnotation.set
             id: elementAtPoint.getAttribute 'data-annotation-id'
             noScroll: true
           break
-        else if elementAtPoint.nodeName == "PRE" # it's pre.document-text
+        else if elementAtPoint.nodeName == 'PRE' # it's pre.document-text
           # hide current annotation layer so we can click the layer below it
-          (hidden[hl++] = elementAtPoint).style.display = 'none'
+          (hidden[i++] = elementAtPoint).style.display = 'none'
       # show all the layers we hid
-      documentWrapper.firstChild.style.display = null
-      while hl > -1
-        hidden[hl--].style.display = null
+      documentWrapper.firstChild.style.display = 'block'
+      i = 0
+      hiddenCount = hidden.length
+      while i < hiddenCount
+        hidden[i++].style.display = 'block'
 
     'click .document-detail-container': (event, instance) ->
       instance.startOffset.set null
