@@ -9,7 +9,6 @@ describe 'Annotation', ->
     annotation.save()
     expect(1).to.eq(2)
 
-
   it 'includes userId', ->
     annotation.set('userId', 'fakeuserid')
     annotation.save()
