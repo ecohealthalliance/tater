@@ -7,7 +7,7 @@ describe 'Annotation', ->
   it 'includes documentId', ->
     annotation.set('documentId', 'fakedocid')
     annotation.save()
-    expect(annotation.documentId).to.eq('fakedocid')
+    expect(1).to.eq(2)
 
   it 'includes userId', ->
     annotation.set('userId', 'fakeuserid')
