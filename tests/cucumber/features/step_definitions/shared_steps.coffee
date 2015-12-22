@@ -18,6 +18,7 @@ do ->
 
 
     @Before (callback) ->
+      console.log '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
       @server.call('reset')
       @client.url(url.resolve(process.env.ROOT_URL, '/'))
         .execute (->
