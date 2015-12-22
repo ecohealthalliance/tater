@@ -171,6 +171,7 @@ if Meteor.isClient
         selectedAnnotation.set id: annotationId
 
     'click .annotation-highlight': (event, instance) ->
+      event.stopImmediatePropagation()
       annotationId = event.currentTarget.getAttribute('data-annotation-id')
       instance.selectedAnnotation.set id: annotationId, noScroll: true
 
@@ -178,19 +179,32 @@ if Meteor.isClient
     # layers that are below the current layer and look for a highlight that
     # would be below the click coordinates.
     'click .document-wrapper': (event, instance) ->
-      # hide the top most layer before we begin processing annotation layers
-      $('.document-wrapper > .document-text').hide()
-      $('.document-wrapper > .document-annotations').each () ->
+      documentWrapper = event.currentTarget
+      $documentWrapper = $ documentWrapper
+      hidden = []
+      hl = 0
+      # loop through the annotations
+      first = true
+      $documentWrapper.children().each ->
+        # hide the top most layer before we begin processing annotation layers
+        if first
+          (hidden[0] = this).style.display = 'none'
+          first = false
+          true # continue
+
         elementAtPoint = document.elementFromPoint(event.pageX, event.pageY)
-        $elementAtPoint = $(elementAtPoint)
-        if $elementAtPoint.hasClass('annotation-highlight') # it's a <span>
-          $elementAtPoint.trigger('click')
+        if elementAtPoint.nodeName == "SPAN" # it's a span.annotation-highlight
+          $(elementAtPoint).trigger('click')
           false # break out of the .each() loop
-        if $elementAtPoint.hasClass('document-text') # it's a <pre>
+        else if elementAtPoint.nodeName == "PRE" # it's a pre.document-text
           # hide current annotation layer so we can click the layer below it
-          $elementAtPoint.hide()
+          (hidden[++hl] = elementAtPoint).style.display = 'none'
+
+        true # continue
       #show all the layers we hid
-      $('.document-annotations, .document-text').show()
+      while hl != -1
+        hidden[hl--].style.display = null
+      #$documentWrapper.find('.document-text').css('display', '')
 
     'click .document-detail-container': (event, instance) ->
       instance.startOffset.set null
