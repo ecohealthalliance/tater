@@ -180,16 +180,17 @@ if Meteor.isClient
     'click .document-wrapper': (event, instance) ->
       # hide the top most layer before we begin processing annotation layers
       $('.document-wrapper > .document-text').hide()
-      $('.document-annotations').each () ->
+      $('.document-wrapper > .document-annotations').each () ->
         elementAtPoint = document.elementFromPoint(event.pageX, event.pageY)
-        if $(elementAtPoint).hasClass('annotation-highlight')
-          $(elementAtPoint).trigger("click")
-        if $(elementAtPoint).hasClass('document-text')
+        $elementAtPoint = $(elementAtPoint)
+        if $elementAtPoint.hasClass('annotation-highlight') # it's a <span>
+          $elementAtPoint.trigger('click')
+          false # break out of the .each() loop
+        if $elementAtPoint.hasClass('document-text') # it's a <pre>
           # hide current annotation layer so we can click the layer below it
-          $(elementAtPoint).hide()
+          $elementAtPoint.hide()
       #show all the layers we hid
-      $('.document-annotations').show()
-      $('.document-text').show()
+      $('.document-annotations, .document-text').show()
 
     'click .document-detail-container': (event, instance) ->
       instance.startOffset.set null
