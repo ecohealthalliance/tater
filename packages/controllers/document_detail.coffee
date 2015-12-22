@@ -96,7 +96,7 @@ if Meteor.isClient
             ), 1000
         else # annotation list click
           highlightText id
-          scrollToAnnotation id, true, not true, true
+          scrollToAnnotation id, true, false, true
 
   Template.documentDetail.helpers
     document: ->
