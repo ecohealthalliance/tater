@@ -179,6 +179,8 @@ if Meteor.isClient
       documentWrapper = event.currentTarget
       childrenCount = documentWrapper.childElementCount
       hidden = []
+      documentWrapper.firstChild.style.position = 'absolute'
+      documentWrapper.firstChild.style.zIndex = -3
       # loop through the annotations
       i = 0
       while i < childrenCount
@@ -190,14 +192,15 @@ if Meteor.isClient
           break
         else if elementAtPoint.nodeName == 'PRE' # it's pre.document-text
           # hide current annotation layer so we can click the layer below it
-          (hidden[i++] = elementAtPoint).style.display = 'none'
+          (hidden[i++] = elementAtPoint.parentNode).style.zIndex = -2
         else
           break # clicked through to the documentWrapper
       # show all the layers we hid
+      documentWrapper.firstChild.style.zIndex = null
       i = 0
       hiddenCount = hidden.length
       while i < hiddenCount
-        hidden[i++].style.display = null
+        hidden[i++].style.zIndex = null
 
     'click .document-detail-container': (event, instance) ->
       instance.startOffset.set null

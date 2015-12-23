@@ -12,7 +12,7 @@ template(name="documentDetail")
         #documentContainer
           #documentBody.document-body
             .document-wrapper
-              pre.document-text= document.body
+              pre#textLayer.document-text= document.body
               if Template.subscriptionsReady
                 each annotationLayers
                   .document-annotations
