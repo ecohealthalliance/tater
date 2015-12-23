@@ -196,11 +196,12 @@ if Meteor.isClient
         else
           break # clicked through to the documentWrapper
       # restore z-indices
-      documentWrapper.firstChild.style.zIndex = null
+      none = ''
+      documentWrapper.firstChild.style.zIndex = none
       i = 0
       hiddenCount = hidden.length
       while i < hiddenCount
-        hidden[i++].style.zIndex = null
+        hidden[i++].style.zIndex = none
 
     'click .document-detail-container': (event, instance) ->
       instance.startOffset.set null
