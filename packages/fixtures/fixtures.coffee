@@ -13,6 +13,7 @@ do ->
       Headers.remove({})
       SubHeaders.remove({})
       CodingKeywords.remove({})
+      Tenants.remove({})
 
     'createTestUser': (attributes) ->
       Meteor.users.remove({})
