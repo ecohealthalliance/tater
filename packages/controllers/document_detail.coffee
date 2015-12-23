@@ -179,7 +179,7 @@ if Meteor.isClient
       documentWrapper = event.currentTarget
       childrenCount = documentWrapper.childElementCount
       hidden = []
-      documentWrapper.firstChild.style.position = 'absolute'
+      # stash the topmost (text) layer behind annotations
       documentWrapper.firstChild.style.zIndex = -3
       # loop through the annotations
       i = 0
@@ -195,7 +195,7 @@ if Meteor.isClient
           (hidden[i++] = elementAtPoint.parentNode).style.zIndex = -2
         else
           break # clicked through to the documentWrapper
-      # show all the layers we hid
+      # restore z-indices
       documentWrapper.firstChild.style.zIndex = null
       i = 0
       hiddenCount = hidden.length
