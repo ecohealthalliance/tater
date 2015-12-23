@@ -191,6 +191,10 @@
           &:hover
             color darken($color, 80%)
 
+.annotation-highlight
+  border-top 2px #FFF solid
+  border-bottom 2px #FFF solid
+
 for $color, $index in $annotation-colors
   .annotation-highlight-{$index+1}
     background-color alpha($color, 60%)
