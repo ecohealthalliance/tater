@@ -6,7 +6,7 @@ DocumentListPages = new Meteor.Pagination Documents,
     createdAt: -1
   availableSettings:
     sort: true
-    # perPage: true
+    perPage: true
     filters: true
   auth: (skip, subscription)->
     # Meteor pagination auth functions break filtering.
@@ -64,7 +64,7 @@ if Meteor.isClient
         when 3 then keyName = 'annotated'
       sortObj[keyName] = if sortBy < 0 then -1 else 1
       DocumentListPages.set
-       sort: sortObj
+        sort: sortObj
 
 
   Template.documentList.helpers
