@@ -37,3 +37,18 @@ select
   label
     span
       font-weight bold
+
+.required-text
+  color $d-gray
+  font-size 110%
+  span
+    color $deny
+    font-weight bold
+    font-size 15px
+
+.required
+  &::after
+    content '*'
+    display inline-block
+    color $deny
+    padding-left 2px

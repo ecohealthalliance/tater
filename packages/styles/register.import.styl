@@ -1,0 +1,36 @@
+.register
+  input
+    margin-bottom 20px
+  label
+    margin-bottom 5px
+
+.registration
+  position relative
+
+.registered
+  padding 20px
+  background lighten($confirm, 30%)
+  text-shadow none
+  border-radius 3px
+  i
+    position absolute
+    width 15%
+    font-size 3em
+    color white
+    display inline-block
+    vertical-align middle
+    width 15%
+    +above(2)
+      font-size 5em
+  p
+    margin-bottom 0
+    &:first-of-type
+      margin-bottom 5px
+
+  .message
+    display inline-block
+    vertical-align middle
+    padding-left 18%
+    p:first-of-type
+      font-weight 800
+      font-size 1.5em
