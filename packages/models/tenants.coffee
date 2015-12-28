@@ -14,15 +14,6 @@ Tenant = Astro.Class
         Validators.required()
         Validators.regexp(/^.+@.+\..+$/, 'Please enter a valid email address')
       ]
-    password:
-      type: 'string'
-      validator: [
-        Validators.required()
-        Validators.minLength(8, 'The password must be at least 8 characters')
-        Validators.equalTo('passwordCheck', 'Password and confirmation password do not match')
-      ]
-    passwordCheck:
-      type: 'string'
     orgName:
       type: 'string'
     tenantName:

@@ -13,8 +13,6 @@ if Meteor.isClient
       tenantProps =
         fullName: form.fullName.value
         emailAddress: form.emailAddress.value
-        password: form.password.value
-        passwordCheck: form.passwordCheck.value
         orgName: form.orgName.value
         tenantName: form.tenantName.value
 
@@ -26,7 +24,7 @@ if Meteor.isClient
           else
             toastr.error("Error: #{error.error}")
         else
-          toastr.success("Thank you for registering. Please allow up to 24 hours for registration to complete.")
+          toastr.success("Thank you for registering")
           template.registering.set(false)
 
 if Meteor.isServer

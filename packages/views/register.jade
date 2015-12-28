@@ -1,24 +1,20 @@
 template(name="register")
   .container
     .col-sm-6.col-sm-offset-3
-      h1 Tenant Registration
+      h1 Organization Registration
       if registering
         form#tenant-registration
-          label Full Name
+          label Your Name
             input.form-control.full-name(name='fullName' type='text' required)
-          label Email Address
+          label Your Email
             input.form-control.email(name='emailAddress' type='email' required)
-          label Password
-            input.form-control.password(name='password' type='password' required)
-          label Confirm Password
-            input.form-control.password-check(name='passwordCheck' type='password' required)
-          label Organization Name
+          label Company/Organization
             input.form-control.org-name(name='orgName' type='text')
-          label Tenant Name
-          .input-group
-            input.form-control.tenant-name(name='tenantName' type='text' required)
-            .input-group-addon .tater.io
+          label Customized Tater URL
+            .input-group
+              input.form-control.tenant-name(name='tenantName' type='text' required)
+              .input-group-addon .tater.io
           input.btn.btn-primary(type='submit' value="Become a beta test user")
       else
         .registered
-        p Thank you for registering. Please allow up to 24 hours for registration to complete
+        p Thank you for registering. Please check your email and allow up to 24 hours for registration to complete.
