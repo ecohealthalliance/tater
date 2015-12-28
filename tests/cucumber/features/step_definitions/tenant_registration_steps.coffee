@@ -12,8 +12,6 @@ do ->
         .waitForVisible('#tenant-registration')
         .setValue('.full-name', 'Test Name')
         .setValue('.email', 'testUser@test.com')
-        .setValue('.password', 'securepassword')
-        .setValue('.password-check', 'securepassword')
         .setValue('.org-name', 'Organization Name')
         .setValue('.tenant-name', 'test')
         .submitForm('#tenant-registration')
