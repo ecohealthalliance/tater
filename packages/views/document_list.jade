@@ -9,6 +9,25 @@ template(name="documentList")
         i.fa.fa-search
         .no-documents-found.centered Sorry, no documents found.
     ul.list.document-list.list-unstyled
+      li.document-list-sort
+        span
+          if sortBy 1
+            i.fa.fa-caret-up
+          if sortBy -1
+            i.fa.fa-caret-down
+          a(data-sort-by="1") Group Name
+        span
+          if sortBy 2
+            i.fa.fa-caret-up
+          if sortBy -2
+            i.fa.fa-caret-down
+          a(data-sort-by="2") Date Created
+        span
+          if sortBy 3
+            i.fa.fa-caret-up
+          if sortBy -3
+            i.fa.fa-caret-down
+          a(data-sort-by="3") Number of Annotations
       +pages
     +pagesNav
   +deleteDocumentModal

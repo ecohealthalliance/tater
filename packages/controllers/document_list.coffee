@@ -5,13 +5,14 @@ DocumentListPages = new Meteor.Pagination Documents,
   sort:
     createdAt: -1
   availableSettings:
-    perPage: true
+    sort: true
+    # perPage: true
     filters: true
   auth: (skip, subscription)->
     # Meteor pagination auth functions break filtering.
     # I am using a work around based on the approach here:
     # https://github.com/alethes/meteor-pages/issues/131
-    user = Meteor.users.findOne({_id: subscription.userId})
+    user = Meteor.users.findOne subscription.userId
     if not user then return false
     userSettings = @userSettings[subscription._session.id] or {}
     userFilters = userSettings.filters or @filters
@@ -44,7 +45,8 @@ if Meteor.isClient
   Template.documentList.onCreated ->
     instance = Template.instance()
     instance.group = @data?.group
-    if instance.group
+    instance.sortBy = new ReactiveVar 2 # 1 = group, 2 = date, -3 = annotated desc
+    if instance.group?
       DocumentListPages.set
         filters:
           groupId: @data.group._id
@@ -53,9 +55,23 @@ if Meteor.isClient
         filters: {}
       @subscribe('groups')
 
+    Tracker.autorun ->
+      sortBy = instance.sortBy.get()
+      sortObj = {}
+      keyName = 'createdAt'
+      switch Math.abs(sortBy)
+        when 1 then keyName = 'groupId'
+        when 3 then keyName = 'annotated'
+      sortObj[keyName] = if sortBy < 0 then -1 else 1
+      DocumentListPages.set
+       sort: sortObj
+
+
   Template.documentList.helpers
     noDocumentsFound: ->
       DocumentListPages.Collection.find().count() == 0 and DocumentListPages.isReady()
+    sortBy: (index) ->
+      index is Template.instance().sortBy.get()
 
   Template.documentList.events
     'click .delete-document-button': (event) ->
@@ -74,6 +90,13 @@ if Meteor.isClient
       DocumentListPages.set(filters:filters)
       DocumentListPages.sess("currentPage", 1)
     ), 500)
+    'click .document-list-sort span a': (event, instance) ->
+      element = event.currentTarget
+      newSortBy = Number element.getAttribute 'data-sort-by'
+      currentSortBy = instance.sortBy.get()
+      if currentSortBy is newSortBy
+        newSortBy *= -1
+      instance.sortBy.set(newSortBy)
 
   Template.document.onCreated ->
     @document = new Document(_.pick(@data, _.keys(Document.getFields())))
