@@ -14,11 +14,6 @@ describe 'Tenants attributes', ->
     tenant.save
     expect(tenant.emailAddress).to.eq("test@example.com")
 
-  it 'includes password', ->
-    tenant.set('password', "superSecurePassword")
-    tenant.save
-    expect(tenant.password).to.eq("superSecurePassword")
-
   it 'includes orgName', ->
     tenant.set('orgName', "Test Organization Name")
     tenant.save
