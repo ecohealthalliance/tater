@@ -45,7 +45,7 @@ if Meteor.isClient
   Template.documentList.onCreated ->
     instance = Template.instance()
     instance.group = @data?.group
-    instance.sortBy = new ReactiveVar 2 # 1 = group, 2 = date, -3 = annotated desc
+    instance.sortBy = new ReactiveVar -2 # 1 = title, -2 = date, 3 = annotated
     if instance.group?
       DocumentListPages.set
         filters:
@@ -60,7 +60,7 @@ if Meteor.isClient
       sortObj = {}
       keyName = 'createdAt'
       switch Math.abs(sortBy)
-        when 1 then keyName = 'groupId'
+        when 1 then keyName = 'title'
         when 3 then keyName = 'annotated'
       sortObj[keyName] = if sortBy < 0 then -1 else 1
       DocumentListPages.set
@@ -90,7 +90,7 @@ if Meteor.isClient
       DocumentListPages.set(filters:filters)
       DocumentListPages.sess("currentPage", 1)
     ), 500)
-    'click .document-list-sort span a': (event, instance) ->
+    'click .headers h4': (event, instance) ->
       element = event.currentTarget
       newSortBy = Number element.getAttribute 'data-sort-by'
       currentSortBy = instance.sortBy.get()
