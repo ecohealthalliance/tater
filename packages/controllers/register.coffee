@@ -2,6 +2,9 @@ if Meteor.isClient
   Template.register.onCreated ->
     @registering = new ReactiveVar(true)
 
+  Template.register.onRendered ->
+    $("[data-toggle='tooltip']").tooltip()
+
   Template.register.helpers
     registering : ->
       Template.instance().registering.get()
