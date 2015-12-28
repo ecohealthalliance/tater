@@ -19,7 +19,10 @@ Tenant = Astro.Class
       validator: [
         Validators.required()
         Validators.minLength(8, 'The password must be at least 8 characters')
+        Validators.equalTo('passwordCheck', 'Password and confirmation password do not match')
       ]
+    passwordCheck:
+      type: 'string'
     orgName:
       type: 'string'
     tenantName:
