@@ -94,7 +94,9 @@ if Meteor.isClient
       element = event.currentTarget
       newSortBy = Number element.getAttribute 'data-sort-by'
       currentSortBy = instance.sortBy.get()
-      if currentSortBy is newSortBy
+      if Math.abs(currentSortBy) is newSortBy
+        newSortBy = -currentSortBy
+      else if currentSortBy < 0
         newSortBy *= -1
       instance.sortBy.set(newSortBy)
 
