@@ -4,19 +4,23 @@ template(name="register")
       h1 Organization Registration
       p.required-text #[span *] Indicates required field
       form#tenant-registration.registration.space-top-2
-        label.required Your Name
-        input.form-control.full-name(name='fullName' type='text' required)
-        label.required Your Email
-        input.form-control.email(name='emailAddress' type='email' required)
+        .row
+          .col-sm-8
+            label.required Your Name
+            input.form-control.full-name(name='fullName' type='text' required)
+            label.required Your Email
+            input.form-control.email(name='emailAddress' type='email' required)
         label Company/Organization
         input.form-control.org-name(name='orgName' type='text')
         label.required Customized Tater URL
           i.fa.fa-info-circle(
             title="The web address of your personalized Tater login."
             data-toggle="tooltip")
-        .input-group
-          input.form-control.tenant-name(name='tenantName' type='text' required)
-          .input-group-addon .tater.io
+        .row
+          .col-sm-10
+            .input-group
+              input.form-control.tenant-name(name='tenantName' type='text' required)
+              .input-group-addon .tater.io
         if registering
           input.btn.btn-primary(type='submit' value="Register")
         else
