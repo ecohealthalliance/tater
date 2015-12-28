@@ -275,11 +275,7 @@ Meteor.methods
       annotation.set(attributes)
       annotation.set(userId: @userId)
       if annotation.validate()
-        annotation.save ->
-          annotationCount = Annotations.find(documentId: document._id).count()
-          document.set("annotated", annotationCount)
-          document.save()
-          annotation
+        annotation.save()
       else
         annotation.throwValidationException()
     else
@@ -295,11 +291,7 @@ Meteor.methods
     else
       accessibleViaUser = true
     if accessibleViaUser
-      annotation.remove ->
-        annotationCount = Annotations.find(documentId: document._id).count()
-        document.set("annotated", annotationCount)
-        document.save()
-        annotation
+      annotation.remove()
     else
       throw new Meteor.Error 'Unauthorized'
 

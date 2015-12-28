@@ -90,3 +90,25 @@ describe 'Annotation#overlapsWithOffsets', ->
 
   it 'returns false otherwise', ->
     expect(annotation.overlapsWithOffsets(8, 9)).not.to.be.ok
+
+describe 'Adding/revoming annotation updates document annotation count', ->
+  document = null
+  annotation = null
+
+  beforeEach ->
+    document = new Document()
+    document.title = 'fake title'
+    document.annotated = 0
+    document.save()
+
+    annotation = new Annotation()
+    annotation.documentId = document._id;
+    annotation.save()
+
+  it 'increments the document annotation count when adding annotation', ->
+    expect(Documents.findOne({_id: document._id}).annotated).to.eq(1)
+
+  it 'decrements the document annotation count when removing annotation', ->
+    annotation = Annotations.findOne({_id: annotation._id})
+    annotation.remove()
+    expect(Documents.findOne({_id: document._id}).annotated).to.eq(0)
