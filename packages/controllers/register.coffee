@@ -27,7 +27,6 @@ if Meteor.isClient
           else
             toastr.error("Error: #{error.error}")
         else
-          toastr.success("Thank you for registering")
           template.registering.set(false)
 
 if Meteor.isServer

@@ -4,4 +4,4 @@ Feature: Tenant Registration
   Scenario: Registering as a new Tenant
     When I navigate to "/register"
     And I fill out the tenant registration form
-    Then I should see a "success" toast
+    Then I should see content "Thank you for registering."
