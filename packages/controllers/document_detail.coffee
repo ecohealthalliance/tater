@@ -177,7 +177,9 @@ if Meteor.isClient
       x = event.pageX
       y = event.pageY
       documentWrapper = event.currentTarget
+      searchIsNotNull = instance.searchText.get() != ''
       childrenCount = documentWrapper.childElementCount
+      searchField = document.getElementById 'annotation-search-field'
       hidden = []
       # stash the topmost (text) layer behind annotations
       documentWrapper.firstChild.style.zIndex = -3
@@ -186,9 +188,16 @@ if Meteor.isClient
       while i < childrenCount
         elementAtPoint = document.elementFromPoint(x, y)
         if elementAtPoint.nodeName == 'SPAN' # it's span.annotation-highlight
-          instance.selectedAnnotation.set
-            id: elementAtPoint.getAttribute 'data-annotation-id'
-            noScroll: true
+          pointAtAnnotation = ->
+            instance.selectedAnnotation.set
+              id: elementAtPoint.getAttribute 'data-annotation-id'
+              noScroll: true
+
+          if searchIsNotNull
+            instance.searchText.set searchField.value = ''
+            setTimeout pointAtAnnotation, 400
+          else
+            pointAtAnnotation()
           break
         else if elementAtPoint.nodeName == 'PRE' # it's pre.document-text
           # hide current annotation layer so we can click the layer below it
