@@ -10,17 +10,32 @@ if Meteor.isClient
   Template.documentList.onCreated ->
     instance = Template.instance()
     instance.group = @data?.group
-    instance.subscriptionIsReady = new ReactiveVar false
     instance.sortBy = new ReactiveVar -2 # 1 = title, -2 = date, 3 = annotated
 
-    Tracker.autorun ->
-      # TODO clean-up no longer existing documents within shadowDocuments
-      originalDocuments = Documents.find() # reactive source
-      originalDocumentsCount = originalDocuments.count()
-      originalDocumentsFetched = originalDocuments.fetch()
+    @subscribe 'groups', =>
+      @subscribe 'documents'
+
+    cleanUpRemovedDocuments = ->
       i = 0
-      while i < originalDocumentsCount
-        originalDocument = originalDocumentsFetched[i]
+      shadowDocumentsCursor = shadowDocuments.find()
+      shadowDocumentsTotalCount = shadowDocumentsCursor.count()
+      shadowDocumentsArray = shadowDocumentsCursor.fetch()
+      while i < shadowDocumentsTotalCount
+        shadowDocument = shadowDocumentsArray[i]
+        if undefined is Documents.findOne shadowDocument._id
+          shadowDocuments.remove shadowDocument._id
+        i++
+
+    Tracker.autorun ->
+      # clean-up no longer existing documents within shadowDocuments
+      cleanUpRemovedDocuments()
+      # (re-)populate the minimongo collection
+      originalDocumentsCursor = Documents.find() # reactive source
+      originalDocumentsTotalCount = originalDocumentsCursor.count()
+      originalDocumentsArray = originalDocumentsCursor.fetch()
+      i = 0
+      while i < originalDocumentsTotalCount
+        originalDocument = originalDocumentsArray[i]
         newShadowDocument = {}
         newShadowDocument.title = originalDocument.title
         newShadowDocument.lowerTitle = originalDocument.title?.toLowerCase()
@@ -28,21 +43,16 @@ if Meteor.isClient
         newShadowDocument.groupId = originalDocument.groupId
         newShadowDocument.annotated = originalDocument.annotated
         # upsert
-        if shadowDocuments.findOne originalDocument._id
-          # update
-          shadowDocuments.update originalDocument._id,
-            newShadowDocument
-        else
+        if undefined is shadowDocuments.findOne originalDocument._id
           #insert
           newShadowDocument._id = originalDocument._id
           shadowDocuments.insert newShadowDocument
+        else
+          # update
+          shadowDocuments.update originalDocument._id,
+            newShadowDocument
         i++
       shadowDocuments
-
-    Meteor.startup =>
-      @subscribe 'groups', =>
-        @subscribe 'documents', ->
-          instance.subscriptionIsReady.set true
 
 
   Template.documentList.helpers
@@ -55,10 +65,9 @@ if Meteor.isClient
         when 1 then keyName = 'lowerTitle'
         when 3 then keyName = 'annotated'
       sortObj[keyName] = if sortBy < 0 then -1 else 1
-      shadowDocuments.find({}, {sort: sortObj})
+      shadowDocuments.find({}, sort: sortObj)
     noDocumentsFound: ->
-      instance = Template.instance()
-      instance.subscriptionIsReady && Documents.find().count() is 0
+      Documents.find().count() is 0
     sortBy: (index) ->
       index is Template.instance().sortBy.get()
 

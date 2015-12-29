@@ -4,35 +4,36 @@ template(name="documentList")
       i.fa.fa-search
       input.form-control.document-search(placeholder="Search Documents")
   .document-list-container
-    if noDocumentsFound
-      .no-results.space-top-3
-        i.fa.fa-search
-        .no-documents-found.centered Sorry, no documents found.
+    if Template.subscriptionsReady
+      if noDocumentsFound
+        .no-results.space-top-3
+          i.fa.fa-search
+          .no-documents-found.centered Sorry, no documents found.
+      else
+        div.headers
+          span
+            if sortBy 1
+              i.fa.fa-caret-down
+            if sortBy -1
+              i.fa.fa-caret-up
+            h4(data-sort-by='1') Title
+          span
+            if sortBy 2
+              i.fa.fa-caret-down
+            if sortBy -2
+              i.fa.fa-caret-up
+            h4(data-sort-by='2') Date Created
+          span
+            if sortBy 3
+              i.fa.fa-caret-down
+            if sortBy -3
+              i.fa.fa-caret-up
+            h4(data-sort-by='3') Number of Annotations
+        ul.list.document-list.list-unstyled
+          each documents
+            +document
     else
-      div.headers
-        span
-          if sortBy 1
-            i.fa.fa-caret-down
-          if sortBy -1
-            i.fa.fa-caret-up
-          h4(data-sort-by='1') Title
-        span
-          if sortBy 2
-            i.fa.fa-caret-down
-          if sortBy -2
-            i.fa.fa-caret-up
-          h4(data-sort-by='2') Date Created
-        span
-          if sortBy 3
-            i.fa.fa-caret-down
-          if sortBy -3
-            i.fa.fa-caret-up
-          h4(data-sort-by='3') Number of Annotations
-    ul.list.document-list.list-unstyled
-      each documents
-        +document
-//      +pages
-//    +pagesNav
+      .loading
   +deleteDocumentModal
 
 template(name="document")
