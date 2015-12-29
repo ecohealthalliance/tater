@@ -19,6 +19,7 @@ Document = Astro.Class
     annotated:
       type: 'number'
       default: 0
+    createdAt: 'date'
   behaviors: ['timestamp']
 
   methods:
