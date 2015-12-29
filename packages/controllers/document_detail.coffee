@@ -170,26 +170,47 @@ if Meteor.isClient
       else
         selectedAnnotation.set id: annotationId
 
-    'click .annotation-highlight': (event, instance) ->
-      annotationId = event.currentTarget.getAttribute('data-annotation-id')
-      instance.selectedAnnotation.set id: annotationId, noScroll: true
-
     # When the document wrapper is clicked, process all document-annotaiton
     # layers that are below the current layer and look for a highlight that
     # would be below the click coordinates.
     'click .document-wrapper': (event, instance) ->
-      # hide the top most layer before we begin processing annotation layers
-      $('.document-wrapper > .document-text').hide()
-      $('.document-annotations').each () ->
-        elementAtPoint = document.elementFromPoint(event.pageX, event.pageY)
-        if $(elementAtPoint).hasClass('annotation-highlight')
-          $(elementAtPoint).trigger("click")
-        if $(elementAtPoint).hasClass('document-text')
+      x = event.pageX
+      y = event.pageY
+      documentWrapper = event.currentTarget
+      searchIsNotNull = instance.searchText.get() != ''
+      childrenCount = documentWrapper.childElementCount
+      searchField = document.getElementById 'annotation-search-field'
+      hidden = []
+      # stash the topmost (text) layer behind annotations
+      documentWrapper.firstChild.style.zIndex = -3
+      # loop through the annotations
+      i = 0
+      while i < childrenCount
+        elementAtPoint = document.elementFromPoint(x, y)
+        if elementAtPoint.nodeName == 'SPAN' # it's span.annotation-highlight
+          pointAtAnnotation = ->
+            instance.selectedAnnotation.set
+              id: elementAtPoint.getAttribute 'data-annotation-id'
+              noScroll: true
+
+          if searchIsNotNull
+            instance.searchText.set searchField.value = ''
+            setTimeout pointAtAnnotation, 400
+          else
+            pointAtAnnotation()
+          break
+        else if elementAtPoint.nodeName == 'PRE' # it's pre.document-text
           # hide current annotation layer so we can click the layer below it
-          $(elementAtPoint).hide()
-      #show all the layers we hid
-      $('.document-annotations').show()
-      $('.document-text').show()
+          (hidden[i++] = elementAtPoint.parentNode).style.zIndex = -2
+        else
+          break # clicked through to the documentWrapper
+      # restore z-indices
+      none = ''
+      documentWrapper.firstChild.style.zIndex = none
+      i = 0
+      hiddenCount = hidden.length
+      while i < hiddenCount
+        hidden[i++].style.zIndex = none
 
     'click .document-detail-container': (event, instance) ->
       instance.startOffset.set null

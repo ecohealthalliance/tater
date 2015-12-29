@@ -67,12 +67,12 @@
   border-bottom 0
   border-top 0
 
-.document-wrapper
-  position relative
-
 .document-body
   max-width 900px
   margin 20px 5%
+
+.document-wrapper
+  position relative
 
   pre
     white-space pre-wrap
@@ -101,6 +101,9 @@
     &::selection
       background-color $selection-color
       color $body-text
+
+  > pre
+      position absolute
 
 .annotation-container
   right 0

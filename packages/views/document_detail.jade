@@ -19,7 +19,7 @@ template(name="documentDetail")
                     pre.document-text= this
       .annotation-search-container.pane-head.pane-head-r
         if Template.subscriptionsReady
-          input.annotation-search.form-control(type="text" placeholder="Search Annotations")
+          input#annotation-search-field.annotation-search.form-control(type="text" placeholder="Search Annotations")
           if searching
             i.fa.fa-times-circle.clear-search
       .annotation-container.pane.pane-r
