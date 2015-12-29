@@ -21,6 +21,7 @@ Package.onUse(function(api) {
   api.addFiles('headers.coffee', ['client', 'server']);
   api.addFiles('subheaders.coffee', ['client', 'server']);
   api.addFiles('annotations.coffee', ['client', 'server']);
+  api.addFiles('tenants.coffee', ['client', 'server']);
   api.export(['UserProfile', 'UserProfiles'], ['client', 'server']);
   api.export(['Document', 'Documents'], ['client', 'server']);
   api.export(['Group', 'Groups'], ['client', 'server']);
@@ -28,6 +29,7 @@ Package.onUse(function(api) {
   api.export(['SubHeader', 'SubHeaders'], ['client', 'server']);
   api.export(['CodingKeyword', 'CodingKeywords'], ['client', 'server']);
   api.export(['Annotation', 'Annotations'], ['client', 'server']);
+  api.export(['Tenant', 'Tenants'], ['client', 'server']);
 });
 
 Package.onTest(function(api) {
@@ -41,4 +43,5 @@ Package.onTest(function(api) {
   api.addFiles('tests/server/documents_test.coffee', 'server');
   api.addFiles('tests/server/annotations_test.coffee', 'server');
   api.addFiles('tests/server/coding_keywords_test.coffee', 'server');
+  api.addFiles('tests/server/tenants_test.coffee', 'server');
 });

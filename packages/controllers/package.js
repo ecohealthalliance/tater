@@ -24,6 +24,7 @@ Package.onUse(function(api) {
   api.use('mrt:jquery-easing');
   api.use('harrison:babyparse');
   api.use('alethes:pages@1.8.4');
+  api.use('email');
   api.addFiles('delete_document_modal.coffee', ['client', 'server']);
   api.addFiles('delete_keyword_modal.coffee', ['client', 'server']);
   api.addFiles('delete_subheader_modal.coffee', ['client', 'server']);
@@ -54,4 +55,5 @@ Package.onUse(function(api) {
   api.addFiles('splash_page.coffee', ['client', 'server']);
   api.addFiles('reset_password.coffee', ['client', 'server']);
   api.addFiles('help.coffee', ['client']);
+  api.addFiles('register.coffee', ['client', 'server']);
 });

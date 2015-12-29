@@ -50,4 +50,5 @@ Package.onUse(function(api) {
   api.addFiles('reset_password.jade', 'client');
   api.addFiles('document_detail_coding_keywords.jade', 'client');
   api.addFiles('help.jade', 'client');
+  api.addFiles('register.jade', 'client');
 });

@@ -17,3 +17,10 @@ FlowRouter.route '/reset-password/:token',
     BlazeLayout.render 'layout',
       main: 'resetPassword'
       params: {"token": params.token}
+
+FlowRouter.route '/register',
+  name: 'register'
+  action: () ->
+    BlazeLayout.render 'layout',
+      main: 'register'
+      params: {}
