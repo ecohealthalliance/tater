@@ -10,6 +10,11 @@ if Meteor.isClient
       Template.instance().registering.get()
 
   Template.register.events
+    'input .tenant-name': (event, template) ->
+      target = event.target
+      name = target.value.replace /[^a-zA-Z0-9-]$/, ''
+      $(target).val(name)
+
     'submit #tenant-registration': (event, template) ->
       event.preventDefault()
       form = event.target
@@ -17,7 +22,7 @@ if Meteor.isClient
         fullName: form.fullName.value
         emailAddress: form.emailAddress.value
         orgName: form.orgName.value
-        tenantName: form.tenantName.value
+        tenantName: form.tenantName.value.toLowerCase()
 
       Meteor.call 'registerTenant', tenantProps, (error, response) ->
         if error

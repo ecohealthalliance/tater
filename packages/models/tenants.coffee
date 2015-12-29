@@ -21,5 +21,6 @@ Tenant = Astro.Class
       validator: [
         Validators.required()
         Validators.unique()
+        Validators.regexp(/^[a-zA-Z0-9-]+$/, "Your Tater URL can only contain letters, numbers and '-'")
       ]
   behaviors: ['timestamp']

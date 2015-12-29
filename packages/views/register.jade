@@ -21,6 +21,7 @@ template(name="register")
             .input-group
               input.form-control.tenant-name(name='tenantName' type='text' required)
               .input-group-addon .tater.io
+            p.input-note Tater URLs can only contain lowercase letters, numbers and '-'
         if registering
           input.btn.btn-primary(type='submit' value="Register")
         else
