@@ -1,39 +1,3 @@
-DocumentListPages = new Meteor.Pagination Documents,
-  perPage: 10,
-  templateName: 'documentList'
-  itemTemplate: 'document'
-  sort:
-    createdAt: -1
-  availableSettings:
-    sort: true
-    perPage: true
-    filters: true
-  auth: (skip, subscription)->
-    # Meteor pagination auth functions break filtering.
-    # I am using a work around based on the approach here:
-    # https://github.com/alethes/meteor-pages/issues/131
-    user = Meteor.users.findOne subscription.userId
-    if not user then return false
-    userSettings = @userSettings[subscription._session.id] or {}
-    userFilters = userSettings.filters or @filters
-    userFields = userSettings.fields or @fields
-    userSort = userSettings.sort or @sort
-    userPerPage = userSettings.perPage or @perPage
-    [
-      {
-        $and: [
-          userFilters
-          QueryHelpers.userDocsQuery(user)
-        ]
-      },
-      {
-        fields: userFields
-        sort: userSort
-        limit: userPerPage
-        skip: skip
-      }
-    ]
-
 # Based on bobince's regex escape function.
 # source: http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript/3561711#3561711
 regexEscape = (s)->
@@ -41,35 +5,60 @@ regexEscape = (s)->
 
 if Meteor.isClient
 
-  window.DocumentListPages = DocumentListPages
+  shadowDocuments = new Meteor.Collection null
+
   Template.documentList.onCreated ->
     instance = Template.instance()
     instance.group = @data?.group
+    instance.subscriptionIsReady = new ReactiveVar false
     instance.sortBy = new ReactiveVar -2 # 1 = title, -2 = date, 3 = annotated
-    if instance.group?
-      DocumentListPages.set
-        filters:
-          groupId: @data.group._id
-    else
-      DocumentListPages.set
-        filters: {}
-      @subscribe('groups')
 
     Tracker.autorun ->
+      # TODO clean-up no longer existing documents within shadowDocuments
+      originalDocuments = Documents.find() # reactive source
+      originalDocumentsCount = originalDocuments.count()
+      originalDocumentsFetched = originalDocuments.fetch()
+      i = 0
+      while i < originalDocumentsCount
+        originalDocument = originalDocumentsFetched[i]
+        newShadowDocument = {}
+        newShadowDocument.title = originalDocument.title
+        newShadowDocument.lowerTitle = originalDocument.title?.toLowerCase()
+        newShadowDocument.createdAt = originalDocument.createdAt
+        newShadowDocument.groupId = originalDocument.groupId
+        newShadowDocument.annotated = originalDocument.annotated
+        # upsert
+        if shadowDocuments.findOne originalDocument._id
+          # update
+          shadowDocuments.update originalDocument._id,
+            newShadowDocument
+        else
+          #insert
+          newShadowDocument._id = originalDocument._id
+          shadowDocuments.insert newShadowDocument
+        i++
+      shadowDocuments
+
+    Meteor.startup =>
+      @subscribe 'groups', =>
+        @subscribe 'documents', ->
+          instance.subscriptionIsReady.set true
+
+
+  Template.documentList.helpers
+    documents: ->
+      instance = Template.instance()
       sortBy = instance.sortBy.get()
       sortObj = {}
       keyName = 'createdAt'
       switch Math.abs(sortBy)
-        when 1 then keyName = 'title'
+        when 1 then keyName = 'lowerTitle'
         when 3 then keyName = 'annotated'
       sortObj[keyName] = if sortBy < 0 then -1 else 1
-      DocumentListPages.set
-        sort: sortObj
-
-
-  Template.documentList.helpers
+      shadowDocuments.find({}, {sort: sortObj})
     noDocumentsFound: ->
-      DocumentListPages.Collection.find().count() == 0 and DocumentListPages.isReady()
+      instance = Template.instance()
+      instance.subscriptionIsReady && Documents.find().count() is 0
     sortBy: (index) ->
       index is Template.instance().sortBy.get()
 
@@ -106,3 +95,19 @@ if Meteor.isClient
   Template.document.helpers
     groupName: ->
       Template.instance().document.groupName()
+
+
+
+if Meteor.isServer
+
+  fields = { title: true, createdAt: true, groupId: true, annotated: true }
+
+  Meteor.publish 'documents', ->
+    if @userId?
+      user = Meteor.users.findOne @userId
+      if user.admin?
+        Documents.find {}, fields: fields
+      else
+        Documents.find { group: user.group }, fields: fields
+    else
+      @ready()

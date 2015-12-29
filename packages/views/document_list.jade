@@ -29,8 +29,10 @@ template(name="documentList")
             i.fa.fa-caret-up
           h4(data-sort-by='3') Number of Annotations
     ul.list.document-list.list-unstyled
-      +pages
-    +pagesNav
+      each documents
+        +document
+//      +pages
+//    +pagesNav
   +deleteDocumentModal
 
 template(name="document")
