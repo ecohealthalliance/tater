@@ -1,35 +1,39 @@
 template(name="register")
-  .container.register
-    .col-sm-8.col-sm-offset-2.col-md-6.col-md-offset-3
-      h1 Organization Registration
-      p.required-text #[span *] Indicates required field
-      form#tenant-registration.registration.space-top-2
-        .row
-          .col-sm-8
-            label.required Your Name
-            input.form-control.full-name(name='fullName' type='text' required)
-            label.required Your Email
-            input.form-control.email(name='emailAddress' type='email' required)
-        label Company/Organization
-        input.form-control.org-name(name='orgName' type='text')
-        label.required Customized Tater URL
-          i.fa.fa-info-circle(
-            title="The web address of your personalized Tater login."
-            data-toggle="tooltip")
-        .row
-          .col-sm-10
-            .input-group
-              input.form-control.tenant-name(name='tenantName' type='text' required)
-              .input-group-addon .tater.io
-            p.input-note Tater URLs can only contain lowercase letters, numbers and '-'
-        if registering
-          input.btn.btn-primary(type='submit' value="Register")
-        else
-          .curtain-white
+  .fluid-container.register.clearfix
+    .row
+      .col-sm-7.block
+        .form-wrapper
+          h1 Organization Registration
+          p.required-text #[span *] Indicates required field
+          form#tenant-registration.registration.space-top-2
+            .row
+              .col-sm-8
+                label.required Your Name
+                input.form-control.full-name(name='fullName' type='text' required)
+                label.required Your Email
+                input.form-control.email(name='emailAddress' type='email' required)
+            label Company/Organization
+            input.form-control.org-name(name='orgName' type='text')
+            label.required Customized Tater URL
+              i.fa.fa-info-circle(
+                title="The web address of your personalized Tater login."
+                data-toggle="tooltip")
+            .row
+              .col-sm-10
+                .input-group
+                  input.form-control.tenant-name(name='tenantName' type='text' required)
+                  .input-group-addon .tater.io
+            if registering
+              input.btn.btn-primary(type='submit' value="Register")
+            else
+              .curtain-white
+          unless registering
+            .registered.space-top-3
+              i.fa.fa-check-circle
+              .message
+                p Thank you for registering.
+                p Please check your email and allow up to 24 hours for registration to complete.
+      .col-sm-5.block.details-wrapper
+        .col-sm-8.col-sm-offeset-2
 
-      unless registering
-        .registered.space-top-3
-          i.fa.fa-check-circle
-          .message
-            p Thank you for registering.
-            p Please check your email and allow up to 24 hours for registration to complete.
+  +footer

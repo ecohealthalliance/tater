@@ -1,16 +1,41 @@
 .register
+  h1
+    font-size 2.5em
   input
     margin-bottom 20px
+    max-width 700px
   label
     margin-bottom 5px
+  .block
+    background $ll-gray
+    height 100vh
+    min-height 600px
+    +below(2)
+      height auto
+      min-height 200px
+  .details-wrapper
+    display none
+    +above(3)
+      background url('../../../images/marketing/annotated-docs-2.svg') #576E83 repeat-y
+      background-position center -30px
+      background-size 75% 100%
+      display block
+  .form-wrapper
+    padding 30px 15px
+    +above(3)
+      padding-top 50px
+      padding-left 15%
+      padding-right 10%
 
 .registration
   position relative
+  margin-bottom 20px
   input[type=submit]
-    margin-top 30px
+    width 100%
+    margin-top 40px
     padding-top 12px
     padding-bottom 12px
-    +above(1)
+    +above(2)
       width 50%
   [data-toggle=tooltip]
     pointer()
