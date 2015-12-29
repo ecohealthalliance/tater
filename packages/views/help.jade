@@ -57,7 +57,7 @@ template(name="help")
           h2 Documents
           .help-topic#uploading-documents
             h3 Uploading
-            p To add a document, click the #[span(class="button-ref") New Document] button on the top of the page, right of the Tater logo. Fill out the new document form, naming the document in the #[i Title] section, entering the text of the document in the #[i Body] section and selecting the Group of the document using the dropdown menu. Click #[span(class="button-ref")  Save] to create the document and you will be sent to the annotation interface.
+            p To add a document, click the #[span(class="button-ref") New Document] button on the top of the page, right of the Tater logo. Fill out the new document form, naming the document in the #[i Title] section, entering the text of the document in the #[i Body] section and selecting the Document Group using the dropdown menu. Click #[span(class="button-ref")  Save] to create the document and you will be sent to the annotation interface.
           .help-topic#annotating-documents
             h3 Annotating
             p The annotation interface displays three separate columns: code keywords, the body of the document text, and annotations within the document. On the left-hand side all code keywords are listed in a three-layer hierarchical manner with keywords nested under headers and sub-headers. To hide/expose the keywords within groups and subgroups, click the #[i(class="fa fa-chevron-circle-down" title="Arrow")]. You can also search for a specific keyword using the search bar above the keyword groups.
@@ -85,7 +85,7 @@ template(name="help")
             h3 Viewing
             p Admins can navigate to a specific document in two ways. First, you can access a list of all documents by clicking #[span(class="button-ref") Documents] in the navigation menu. This will navigate you to a page listing all Tater documents. The group name of each document can be found to the right of the document name in italics. Click on the document's name to open it in the annotation interface.
 
-            p Admins can also navigate to a document through the #[i Groups] section on the Admin page. Click on the group name you are interested in and you will be forwarded to the group page listing all of the documents within that group. Click on the document's name to open it in the annotation interface.
+            p Admins can also navigate to a document through the #[i Document Groups] section on the Admin page. Click on the group name you are interested in and you will be forwarded to the group page listing all of the documents within that group. Click on the document's name to open it in the annotation interface.
 
           .help-topic#deleting-documents
             h3 Deleting
@@ -141,13 +141,13 @@ template(name="help")
                 td Have the ability to analyze only the annotations on documents in their specific group
 
         .help-topic-group#group-management
-          h2 Group Management
+          h2 Document Group Management
           p.featured Tater groups are siloed collections of documents. It is important to establish your groups before adding regular users. Regular users are assigned to a specific group and can only view/edit/delete documents within that specific group. Regular users are not able to access any documents outside of their specific group.
 
           .help-topic#creating-groups
-            h3 Creating Groups
+            h3 Creating Document Groups
 
-            p To add a group, navigate to the Admin page and click the button #[span(class="button-ref") Create] next to the #[i Groups] section title. You will be directed to a new page where you must enter the group Name. You may also include a short description of the group in the #[i Description] section on this page. Once you have created a group, you can begin creating regular Tater user accounts.
+            p To add a group, navigate to the Admin page and click the button #[span(class="button-ref") Create] next to the #[i Document Groups] section title. You will be directed to a new page where you must enter the group Name. You may also include a short description of the group in the #[i Description] section on this page. Once you have created a group, you can begin creating regular Tater user accounts.
 
           .help-topic#user-management
             h3 User Management
@@ -156,7 +156,7 @@ template(name="help")
             p Admin users have the ability to view, add and delete both admin and regular users. To view all users navigate to the Admin page by clicking #[span(class="button-ref") Admin] on the navigation menu and navigate to the section titled #[i Users]. Users are displayed with their Tater group and email. To add an admin user account, click #[span(class="button-ref") Create New Admin User]. Enter the user's email and a temporary password. Click the #[span(class="button-ref") Add User] button to add the user to the system. Send the new admin their temporary password and instruct them to log into Tater and update their password.
 
             h4 Creating Regular Users
-            p To add a regular Tater user, navigate to the Groups section on the Admin page. Decide which group you would like to add a user to and click the #[i(class="fa fa-user-plus" title="Add User")] icon on the right-hand side aligned with that specific group. Enter the new email and a temporary password. Send the new user individual their temporary password and instruct them to log into Tater and update their password.
+            p To add a regular Tater user, navigate to the Document Groups section on the Admin page. Decide which group you would like to add a user to and click the #[i(class="fa fa-user-plus" title="Add User")] icon on the right-hand side aligned with that specific group. Enter the new email and a temporary password. Send the new user individual their temporary password and instruct them to log into Tater and update their password.
 
             h4 Removing Users
             p To remove a user, navigate to the Admin page and scroll down to the #[i Users] section. Click the #[i(class="fa fa-user-times" title="Remove User")] icon on the righthand side aligned with the individual user you wish to remove.

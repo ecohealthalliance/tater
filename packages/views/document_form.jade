@@ -11,7 +11,7 @@ template(name="documentForm")
     if isAdmin
       .row
         .col-sm-7
-          label Group
+          label Document Group
           select#document-group-id.form-control(name='groupId')
             each groups
               option(value=_id)= name
