@@ -37,12 +37,13 @@ if Meteor.isClient
           form.reset()
           $('.modal').modal('hide')
 
-
-Meteor.methods
-  addGroupUser: (fields) ->
-    if Meteor.user()?.admin
-      Accounts.createUser
-        email : fields.email
-        password : fields.password
-        admin: fields.admin
-        group: fields.groupId
+if Meteor.isServer
+  Meteor.methods
+    addGroupUser: (fields) ->
+      if Meteor.user()?.admin
+        userId = Accounts.createUser
+          email : fields.email
+          password : fields.password
+          admin: fields.admin
+          group: fields.groupId
+        Accounts.sendEnrollmentEmail(userId)
