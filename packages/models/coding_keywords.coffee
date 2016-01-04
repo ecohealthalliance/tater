@@ -8,6 +8,7 @@ CodingKeyword = Astro.Class
     label: 'string'
     caseCount: 'boolean'
     archived: 'boolean'
+    
   behaviors: ['timestamp']
   methods:
     _subHeader: ->
