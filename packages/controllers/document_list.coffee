@@ -11,7 +11,7 @@ if Meteor.isClient
 
     @subscribe 'groups'
     Tracker.autorun =>
-      @subscribe 'documents', @data?.group, @searchText.get()
+      @subscribe 'documents', @data?.group?._id, @searchText.get()
 
     cleanUpRemovedDocuments = ->
       i = 0
@@ -85,7 +85,7 @@ if Meteor.isClient
         event.target.parentElement.getAttribute("data-document-id")
       )
     'input .document-search': _.debounce(( (event, instance)->
-      searchQuery = event.currentTarget.value.trim()
+      searchQuery = $(event.currentTarget).val().trim()
       instance.searchText.set searchQuery
     ), 500)
     'click .headers h4': (event, instance) ->
@@ -135,12 +135,17 @@ if Meteor.isServer
       user = Meteor.users.findOne @userId
       if user.admin? # the current user is an admin
         query = {}
-        if group? and typeof group is 'string'
+        if group? and 'string' is typeof group
           query = { groupId: group }
         if searchText? and typeof searchText is 'string'
-          query.body =
-            $regex: regexEscape(searchText)
-            $options: 'i'
+          query.$or = [ body: {
+              $regex: regexEscape(searchText)
+              $options: 'i'
+            },
+            title: {
+              $regex: regexEscape(searchText)
+              $options: 'i'
+            } ]
         Documents.find query, fields: fields
       else # normal user
         query = { group: user.group }

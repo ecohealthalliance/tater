@@ -1,7 +1,9 @@
 if Meteor.isClient
+
   Template.groupDocuments.onCreated ->
-    @subscribe('groupDetail', @data.groupId)
-    
+    @subscribe 'groups', =>
+      @subscribe 'documents', @data.groupId
+
   Template.groupDocuments.helpers
     group: ->
       Groups.findOne(@groupId)
