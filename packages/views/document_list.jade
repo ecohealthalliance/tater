@@ -29,6 +29,12 @@ template(name="documentList")
             if sortBy 'annotated' -1
               i.fa.fa-caret-up
             h4(data-sort-by='annotated') Number of Annotations
+          span
+            if sortBy 'groupName' 1
+              i.fa.fa-caret-down
+            if sortBy 'groupName' -1
+              i.fa.fa-caret-up
+            h4(data-sort-by='groupName') Document Group
         ul.list.document-list.list-unstyled
           each documents
             +document

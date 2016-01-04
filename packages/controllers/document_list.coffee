@@ -40,6 +40,7 @@ if Meteor.isClient
         newShadowDocument.createdAt = originalDocument.createdAt
         newShadowDocument.groupId = originalDocument.groupId
         newShadowDocument.annotated = originalDocument.annotated
+        newShadowDocument.groupName = originalDocument.groupName()
         # upsert
         if undefined is shadowDocuments.findOne originalDocument._id
           #insert
