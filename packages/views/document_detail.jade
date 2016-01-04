@@ -4,6 +4,9 @@ template(name="documentDetail")
       +documentDetailCodingKeywords
       .document-heading.pane-head.pane-head-m
         h1.document-title= document.title
+        a.help-link.help-link-document.pull-right(href="{{path route='/help?topic=annotating-documents'}}")
+          i.fa.fa-question-circle
+
         if accessCode
           button.finished-annotating.btn.btn-primary(data-toggle="modal" data-target="#completionCodeModal")
             i.fa.fa-check-circle.icon-left

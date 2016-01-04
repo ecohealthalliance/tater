@@ -2,6 +2,8 @@ template(name="codingKeywords")
   .view-header.primary-bg
     .container
       h1 Coding Keywords
+        a.help-link(href="{{path route='help?topic=coding-keyword-management'}}")
+          i.fa.fa-question-circle
 
   .container.code-management-container
     if Template.subscriptionsReady

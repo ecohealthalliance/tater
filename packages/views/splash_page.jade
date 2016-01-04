@@ -7,6 +7,8 @@ template(name="splashPage")
       .row
         .col-sm-8
           h4 Add a New Document
+            a.help-link(href="{{path route='help?topic=uploading-documents'}}")
+              i.fa.fa-question-circle
           +documentForm
 
         .col-sm-3.col-sm-offset-1

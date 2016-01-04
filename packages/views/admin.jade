@@ -6,6 +6,8 @@ template(name="admin")
           .col-sm-6
             .groups-container
               h2.inline Document Groups
+                a.help-link(href="{{path route='help?topic=document-groups'}}")
+                  i.fa.fa-question-circle
               a.btn.btn-primary.new-group-link.header-btn(href="{{path route='newGroup'}}")
                 span Create
                 i.fa.fa-users
@@ -13,6 +15,8 @@ template(name="admin")
           .col-sm-6
             .users-container
               h2.inline Users
+                a.help-link(href="{{path route='help?topic=user-types'}}")
+                  i.fa.fa-question-circle
               a.btn.btn-primary.new-user-link.header-btn.add-admin(data-toggle="modal" data-target="#add-admin-modal")
                 span Create New Admin User
                 i.fa.fa-user-plus
