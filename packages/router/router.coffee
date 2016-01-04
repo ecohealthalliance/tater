@@ -18,6 +18,13 @@ FlowRouter.route '/reset-password/:token',
       main: 'resetPassword'
       params: {"token": params.token}
 
+FlowRouter.route '/enroll-account/:token',
+  name: 'enrollAccount'
+  action: (params) ->
+    BlazeLayout.render 'layout',
+      main: 'enrollAccount'
+      params: {"token": params.token}
+
 FlowRouter.route '/register',
   name: 'register'
   action: () ->

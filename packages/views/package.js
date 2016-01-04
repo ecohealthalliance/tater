@@ -48,6 +48,7 @@ Package.onUse(function(api) {
   api.addFiles('document_new.jade', 'client');
   api.addFiles('marketing_page.jade', 'client');
   api.addFiles('reset_password.jade', 'client');
+  api.addFiles('enroll_account.jade', 'client');
   api.addFiles('document_detail_coding_keywords.jade', 'client');
   api.addFiles('help.jade', 'client');
   api.addFiles('register.jade', 'client');
