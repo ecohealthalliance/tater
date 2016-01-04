@@ -10,7 +10,6 @@ CodingKeyword = Astro.Class
     archived: 'boolean'
     
   behaviors: ['timestamp']
-
   methods:
     _subHeader: ->
       SubHeaders.findOne(@subHeaderId)
