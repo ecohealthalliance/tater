@@ -1,10 +1,13 @@
 if Meteor.isClient
 
+  perPage = 10
   shadowDocuments = new Meteor.Collection null
 
   Template.documentList.onCreated ->
     @sortBy = new ReactiveVar { createdAt: -1 }
     @searchText = new ReactiveVar ''
+    @numberOfPages = new ReactiveVar 1
+    @currentPageNumber = new ReactiveVar 1
 
     @subscribe 'groups'
     Tracker.autorun =>
@@ -21,7 +24,7 @@ if Meteor.isClient
           shadowDocuments.remove shadowDocument._id
         i++
 
-    Tracker.autorun ->
+    Tracker.autorun =>
       # clean-up no longer existing documents within shadowDocuments
       cleanUpRemovedDocuments()
       # (re-)populate the minimongo collection
@@ -30,7 +33,7 @@ if Meteor.isClient
       originalDocumentsArray = originalDocumentsCursor.fetch()
       i = 0
       while i < originalDocumentsTotalCount
-        originalDocument = originalDocumentsArray[i]
+        originalDocument = originalDocumentsArray[i++]
         newShadowDocument = {}
         newShadowDocument.title = originalDocument.title
         newShadowDocument.lowerTitle = originalDocument.title?.toLowerCase()
@@ -46,21 +49,34 @@ if Meteor.isClient
           # update
           shadowDocuments.update originalDocument._id,
             newShadowDocument
-        i++
-      shadowDocuments
+      # update the amount of pages
+      @numberOfPages.set Math.ceil i / perPage
+      # reset the currently selected page number to 1
+      @currentPageNumber.set 1
 
 
   Template.documentList.helpers
     documents: ->
       instance = Template.instance()
       sortBy = instance.sortBy.get()
-      shadowDocuments.find({}, sort: sortBy)
+      amountToSkip = (instance.currentPageNumber.get() - 1) * perPage
+      shadowDocuments.find({}, sort: sortBy, limit: perPage, skip: amountToSkip)
     noDocumentsFound: ->
       Documents.find().count() is 0
     sortBy: (column, order) ->
       instance = Template.instance()
       sortBy = instance.sortBy.get()
       sortBy[column]? and order is sortBy[column]
+    pages: ->
+      instance = Template.instance()
+      totalPages = instance.numberOfPages.get()
+      currentPageNumber = instance.currentPageNumber.get()
+      returnArray = []
+      i = 0
+      while i < totalPages
+        returnArray[i++] = { number: i, active: currentPageNumber is i }
+      returnArray
+
 
   Template.documentList.events
     'click .delete-document-button': (event) ->
@@ -92,6 +108,16 @@ if Meteor.isClient
   Template.document.helpers
     groupName: ->
       Template.instance().document.groupName()
+
+  Template.documentListPages.events
+    'click a': (event, instance) ->
+      event.preventDefault()
+      pageNumber = Number event.currentTarget.innerText
+      if $(event.currentTarget).parent().is(':first-child')
+        pageNumber = 1
+      else if $(event.currentTarget).parent().is(':last-child')
+        pageNumber = instance.parent().numberOfPages.get()
+      Template.instance().parent().currentPageNumber.set pageNumber
 
 
 

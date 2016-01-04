@@ -32,6 +32,8 @@ template(name="documentList")
         ul.list.document-list.list-unstyled
           each documents
             +document
+        with pages
+          +documentListPages
     else
       .loading
   +deleteDocumentModal
@@ -48,3 +50,14 @@ template(name="document")
       span.document-group= groupName
     button.btn-plain.delete-document-button(data-toggle="modal" data-document-id=_id data-target="#confirm-delete-document-modal" )
       i.fa.fa-trash-o
+
+template(name="documentListPages")
+  .pagination-cont(style="text-align:center")
+    ul.pagination
+      li
+        a(href="#page-1") «
+      each this
+        li(class="{{#if active}}active{{/if}}")
+          a(href="#page-{{number}}")= number
+      li
+        a(href="#page-1") »
