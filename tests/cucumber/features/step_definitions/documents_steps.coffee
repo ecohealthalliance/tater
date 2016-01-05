@@ -148,8 +148,6 @@ do ->
       @browser
         .waitForExist('.document-list')
         .setValue('.document-search', documentName)
-        # .execute ->
-        #   $('.document-search').trigger('input')
         .pause(2000)
         .getHTML '.document-list', (error, response) ->
           if error instanceof Error
