@@ -62,7 +62,7 @@ Feature: Accounts
     And I confirm the account deletion
     Then I should not see content "mr@potato.head"
 
-  @accounts
+  @dev
   Scenario: Changing my password
     Given there is a test user in the database
     When I log in as the test user
