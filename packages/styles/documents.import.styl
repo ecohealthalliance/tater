@@ -77,15 +77,21 @@
     centerPosition()
 
 .document-filtration
-  min-width 50%
+  min-width 70%
   display flex
-  // align-content flex-end center
   flex-wrap nowrap
   justify-content flex-end
+  +below(1)
+    min-width 98%
+    flex-wrap wrap
+    margin 0 auto
 
 .document-sorting
   position relative
   margin-right 15px
+  +below(1)
+    flex-grow 1
+    margin-bottom 10px
   i
     font-size 1.75em
     padding-top .1em
@@ -120,6 +126,9 @@
 
 .document-search-wrap
   min-width 250px
+  +below(1)
+    flex-grow 1
+    margin-bottom 10px
   i
     position absolute
     top 50%
@@ -144,5 +153,3 @@
     text-shadow none
     background white
     border-color $secondary
-
-
