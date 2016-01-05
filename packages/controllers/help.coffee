@@ -4,7 +4,18 @@ if Meteor.isClient
     retinajs: true
     attribute : 'data-retina'
 
+  scrollToElement = (element, delay = 0) ->
+    setTimeout ( ->
+      $('html,body').animate
+        scrollTop:
+          $(element).offset().top
+        , 'slow'
+      ), delay
+
   Template.help.onRendered ->
+    topic = Template.instance().data.topic
+    if topic
+      scrollToElement("##{topic}", 100)
     $("body").scrollspy({target: ".help-nav-wrap"})
     $('.help-nav').affix
       offset:
@@ -14,8 +25,5 @@ if Meteor.isClient
     'click .help-nav li a': (event) ->
       event.preventDefault()
       $(event.target).parent().addClass('active')
-      $('html,body').animate
-        scrollTop:
-          $(event.target.hash).offset().top
-        ,'slow'
+      scrollToElement(event.target.hash)
       $('.help-nav-wrap').scrollspy('refresh')

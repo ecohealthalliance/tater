@@ -91,6 +91,7 @@ loggedIn.route '/annotations',
 
 loggedIn.route '/help',
   name: 'help'
-  action: () ->
+  action: (params, query) ->
     BlazeLayout.render 'layout',
       main: 'help'
+      params: {'topic': query.topic}

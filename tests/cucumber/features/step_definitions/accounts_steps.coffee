@@ -111,7 +111,7 @@ do ->
 
     @When 'I log out', ->
       @browser
-        .click('.dropdown-toggle')
+        .moveToObject('.dropdown-toggle')
         .waitForVisible('.sign-out')
         .click('.sign-out')
         .waitForExist('.sign-in')
@@ -138,7 +138,7 @@ do ->
 
     @When 'I open the change password modal', ->
       @browser
-        .click('nav .admin-settings')
+        .moveToObject('nav .admin-settings')
         .waitForVisible('.dropdown-menu')
         .click('.dropdown-menu .change-password')
         .waitForExist('.accounts-modal.modal.in')
