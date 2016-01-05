@@ -87,6 +87,7 @@ if Meteor.isClient
       returnArray
 
   updateSorting = (instance, event) ->
+    event.preventDefault()
     element = event.currentTarget
     newSortByColumn = element.getAttribute 'data-sort-by'
     newSortByColumnTitle = element.getAttribute 'data-title'
@@ -101,6 +102,7 @@ if Meteor.isClient
     newSortObject[newSortByColumn] = newSortByOrder
     newSortObject['title'] =  newSortByColumnTitle
     instance.sortBy.set newSortObject
+    $(element).blur()
 
 
   Template.documentList.events
