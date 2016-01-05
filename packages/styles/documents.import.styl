@@ -89,3 +89,62 @@
     color white
   i
     centerPosition()
+
+.document-filtration
+  min-width 50%
+  display flex
+  // align-content flex-end center
+  flex-wrap nowrap
+  justify-content flex-end
+
+.document-sorting
+  position relative
+  margin-right 15px
+  i
+    font-size 1.75em
+    padding-top .1em
+
+  .dropdown-menu
+    right 0
+    top 40px
+    left auto
+    white-space nowrap
+    li
+      padding 5px 15px
+      border-bottom 1px solid $l-gray
+      pointer()
+      &:last-of-type
+        border-bottom transparent
+      &:hover
+        background $l-gray
+        color black
+      .fa
+        font-size 1em
+        padding-top 0
+        color $d-gray
+  .dropdown-toggle
+    border-width 2px
+    border-width-left 0
+  .btn-group
+    .btn
+      padding-top 5px
+      padding-bottom 5px
+
+.document-search-wrap
+  min-width 250px
+  i
+    position absolute
+    top 50%
+    left 10px
+    transform translate(0,-50%)
+    color $d-gray
+
+.current-sorting
+  color $body-text
+  background white
+  border 2px solid #CCC
+  .fa
+    vertical-align initial
+
+
+

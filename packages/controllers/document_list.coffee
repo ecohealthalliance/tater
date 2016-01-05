@@ -4,7 +4,9 @@ if Meteor.isClient
   shadowDocuments = new Meteor.Collection null
 
   Template.documentList.onCreated ->
-    @sortBy = new ReactiveVar { createdAt: -1 }
+    @sortBy = new ReactiveVar
+      createdAt: -1
+      title: 'Date Created'
     @searchText = new ReactiveVar ''
     @numberOfPages = new ReactiveVar 1
     @currentPageNumber = new ReactiveVar 1
@@ -68,6 +70,12 @@ if Meteor.isClient
       instance = Template.instance()
       sortBy = instance.sortBy.get()
       sortBy[column]? and order is sortBy[column]
+    sortByTitle: ->
+      Template.instance().sortBy.get().title
+    sortByColumn: ->
+      _.keys(Template.instance().sortBy.get())[0]
+    sortDirection: (order) ->
+      _.values(Template.instance().sortBy.get())[0] is order
     pages: ->
       instance = Template.instance()
       totalPages = instance.numberOfPages.get()
@@ -77,6 +85,22 @@ if Meteor.isClient
       while i < totalPages
         returnArray[i++] = { number: i, active: currentPageNumber is i }
       returnArray
+
+  updateSorting = (instance, event) ->
+    element = event.currentTarget
+    newSortByColumn = element.getAttribute 'data-sort-by'
+    newSortByColumnTitle = element.getAttribute 'data-title'
+    currentSortBy = instance.sortBy.get()
+    newSortByOrder = 1
+    if currentSortBy[newSortByColumn]?
+      newSortByOrder = -currentSortBy[newSortByColumn]
+    else if currentSortBy[Object.keys(currentSortBy)[0]] < 0
+      newSortByOrder *= -1
+
+    newSortObject = {}
+    newSortObject[newSortByColumn] = newSortByOrder
+    newSortObject['title'] =  newSortByColumnTitle
+    instance.sortBy.set newSortObject
 
 
   Template.documentList.events
@@ -89,19 +113,8 @@ if Meteor.isClient
       searchQuery = $(event.currentTarget).val().trim()
       instance.searchText.set searchQuery
     ), 500)
-    'click .headers h4': (event, instance) ->
-      element = event.currentTarget
-      newSortByColumn = element.getAttribute 'data-sort-by'
-      currentSortBy = instance.sortBy.get()
-      newSortByOrder = 1
-      if currentSortBy[newSortByColumn]?
-        newSortByOrder = -currentSortBy[newSortByColumn]
-      else if currentSortBy[Object.keys(currentSortBy)[0]] < 0
-        newSortByOrder *= -1
-
-      newSortObject = {}
-      newSortObject[newSortByColumn] = newSortByOrder
-      instance.sortBy.set newSortObject
+    'click .document-sorting-options .column, click .current-sorting': (event, instance) ->
+      updateSorting(instance, event)
 
   Template.document.onCreated ->
     @document = new Document(_.pick(@data, _.keys(Document.getFields())))
