@@ -17,4 +17,4 @@ if Meteor.isServer
         else
           throw new Meteor.Error "Please provide a valid email as an argument"
       else
-        throw new Meteor.Error "The system already has users: " + JSON.stringify(Meteor.users.findOne())
+        throw new Meteor.Error "The system already has users"
