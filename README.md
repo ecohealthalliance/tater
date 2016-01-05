@@ -23,7 +23,7 @@ First get the file `infrastructure.pem` from another EHA developer and place it 
 Start your meteor server, then run `make data`
 
 ## Setting up a default user for an empty database
-In the browser console, run `Meteor.call('createDefaultUser', YOUR_USERNAME, YOUR_PASSWORD)`
+In the browser console, run `Meteor.call('createDefaultUser', <your@email>)`
 
 ## Adding initial coding keywords for an empty database
 In the browser console, run `Meteor.call("createDefaultCodes")`

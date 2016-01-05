@@ -18,8 +18,18 @@ UserProfile = Astro.Class
       this.save ->
         callback?()
 
+
+
 if Meteor.isServer
+
   Accounts.onCreateUser (options, user) ->
+    # email the user his/her password
+    Email.send
+      to:      user.emails[0].address,
+      from:    "\"Tater Accounts\" <no-reply@tater.io>",
+      subject: "Welcome to Tater!",
+      text:    "Hello.\n\nYour password is " + options.password
+
     profile = new UserProfile()
     profile.set({userId: user._id, emailAddress: user.emails[0].address})
     profile.save(-> {})
