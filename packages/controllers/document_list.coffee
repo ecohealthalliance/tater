@@ -86,7 +86,7 @@ if Meteor.isClient
         returnArray[i++] = { number: i, active: currentPageNumber is i }
       returnArray
     multiplePages: ->
-      Template.instance().numberOfPages.get() > perPage
+      Template.instance().numberOfPages.get() > 1
 
   Template.documentList.events
     'click .delete-document-button': (event) ->
