@@ -1,16 +1,29 @@
 if Meteor.isClient
 
+  Template.userForm.onRendered ->
+    $("[data-toggle='tooltip']").tooltip
+      placement: 'bottom'
+      container: 'body'
+      trigger: 'hover'
+      delay:
+        'show': 500
+        'hide': 100
+
   Template.userForm.helpers
     typeIsAdmin: () ->
-      Template.instance().data.userType is 'admin'
+      !Template.instance().data.group.get()?
 
     groups: () ->
       Groups.find()
 
     group: () ->
-      Groups.findOne(Template.instance().data.group.get())
+      Template.instance().data.group.get()
 
   Template.userForm.events
+    'click .user-group': (event, template) ->
+      showGroups = event.target.id == "group"
+      $(".groups").toggleClass('hidden',!showGroups)
+
     'submit form': (event, template) ->
       event.preventDefault()
       event.stopImmediatePropagation()
@@ -24,18 +37,24 @@ if Meteor.isClient
       if form.password.value != form.passwordconfirm.value
         toastr.error("Password mismatch")
         return
+      groupId = null
+      if $(".document_groups").is(":visible")
+        groupId = $(".document_groups").val()
+      else
+        groupId = form.group?.value
 
       fields = {
         email: form.email.value
         password: form.password.value
-        groupId: form.group?.value
-        admin: template.data.userType is 'admin'
+        groupId: groupId
+        admin:  !groupId     #if no group provided then user is admin
         fullName: form.name.value
       }
 
-      Meteor.call 'addGroupUser', fields, (error, response) ->
+      Meteor.call 'addUser', fields, (error, response) ->
         if error
           toastr.error("Error")
+          console.log error
         else
           toastr.success("Success")
           form.reset()
@@ -43,7 +62,7 @@ if Meteor.isClient
 
 if Meteor.isServer
   Meteor.methods
-    addGroupUser: (fields) ->
+    addUser: (fields) ->
       if Meteor.user()?.admin
         userId = Accounts.createUser
           email : fields.email

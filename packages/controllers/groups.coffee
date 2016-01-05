@@ -23,7 +23,7 @@ if Meteor.isClient
       hideToggle: true
       fn: (val, obj) ->
         new Spacebars.SafeString("""
-          <a class="control add-user" data-toggle="modal" data-target="#add-group-user-modal" data-group="#{obj._id}">
+          <a class="control add-user" data-toggle="modal" data-target="#add-user-modal" data-group="#{obj._id}">
             <i class='fa fa-user-plus'></>
           </a>
         """)

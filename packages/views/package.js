@@ -29,6 +29,7 @@ Package.onUse(function(api) {
   api.addFiles('group_form.jade', 'client');
   api.addFiles('users.jade', 'client');
   api.addFiles('user_form.jade', 'client');
+  api.addFiles('user_modal.jade', 'client');
   api.addFiles('group_detail.jade', 'client');
   api.addFiles('group_documents.jade', 'client');
   api.addFiles('document_form.jade', 'client');

@@ -1,0 +1,9 @@
+template(name="userModal")
+  #add-user-modal.modal.fade(tabindex="-1" role="dialog")
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+            i.fa.fa-times-circle
+        .modal-body
+          +userForm(group=selectedGroup)
