@@ -51,8 +51,9 @@ template(name="documentList")
         ul.list.document-list.list-unstyled
           each documents
             +document
-        with pages
-          +documentListPages
+        if multiplePages
+          with pages
+            +documentListPages
     else
       .loading
   +deleteDocumentModal

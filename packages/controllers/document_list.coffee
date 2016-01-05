@@ -85,6 +85,8 @@ if Meteor.isClient
       while i < totalPages
         returnArray[i++] = { number: i, active: currentPageNumber is i }
       returnArray
+    multiplePages: ->
+      Template.instance().numberOfPages.get() > perPage
 
   updateSorting = (instance, event) ->
     event.preventDefault()
