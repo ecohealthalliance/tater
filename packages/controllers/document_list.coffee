@@ -88,25 +88,6 @@ if Meteor.isClient
     multiplePages: ->
       Template.instance().numberOfPages.get() > perPage
 
-  updateSorting = (instance, event) ->
-    event.preventDefault()
-    element = event.currentTarget
-    newSortByColumn = element.getAttribute 'data-sort-by'
-    newSortByColumnTitle = element.getAttribute 'data-title'
-    currentSortBy = instance.sortBy.get()
-    newSortByOrder = 1
-    if currentSortBy[newSortByColumn]?
-      newSortByOrder = -currentSortBy[newSortByColumn]
-    else if currentSortBy[Object.keys(currentSortBy)[0]] < 0
-      newSortByOrder *= -1
-
-    newSortObject = {}
-    newSortObject[newSortByColumn] = newSortByOrder
-    newSortObject['title'] =  newSortByColumnTitle
-    instance.sortBy.set newSortObject
-    $(element).blur()
-
-
   Template.documentList.events
     'click .delete-document-button': (event) ->
       $('#confirm-delete-document').attr(
@@ -118,7 +99,22 @@ if Meteor.isClient
       instance.searchText.set searchQuery
     ), 500)
     'click .document-sorting-options .column, click .current-sorting': (event, instance) ->
-      updateSorting(instance, event)
+      event.preventDefault()
+      element = event.currentTarget
+      newSortByColumn = element.getAttribute 'data-sort-by'
+      newSortByColumnTitle = element.getAttribute 'data-title'
+      currentSortBy = instance.sortBy.get()
+      newSortByOrder = 1
+      if currentSortBy[newSortByColumn]?
+        newSortByOrder = -currentSortBy[newSortByColumn]
+      else if currentSortBy[Object.keys(currentSortBy)[0]] < 0
+        newSortByOrder *= -1
+
+      newSortObject = {}
+      newSortObject[newSortByColumn] = newSortByOrder
+      newSortObject['title'] =  newSortByColumnTitle
+      instance.sortBy.set newSortObject
+      $(element).blur()
 
   Template.document.onCreated ->
     @document = new Document(_.pick(@data, _.keys(Document.getFields())))
