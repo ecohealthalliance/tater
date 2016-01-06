@@ -1,10 +1,13 @@
 if Meteor.isClient
+
   Template.profileEdit.onCreated ->
     @subscribe('currentUserProfile')
 
   Template.profileEdit.helpers
     userProfile: ->
-      UserProfiles.findOne({userId: Meteor.userId()})
+      UserProfiles.findOne userId: Meteor.userId()
+    email: ->
+      Meteor.user().emails[0].address
 
   Template.profileEdit.events
     'submit form': (event) ->
@@ -28,10 +31,11 @@ if Meteor.isClient
 
 Meteor.methods
   updateProfile: (fields) ->
-    userProfile = UserProfiles.findOne({userId: this.userId})
+    userProfile = UserProfiles.findOne userId: Meteor.userId()
     userProfile.update(fields)
 
 
 if Meteor.isServer
+
   Meteor.publish 'currentUserProfile', ->
-    UserProfiles.find({userId: this.userId})
+    UserProfiles.find userId: this.userId

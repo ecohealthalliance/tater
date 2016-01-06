@@ -9,27 +9,79 @@ template(name="profileEdit")
               span View Public Profile
               i.fa.fa-user
         .container
-          .row
-            .col-md-8
-              form#edit-profile-form
+          form#edit-profile-form
+            .row
+              .col-md-5
                 .row
-                  .col-md-8
+                  .col-md-12
                     label
-                      span Full Name
-                      input#profile-fullname.form-control(name="fullName" type="text" value=userProfile.fullName)
+                      span Your Name
+                      .row
+                        .col-md-4
+                          input#profile-firstname.form-control(name="firstName" type="text" value=userProfile.firstName placeholder="First")
+                        .col-md-3
+                          input#profile-middlename.form-control(name="middleName" type="text" value=userProfile.middleName placeholder="Middle")
+                        .col-md-5
+                          input#profile-lastname.form-control(name="lastName" type="text" value=userProfile.lastName placeholder="Last")
                 .row
-                  .col-md-8
+                  .col-md-12
                     label
-                      span Job Title
-                      input#profile-jobtitle.form-control(name="jobTitle" type="text" value=userProfile.jobTitle)
+                      span Phone
+                      input#profile-phone.form-control(name="phone" type="text" value=userProfile.phone placeholder="+1 (800) 555-1337")
+                .row
+                  .col-md-12
+                    label
+                      span E-mail
+                .row
+                  .col-md-7
+                    span.email
+                      span= email
+                  .col-md-5
+                    .checkbox
+                      label
+                        input#profile-email-hidden(name="emailHidden" type="checkbox" checked=userProfile.emailHidden)
+                        span Hide Email Address
+                .row
+                  .col-md-12
+                    label
+                      span Role
+                      input#profile-jobtitle.form-control(name="jobTitle" type="text" value=userProfile.jobTitle placeholder="Job Title")
+
                 label
                   span Biography
                   textarea#profile-bio.form-control(name="bio") #{userProfile.bio}
-                .checkbox
-                  label
-                    input#profile-email-hidden(name="emailHidden" type="checkbox" checked=userProfile.emailHidden)
-                    span Hide Email Address?
-                input.btn.btn-primary(type="submit" value="Save")
+
+              .col-md-5
+                .row
+                  .col-md-12
+                    label
+                      span Address Line 1
+                      input#address-line-1.form-control(name="address_line_1" type="text" value=userProfile.address.line1 placeholder="Street Address, P.O. Box")
+                .row
+                  .col-md-12
+                    input#address-line-2.form-control(name="address_line_2" type="text" value=userProfile.address.line2 placeholder="Apt, suite, floor, etc.")
+                .row
+                  .col-md-12
+                    label
+                      span Country
+                      select#address-country.form-control(name="address_country")
+                .row
+                  .col-md-12
+                    label
+                      span City
+                      input#address-city.form-control(name="address_city" type="text" value=userProfile.address.city)
+                .row
+                  .col-md-6
+                    label
+                      span State
+                      select#address-state.form-control(name="address_state")
+                  .col-md-6
+                    label
+                      span ZIP
+                      input#address-zip.form-control(name="address_zip" type="text" value=userProfile.address.zip)
+                .row
+                  .col-md-12
+                    input.btn.btn-primary(type="submit" value="Save")
     else
       .container
         p Please log in or sign up to continue.

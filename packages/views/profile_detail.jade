@@ -1,4 +1,10 @@
 template(name="profileDetail")
+  .view-header.secondary-bg.space-btm-2
+    .container
+      h1.inline Your Profile
+      a.btn.btn-primary.profile-detail-link.header-btn(href= "{{path route='profileEdit' params=userProfile}}")
+        span Edit
+        i.fa.fa-edit
   .container.profile-detail
     .profile-name-title.space-btm-2
       h1= userProfile.fullName
