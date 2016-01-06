@@ -148,12 +148,14 @@
     .code
       display block
       padding 25px 35px 25px 15px
+      truncateString(false)
     .user
       position absolute
       bottom 5px
       right 5px
       font-size .8em
       color alpha($body-color, 90%)
+
     for $color, $index in $annotation-colors
       .annotation-color-{$index+1}
         background-color $color
