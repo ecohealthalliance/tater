@@ -63,22 +63,22 @@ template(name="profileEdit")
                 .row
                   .col-md-12
                     label
-                      span Country
-                      select#address-country.form-control(name="address_country")
-                .row
-                  .col-md-12
-                    label
                       span City
                       input#address-city.form-control(name="address_city" type="text" value=userProfile.address.city)
                 .row
                   .col-md-6
                     label
                       span State
-                      select#address-state.form-control(name="address_state")
+                      input#address-state.form-control(name="address_state" type="text")
                   .col-md-6
                     label
                       span ZIP
                       input#address-zip.form-control(name="address_zip" type="text" value=userProfile.address.zip)
+                .row
+                  .col-md-12
+                    label
+                      span Country
+                      input#address-country.form-control(name="address_country" type="text")
                 .row
                   .col-md-12
                     input.btn.btn-primary(type="submit" value="Save")

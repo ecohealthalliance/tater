@@ -8,6 +8,8 @@ if Meteor.isClient
       UserProfiles.findOne userId: Meteor.userId()
     email: ->
       Meteor.user().emails[0].address
+    countries: ->
+      []
 
   Template.profileEdit.events
     'submit form': (event) ->
