@@ -18,7 +18,10 @@ UserProfile = Astro.Class
       this.save ->
         callback?()
 
+
+
 if Meteor.isServer
+
   Accounts.onCreateUser (options, user) ->
     profile = new UserProfile()
     profile.set({userId: user._id, emailAddress: user.emails[0].address})
