@@ -22,7 +22,7 @@ if Meteor.isClient
       shadowDocumentsArray = shadowDocumentsCursor.fetch()
       while i < shadowDocumentsTotalCount
         shadowDocument = shadowDocumentsArray[i]
-        if undefined is Documents.findOne shadowDocument._id
+        if Documents.findOne(shadowDocument._id) is undefined
           shadowDocuments.remove shadowDocument._id
         i++
 
@@ -44,7 +44,7 @@ if Meteor.isClient
         newShadowDocument.annotated = originalDocument.annotated
         newShadowDocument.groupName = originalDocument.groupName()
         # upsert
-        if undefined is shadowDocuments.findOne originalDocument._id
+        if shadowDocuments.findOne(originalDocument._id) is undefined
           #insert
           newShadowDocument._id = originalDocument._id
           shadowDocuments.insert newShadowDocument
@@ -167,9 +167,14 @@ if Meteor.isServer
           if user.group != group
             @ready()
         if searchText? and typeof searchText is 'string'
-          query.body =
-            $regex: regexEscape(searchText)
-            $options: 'i'
+          query.$or = [ body: {
+              $regex: regexEscape(searchText)
+              $options: 'i'
+            },
+            title: {
+              $regex: regexEscape(searchText)
+              $options: 'i'
+            } ]
         Documents.find query, fields: fields
     else
       @ready()
