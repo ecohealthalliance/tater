@@ -162,8 +162,9 @@ linkColor($color, $hover = darken($color, 35%))
   &:hover
     color $hover
 
-truncateString()
-  white-space nowrap
+truncateString($white-space=true)
+  if $white-space
+    white-space nowrap
   overflow hidden
   text-overflow ellipsis
 
@@ -175,3 +176,4 @@ borderRadius($tl,$tr,$br,$bl)
 
 selectedBG()
   background-color desaturate(lighten($primary-light, 90%), 70%)
+
