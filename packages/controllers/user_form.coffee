@@ -18,6 +18,9 @@ if Meteor.isClient
       if not form.email.value or form.email.value.length == 0
         toastr.error("An email address is required")
         return
+      if not form.name.value or form.name.value.length == 0
+        toastr.error("A name is required")
+        return
       if form.password.value != form.passwordconfirm.value
         toastr.error("Password mismatch")
         return
@@ -27,6 +30,7 @@ if Meteor.isClient
         password: form.password.value
         groupId: form.group?.value
         admin: template.data.userType is 'admin'
+        fullName: form.name.value
       }
 
       Meteor.call 'addGroupUser', fields, (error, response) ->
@@ -46,4 +50,7 @@ if Meteor.isServer
           password : fields.password
           admin: fields.admin
           group: fields.groupId
+        #update the profile to include full name
+        userProfile = UserProfiles.findOne({userId: userId})
+        userProfile.update(fullName: fields.fullName)
         Accounts.sendEnrollmentEmail(userId)

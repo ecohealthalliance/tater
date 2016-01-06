@@ -14,6 +14,7 @@ do ->
 
     _testUser =
       email:    'test@example.com'
+      fullName: 'test name'
       password: 'password'
 
 

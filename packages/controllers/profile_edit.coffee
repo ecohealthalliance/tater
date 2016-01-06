@@ -10,6 +10,9 @@ if Meteor.isClient
     'submit form': (event) ->
       event.preventDefault()
       form = event.target
+      if not form.fullName.value or form.fullName.value.length == 0
+        toastr.error("A name is required")
+        return
       fields = {
         fullName: form.fullName?.value
         jobTitle: form.jobTitle?.value

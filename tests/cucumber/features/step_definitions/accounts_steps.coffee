@@ -42,7 +42,7 @@ do ->
         .url(url.resolve(process.env.ROOT_URL, '/profile/edit'))
         .waitForExist('#edit-profile-form')
         .click("#profile-email-hidden")
-        .submitForm('#profile-fullname')
+        .submitForm('#edit-profile-form')
 
     @When /^I fill out the profile edit form with fullName "([^"]*)"$/, (fullName) ->
       @browser
@@ -89,6 +89,7 @@ do ->
         .waitForVisible('#add-group-user-modal')
         .waitForEnabled('#add-group-user-modal .user-email')
         .setValue('#add-group-user-modal .user-email', email)
+        .setValue('#add-group-user-modal .user-name', 'test name')
         .setValue('#add-group-user-modal .user-password', 'testuser')
         .setValue('#add-group-user-modal .user-password-confirm', 'testuser')
         .submitForm('#add-group-user-modal .user-email')
@@ -103,6 +104,7 @@ do ->
         .waitForVisible('#add-admin-modal')
         .waitForEnabled('#add-admin-modal .user-email')
         .setValue('#add-admin-modal .user-email', email)
+        .setValue('#add-admin-modal .user-name', 'test name')
         .setValue('#add-admin-modal .user-password', 'testuser')
         .setValue('#add-admin-modal .user-password-confirm', 'testuser')
         .submitForm('#add-admin-modal .user-email')

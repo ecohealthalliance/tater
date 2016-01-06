@@ -20,6 +20,8 @@ do ->
       account = Accounts.createUser
         email: attributes.email
         password: attributes.password
+      userProfile = UserProfiles.findOne({userId: account})
+      userProfile.update(fullName: attributes.fullName)
       Meteor.users.update({_id: account}, {
         $set: {admin: true, acceptedEULA: true}
       })
