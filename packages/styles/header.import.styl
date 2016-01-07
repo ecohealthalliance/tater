@@ -26,13 +26,9 @@ header
     line-height 1.42857143
     buttonHover($nav-hover, $white-trans)
     transition()
-    &:focus
-      background white
-      outline $primary
-      transition()
     &.new-document
       float left
-      margin-left 20px
+      margin-left 12px
       margin-top 12px
       @extend .dark-shadow
       &:hover
@@ -53,7 +49,7 @@ header
 
 .nav
   float right
-  +below(1)
+  +below(2)
     float none
     border-bottom 1px solid $secondary-light
     &.account
@@ -73,11 +69,13 @@ header
     margin-top 0
   > li
     > a
+    > a:focus
       buttonHover($nav-hover)
       color $header-link-color
       line-height 14px
       padding 20px 15px
       border-right 1px solid white
+      outline none
       +below(1)
         padding 12px 30px
       i
@@ -87,36 +85,35 @@ header
         .fa
           margin-top -3px
           margin-left 3px
-      &:focus
-        outline 5px auto darken($primary, 10%)
-        background $primary
-        color white
-      &.navbar-btn
-        margin-top 11px
-        margin-left 15px
-        padding 9px 10px
-        border-radius 5px
-        background $secondary
-        text-align center
-        color white
-        line-height 100%
+    > a.navbar-btn
+      margin-top 11px
+      margin-left 15px
+      padding 9px 10px
+      border-radius 5px
+      background $secondary
+      text-align center
+      color white
+      line-height 100%
+      transition(background-color)
+      i
+      span
+        vAlign()
+      i
+        font-size 16px
+        line-height 0
+      &:hover
         transition(background-color)
-        &:hover,
-        &:focus
-          transition(background-color)
-          background $primary
-        +below(1)
-          float none
-          width 50%
-          margin 10px auto
-          padding 12px inherit
-  a.active
-  a.active:focus
-    background $primary
-    color white
-    outline 0
-    &:hover
+        background $primary
+      +below(1)
+        float none
+        width 50%
+        margin 10px auto
+        padding 12px inherit
+    > a.active
+    > a.active:focus
       background $primary
+      color white
+      outline 0
   li
     &.open
       +below(1)
@@ -139,6 +136,7 @@ header
         &:hover
           background $primary
         &.dropdown-toggle
+          color: white
           background $primary
       .dropdown-menu
         > li
@@ -155,7 +153,6 @@ header
   .dropdown-menu
     padding-top 0
     border-top 2px solid $primary
-    min-width 210px
     +below(1)
       padding 0
       position static
@@ -170,7 +167,7 @@ header
       > a
         clearFix()
         position relative
-        padding 8px 30px 8px 20px
+        padding 8px 30px 8px 30px
         text-shadow none
         font-size 13px
         &:hover
@@ -180,7 +177,7 @@ header
           padding-right 5px
         i
           centerPosition(0, -50%)
-          right 5px
+          left 8px
           top 50%
           width 20px
           color $d-gray
@@ -223,6 +220,10 @@ header
     +below(1)
       font-size 25px
 
+.container-fluid
+  padding-left 10px
+  padding-right 10px
+
 .container > .navbar-header
 .container-fluid > .navbar-header
   margin-left 0
@@ -250,15 +251,15 @@ header
     color black
 
 .navbar-collapse
-  +below(1)
+  +below(2)
     margin-top 10px
-    padding-right 0
     padding-bottom 15px
     border-top 3px solid $primary
     box-shadow none
     &.in
       border-top 3px solid $primary
       box-shadow none
+  +at(1)
     &.collapse
     &.collapsing
       padding 0
@@ -267,19 +268,20 @@ header
   margin-right 0
 
 .dropdown
-  &:hover
-    &
-      background $primary
-      > a
-        color white
-        text-shadow none
-    .dropdown-menu
-      display block
-  .dropdown-toggle
-    pointer-events none
-    pointer()
-    span
-      +below(1)
-        display inline-block
+  +above(3)
     &:hover
-      background $primary
+      &
+        background $primary
+        > a
+          color white
+          text-shadow none
+      .dropdown-menu
+        display block
+    .dropdown-toggle
+      pointer-events none
+      pointer()
+      span
+        +below(1)
+          display inline-block
+      &:hover
+        background $primary
