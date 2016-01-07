@@ -50,10 +50,10 @@ template(name="annotations")
         if documentSelected
           unless annotationsLoaded
             p.no-results.text-center No annotations found.
+          +pages
+          +pagesNav
         else
           p.text-center Select a group or document to view annotations
-        +pages
-        +pagesNav
       +annotationsCodingKeywords(
         selectedCodes=selectedCodes
         selectedHeaders=selectedHeaders
