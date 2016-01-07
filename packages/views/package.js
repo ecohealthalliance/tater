@@ -52,4 +52,5 @@ Package.onUse(function(api) {
   api.addFiles('document_detail_coding_keywords.jade', 'client');
   api.addFiles('help.jade', 'client');
   api.addFiles('register.jade', 'client');
+  api.addFiles('eula.jade', 'client');
 });

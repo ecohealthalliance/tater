@@ -4,8 +4,29 @@ if Meteor.isClient
 FlowRouter.subscriptions = () ->
   @register 'userInfo', Meteor.subscribe 'userInfo'
 
+eulaTracker = null
+@requireEula = (context)->
+  if context.route.name == 'eula'
+    return
+  eulaTracker?.stop()
+  # Autorun is needed to wait for the user profile to become available.
+  # if the user profile is available they are sent to the EULA
+  # if they have not accepted it.
+  eulaTracker = Tracker.autorun ->
+    user = Meteor.user()
+    # Check for admin property because the user object might exist with missing
+    # properties at first.
+    if user and !_.isUndefined(user.admin)
+      if user.acceptedEULA
+        eulaTracker?.stop()
+      else
+        FlowRouter.go 'eula'
+
 FlowRouter.route '/',
   name: 'splashPage'
+  triggersEnter: [
+    requireEula
+  ]
   action: () ->
     BlazeLayout.render 'layout',
       main: 'splashPage'

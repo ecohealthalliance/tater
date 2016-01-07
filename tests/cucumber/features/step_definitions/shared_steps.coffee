@@ -65,6 +65,7 @@ do ->
         .setValue('#at-field-password', _nonAdminTestUser.password)
         .submitForm('#at-field-email')
         .waitForExist('.sign-out')
+        .click('accept-eula')
 
     @When /^I navigate to "([^"]*)"$/, (relativePath) ->
       @client

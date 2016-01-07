@@ -1,9 +1,12 @@
 # Based on the example here:
 # https://medium.com/@satyavh/using-flow-router-for-authentication-ba7bb2644f42#.ix98j24rh
+requireLoggedIn = ->
+  unless Meteor.loggingIn() or Meteor.userId()
+    FlowRouter.go '/'
 loggedIn = FlowRouter.group
-  triggersEnter: [ ->
-    unless Meteor.loggingIn() or Meteor.userId()
-      FlowRouter.go '/'
+  triggersEnter: [
+    requireLoggedIn
+    @requireEula
   ]
 
 loggedIn.route '/profile/edit',
@@ -95,3 +98,9 @@ loggedIn.route '/help',
     BlazeLayout.render 'layout',
       main: 'help'
       params: {'topic': query.topic}
+
+loggedIn.route '/eula',
+  name: 'eula'
+  action: (params, query) ->
+    BlazeLayout.render 'layout',
+      main: 'eula'
