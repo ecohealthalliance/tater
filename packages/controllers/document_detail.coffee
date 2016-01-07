@@ -208,7 +208,7 @@ if Meteor.isClient
         else
           break # clicked through to the documentWrapper
 
-        if i is 1
+        if i is childrenCount
           instance.selectedAnnotation.set id: null
 
       # restore z-indices
