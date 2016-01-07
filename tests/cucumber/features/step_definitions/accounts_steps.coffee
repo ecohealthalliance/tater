@@ -124,6 +124,7 @@ do ->
         .setValue('#at-field-password', 'testuser')
         .submitForm('#at-field-email')
         .waitForExist('.sign-out')
+        .click('.accept-eula')
 
     @When 'I click the remove user link', ->
       @browser

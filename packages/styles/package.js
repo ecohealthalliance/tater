@@ -38,7 +38,8 @@ Package.onUse(function(api) {
   api.addFiles('document_detail.import.styl');
   api.addFiles('coding_keywords.import.styl');
   api.addFiles('annotations.import.styl');
-
+  api.addFiles('eula.import.styl');
+  
   api.addFiles('velocity.import.styl');
 
   api.addFiles('main.styl');

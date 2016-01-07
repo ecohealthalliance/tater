@@ -20,7 +20,9 @@ do ->
       account = Accounts.createUser
         email: attributes.email
         password: attributes.password
-      Meteor.users.update({_id: account}, {$set: {admin: true}})
+      Meteor.users.update({_id: account}, {
+        $set: {admin: true, acceptedEULA: true}
+      })
 
     'createTestGroup': (attributes) ->
       attributes ?= {}
