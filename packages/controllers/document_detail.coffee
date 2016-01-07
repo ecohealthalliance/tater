@@ -34,20 +34,20 @@ if Meteor.isClient
 
     if scrollTheText and scrollTheList
       annotationToScrollToTop -= (annotationContainerHeight - annotationContainerPaneHeadHeight - annotationToScrollToHeight) / 2
-      $annotationContainer.animate { scrollTop: annotationToScrollToTop }, 1000, 'easeInOutQuint'
+      $annotationContainer.stop().animate { scrollTop: annotationToScrollToTop }, 1000, 'easeInOutQuint'
       if sameLine
         documentTextToScrollToTop -= (annotationContainerHeight - annotationContainerPaneHeadHeight - annotationToScrollToHeight) / 2
       else
         documentTextToScrollToTop -= (documentContainerHeight - documentContainerPaneHeadHeight - documentTextToScrollToHeight) / 2
-      $documentContainer.animate { scrollTop: documentTextToScrollToTop }, 1000, 'easeInOutQuint'
+      $documentContainer.stop().animate { scrollTop: documentTextToScrollToTop }, 1000, 'easeInOutQuint'
     else if scrollTheList
       if sameLine
         annotationToScrollToTop -= documentTextToScrollToTop - $documentContainer.scrollTop()
-      $annotationContainer.animate { scrollTop: annotationToScrollToTop }, 1000, 'easeInOutQuint'
+      $annotationContainer.stop().animate { scrollTop: annotationToScrollToTop }, 1000, 'easeInOutQuint'
     else if scrollTheText
       if sameLine
         documentTextToScrollToTop -= annotationToScrollToTop - $annotationContainer.scrollTop()
-      $documentContainer.animate { scrollTop: documentTextToScrollToTop }, 1000, 'easeInOutQuint'
+      $documentContainer.stop().animate { scrollTop: documentTextToScrollToTop }, 1000, 'easeInOutQuint'
 
 
   Template.documentDetail.onCreated ->
@@ -97,6 +97,8 @@ if Meteor.isClient
         else # annotation list click
           highlightText id
           scrollToAnnotation id, true, false, true
+      else
+        highlightText null
 
   Template.documentDetail.helpers
     document: ->
@@ -163,7 +165,7 @@ if Meteor.isClient
     'click .annotations li': (event, template) ->
       annotationId = event.currentTarget.getAttribute('data-annotation-id')
       selectedAnnotation = template.selectedAnnotation
-      if selectedAnnotation.get().id is annotationId
+      if selectedAnnotation.get()?.id is annotationId
         selectedAnnotation.set id: null
         $annotationSpanElement(annotationId).removeClass('highlighted')
         $(".document-annotations span").removeClass('not-highlighted')
@@ -174,6 +176,7 @@ if Meteor.isClient
     # layers that are below the current layer and look for a highlight that
     # would be below the click coordinates.
     'click .document-wrapper': (event, instance) ->
+      if not window.getSelection().getRangeAt(0)?.collapsed then return
       x = event.pageX
       y = event.pageY
       documentWrapper = event.currentTarget
@@ -204,6 +207,10 @@ if Meteor.isClient
           (hidden[i++] = elementAtPoint.parentNode).style.zIndex = -2
         else
           break # clicked through to the documentWrapper
+
+        if i is 1
+          instance.selectedAnnotation.set id: null
+
       # restore z-indices
       none = ''
       documentWrapper.firstChild.style.zIndex = none
