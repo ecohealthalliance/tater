@@ -4,10 +4,14 @@ if Meteor.isClient
     $ ".document-text span[data-annotation-id='#{annotationId}']"
 
   highlightText = (annotationId) ->
-    $(".document-text span").addClass('not-highlighted')
-    $annotationSpanElement(annotationId)
-      .addClass('highlighted')
-      .removeClass('not-highlighted')
+    if annotationId?
+      $(".document-text span").addClass('not-highlighted')
+      $annotationSpanElement(annotationId)
+        .removeClass('not-highlighted')
+        .addClass('highlighted')
+    else # unhighlight
+      $(".document-text span").removeClass('highlighted, not-highlighted')
+
 
   scrollToAnnotation = (annotationId, scrollTheText, scrollTheList, sameLine) ->
     $documentContainer = $ '.document-container'
@@ -124,35 +128,6 @@ if Meteor.isClient
         Spacebars.SafeString annotatedBody
       annotationLayers
 
-    header: ->
-      @header()
-
-    subHeader: ->
-      @subHeader()
-
-    keyword: ->
-      @keyword()
-
-    color: ->
-      @color()
-
-    code: ->
-      if @header() and @subHeader() and @keyword()
-        Spacebars.SafeString("<span class='header'>#{@header()}</span> : <span class='sub-header'>#{@subHeader()}</span> : <span class='keyword'>#{@keyword()}</span>")
-      else if @subHeader() and not @keyword()
-        Spacebars.SafeString("<span class='header'>#{@header()}</span> : <span class='sub-header'>#{@subHeader()}</span>")
-      else if @header()
-        Spacebars.SafeString("<span class='header'>"+@header()+"</span>")
-      else
-        ''
-
-    selected: ->
-      id = Template.instance().selectedAnnotation.get()?.id
-      if @_id is id
-        'selected'
-      else if id?
-        'not-selected'
-
     searching: ->
       Template.instance().searching.get()
 
@@ -161,16 +136,6 @@ if Meteor.isClient
       temporaryAnnotation = instance.temporaryAnnotation.get()
       temporaryAnnotation.set startOffset: null, endOffset: null
       instance.temporaryAnnotation.set(temporaryAnnotation)
-
-    'click .annotations li': (event, template) ->
-      annotationId = event.currentTarget.getAttribute('data-annotation-id')
-      selectedAnnotation = template.selectedAnnotation
-      if selectedAnnotation.get()?.id is annotationId
-        selectedAnnotation.set id: null
-        $annotationSpanElement(annotationId).removeClass('highlighted')
-        $(".document-annotations span").removeClass('not-highlighted')
-      else
-        selectedAnnotation.set id: annotationId
 
     # When the document wrapper is clicked, process all document-annotaiton
     # layers that are below the current layer and look for a highlight that
@@ -269,28 +234,72 @@ if Meteor.isClient
         .trigger('input')
         .focus()
 
-    'click .delete-annotation': (event, instance) ->
+  Template.documentDetailAnnotation.helpers
+    header: ->
+      @header()
+
+    subHeader: ->
+      @subHeader()
+
+    keyword: ->
+      @keyword()
+
+    color: ->
+      @color()
+
+    code: ->
+      header = @header()
+      subHeader = @subHeader()
+      keyword = @keyword()
+      if header and subHeader and keyword
+        Spacebars.SafeString("<span class='header'>"+header+"</span> : <span class='sub-header'>"+subHeader+"</span> : <span class='keyword'>"+keyword+"</span>")
+      else if subHeader and not keyword
+        Spacebars.SafeString("<span class='header'>"+header+"</span> : <span class='sub-header'>"+subHeader+"</span>")
+      else if header
+        Spacebars.SafeString("<span class='header'>"+header+"</span>")
+      else
+        ''
+
+    selected: ->
+      id = Template.instance().parent().selectedAnnotation.get()?.id
+      if @_id is id
+        'selected'
+      else if id?
+        'not-selected'
+
+  Template.documentDetailAnnotation.events
+    'click li': (event, instance) ->
+      annotationId = instance.data._id
+      selectedAnnotation = instance.parent().selectedAnnotation
+      if annotationId is selectedAnnotation.get()?.id
+        selectedAnnotation.set id: null
+      else
+        selectedAnnotation.set id: annotationId
+
+    'click li .delete-annotation': (event, instance) ->
       event.stopImmediatePropagation()
       target = event.currentTarget
-      annotationId = target.getAttribute('data-annotation-id')
-      $(target).parent().addClass('deleting')
+      $parent = $(target).parent()
+      annotationId = instance.data._id
+      selectedAnnotation = instance.parent().selectedAnnotation
+      $parent.addClass('deleting')
       setTimeout (->
         Meteor.call 'deleteAnnotation', annotationId
-        if annotationId is instance.selectedAnnotation.get()
-          $(".document-annotations span").removeClass('not-highlighted')
       ), 800
+      if annotationId is selectedAnnotation.get()?.id
+        selectedAnnotation.set id: null
 
-    'click .toggle-flag': (event, instance) ->
+    'click li .toggle-flag': (event, instance) ->
       event.stopImmediatePropagation()
-      target = event.currentTarget
-      annotationId = target.getAttribute('data-annotation-id')
+      annotationId = instance.data._id
       Meteor.call('toggleAnnotationFlag', annotationId)
-
 
 
 Meteor.methods
 
   createAnnotation: (attributes) ->
+    @unblock()
+    check attributes, Object
     document = Documents.findOne attributes.documentId
     if Meteor.isServer
       group = Groups.findOne document.groupId
@@ -310,6 +319,8 @@ Meteor.methods
       throw new Meteor.Error 'Unauthorized'
 
   deleteAnnotation: (annotationId) ->
+    @unblock()
+    check annotationId, String
     annotation = Annotations.findOne annotationId
     document = Documents.findOne annotation.documentId
     if Meteor.isServer
@@ -324,6 +335,8 @@ Meteor.methods
       throw new Meteor.Error 'Unauthorized'
 
   toggleAnnotationFlag: (annotationId) ->
+    @unblock()
+    check annotationId, String
     annotation = Annotations.findOne annotationId
     annotation.set(flagged: not annotation.flagged)
     annotation.save()
