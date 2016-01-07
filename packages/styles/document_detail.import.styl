@@ -134,6 +134,10 @@
         transition(all, .8s)
         max-height 0
         opacity 0
+        margin-bottom -4px
+        overflow hidden
+        .fa
+          opacity 0
     .header
       font-weight 400
     .sub-header
@@ -178,8 +182,8 @@
         &.selected
         &:hover
           border-left 0
-          background-color lighten(@background-color, 25%)
         &:hover
+          background-color lighten(@background-color, 25%)
           .btn-delete
           .toggle-flag
             visibility visible

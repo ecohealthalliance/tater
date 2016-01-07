@@ -29,19 +29,7 @@ template(name="documentDetail")
         ul.annotations.list-unstyled
           if Template.subscriptionsReady
             each annotations
-              li(data-annotation-id=_id class="annotation-color-#{color} {{selected}}")
-                if accessCode
-                  span.code
-                    span.header= header
-                else
-                  span.code= code
-                  if flagged
-                    span.toggle-flag.flagged.fa.fa-flag(data-annotation-id=_id)
-                  else
-                    span.toggle-flag.fa.fa-flag-o(data-annotation-id=_id)
-                span.user= annotationUserEmail
-                .delete-annotation.btn-delete(data-annotation-id=_id)
-                  i.fa.fa-trash
+              +documentDetailAnnotation
             else
               if searching
                 .no-results
@@ -60,3 +48,18 @@ template(name="documentDetail")
           p.instructions Thanks for completing this HIT.  Please enter this code into Mechanical Turk.
           h5.completion-code Code:
             span {{accessCode}}
+
+template(name="documentDetailAnnotation")
+  li(data-annotation-id=_id class="annotation-color-#{color} {{selected}}")
+    if accessCode
+      span.code
+        span.header= header
+    else
+      span.code= code
+      if flagged
+        span.toggle-flag.flagged.fa.fa-flag
+      else
+        span.toggle-flag.fa.fa-flag-o
+    span.user= annotationUserEmail
+    .delete-annotation.btn-delete
+      i.fa.fa-trash
