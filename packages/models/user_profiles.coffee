@@ -24,7 +24,7 @@ if Meteor.isServer
 
   Accounts.onCreateUser (options, user) ->
     profile = new UserProfile()
-    profile.set({userId: user._id, emailAddress: user.emails[0].address})
+    profile.set({userId: user._id, emailAddress: user.emails[0].address, fullName: user.fullName})
     profile.save(-> {})
     user.admin = options.admin
     user.group = options.group
