@@ -19,6 +19,3 @@ if Meteor.isClient
     'click .sign-in' : (event, instance)->
       instance.accountsState.set("signIn")
       $('.accounts-modal').modal('show')
-    'click .dropdown-menu': (event)->
-      # Prevent misclicks within the dropdown menu from hiding itself
-      event.stopPropagation()

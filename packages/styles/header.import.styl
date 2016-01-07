@@ -49,7 +49,7 @@ header
 
 .nav
   float right
-  +below(1)
+  +below(2)
     float none
     border-bottom 1px solid $secondary-light
     &.account
@@ -251,15 +251,15 @@ header
     color black
 
 .navbar-collapse
-  +below(1)
+  +below(2)
     margin-top 10px
-    padding-right 0
     padding-bottom 15px
     border-top 3px solid $primary
     box-shadow none
     &.in
       border-top 3px solid $primary
       box-shadow none
+  +at(1)
     &.collapse
     &.collapsing
       padding 0
@@ -268,19 +268,20 @@ header
   margin-right 0
 
 .dropdown
-  &:hover
-    &
-      background $primary
-      > a
-        color white
-        text-shadow none
-    .dropdown-menu
-      display block
-  .dropdown-toggle
-    pointer-events none
-    pointer()
-    span
-      +below(1)
-        display inline-block
+  +above(3)
     &:hover
-      background $primary
+      &
+        background $primary
+        > a
+          color white
+          text-shadow none
+      .dropdown-menu
+        display block
+    .dropdown-toggle
+      pointer-events none
+      pointer()
+      span
+        +below(1)
+          display inline-block
+      &:hover
+        background $primary
