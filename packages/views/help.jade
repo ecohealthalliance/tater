@@ -62,22 +62,22 @@ template(name="help")
             h3 Annotating
             p The annotation interface displays three separate columns: code keywords, the body of the document text, and annotations within the document. On the left-hand side all code keywords are listed in a three-layer hierarchical manner with keywords nested under headers and sub-headers. To hide/expose the keywords within groups and subgroups, click the #[i(class="fa fa-chevron-circle-down" title="Arrow")]. You can also search for a specific keyword using the search bar above the keyword groups.
 
-            img.interface-image(src="images/help/document-interface.jpg" data-retina="images/help/document-interface@2x.jpg")
+            img.interface-image(src="images/help/document-interface.svg")
 
             p To annotate a section of text, highlight the text by selecting it with your mouse. Once you have highlighted the desired text, click on the keyword with which you would like to annotate. The text will then be highlighted with the corresponding color of the keyword and a colored annotation will appear in the right-hand column of the interface. Each annotation shows the coded keyword and the email of the user account that added that annotation. #[span(class="note") Note: Annotations added by admin account users will not display the user email.]
 
             p To view the text associated with a specific annotation, simply click on the annotation in the right-hand column and you will be guided to the highlighted text in the document.
 
             .row
-              .col-sm-7
+              .col-sm-12.col-md-7
                 h4 Flagging an Annotation
                 P.space-btm-1 Tater users can flag specific annotations to indicate importance.
                 p To flag an annotation, click the #[i(class="fa fa-flag-o" title="Flag Icon")] in the lower left-hand corner of the annotation. Once flagged, a flag icon will appear on the annotation throughout the application. Users can choose to view only flagged annotations on the Annotations Page.
 
                 h4 Deleting an Annotation
                 p To delete an annotation, click the #[i(class="fa fa-times-circle" title ="X")] button on the top right-hand corner of the annotation.
-              .col-sm-5
-                img(src="images/help/annotations.jpg" data-retina="images/help/annotations@2x.jpg")
+              .col-sm-12.col-md-5
+                img.img-annotation(src="images/help/annotations.svg")
 
             p #[span(class="note") Note: All activity in the annotation interface is automatically saved to the document.]
 
@@ -95,7 +95,7 @@ template(name="help")
           h2 Annotations
           p To view annotated text across documents, click #[span(class="button-ref") Annotations] in the navigation menu. This page displays three separate columns: #[i documents], #[i annotations], and #[i code keywords]. In the #[i documents] column (left) admins see a list of all groups and documents. Regular users see all documents in their group. In the #[i annotations] column (middle) users see a list of annotations from selected groups/documents. In the #[i code keyword] column (right) users see a list of code keywords with which to filter the annotations.
 
-          img.interface-image(src="images/help/annotations-interface.jpg" data-retina="images/help/annotations-interface@2x.jpg")
+          img.interface-image(src="images/help/annotations-interface.svg")
 
           p To view all of the annotated text in specific documents or document groups, simply click the document name(s) and the annotations will appear in the annotations column. Each annotation includes its code keyword, the specific text annotated from the document, the document name (lower left-hand side) and the user email of the account that created the annotations (lower right-hand side). Annotations are grouped and listed according to keywords.
 
