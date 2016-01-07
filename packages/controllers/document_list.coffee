@@ -1,61 +1,92 @@
-DocumentListPages = new Meteor.Pagination Documents,
-  perPage: 10,
-  templateName: 'documentList'
-  itemTemplate: 'document'
-  sort:
-    createdAt: -1
-  availableSettings:
-    perPage: true
-    filters: true
-  auth: (skip, subscription)->
-    # Meteor pagination auth functions break filtering.
-    # I am using a work around based on the approach here:
-    # https://github.com/alethes/meteor-pages/issues/131
-    user = Meteor.users.findOne({_id: subscription.userId})
-    if not user then return false
-    userSettings = @userSettings[subscription._session.id] or {}
-    userFilters = userSettings.filters or @filters
-    userFields = userSettings.fields or @fields
-    userSort = userSettings.sort or @sort
-    userPerPage = userSettings.perPage or @perPage
-    [
-      {
-        $and: [
-          userFilters
-          QueryHelpers.userDocsQuery(user)
-        ]
-      },
-      {
-        fields: userFields
-        sort: userSort
-        limit: userPerPage
-        skip: skip
-      }
-    ]
-
-# Based on bobince's regex escape function.
-# source: http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript/3561711#3561711
-regexEscape = (s)->
-  s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
-
 if Meteor.isClient
 
-  window.DocumentListPages = DocumentListPages
+  perPage = 10
+  shadowDocuments = new Meteor.Collection null
+
   Template.documentList.onCreated ->
-    instance = Template.instance()
-    instance.group = @data?.group
-    if instance.group
-      DocumentListPages.set
-        filters:
-          groupId: @data.group._id
-    else
-      DocumentListPages.set
-        filters: {}
-      @subscribe('groups')
+    @sortBy = new ReactiveVar
+      createdAt: -1
+      title: 'Date Created'
+    @searchText = new ReactiveVar ''
+    @numberOfPages = new ReactiveVar 1
+    @currentPageNumber = new ReactiveVar 1
+
+    @subscribe 'groups'
+    Tracker.autorun =>
+      @subscribe 'documents', @data?.group?._id, @searchText.get()
+
+    cleanUpRemovedDocuments = ->
+      i = 0
+      shadowDocumentsCursor = shadowDocuments.find()
+      shadowDocumentsTotalCount = shadowDocumentsCursor.count()
+      shadowDocumentsArray = shadowDocumentsCursor.fetch()
+      while i < shadowDocumentsTotalCount
+        shadowDocument = shadowDocumentsArray[i]
+        if Documents.findOne(shadowDocument._id) is undefined
+          shadowDocuments.remove shadowDocument._id
+        i++
+
+    Tracker.autorun =>
+      # clean-up no longer existing documents within shadowDocuments
+      cleanUpRemovedDocuments()
+      # (re-)populate the minimongo collection
+      originalDocumentsCursor = Documents.find() # reactive source
+      originalDocumentsTotalCount = originalDocumentsCursor.count()
+      originalDocumentsArray = originalDocumentsCursor.fetch()
+      i = 0
+      while i < originalDocumentsTotalCount
+        originalDocument = originalDocumentsArray[i++]
+        newShadowDocument = {}
+        newShadowDocument.title = originalDocument.title
+        newShadowDocument.lowerTitle = originalDocument.title?.toLowerCase()
+        newShadowDocument.createdAt = originalDocument.createdAt
+        newShadowDocument.groupId = originalDocument.groupId
+        newShadowDocument.annotated = originalDocument.annotated
+        newShadowDocument.groupName = originalDocument.groupName()
+        # upsert
+        if shadowDocuments.findOne(originalDocument._id) is undefined
+          #insert
+          newShadowDocument._id = originalDocument._id
+          shadowDocuments.insert newShadowDocument
+        else
+          # update
+          shadowDocuments.update originalDocument._id,
+            newShadowDocument
+      # update the amount of pages
+      @numberOfPages.set Math.ceil i / perPage
+      # reset the currently selected page number to 1
+      @currentPageNumber.set 1
+
 
   Template.documentList.helpers
+    documents: ->
+      instance = Template.instance()
+      sortBy = instance.sortBy.get()
+      amountToSkip = (instance.currentPageNumber.get() - 1) * perPage
+      shadowDocuments.find({}, sort: sortBy, limit: perPage, skip: amountToSkip)
     noDocumentsFound: ->
-      DocumentListPages.Collection.find().count() == 0 and DocumentListPages.isReady()
+      Documents.find().count() is 0
+    sortBy: (column, order) ->
+      instance = Template.instance()
+      sortBy = instance.sortBy.get()
+      sortBy[column]? and order is sortBy[column]
+    sortByTitle: ->
+      Template.instance().sortBy.get().title
+    sortByColumn: ->
+      _.keys(Template.instance().sortBy.get())[0]
+    sortDirection: (order) ->
+      _.values(Template.instance().sortBy.get())[0] is order
+    pages: ->
+      instance = Template.instance()
+      totalPages = instance.numberOfPages.get()
+      currentPageNumber = instance.currentPageNumber.get()
+      returnArray = []
+      i = 0
+      while i < totalPages
+        returnArray[i++] = { number: i, active: currentPageNumber is i }
+      returnArray
+    multiplePages: ->
+      Template.instance().numberOfPages.get() > 1
 
   Template.documentList.events
     'click .delete-document-button': (event) ->
@@ -63,17 +94,27 @@ if Meteor.isClient
         "data-document-id",
         event.target.parentElement.getAttribute("data-document-id")
       )
-    'keyup .document-search': _.debounce(((event, instance)->
-      searchText = $(event.currentTarget).val()
-      filters =
-        title:
-          $regex: regexEscape(searchText)
-          $options: 'i'
-      if instance.group
-        filters.groupId = instance.group._id
-      DocumentListPages.set(filters:filters)
-      DocumentListPages.sess("currentPage", 1)
+    'input .document-search': _.debounce(( (event, instance)->
+      searchQuery = $(event.currentTarget).val().trim()
+      instance.searchText.set searchQuery
     ), 500)
+    'click .document-sorting-options .column, click .current-sorting': (event, instance) ->
+      event.preventDefault()
+      element = event.currentTarget
+      newSortByColumn = element.getAttribute 'data-sort-by'
+      newSortByColumnTitle = element.getAttribute 'data-title'
+      currentSortBy = instance.sortBy.get()
+      newSortByOrder = 1
+      if currentSortBy[newSortByColumn]?
+        newSortByOrder = -currentSortBy[newSortByColumn]
+      else if currentSortBy[Object.keys(currentSortBy)[0]] < 0
+        newSortByOrder *= -1
+
+      newSortObject = {}
+      newSortObject[newSortByColumn] = newSortByOrder
+      newSortObject['title'] =  newSortByColumnTitle
+      instance.sortBy.set newSortObject
+      $(element).blur()
 
   Template.document.onCreated ->
     @document = new Document(_.pick(@data, _.keys(Document.getFields())))
@@ -81,3 +122,52 @@ if Meteor.isClient
   Template.document.helpers
     groupName: ->
       Template.instance().document.groupName()
+
+  Template.documentListPages.events
+    'click a': (event, instance) ->
+      event.preventDefault()
+      pageNumber = Number event.currentTarget.innerText
+      if $(event.currentTarget).parent().is(':first-child')
+        pageNumber = 1
+      else if $(event.currentTarget).parent().is(':last-child')
+        pageNumber = instance.parent().numberOfPages.get()
+      Template.instance().parent().currentPageNumber.set pageNumber
+
+
+
+if Meteor.isServer
+
+  # Based on bobince's regex escape function.
+  # source: http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript/3561711#3561711
+  regexEscape = (s)->
+    s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+
+  fields = { title: true, createdAt: true, groupId: true, annotated: true }
+
+  Meteor.publish 'documents', (group, searchText)->
+    if @userId?
+      user = Meteor.users.findOne @userId
+      query = {}
+
+      if user.admin? # the current user is an admin
+        if group? and typeof group is 'string'
+          query = { groupId: group }
+      else # normal user
+        query = { groupId: user.group }
+        if group? and typeof group is 'string'
+          if user.group != group
+            @ready()
+
+      if searchText? and typeof searchText is 'string'
+        query.$or = [ body: {
+            $regex: regexEscape(searchText)
+            $options: 'i'
+          },
+          title: {
+            $regex: regexEscape(searchText)
+            $options: 'i'
+          } ]
+
+        Documents.find query, fields: fields
+    else
+      @ready()

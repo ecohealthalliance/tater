@@ -1,22 +1,67 @@
 template(name="documentList")
-  .view-header-search
-    .form-group
+  .view-header-search.document-filtration
+    .document-sorting
+      .btn-group
+        button.btn.btn-default.current-sorting(data-sort-by=sortByColumn data-title=sortByTitle)
+          if sortDirection 1
+            i.fa.fa-caret-down
+          else
+            i.fa.fa-caret-up
+          span= sortByTitle
+        button.btn.btn-default.dropdown-toggle(type="button" class="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+          i.fa.fa-caret-down
+          span.sr-only Toggle Dropdown
+
+        ul.dropdown-menu.document-sorting-options
+          li.column(data-sort-by='lowerTitle' data-title='Title')
+            if sortBy 'lowerTitle' 1
+              i.fa.fa-caret-down
+            if sortBy 'lowerTitle' -1
+              i.fa.fa-caret-up
+            | Title
+          li.column(data-sort-by='createdAt' data-title='Date Created')
+            if sortBy 'createdAt' 1
+              i.fa.fa-caret-down
+            if sortBy 'createdAt' -1
+              i.fa.fa-caret-up
+            | Date Created
+          li.column(data-sort-by='annotated' data-title='Number of Annotations')
+            if sortBy 'annotated' 1
+              i.fa.fa-caret-down
+            if sortBy 'annotated' -1
+              i.fa.fa-caret-up
+            | Number of Annotations
+          li.column(data-sort-by='groupName' data-title='Document Group')
+            if sortBy 'groupName' 1
+              i.fa.fa-caret-down
+            if sortBy 'groupName' -1
+              i.fa.fa-caret-up
+            | Document Group
+    .form-group.document-search-wrap
       i.fa.fa-search
       input.form-control.document-search(placeholder="Search Documents")
+
   .document-list-container
-    if noDocumentsFound
-      .no-results.space-top-3
-        i.fa.fa-search
-        .no-documents-found.centered Sorry, no documents found.
-    ul.list.document-list.list-unstyled
-      +pages
-    +pagesNav
+    if Template.subscriptionsReady
+      if noDocumentsFound
+        .no-results.space-top-3
+          i.fa.fa-search
+          .no-documents-found.centered Sorry, no documents found.
+      else
+        ul.list.document-list.list-unstyled
+          each documents
+            +document
+        if multiplePages
+          with pages
+            +documentListPages
+    else
+      .loading
   +deleteDocumentModal
 
 template(name="document")
   li.document
     a.list-link.clearfix(href="{{path route='documentDetail' params=this}}")
-      span.annotation-state
+      div.annotation-state
         if annotated
           i.fa.fa-adjust(data-toggle='tooltip' title='{{annotated}} annotations')
         else
@@ -25,3 +70,14 @@ template(name="document")
       span.document-group= groupName
     button.btn-plain.delete-document-button(data-toggle="modal" data-document-id=_id data-target="#confirm-delete-document-modal" )
       i.fa.fa-trash-o
+
+template(name="documentListPages")
+  .pagination-cont
+    ul.pagination
+      li
+        a(href="#page-1") «
+      each this
+        li(class="{{#if active}}active{{/if}}")
+          a(href="#page-{{number}}")= number
+      li
+        a(href="#page-1") »

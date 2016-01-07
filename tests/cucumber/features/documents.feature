@@ -7,6 +7,7 @@ Feature: Documents
   @documents
   Scenario: Viewing group documents as a non-admin
     When I log in as the test user
+    When there are 2 documents in the "fakegroupid" group
     And I navigate to the admin page
     And I create a user account for "non@admin.com"
     And I log out
@@ -117,5 +118,5 @@ Feature: Documents
     When I navigate to "/documents"
     Then I should see 10 documents
     When I search for a document with the title of "document 12"
-    Then I should see 1 documents
+    Then I should see 1 document
     And I should see content "document 12"

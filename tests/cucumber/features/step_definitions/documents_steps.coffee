@@ -130,17 +130,18 @@ do ->
         .click(".document .list-link")
         .waitForVisible(".document-text")
 
-    @Then /^I should see (\d+) documents$/, (number) ->
+    @Then /^I should see (\d+) documents?$/, (number) ->
       @client
         .waitForExist('.document-title')
         .elements '.document-title', (error, elements) ->
-          assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
+          elemCount = elements.value.length
+          assert(elemCount == +number, "Expected #{elemCount} to equal #{number}")
 
     @When 'I go to the next page of documents', ->
       @browser
         .waitForExist('.document-title')
         .execute ->
-          $("a:contains('>')").click()
+          $("li.active").next("li").children("a").click()
         .pause(2000) # wait for the page to change
 
     @When /^I search for a document with the title of "([^"]*)"$/, (documentName) ->
@@ -149,5 +150,7 @@ do ->
         .setValue('.document-search', documentName)
         .pause(2000)
         .getHTML '.document-list', (error, response) ->
+          if error instanceof Error
+            console.error error.message
           match = response.toString().match(documentName)
           assert.ok(match)
