@@ -45,7 +45,7 @@ if Meteor.isServer
           # Email to EHA
           Email.send
             to: 'tater-beta@ecohealthalliance.org'
-            from: tenantProps.emailAddress
+            from: 'no-reply@tater.io'
             subject: 'Tater beta user registration'
             text: """
               #{tenantProps.fullName} has registered for Tater!
