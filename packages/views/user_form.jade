@@ -1,20 +1,49 @@
 template(name="userForm")
   if typeIsAdmin
-    h4 Create a new Admin User
+    h4 Add a New User
   else
     h4 Add a new group user
     p #[b Group]: #[i #{group.name}]
-  form#new-user-form.clearfix
+
+  form#new-user-form.clearfix.space-top-2.new-user
     unless typeIsAdmin
       input.form-control(name="group" type="hidden" value=group._id)
-    label Email
-      input.user-email.form-control(name="email" type="text")
-    label Full Name
-      input.user-name.form-control(name="name" type="text")
-    label Password
-      input.user-password.form-control(name="password" type="password")
-    label Password confirm
-      input.user-password-confirm.form-control(name="passwordconfirm" type="password")
+    .form-group
+      label
+        span Email
+        input.user-email.form-control(name="email" type="text")
+      label Full Name
+        input.user-name.form-control(name="name" type="text")
+    if typeIsAdmin
+      .form-group
+        label User Type
+        .user-type
+          label.radio-inline(data-toggle="tooltip" title="Admin users have the ability to view, add and delete both admin and regular users, create document groups and all abilities of a Regular user.")
+            input#admin.user-group(type="radio" name="group" checked="checked" value="")
+            | Admin
+            i.fa.fa-question-circle.help-link
+          label.radio-inline(data-toggle="tooltip" title="Regular users only have the ability to add, annotate and analyze documents within an assigned document group.")
+            input#group.user-group(type="radio" name="group" value="group")
+            | Regular (Group-level)
+            i.fa.fa-question-circle.help-link
+
+          span.groups.hidden
+            label.space-top-1.space-btm-05 Choose a Document Group
+            .row
+              .col-sm-8
+                select.form-control.document_groups
+                  each groups
+                    option(value="#{_id}") #{name}
+
+    .form-group
+      label
+        span Password
+        input.user-password.form-control(name="password" type="password")
+
+      label
+        span Password confirm
+        input.user-password-confirm.form-control(name="passwordconfirm" type="password")
+
     .modal-buttons
       input.btn.btn-default.cancel(type="button" value="Cancel" data-dismiss="modal")
       input.btn.btn-primary(type="submit" value="Add User")

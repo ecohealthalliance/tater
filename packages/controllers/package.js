@@ -25,6 +25,7 @@ Package.onUse(function(api) {
   api.use('harrison:babyparse');
   api.use('alethes:pages@1.8.4');
   api.use('email');
+  api.addFiles('admin.coffee', ['client', 'server']);
   api.addFiles('delete_document_modal.coffee', ['client', 'server']);
   api.addFiles('delete_keyword_modal.coffee', ['client', 'server']);
   api.addFiles('delete_subheader_modal.coffee', ['client', 'server']);
@@ -41,6 +42,7 @@ Package.onUse(function(api) {
   api.addFiles('document_detail.coffee', ['client', 'server']);
   api.addFiles('paragraph_text.coffee', ['client']);
   api.addFiles('user_form.coffee', ['client', 'server']);
+  api.addFiles('user_modal.coffee', ['client', 'server']);
   api.addFiles('users.coffee', ['client', 'server']);
   api.addFiles('group_documents.coffee', ['client', 'server']);
   api.addFiles('document.coffee', ['client', 'server']);

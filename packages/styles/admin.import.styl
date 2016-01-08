@@ -4,6 +4,12 @@
 
 .add-user
   font-size 1.5em
+  color $m-gray
+  &:hover
+  &:focus
+    color $secondary
+  &:active
+    color darken($secondary, 20%)
 
 .remove-user
   font-size 1.5em
@@ -14,3 +20,8 @@
 #remove-user-modal
   p
     margin 0
+
+.new-user
+  .help-link
+    font-size 90%
+    color $d-gray

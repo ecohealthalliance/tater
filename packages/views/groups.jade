@@ -1,23 +1,8 @@
 template(name="groups")
-  if currentUser
-    .container-list
-      if Template.subscriptionsReady
-        if groups
-          .group-list.list-table.groups-table.no-filter.table-wrap
-            +reactiveTable collection=groups settings=settings filters=filters
-      else
-        .loading.center-v
-    #add-group-user-modal.modal.fade(tabindex="-1" role="dialog")
-      .modal-dialog
-        .modal-content
-          .modal-header
-            button(type="button" class="close" data-dismiss="modal" aria-label="Close")
-              i.fa.fa-times-circle
-          .modal-body
-            +userForm group=group
-  else
-    .container
-      .row
-        .col-sm-12
-          p Please log in or sign up to continue.
-
+  .container-list
+    if Template.subscriptionsReady
+      if groups
+        .group-list.list-table.groups-table.no-filter.table-wrap
+          +reactiveTable collection=groups settings=settings filters=filters
+    else
+      .loading.center-v
