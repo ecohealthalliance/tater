@@ -12,13 +12,9 @@ template(name="userForm")
       label Email
         input.user-email.form-control(name="email" type="text")
       label First Name
-        input.user-name.form-control(name="first" type="text")
+        input.user-firstname.form-control(name="first" type="text")
       label Last Name
-        input.user-name.form-control(name="last" type="text")
-      label Password
-        input.user-password.form-control(name="password" type="password")
-      label Password confirm
-        input.user-password-confirm.form-control(name="passwordconfirm" type="password")
+        input.user-lastname.form-control(name="last" type="text")
     if typeIsAdmin
       .form-group
         label User Type
@@ -39,15 +35,6 @@ template(name="userForm")
                 select.form-control.document_groups
                   each groups
                     option(value="#{_id}") #{name}
-
-    .form-group
-      label
-        span Password
-        input.user-password.form-control(name="password" type="password")
-
-      label
-        span Password confirm
-        input.user-password-confirm.form-control(name="passwordconfirm" type="password")
 
     .modal-buttons
       input.btn.btn-default.cancel(type="button" value="Cancel" data-dismiss="modal")

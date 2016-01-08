@@ -13,10 +13,10 @@ do ->
       body:  "This is a doc for testing"
 
     _testUser =
-      email:    'test@example.com'
-      fullName: 'test name'
-      password: 'password'
-
+      email:     'test@example.com'
+      firstName: 'test'
+      lastName:  'name'
+      password:  'password'
 
     @Before (callback) ->
       @server.call('reset')

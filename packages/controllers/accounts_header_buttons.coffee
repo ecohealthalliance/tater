@@ -1,4 +1,5 @@
 if Meteor.isClient
+
   Template.accountsHeaderButtons.onCreated ->
     instance = @
     @autorun ->
@@ -6,7 +7,7 @@ if Meteor.isClient
 
   Template.accountsHeaderButtons.helpers
     currentUserName: ->
-      UserProfiles.findOne({userId: Meteor.userId()})?.fullName or 'Account'
+      UserProfiles.findOne({userId: Meteor.userId()})?.firstName or 'Account'
 
   Template.accountsHeaderButtons.events
     'click .sign-out' : (evt, instance) ->
@@ -18,6 +19,9 @@ if Meteor.isClient
       @state.set("changePwd")
       $('.accounts-modal').modal('show')
 
+
+
 if Meteor.isServer
+
   Meteor.publish 'currentUserName', (id) ->
-    UserProfiles.find({userId: id}, {fields: {userId: 1, fullName: 1}})
+    UserProfiles.find({userId: id}, {fields: {userId: 1, firstName: 1, middleName: 1, lastName: 1}})

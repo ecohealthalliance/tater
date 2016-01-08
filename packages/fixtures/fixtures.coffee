@@ -20,9 +20,13 @@ do ->
       account = Accounts.createUser
         email: attributes.email
         password: attributes.password
-      userProfile = UserProfiles.findOne({userId: account})
-      userProfile.update(fullName: attributes.fullName)
-      Meteor.users.update({_id: account}, {
+      userProfile = UserProfiles.findOne(userId: account)
+      userProfile.update(
+        firstName: attributes.firstName
+        middleName: attributes.middleName
+        lastName: attributes.lastName
+      )
+      Meteor.users.update(account, {
         $set: {admin: true, acceptedEULA: true}
       })
 
@@ -32,7 +36,7 @@ do ->
       attributes.description ?= "Test Description"
       attributes.createdById ?= Meteor.users.findOne()._id
       attributes._id ?= "fakegroupid"
-      Groups.remove({_id: attributes._id})
+      Groups.remove(attributes._id)
       group = new Group()
       group.set(attributes)
       group.save()
@@ -67,4 +71,3 @@ do ->
       subHeaderDoc = SubHeaders.findOne({headerId: headerId, label: subHeader})
       subHeaderId = if subHeaderDoc then subHeaderDoc._id else SubHeaders.insert({headerId: headerId, label: subHeader})
       keywordId = CodingKeywords.insert(subHeaderId: subHeaderId, label: keyword)
-

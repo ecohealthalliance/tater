@@ -37,9 +37,6 @@ if Meteor.isClient
       if not form.last.value or form.last.value.trim() is ''
         toastr.error("Last name is required")
         return
-      if form.password.value != form.passwordconfirm.value
-        toastr.error("Password mismatch")
-        return
       groupId = null
       if $(".document_groups").is(":visible")
         groupId = $(".document_groups").val()
@@ -48,7 +45,6 @@ if Meteor.isClient
 
       fields = {
         email: form.email.value
-        password: form.password.value
         groupId: groupId
         admin:  !groupId     #if no group provided then user is admin
         firstName: form.first.value
@@ -73,7 +69,6 @@ if Meteor.isServer
       if Meteor.user()?.admin
         userId = Accounts.createUser
           email:    fields.email
-          password: fields.password
           admin:    fields.admin
           group:    fields.groupId
         #update the profile to include first/last name
