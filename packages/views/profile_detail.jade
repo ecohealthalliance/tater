@@ -1,21 +1,47 @@
 template(name="profileDetail")
   .view-header.secondary-bg.space-btm-2
     .container
-      h1.inline Your Profile
-      a.btn.btn-primary.profile-detail-link.header-btn(href= "{{path route='profileEdit' params=userProfile}}")
-        span Edit
-        i.fa.fa-edit
+      if itsYou
+        h1.inline Your Profile
+        a.btn.btn-primary.profile-detail-link.header-btn(href= "{{path route='profileEdit' params=userProfile}}")
+          span Edit
+          i.fa.fa-edit
+      else
+        h1.inline User Profile
+
   .container.profile-detail
-    .profile-name-title.space-btm-2
-      h1= userProfile.fullName
-      p.job-title.rm-margin-btm= userProfile.jobTitle
-      if userProfile.emailAddress
-        a(href="mailto:#{userProfile.emailAddress}")
-          i.fa.fa-envelope.icon-left
-          span= userProfile.emailAddress
     .row
-      if userProfile.bio
-        .col-sm-10
-          h3 About
-          .bio.space-btm-4
-            +paragraphText text=userProfile.bio
+      .col-sm-6
+        .profile-name-title.space-btm-2
+          h1 #{userProfile.firstName} #{userProfile.middleName} #{userProfile.lastName}
+          p.job-title.rm-margin-btm= userProfile.jobTitle
+          p
+          if userProfile.emailAddress
+            p
+              a(href="mailto:#{userProfile.emailAddress}")
+                i.fa.fa-envelope.icon-left
+                span= userProfile.emailAddress
+          if userProfile.phoneNumber
+            p
+              a(href="tel:#{userProfile.phoneNumber}")
+                i.fa.fa-phone.icon-left
+                span= userProfile.phoneNumber
+        .row
+          if userProfile.bio
+            .col-sm-10
+              h3 About
+              .bio.space-btm-4
+                +paragraphText text=userProfile.bio
+
+      .col-sm-6
+        .row
+          .col-sm-10
+            if userProfile.address1
+              h3 Address
+              p= userProfile.address1
+              if userProfile.address2
+                p= userProfile.address2
+              p
+              p #{userProfile.city} #{userProfile.zip}
+              p #{userProfile.country}
+            

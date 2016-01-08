@@ -28,11 +28,14 @@ if Meteor.isClient
       event.preventDefault()
       event.stopImmediatePropagation()
       form = event.target
-      if not form.email.value or form.email.value.length == 0
+      if not form.email.value or form.email.value.trim() is ''
         toastr.error("An email address is required")
         return
-      if not form.name.value or form.name.value.length == 0
-        toastr.error("A name is required")
+      if not form.first.value or form.first.value.trim() is ''
+        toastr.error("First name is required")
+        return
+      if not form.last.value or form.last.value.trim() is ''
+        toastr.error("Last name is required")
         return
       if form.password.value != form.passwordconfirm.value
         toastr.error("Password mismatch")
@@ -48,7 +51,8 @@ if Meteor.isClient
         password: form.password.value
         groupId: groupId
         admin:  !groupId     #if no group provided then user is admin
-        fullName: form.name.value
+        firstName: form.first.value
+        lastName: form.last.value
       }
 
       Meteor.call 'addUser', fields, (error, response) ->
@@ -60,16 +64,21 @@ if Meteor.isClient
           form.reset()
           $('.modal').modal('hide')
 
+
+
 if Meteor.isServer
+
   Meteor.methods
     addUser: (fields) ->
       if Meteor.user()?.admin
         userId = Accounts.createUser
-          email : fields.email
-          password : fields.password
-          admin: fields.admin
-          group: fields.groupId
-        #update the profile to include full name
-        userProfile = UserProfiles.findOne({userId: userId})
-        userProfile.update(fullName: fields.fullName)
+          email:    fields.email
+          password: fields.password
+          admin:    fields.admin
+          group:    fields.groupId
+        #update the profile to include first/last name
+        userProfile = UserProfiles.findOne(userId: userId)
+        userProfile.update
+          firstName: fields.firstName
+          lastName:  fields.lastName
         Accounts.sendEnrollmentEmail(userId)

@@ -15,22 +15,6 @@ template(name="profileEdit")
                 .row
                   .col-md-12
                     label
-                      span Your Name
-                      .row
-                        .col-md-4
-                          input#profile-firstname.form-control(name="firstName" type="text" value=userProfile.firstName placeholder="First")
-                        .col-md-3
-                          input#profile-middlename.form-control(name="middleName" type="text" value=userProfile.middleName placeholder="Middle")
-                        .col-md-5
-                          input#profile-lastname.form-control(name="lastName" type="text" value=userProfile.lastName placeholder="Last")
-                .row
-                  .col-md-12
-                    label
-                      span Phone
-                      input#profile-phone.form-control(name="phone" type="text" value=userProfile.phone placeholder="+1 (800) 555-1337")
-                .row
-                  .col-md-12
-                    label
                       span E-mail
                 .row
                   .col-md-7
@@ -44,9 +28,24 @@ template(name="profileEdit")
                 .row
                   .col-md-12
                     label
+                      span Your Name
+                      .row
+                        .col-md-4
+                          input#profile-firstname.form-control(name="firstName" type="text" value=userProfile.firstName placeholder="First")
+                        .col-md-3
+                          input#profile-middlename.form-control(name="middleName" type="text" value=userProfile.middleName placeholder="Middle")
+                        .col-md-5
+                          input#profile-lastname.form-control(name="lastName" type="text" value=userProfile.lastName placeholder="Last")
+                .row
+                  .col-md-12
+                    label
+                      span Phone
+                      input#profile-phonenumber.form-control(name="phoneNumber" type="text" value=userProfile.phoneNumber placeholder="+1 (800) 555-1337")
+                .row
+                  .col-md-12
+                    label
                       span Role
                       input#profile-jobtitle.form-control(name="jobTitle" type="text" value=userProfile.jobTitle placeholder="Job Title")
-
                 label
                   span Biography
                   textarea#profile-bio.form-control(name="bio") #{userProfile.bio}
@@ -56,29 +55,31 @@ template(name="profileEdit")
                   .col-md-12
                     label
                       span Address Line 1
-                      input#address-line-1.form-control(name="address_line_1" type="text" value=userProfile.address.line1 placeholder="Street Address, P.O. Box")
+                      input#profile-address1.form-control(name="address1" type="text" value=userProfile.address1 placeholder="Street Address, P.O. Box")
                 .row
                   .col-md-12
-                    input#address-line-2.form-control(name="address_line_2" type="text" value=userProfile.address.line2 placeholder="Apt, suite, floor, etc.")
+                    label
+                      span Address Line 2
+                      input#profile-address2.form-control(name="address2" type="text" value=userProfile.address2 placeholder="Apt, suite, floor, etc.")
                 .row
                   .col-md-12
                     label
                       span City
-                      input#address-city.form-control(name="address_city" type="text" value=userProfile.address.city)
+                      input#profile-city.form-control(name="city" type="text" value=userProfile.city)
                 .row
-                  .col-md-6
+                  .col-md-7
                     label
                       span State
-                      input#address-state.form-control(name="address_state" type="text")
-                  .col-md-6
+                      input#profile-state.form-control(name="state" type="text" value=userProfile.state)
+                  .col-md-5
                     label
                       span ZIP
-                      input#address-zip.form-control(name="address_zip" type="text" value=userProfile.address.zip)
+                      input#profile-zip.form-control(name="zip" type="text" value=userProfile.zip)
                 .row
                   .col-md-12
                     label
                       span Country
-                      input#address-country.form-control(name="address_country" type="text")
+                      input#profile-country.form-control(name="country" type="text" value=userProfile.country)
                 .row
                   .col-md-12
                     input.btn.btn-primary(type="submit" value="Save")
