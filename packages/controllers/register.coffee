@@ -50,6 +50,8 @@ if Meteor.isServer
             text: """
               #{tenantProps.fullName} has registered for Tater!
               Tenant Name: #{tenantProps.tenantName}
+              Tenant Email: #{tenantProps.emailAddress}
+              Organization Name: #{tenantProps.orgName}
               """
           # Email to future tenant
           Email.send
