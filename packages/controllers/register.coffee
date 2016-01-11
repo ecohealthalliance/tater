@@ -56,7 +56,7 @@ if Meteor.isServer
           # Email to future tenant
           Email.send
             to: tenantProps.emailAddress
-            from: 'tater-beta@ecohealthalliance.org'
+            from: 'no-reply@tater.io'
             subject: 'Thanks for registering as a Tater beta user'
             text: """
               Thanks for registering as a beta user for Tater.
