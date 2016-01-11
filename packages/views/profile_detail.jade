@@ -1,5 +1,5 @@
 template(name="profileDetail")
-  .view-header.secondary-bg.space-btm-2
+  .view-header.primary-bg.space-btm-2
     .container
       if itsYou
         h1.inline Your Profile
@@ -10,37 +10,31 @@ template(name="profileDetail")
         h1.inline User Profile
 
   .container.profile-detail
-    .row
-      .col-sm-6
-        .profile-name-title.space-btm-2
-          h1= userProfile.fullName
-          p.job-title.rm-margin-btm= userProfile.jobTitle
-          p
+
+    h2= userProfile.fullName
+    p.job-title.rm-margin-btm= userProfile.jobTitle
+    .row.space-top-2
+      .col-sm-4
+        ul.profile-name-title.space-btm-2.list-unstyled
           if userProfile.emailAddress
-            p
+            li
+              i.fa.fa-envelope.icon-left
               a(href="mailto:#{userProfile.emailAddress}")
-                i.fa.fa-envelope.icon-left
                 span= userProfile.emailAddress
           if userProfile.phoneNumber
-            p
+            li
+              i.fa.fa-phone.icon-left
               a(href="tel:#{userProfile.phoneNumber}")
-                i.fa.fa-phone.icon-left
                 span= userProfile.phoneNumber
-        .row
-          if userProfile.bio
-            .col-sm-10
-              h3 About
-              .bio.space-btm-4
-                +paragraphText text=userProfile.bio
 
-      .col-sm-6
-        .row
-          .col-sm-10
-            if userProfile.address1
-              h3 Address
-              p= userProfile.address1
-              if userProfile.address2
-                p= userProfile.address2
-              p
-              p #{userProfile.city} #{userProfile.zip}
-              p #{userProfile.country}
+      if userProfile.address1
+        .col-sm-10
+          h4
+            i.fa.fa-location-arrow
+            | Address
+          ul.list-unstyled.profile-address
+            li= userProfile.address1
+            if userProfile.address2
+              li.space-btn-05= userProfile.address2
+            li #{userProfile.city}, #{userProfile.state} #{userProfile.zip}
+            li #{userProfile.country}
