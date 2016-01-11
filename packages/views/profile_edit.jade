@@ -8,74 +8,122 @@ template(name="profileEdit")
             a.btn.btn-primary.profile-detail-link.header-btn(href= "{{path route='profileDetail' params=userProfile}}")
               span View Public Profile
               i.fa.fa-user
-        .container
-          form#edit-profile-form
+        form#edit-profile-form
+          .container
             .row
-              .col-md-5
-                .row
-                  .col-md-12
-                    label
-                      span E-mail
-                .row
-                  .col-md-7
-                    span.email
-                      span= email
-                  .col-md-5
-                    .checkbox
+              .col-sm-9
+                .form-group
+                  .row
+                    .col-sm-7
                       label
-                        input#profile-email-hidden(name="emailHidden" type="checkbox" checked=userProfile.emailHidden)
-                        span Hide Email Address
-                .row
-                  .col-md-12
-                    label
-                      span Your Name
-                      input#profile-fullname.form-control(name="fullName" type="text" value=userProfile.fullName)
-                .row
-                  .col-md-12
-                    label
-                      span Phone
-                      input#profile-phonenumber.form-control(name="phoneNumber" type="text" value=userProfile.phoneNumber placeholder="+1 (800) 555-1337")
-                .row
-                  .col-md-12
-                    label
-                      span Role
-                      input#profile-jobtitle.form-control(name="jobTitle" type="text" value=userProfile.jobTitle placeholder="Job Title")
-                label
-                  span Biography
-                  textarea#profile-bio.form-control(name="bio") #{userProfile.bio}
+                        span Your Name
+                        input#profile-fullname.form-control(name="fullName" type="text" value=userProfile.fullName placeholder="First and last name")
+                  .row
+                    .col-sm-7
+                      label
+                        span Role
+                        input#profile-jobtitle.form-control(name="jobTitle" type="text" value=userProfile.jobTitle placeholder="Job Title")
 
-              .col-md-5
+                .form-group
+                  .row
+                    .col-sm-7.email
+                        label Email Address
+                        p=email
+                        .checkbox
+                          label
+                            input#profile-email-hidden(name="emailHidden" type="checkbox" checked=userProfile.emailHidden placeholder="you@domain.com")
+                            span Hide Email Address?
+
+                .form-group
+                  .row
+                    .col-sm-4
+                      label
+                        span Phone
+                        input#profile-phonenumber.form-control(name="phoneNumber" type="text" value=userProfile.phoneNumber placeholder="+1 (555) 555-5555")
+
+                .form-group
+                  .row
+                    .col-sm-8
+                      label
+                        span Address Line 1
+                        input#profile-address1.form-control(name="address1" type="text" value=userProfile.address1 placeholder="Street Address, P.O. Box")
+                  .row
+                    .col-sm-8
+                      label
+                        span Address Line 2
+                        input#profile-address2.form-control(name="address2" type="text" value=userProfile.address2 placeholder="Apt, suite, floor, etc.")
+                  .row
+                    .col-sm-7
+                      label
+                        span City
+                        input#profile-city.form-control(name="city" type="text" value=userProfile.city)
+                  .row
+                    .col-sm-5
+                      label
+                        span State
+                        select#profile-state.form-control(name="state" value=userProfile.state)
+                          option(value='AL') Alabama
+                          option(value='AK') Alaska
+                          option(value='AZ') Arizona
+                          option(value='AR') Arkansas
+                          option(value='CA') California
+                          option(value='CO') Colorado
+                          option(value='CT') Connecticut
+                          option(value='DE') Delaware
+                          option(value='DC') District Of Columbia
+                          option(value='FL') Florida
+                          option(value='GA') Georgia
+                          option(value='HI') Hawaii
+                          option(value='ID') Idaho
+                          option(value='IL') Illinois
+                          option(value='IN') Indiana
+                          option(value='IA') Iowa
+                          option(value='KS') Kansas
+                          option(value='KY') Kentucky
+                          option(value='LA') Louisiana
+                          option(value='ME') Maine
+                          option(value='sm') Maryland
+                          option(value='MA') Massachusetts
+                          option(value='MI') Michigan
+                          option(value='MN') Minnesota
+                          option(value='MS') Mississippi
+                          option(value='MO') Missouri
+                          option(value='MT') Montana
+                          option(value='NE') Nebraska
+                          option(value='NV') Nevada
+                          option(value='NH') New Hampshire
+                          option(value='NJ') New Jersey
+                          option(value='NM') New Mexico
+                          option(value='NY') New York
+                          option(value='NC') North Carolina
+                          option(value='ND') North Dakota
+                          option(value='OH') Ohio
+                          option(value='OK') Oklahoma
+                          option(value='OR') Oregon
+                          option(value='PA') Pennsylvania
+                          option(value='RI') Rhode Island
+                          option(value='SC') South Carolina
+                          option(value='SD') South Dakota
+                          option(value='TN') Tennessee
+                          option(value='TX') Texas
+                          option(value='UT') Utah
+                          option(value='VT') Vermont
+                          option(value='VA') Virginia
+                          option(value='WA') Washington
+                          option(value='WV') West Virginia
+                          option(value='WI') Wisconsin
+                          option(value='WY') Wyoming
+                    .col-sm-3
+                      label
+                        span ZIP
+                        input#profile-zip.form-control(name="zip" type="text" value=userProfile.zip)
+                  .row
+                    .col-sm-6
+                      label
+                        span Country
+                        input#profile-country.form-control(name="country" type="text" value=userProfile.country)
                 .row
-                  .col-md-12
-                    label
-                      span Address Line 1
-                      input#profile-address1.form-control(name="address1" type="text" value=userProfile.address1 placeholder="Street Address, P.O. Box")
-                .row
-                  .col-md-12
-                    label
-                      span Address Line 2
-                      input#profile-address2.form-control(name="address2" type="text" value=userProfile.address2 placeholder="Apt, suite, floor, etc.")
-                .row
-                  .col-md-12
-                    label
-                      span City
-                      input#profile-city.form-control(name="city" type="text" value=userProfile.city)
-                .row
-                  .col-md-7
-                    label
-                      span State
-                      input#profile-state.form-control(name="state" type="text" value=userProfile.state)
-                  .col-md-5
-                    label
-                      span ZIP
-                      input#profile-zip.form-control(name="zip" type="text" value=userProfile.zip)
-                .row
-                  .col-md-12
-                    label
-                      span Country
-                      input#profile-country.form-control(name="country" type="text" value=userProfile.country)
-                .row
-                  .col-md-12
+                  .col-sm-12
                     input.btn.btn-primary(type="submit" value="Save")
     else
       .container
