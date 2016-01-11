@@ -51,7 +51,13 @@ do ->
         .waitForExist('#edit-profile-form')
         .setValue('#profile-fullname', fullName)
         .setValue('#profile-jobtitle', 'User Tester')
-        .setValue('#profile-bio', 'I am a test user')
+        .setValue('#profile-phonenumber', '1-555-555-5555')
+        .setValue('#profile-address1', '111 First AVE')
+        .setValue('#profile-address2', 'APT 3')
+        .setValue('#profile-city', 'New York')
+        .selectByIndex('#profile-state', 32)
+        .setValue('#profile-zip', '11111')
+        .setValue('#profile-country', 'USA')
         .submitForm('#profile-fullname')
 
     @When 'I view my public profile', ->

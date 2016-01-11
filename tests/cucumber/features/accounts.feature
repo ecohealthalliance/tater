@@ -1,6 +1,6 @@
 Feature: Accounts
 
-  @dev
+  @accounts
   Scenario: Editing my profile
     Given there is a test user in the database
     When I log in as the test user
