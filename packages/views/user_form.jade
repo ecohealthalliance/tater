@@ -11,10 +11,8 @@ template(name="userForm")
     .form-group
       label Email
         input.user-email.form-control(name="email" type="text")
-      label First Name
-        input.user-firstname.form-control(name="first" type="text")
-      label Last Name
-        input.user-lastname.form-control(name="last" type="text")
+      label Full Name
+        input.user-name.form-control(name="name" type="text")
     if typeIsAdmin
       .form-group
         label User Type

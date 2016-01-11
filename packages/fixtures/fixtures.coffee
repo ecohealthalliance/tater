@@ -22,9 +22,7 @@ do ->
         password: attributes.password
       userProfile = UserProfiles.findOne(userId: account)
       userProfile.update(
-        firstName: attributes.firstName
-        middleName: attributes.middleName
-        lastName: attributes.lastName
+        fullName: attributes.fullName
       )
       Meteor.users.update(account, {
         $set: {admin: true, acceptedEULA: true}

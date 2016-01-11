@@ -45,16 +45,14 @@ do ->
         .click("#profile-email-hidden")
         .submitForm('#edit-profile-form')
 
-    @When /^I fill out the profile edit form as "([^"]*)" "([^"]*)" "([^"]*)"$/, (firstName, middleName, lastName) ->
+    @When /^I fill out the profile edit form as "([^"]*)"$/, (fullName) ->
       @browser
         .url(url.resolve(process.env.ROOT_URL, '/profile/edit'))
         .waitForExist('#edit-profile-form')
-        .setValue('#profile-firstname', firstName)
-        .setValue('#profile-middlename', middleName)
-        .setValue('#profile-lastname', lastName)
+        .setValue('#profile-fullname', fullName)
         .setValue('#profile-jobtitle', 'User Tester')
         .setValue('#profile-bio', 'I am a test user')
-        .submitForm('#profile-firstname')
+        .submitForm('#profile-fullname')
 
     @When 'I view my public profile', ->
       @browser
@@ -92,8 +90,7 @@ do ->
         .waitForVisible('#add-user-modal')
         .waitForEnabled('#add-user-modal .user-email')
         .setValue('#add-user-modal .user-email', email)
-        .setValue('#add-user-modal .user-firstname', 'John')
-        .setValue('#add-user-modal .user-lastname', 'Doe')
+        .setValue('#add-user-modal .user-fullname', 'John Doe')
         .submitForm('#add-user-modal .user-email')
         .waitForVisible('.toast-success')
         .pause(1500)
@@ -106,8 +103,7 @@ do ->
         .waitForVisible('#add-user-modal')
         .waitForEnabled('#add-user-modal .user-email')
         .setValue('#add-user-modal .user-email', email)
-        .setValue('#add-user-modal .user-firstname', 'John')
-        .setValue('#add-user-modal .user-lastname', 'Doe')
+        .setValue('#add-user-modal .user-fullname', 'John Doe')
         .setValue('#add-user-modal .user-password', 'testuser')
         .setValue('#add-user-modal .user-password-confirm', 'testuser')
         .submitForm('#add-user-modal .user-email')

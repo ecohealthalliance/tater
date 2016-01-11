@@ -14,8 +14,7 @@ do ->
 
     _testUser =
       email:     'test@example.com'
-      firstName: 'test'
-      lastName:  'name'
+      fullName: 'test name'
       password:  'password'
 
     @Before (callback) ->

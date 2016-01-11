@@ -8,7 +8,7 @@ Feature: Admin page
     Given there is a test group in the database
     When I log in as the test user
     And I navigate to "/profile/edit"
-    When I fill out the profile edit form as "John" "C" "Doe"
+    When I fill out the profile edit form as "John Doe"
     When I toggle my email address from my profile
     Then I should see a "Success" toast
 
@@ -16,5 +16,5 @@ Feature: Admin page
     Then I should see the "Admin" link highlighted in the header
     When I click on the test user
     Then I should be on the user profile page
-    And I should see content "John C Doe"
+    And I should see content "John Doe"
     And I should see content "test@example.com"

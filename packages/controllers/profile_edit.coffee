@@ -15,16 +15,11 @@ if Meteor.isClient
     'submit form': (event) ->
       event.preventDefault()
       form = event.target
-      if not form.firstName.value or form.firstName.value.trim() is ''
-        toastr.error("First name is required")
-        return
-      if not form.lastName.value or form.lastName.value.trim() is ''
-        toastr.error("Last name is required")
+      if not form.fullName.value or form.fullName.value.trim() is ''
+        toastr.error("Full name is required")
         return
       fields = {
-        firstName: form.firstName?.value
-        middleName: form.middleName?.value
-        lastName: form.lastName?.value
+        fullName: form.fullName?.value
         jobTitle: form.jobTitle?.value
         bio: form.bio?.value
         emailHidden: form.emailHidden?.checked

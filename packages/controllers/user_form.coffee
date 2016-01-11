@@ -31,11 +31,8 @@ if Meteor.isClient
       if not form.email.value or form.email.value.trim() is ''
         toastr.error("An email address is required")
         return
-      if not form.first.value or form.first.value.trim() is ''
-        toastr.error("First name is required")
-        return
-      if not form.last.value or form.last.value.trim() is ''
-        toastr.error("Last name is required")
+      if not form.name.value or form.name.value.trim() is ''
+        toastr.error("Full name is required")
         return
       groupId = null
       if $(".document_groups").is(":visible")
@@ -47,8 +44,7 @@ if Meteor.isClient
         email: form.email.value
         groupId: groupId
         admin:  !groupId     #if no group provided then user is admin
-        firstName: form.first.value
-        lastName: form.last.value
+        fullName: form.name.value
       }
 
       Meteor.call 'addUser', fields, (error, response) ->
@@ -71,9 +67,8 @@ if Meteor.isServer
           email:    fields.email
           admin:    fields.admin
           group:    fields.groupId
-        #update the profile to include first/last name
+        #update the profile to include full name
         userProfile = UserProfiles.findOne(userId: userId)
         userProfile.update
-          firstName: fields.firstName
-          lastName:  fields.lastName
+          fullName: fields.fullName
         Accounts.sendEnrollmentEmail(userId)

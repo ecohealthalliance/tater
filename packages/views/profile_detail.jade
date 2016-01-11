@@ -13,7 +13,7 @@ template(name="profileDetail")
     .row
       .col-sm-6
         .profile-name-title.space-btm-2
-          h1 #{userProfile.firstName} #{userProfile.middleName} #{userProfile.lastName}
+          h1= userProfile.fullName
           p.job-title.rm-margin-btm= userProfile.jobTitle
           p
           if userProfile.emailAddress
@@ -44,4 +44,3 @@ template(name="profileDetail")
               p
               p #{userProfile.city} #{userProfile.zip}
               p #{userProfile.country}
-            

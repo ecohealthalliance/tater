@@ -29,13 +29,7 @@ template(name="profileEdit")
                   .col-md-12
                     label
                       span Your Name
-                      .row
-                        .col-md-4
-                          input#profile-firstname.form-control(name="firstName" type="text" value=userProfile.firstName placeholder="First")
-                        .col-md-3
-                          input#profile-middlename.form-control(name="middleName" type="text" value=userProfile.middleName placeholder="Middle")
-                        .col-md-5
-                          input#profile-lastname.form-control(name="lastName" type="text" value=userProfile.lastName placeholder="Last")
+                      input#profile-fullname.form-control(name="fullName" type="text" value=userProfile.fullName)
                 .row
                   .col-md-12
                     label
