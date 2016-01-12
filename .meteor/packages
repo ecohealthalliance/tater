@@ -6,7 +6,6 @@
 
 tater:router
 tater:server-router
-xolvio:cucumber
 tater:models
 tater:fixtures
 tater:accounts

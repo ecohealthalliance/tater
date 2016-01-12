@@ -16,10 +16,12 @@ model:
 	spacejam test-packages packages/models/
 
 test:
-	VELOCITY_CI=1 CHIMP_OPTIONS="--browser=chrome --chai --sync=false" meteor --test
+	MONGO_URL=mongodb://localhost:27017/chimp_db meteor --port 3100 &
+	CUCUMBER_TAIL=1 ./node_modules/.bin/chimp --ddp=http://localhost:3100 --browser=chrome --path=tests/cucumber/features/ --coffee=true --chai=true --sync=false
 
 devtest:
-	CHIMP_OPTIONS="--tags=@dev --browser=chrome --chai --sync=false" meteor
+	MONGO_URL=mongodb://localhost:27017/chimp_db meteor --port 3100 &
+	CUCUMBER_TAIL=1 ./node_modules/.bin/chimp --ddp=http://localhost:3100 --browser=chrome --tags=@dev --path=tests/cucumber/features/ --coffee=true --chai=true --sync=false
 
 install:
 	curl https://install.meteor.com | sh
@@ -27,6 +29,7 @@ install:
 	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 	brew install node
 	npm install -g spacejam
+	npm install chimp
 
 data:
 	./.scripts/restore_database
