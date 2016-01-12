@@ -30,7 +30,7 @@ Document = Astro.Class
       splitText = @body?.split(' ')
       wordCount = 25
       if splitText?.length > wordCount
-        splitText.slice(0,wordCount).join(' ')+'...'
+        splitText.slice(0, wordCount).join(' ')+'...'
       else
         @body
 
@@ -39,15 +39,15 @@ Document = Astro.Class
       startOffset = annotation.startOffset
       endOffset = annotation.endOffset
 
-      if annotation.codeId
+      if annotation.codeId?
         color = annotation.color()
       else
         color = "temporary"
 
       preTagBody = body.slice(0, startOffset)
-      openTag = "<span data-annotation-id='#{annotation._id}' class='annotation-highlight annotation-highlight-#{color}'>"
+      openTag = "<span data-annotation-id='" + annotation._id + "' class='annotation-highlight annotation-highlight-" + color + "'>"
       annotatedText = body.slice(startOffset, endOffset)
       closeTag = "</span>"
       postTagBody = body.slice(endOffset, body.length)
 
-      "#{preTagBody}#{openTag}#{annotatedText}#{closeTag}#{postTagBody}"
+      preTagBody + openTag + annotatedText + closeTag + postTagBody
