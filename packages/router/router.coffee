@@ -52,3 +52,14 @@ FlowRouter.route '/register',
     BlazeLayout.render 'layout',
       main: 'register'
       params: {}
+
+FlowRouter.route '/documents/:_id',
+  name: 'documentDetail'
+  action: (params, query) ->
+    BlazeLayout.render 'layout',
+      main: 'documentDetail'
+      params: {
+        "documentId": params._id
+        "annotationId": query.annotationId
+        "accessToken": query.accessToken
+      }
