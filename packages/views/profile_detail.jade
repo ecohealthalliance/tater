@@ -17,10 +17,11 @@ template(name="profileDetail")
       .col-sm-4
         ul.profile-name-title.space-btm-2.list-unstyled
           if userProfile.emailAddress
-            li
-              i.fa.fa-envelope.icon-left
-              a(href="mailto:#{userProfile.emailAddress}")
-                span= userProfile.emailAddress
+            unless userProfile.emailHidden
+              li
+                i.fa.fa-envelope.icon-left
+                a(href="mailto:#{userProfile.emailAddress}")
+                  span= userProfile.emailAddress
           if userProfile.phoneNumber
             li
               i.fa.fa-phone.icon-left

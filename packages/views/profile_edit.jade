@@ -31,7 +31,7 @@ template(name="profileEdit")
                         p=email
                         .checkbox
                           label
-                            input#profile-email-hidden(name="emailHidden" type="checkbox" checked=userProfile.emailHidden placeholder="you@domain.com")
+                            input#profile-email-hidden(name="emailHidden" type="checkbox" checked=userProfile.emailHidden)
                             span Hide Email Address?
 
                 .form-group
@@ -125,6 +125,7 @@ template(name="profileEdit")
                 .row
                   .col-sm-12
                     input.btn.btn-primary(type="submit" value="Save")
+
     else
       .container
         p Please log in or sign up to continue.
