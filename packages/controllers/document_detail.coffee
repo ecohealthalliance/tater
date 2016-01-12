@@ -55,9 +55,11 @@ if Meteor.isClient
 
 
   Template.documentDetail.onCreated ->
-    @subscribe('documentDetail', @data.documentId)
-    @subscribe('docAnnotations', @data.documentId)
-    @subscribe('users', @data.documentId)
+    if @data.accessToken?
+      @accessCode = @data.accessToken
+    @subscribe('documentDetail', @data.documentId, @accessCode)
+    @subscribe('docAnnotations', @data.documentId, @accessCode)
+    @subscribe('users', @data.documentId, @accessCode)
     @startOffset = new ReactiveVar()
     @endOffset = new ReactiveVar()
     @annotations = new ReactiveVar()
@@ -212,7 +214,7 @@ if Meteor.isClient
           documentId:  instance.data.documentId
           startOffset: temporaryAnnotation.startOffset
           endOffset:   temporaryAnnotation.endOffset
-        Meteor.call 'createAnnotation', attributes, (error, response) ->
+        Meteor.call 'createAnnotation', attributes, instance.accessCode, (error, response) ->
           if error
             toastr.error("Invalid annotation")
 
@@ -284,7 +286,7 @@ if Meteor.isClient
       selectedAnnotation = instance.parent().selectedAnnotation
       $parent.addClass('deleting')
       setTimeout (->
-        Meteor.call 'deleteAnnotation', annotationId
+        Meteor.call 'deleteAnnotation', annotationId, instance.parent().accessCode
       ), 800
       if annotationId is selectedAnnotation.get()?.id
         selectedAnnotation.set id: null
@@ -292,22 +294,28 @@ if Meteor.isClient
     'click li .toggle-flag': (event, instance) ->
       event.stopImmediatePropagation()
       annotationId = instance.data._id
-      Meteor.call('toggleAnnotationFlag', annotationId)
+      Meteor.call 'toggleAnnotationFlag', annotationId, instance.parent().accessCode
 
 
 Meteor.methods
 
-  createAnnotation: (attributes) ->
+  createAnnotation: (attributes, code) ->
     @unblock()
     check attributes, Object
+    if code? then check code, String
     document = Documents.findOne attributes.documentId
     if Meteor.isServer
       group = Groups.findOne document.groupId
       user = Meteor.users.findOne @userId
-      accessibleViaUser = user? and group?.viewableByUser(user)
+      if user?
+        accessible = group?.viewableByUser(user)
+      else
+        if code? and document.accessCode is code
+          accessible = true
     else
-      accessibleViaUser = true
-    if accessibleViaUser
+      accessible = true
+
+    if accessible
       annotation = new Annotation()
       annotation.set(attributes)
       annotation.set(userId: @userId)
@@ -318,58 +326,91 @@ Meteor.methods
     else
       throw new Meteor.Error 'Unauthorized'
 
-  deleteAnnotation: (annotationId) ->
+  deleteAnnotation: (annotationId, code) ->
     @unblock()
     check annotationId, String
+    if code? then check code, String
     annotation = Annotations.findOne annotationId
     document = Documents.findOne annotation.documentId
     if Meteor.isServer
       group = Groups.findOne document.groupId
       user = Meteor.users.findOne @userId
-      accessibleViaUser = user? and group?.viewableByUser(user)
+      if user?
+        accessible = group?.viewableByUser(user)
+      else
+        if code? and document.accessCode is code
+          accessible = true
     else
-      accessibleViaUser = true
-    if accessibleViaUser
+      accessible = true
+
+    if accessible
       annotation.remove()
     else
       throw new Meteor.Error 'Unauthorized'
 
-  toggleAnnotationFlag: (annotationId) ->
+  toggleAnnotationFlag: (annotationId, code) ->
     @unblock()
     check annotationId, String
+    if code? then check code, String
     annotation = Annotations.findOne annotationId
-    annotation.set(flagged: not annotation.flagged)
-    annotation.save()
+    document = Documents.findOne annotation.documentId
+    if Meteor.isServer
+      group = Groups.findOne document.groupId
+      user = Meteor.users.findOne @userId
+      if user?
+        accessible = group?.viewableByUser(user)
+      else
+        if code? and document.accessCode is code
+          accessible = true
+    else
+      accessible = true
+
+    if accessible
+      annotation.set(flagged: not annotation.flagged)
+      annotation.save()
+    else
+      throw new Meteor.Error 'Unauthorized'
 
 
 
 if Meteor.isServer
 
-  Meteor.publish 'documentDetail', (id) ->
-    document = Documents.findOne id
+  Meteor.publish 'documentDetail', (documentId, code) ->
+    check documentId, String
+    document = Documents.findOne documentId
     if @userId
       group = Groups.findOne document.groupId
       user = Meteor.users.findOne @userId
       if group?.viewableByUser(user)
-        Documents.find id
+        Documents.find documentId
       else
         @ready()
+    else if code?
+      check code, String
+      Documents.find _id: documentId, accessCode: code
     else
       @ready()
 
-  Meteor.publish 'docAnnotations', (documentId) ->
-    document = Documents.findOne documentId
+  Meteor.publish 'docAnnotations', (documentId, code) ->
+    check documentId, String
     if @userId?
+      document = Documents.findOne documentId
       group = Groups.findOne document.groupId
       user = Meteor.users.findOne @userId
       if group?.viewableByUser(user)
         Annotations.find(documentId: documentId)
       else
         @ready()
+    else if code?
+      check code, String
+      document = Documents.findOne _id: documentId, accessCode: code
+      Annotations.find(documentId: document?._id)
     else
       @ready()
 
-  Meteor.publish 'users', (documentId) ->
+  Meteor.publish 'users', (documentId, code) ->
+    check documentId, String
+    if code? then check code, String
     if @userId?
       document = Documents.findOne documentId
       group = Groups.findOne document.groupId

@@ -98,6 +98,15 @@ Feature: Documents
     And I should not see content "Test Document"
 
   @documents
+  Scenario: Viewing a document with an access code
+    Given there is a code-accessible test group in the database
+    And there is a document with title "Test Document" in the test group
+    When I navigate to the test document with an access code
+    Then I should see content "Test Document"
+    When I click on the Finished Annotating button
+    Then I should see an access code in a modal
+
+  @documents
   Scenario: Increasing and decreasing a document's annotation count
     And there is a coding keyword with header "Bur Bur" in the database
     When I log in as the test user

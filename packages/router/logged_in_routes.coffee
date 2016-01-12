@@ -1,5 +1,5 @@
 # Based on the example here:
-# https://medium.com/@satyavh/using-flow-router-for-authentication-ba7bb2644f42#.ix98j24rh
+# https://medium.com/@satyavh/using-flow-router-for-authentication-ba7bb2644f42
 requireLoggedIn = ->
   unless Meteor.loggingIn() or Meteor.userId()
     FlowRouter.go '/'
@@ -46,12 +46,16 @@ loggedIn.route '/documents/new',
     BlazeLayout.render 'layout',
       main: 'documentNew'
 
-loggedIn.route '/documents/:_id',
+FlowRouter.route '/documents/:_id',
   name: 'documentDetail'
   action: (params, query) ->
     BlazeLayout.render 'layout',
       main: 'documentDetail'
-      params: {"documentId": params._id, "annotationId": query.annotationId}
+      params: {
+        "documentId": params._id
+        "annotationId": query.annotationId
+        "accessToken": query.accessToken
+      }
 
 loggedIn.route '/groups/new',
   name: 'newGroup'

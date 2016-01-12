@@ -67,8 +67,8 @@ if Meteor.isClient
         fields.groupId = currentUser.group
 
       Meteor.call 'createDocument', fields, (error, response) ->
-        if error
-          if error.reason
+        if error?
+          if error.reason?
             for key, value of error.reason
               toastr.error('Error: ' + value)
           else
@@ -80,18 +80,26 @@ if Meteor.isClient
 
 Meteor.methods
   createDocument: (fields) ->
+    check fields, Object
     unless fields.groupId
       throw new Meteor.Error('Required', ['A document group has not been selected'])
+    check fields.groupId, String
     if @userId
-      group = Groups.findOne fields.groupId
+      group = Groups.findOne(fields.groupId)
       user = Meteor.user()
       if group?.viewableByUser(user)
+        if fields.accessCode
+          if not user?.admin
+            throw new Meteor.error('Not allowed')
+          else
+            if Meteor.isServer
+              fields.accessCode = Random.secret _.random(19, 29)
+
         document = new Document()
         document.set(fields)
 
         if document.validate()
-          document.save ->
-            document
+          document.save()
         else
           document.throwValidationException()
       else

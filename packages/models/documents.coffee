@@ -20,6 +20,8 @@ Document = Astro.Class
       type: 'number'
       default: 0
     createdAt: 'date'
+    accessCode:
+      type: 'string'
   behaviors: ['timestamp']
 
   methods:
@@ -30,7 +32,7 @@ Document = Astro.Class
       splitText = @body?.split(' ')
       wordCount = 25
       if splitText?.length > wordCount
-        splitText.slice(0,wordCount).join(' ')+'...'
+        splitText.slice(0, wordCount).join(' ')+'...'
       else
         @body
 
