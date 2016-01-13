@@ -294,7 +294,7 @@ if Meteor.isClient
     'click li .toggle-flag': (event, instance) ->
       event.stopImmediatePropagation()
       annotationId = instance.data._id
-      Meteor.call 'toggleAnnotationFlag', annotationId, instance.parent().accessCode
+      Meteor.call 'toggleAnnotationFlag', annotationId
 
 
 Meteor.methods
@@ -307,10 +307,10 @@ Meteor.methods
     if Meteor.isServer
       group = Groups.findOne document.groupId
       user = Meteor.users.findOne @userId
-      if user?
+      if user
         accessible = group?.viewableByUser(user)
       else
-        if code? and document.accessCode is code
+        if code and document.accessCode is code
           accessible = true
     else
       accessible = true
@@ -335,10 +335,10 @@ Meteor.methods
     if Meteor.isServer
       group = Groups.findOne document.groupId
       user = Meteor.users.findOne @userId
-      if user?
+      if user
         accessible = group?.viewableByUser(user)
       else
-        if code? and document.accessCode is code
+        if code and document.accessCode is code
           accessible = true
     else
       accessible = true
@@ -348,20 +348,16 @@ Meteor.methods
     else
       throw new Meteor.Error 'Unauthorized'
 
-  toggleAnnotationFlag: (annotationId, code) ->
+  toggleAnnotationFlag: (annotationId) ->
     @unblock()
     check annotationId, String
-    if code? then check code, String
     annotation = Annotations.findOne annotationId
     document = Documents.findOne annotation.documentId
     if Meteor.isServer
       group = Groups.findOne document.groupId
       user = Meteor.users.findOne @userId
-      if user?
+      if user
         accessible = group?.viewableByUser(user)
-      else
-        if code? and document.accessCode is code
-          accessible = true
     else
       accessible = true
 
@@ -385,7 +381,7 @@ if Meteor.isServer
         Documents.find documentId
       else
         @ready()
-    else if code?
+    else if code
       check code, String
       Documents.find _id: documentId, accessCode: code
     else
@@ -393,7 +389,7 @@ if Meteor.isServer
 
   Meteor.publish 'docAnnotations', (documentId, code) ->
     check documentId, String
-    if @userId?
+    if @userId
       document = Documents.findOne documentId
       group = Groups.findOne document.groupId
       user = Meteor.users.findOne @userId
@@ -401,7 +397,7 @@ if Meteor.isServer
         Annotations.find(documentId: documentId)
       else
         @ready()
-    else if code?
+    else if code
       check code, String
       document = Documents.findOne _id: documentId, accessCode: code
       Annotations.find(documentId: document?._id)
@@ -411,7 +407,7 @@ if Meteor.isServer
   Meteor.publish 'users', (documentId, code) ->
     check documentId, String
     if code? then check code, String
-    if @userId?
+    if @userId
       document = Documents.findOne documentId
       group = Groups.findOne document.groupId
       Meteor.users.find

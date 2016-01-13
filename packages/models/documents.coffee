@@ -53,3 +53,8 @@ Document = Astro.Class
       postTagBody = body.slice(endOffset, body.length)
 
       "#{preTagBody}#{openTag}#{annotatedText}#{closeTag}#{postTagBody}"
+
+    generateAccessCode: ->
+      randomToken = Random.id 20
+      this.set(accessCode: randomToken)
+      this

@@ -93,10 +93,13 @@ Meteor.methods
             throw new Meteor.error('Not allowed')
           else
             if Meteor.isServer
-              fields.accessCode = Random.secret _.random(19, 29)
+              generateAccessCode = true
 
         document = new Document()
+        delete fields.accessCode
         document.set(fields)
+        if generateAccessCode
+          document.generateAccessCode()
 
         if document.validate()
           document.save()
