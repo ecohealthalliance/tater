@@ -14,11 +14,6 @@ describe 'UserProfile attributes', ->
     profile.save
     expect(profile.jobTitle).to.eq('Job Title Here')
 
-  it 'includes bio', ->
-    profile.set('bio', 'This is my bio')
-    profile.save
-    expect(profile.bio).to.eq('This is my bio')
-
   it 'includes emailHidden', ->
     profile.set('emailHidden', true)
     profile.save
@@ -77,12 +72,12 @@ describe 'UserProfile#update', ->
 
   beforeEach ->
     profile = new UserProfile()
-    profile.set(bio: "First bio", userId: 'testUserId')
+    profile.set(fullName: "Initial Name", userId: 'testUserId')
     profile.save
 
   it 'updates fields on the profile', ->
-    profile.update(bio: "Second bio")
-    expect(profile.bio).to.eq("Second bio")
+    profile.update(fullName: "Changed Name")
+    expect(profile.fullName).to.eq("Changed Name")
 
   it 'does not update fields that are not on the profile', ->
     profile.update(somethingElse: "Fake information")

@@ -6,7 +6,6 @@ UserProfile = Astro.Class
     userId: 'string'
     fullName: 'string'
     jobTitle: 'string'
-    bio: 'string'
     emailHidden: 'boolean'
     emailAddress: 'string'
     phoneNumber: 'string'
@@ -21,7 +20,7 @@ UserProfile = Astro.Class
   methods:
     update: (fields, callback) ->
       filteredFields = _.pick(fields, 'fullName',
-                              'jobTitle', 'bio', 'emailHidden', 'phoneNumber',
+                              'jobTitle', 'emailHidden', 'phoneNumber',
                               'address1', 'address2', 'city', 'state', 'zip',
                               'country')
       this.set(filteredFields)
