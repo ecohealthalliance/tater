@@ -16,7 +16,7 @@ Feature: Accounts
     And there is a test user in the database
     When I log in as the test user
     And I navigate to "/profiles/fakeid"
-    Then I should see content "ASDFASDFASDFADSFASDFADS234234"
+    Then I should see content "John Doe"
 
   @accounts
   Scenario: Hiding/displaying email address on profile page
