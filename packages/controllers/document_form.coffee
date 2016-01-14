@@ -34,10 +34,16 @@ if Meteor.isClient
 
   Template.documentForm.onCreated ->
     @subscribe 'groups'
+    @codeAccessible = new ReactiveVar(false)
+
+  Template.documentForm.onRendered ->
+    $("[data-toggle='tooltip']").tooltip()
 
   Template.documentForm.helpers
     groups: ->
       Groups.find({}, { sort: { name: 1 } })
+    codeAccessible: ->
+      Template.instance().codeAccessible.get()
 
   Template.documentForm.events
     'change .drop-zone input': (event, instance) ->
