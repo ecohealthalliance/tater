@@ -5,28 +5,28 @@ Feature: Accounts
     Given there is a test user in the database
     When I log in as the test user
     And I navigate to "/profile/edit"
-    When I fill out the profile edit form with fullName "Test Name"
+    When I fill out the profile edit form as "John Doe"
     Then I should see a "Success" toast
     When I view my public profile
-    And I should see content "Test Name"
+    And I should see content "John Doe"
 
   @accounts
   Scenario: Viewing a public profile
-    Given there is a profile with ID 'fakeid' where "fullName" is "Test Title"
+    Given there is a profile with ID 'fakeid' where "fullName" is "John Doe"
     And there is a test user in the database
     When I log in as the test user
     And I navigate to "/profiles/fakeid"
-    Then I should see content "Test Title"
+    Then I should see content "John Doe"
 
   @accounts
   Scenario: Hiding/displaying email address on profile page
     Given there is a test user in the database
     When I log in as the test user
     And I view my public profile
-    Then I should see content "test@example.com"
-    When I hide my email address from my profile
-    And I view my public profile
     Then I should not see content "test@example.com"
+    When I toggle my email address from my profile
+    And I view my public profile
+    Then I should see content "test@example.com"
 
   @accounts
   Scenario: Creating an account for another user

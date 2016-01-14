@@ -28,10 +28,10 @@ if Meteor.isClient
       event.preventDefault()
       event.stopImmediatePropagation()
       form = event.target
-      if not form.email.value or form.email.value.length == 0
+      if not form.email.value or form.email.value.trim() is ''
         toastr.error("An email address is required")
         return
-      if not form.name.value or form.name.value.length == 0
+      if not form.name.value or form.name.value.trim() is ''
         toastr.error("A name is required")
         return
       if form.password.value != form.passwordconfirm.value
@@ -60,16 +60,20 @@ if Meteor.isClient
           form.reset()
           $('.modal').modal('hide')
 
+
+
 if Meteor.isServer
+
   Meteor.methods
     addUser: (fields) ->
       if Meteor.user()?.admin
         userId = Accounts.createUser
-          email : fields.email
-          password : fields.password
-          admin: fields.admin
-          group: fields.groupId
+          email:    fields.email
+          password: fields.password
+          admin:    fields.admin
+          group:    fields.groupId
         #update the profile to include full name
-        userProfile = UserProfiles.findOne({userId: userId})
-        userProfile.update(fullName: fields.fullName)
+        userProfile = UserProfiles.findOne(userId: userId)
+        userProfile.update
+          fullName: fields.fullName
         Accounts.sendEnrollmentEmail(userId)

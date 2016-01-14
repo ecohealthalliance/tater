@@ -1,4 +1,5 @@
 if Meteor.isClient
+
   Template.accountsHeaderButtons.onCreated ->
     instance = @
     @autorun ->
@@ -18,6 +19,9 @@ if Meteor.isClient
       @state.set("changePwd")
       $('.accounts-modal').modal('show')
 
+
+
 if Meteor.isServer
+
   Meteor.publish 'currentUserName', (id) ->
     UserProfiles.find({userId: id}, {fields: {userId: 1, fullName: 1}})

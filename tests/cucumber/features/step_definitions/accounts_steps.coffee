@@ -1,4 +1,5 @@
 do ->
+
   'use strict'
 
   _ = require('underscore')
@@ -37,20 +38,26 @@ do ->
         .click('.sign-in')
         .waitForExist('.accounts-modal.modal.in')
 
-    @When "I hide my email address from my profile", ->
+    @When "I toggle my email address from my profile", ->
       @browser
         .url(url.resolve(process.env.ROOT_URL, '/profile/edit'))
         .waitForExist('#edit-profile-form')
         .click("#profile-email-hidden")
         .submitForm('#edit-profile-form')
 
-    @When /^I fill out the profile edit form with fullName "([^"]*)"$/, (fullName) ->
+    @When /^I fill out the profile edit form as "([^"]*)"$/, (fullName) ->
       @browser
         .url(url.resolve(process.env.ROOT_URL, '/profile/edit'))
         .waitForExist('#edit-profile-form')
         .setValue('#profile-fullname', fullName)
         .setValue('#profile-jobtitle', 'User Tester')
-        .setValue('#profile-bio', 'I am a test user')
+        .setValue('#profile-phonenumber', '1-555-555-5555')
+        .setValue('#profile-address1', '111 First AVE')
+        .setValue('#profile-address2', 'APT 3')
+        .setValue('#profile-city', 'New York')
+        .selectByIndex('#profile-state', 32)
+        .setValue('#profile-zip', '11111')
+        .setValue('#profile-country', 'USA')
         .submitForm('#profile-fullname')
 
     @When 'I view my public profile', ->
@@ -89,7 +96,7 @@ do ->
         .waitForVisible('#add-user-modal')
         .waitForEnabled('#add-user-modal .user-email')
         .setValue('#add-user-modal .user-email', email)
-        .setValue('#add-user-modal .user-name', 'test name')
+        .setValue('#add-user-modal .user-name', 'John Doe')
         .setValue('#add-user-modal .user-password', 'testuser')
         .setValue('#add-user-modal .user-password-confirm', 'testuser')
         .submitForm('#add-user-modal .user-email')
@@ -104,7 +111,7 @@ do ->
         .waitForVisible('#add-user-modal')
         .waitForEnabled('#add-user-modal .user-email')
         .setValue('#add-user-modal .user-email', email)
-        .setValue('#add-user-modal .user-name', 'test name')
+        .setValue('#add-user-modal .user-name', 'John Doe')
         .setValue('#add-user-modal .user-password', 'testuser')
         .setValue('#add-user-modal .user-password-confirm', 'testuser')
         .submitForm('#add-user-modal .user-email')

@@ -1,23 +1,35 @@
 if Meteor.isClient
+
   Template.profileEdit.onCreated ->
     @subscribe('currentUserProfile')
 
   Template.profileEdit.helpers
     userProfile: ->
-      UserProfiles.findOne({userId: Meteor.userId()})
+      UserProfiles.findOne userId: Meteor.userId()
+    email: ->
+      Meteor.user().emails[0].address
+    countries: ->
+      []
 
   Template.profileEdit.events
     'submit form': (event) ->
       event.preventDefault()
       form = event.target
-      if not form.fullName.value or form.fullName.value.length == 0
-        toastr.error("A name is required")
+      if not form.fullName.value or form.fullName.value.trim() is ''
+        toastr.error("Full name is required")
         return
       fields = {
         fullName: form.fullName?.value
         jobTitle: form.jobTitle?.value
         bio: form.bio?.value
         emailHidden: form.emailHidden?.checked
+        phoneNumber: form.phoneNumber?.value
+        address1: form.address1?.value
+        address2: form.address2?.value
+        city: form.city?.value
+        state: form.state?.value
+        zip: form.zip?.value
+        country: form.country?.value
       }
       Meteor.call 'updateProfile', fields, (error, response) ->
         if error
@@ -28,10 +40,11 @@ if Meteor.isClient
 
 Meteor.methods
   updateProfile: (fields) ->
-    userProfile = UserProfiles.findOne({userId: this.userId})
+    userProfile = UserProfiles.findOne userId: Meteor.userId()
     userProfile.update(fields)
 
 
 if Meteor.isServer
+
   Meteor.publish 'currentUserProfile', ->
-    UserProfiles.find({userId: this.userId})
+    UserProfiles.find userId: this.userId

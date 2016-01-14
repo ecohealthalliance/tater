@@ -1,24 +1,44 @@
+$md-gray = darken($d-gray, 20%)
+
 .profile-detail
   .job-title
+    margin-top 5px
     margin-bottom 5px
     font-style italic
     font-size 130%
-    color $secondary
+  p
+    margin-bottom 5px
+  li
+    color $md-gray
+    margin-bottom 3px
+  h4
+    font-size 1.2em
+    color $md-gray
+  i
+    margin-left 5px
 
 .profile-name-title
+  font-size 1.1em
   h1
     margin-bottom 5px
+  li
+    margin-bottom 8px
+
+.profile-address
+  color
+  li
+    padding-left 20px
 
 .profile-edit
-  label
-    margin-bottom 10px
-    span
-      display block
-      margin-bottom 5px
-  textarea
-    min-height 200px
   input[type=submit]
-    margin-top 20px
+    margin-top 10px
+    min-width 200px
+  .email
+    p
+      margin-bottom 0
+      font-style italic
+    span
+      font-weight normal
 
 .profile-email-hidden
   font-weight bold
