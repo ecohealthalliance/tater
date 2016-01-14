@@ -48,16 +48,6 @@
   i
     font-size 1.5em
 
-.finished-annotating
-  centerVertically()
-  right 20px
-
-.completion-code
-  color $d-gray
-  span
-    color darken($secondary, 10%)
-    letter-spacing .05em
-
 .document-container
   width 55%
   left 22.5%
@@ -67,19 +57,39 @@
   border-bottom 0
   border-top 0
 
-.document-title
-  width 80%
+.document-heading
+  display flex
+  height 100%
+  align-items center
+  h1
+    position static
+    min-width 49%
+    overflow hidden
+    text-overflow ellipsis
+    white-space nowrap
+    transform translate(0,0)
+    line-height 1.5em
 
-.help-link-document
-  font-size 1.5em
-  position absolute
-  right 15px
-  centerVertically()
+.document-options
+  display flex
+  height 100%
+  align-items center
+  justify-content flex-end
+  min-width 49%
+  a
+    margin-left 10px
+  .help-link-document
+    font-size 1.5em
 
-.crowdsource-btn
-  position absolute
-  right 25px
+.finished-annotating
   centerVertically()
+  right 20px
+
+.completion-code
+  color $d-gray
+  span
+    color darken($secondary, 10%)
+    letter-spacing .05em
 
 .document-body
   max-width 900px

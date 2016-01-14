@@ -69,10 +69,19 @@ template(name="document")
         else
           +tooltipIcon icon='circle-o' placement='top' title='No annotations'
       span.document-title= title
-      span.document-group= groupName
-    button.btn-plain.delete-document-button(data-toggle="modal" data-document-id=_id data-target="#confirm-delete-document-modal" )
-      i.fa.fa-trash-o
-    button.btn.btn-success(data-toggle="modal" data-document-id=_id data-target="#create-mturk-job-modal" ) Crowdsource Annotation
+      unless hideGroup
+        span.document-group= groupName
+
+    .doc-options-wrap
+      button.btn-plain.doc-options(data-document-id=_id class="{{showing}}")
+        i.fa.fa-gear
+      .doc-options-buttons(class="{{showing}}")
+        unless accessCode
+          button.btn-plain.mturk-enable-button(data-toggle="modal" data-document-id=_id data-target="#create-mturk-job-modal")
+            i.fa.fa-users
+            span Crowdsource
+        button.btn-plain.delete-document-button(data-toggle="modal" data-document-id=_id data-target="#confirm-delete-document-modal")
+          i.fa.fa-trash-o
 
 template(name="documentListPages")
   .pagination-cont

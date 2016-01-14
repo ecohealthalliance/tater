@@ -8,18 +8,24 @@ template(name="createMTurkJobModal")
         .modal-body
           form#mturk-job-form
             input.form-control#docId(name="docId" type="hidden")
-            .row
-              .col-sm-6
-                label Title
-                  input.form-control(type='string' name='title' placeholder=defaultTitle)
-            .row
-              .col-sm-12
-                label Description
-                textarea.form-control(name='description' placeholder=defaultDescription)
-            .row
-              .col-sm-6
-                label Task Lifetime in Minutes
-                input.form-control(type='int' name='lifetimeMinutes' placeholder=defaultLifetimeMinutes)
+            .form-group
+              .row
+                .col-sm-8
+                  span.pull-right.clear-input.clear-title
+                    i.fa.fa-times-circle
+                    | Clear
+                  label
+                    span Title
+                    input.form-control(type='string' name='title' value=defaultTitle placeholder='Descriptive Title' maxlength='128')
+            .form-group
+              .row
+                .col-sm-12
+                  span.pull-right.clear-input.clear-description
+                    i.fa.fa-times-circle
+                    | Clear
+                  label
+                    span Description
+                    textarea.form-control(name='description' placeholder='Describe the annotation task and any special requirements.')=defaultDescription
         .modal-footer
           button.btn.btn-default(data-dismiss='modal' aria-hidden='true') Cancel
-          button.btn.btn-success#create-mturk-job Crowdsource Annotation
+          button.btn.btn-primary#create-mturk-job Crowdsource Annotation
