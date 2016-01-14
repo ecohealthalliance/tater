@@ -8,6 +8,12 @@ if Meteor.isClient
       Math.floor(MTurkJob.getFields().HITLifetimeInSeconds.default / 60)
 
   Template.createMTurkJobModal.events
+    'click .clear-title': (event) ->
+      $('input[name=title]').val('')
+
+    'click .clear-description': (event) ->
+      $('textarea[name=description]').val('')
+
     'click #create-mturk-job': (event, instance) ->
       event.preventDefault()
       console.log instance

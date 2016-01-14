@@ -114,11 +114,7 @@ if Meteor.isClient
       Template.instance().numberOfPages.get() > 1
 
   Template.documentList.events
-    'click .delete-document-button': (event) ->
-      $('#confirm-delete-document').attr(
-        "data-document-id",
-        event.target.parentElement.getAttribute("data-document-id")
-      )
+
     'input .document-search': _.debounce(( (event, instance)->
       searchQuery = $(event.currentTarget).val().trim()
       instance.searchText.set searchQuery
@@ -143,12 +139,37 @@ if Meteor.isClient
 
   Template.document.onCreated ->
     @document = new Document(_.pick(@data, _.keys(Document.getFields())))
+    @docOptionsShowing = new ReactiveVar false
 
   Template.document.helpers
     groupName: ->
       Template.instance().document.groupName()
+
     annotatedTitle: ->
       "#{@annotated} annotations"
+
+    showing: ->
+      if Template.instance().docOptionsShowing.get()
+        'active'
+    hideGroup: ->
+      Template.instance().docOptionsShowing.get()
+
+  Template.document.events
+    'click .doc-options': (event) ->
+      event.preventDefault()
+
+    'click .delete-document-button': (event) ->
+      $('#confirm-delete-document').attr(
+        "data-document-id",
+        event.target.parentElement.getAttribute("data-document-id")
+      )
+
+    'mouseover .doc-options-wrap': (event, instance) ->
+      instance.docOptionsShowing.set true
+
+    'mouseout .doc-options-wrap': (event, instance) ->
+      instance.docOptionsShowing.set false
+
 
   Template.documentListPages.events
     'click a': (event, instance) ->
@@ -160,7 +181,6 @@ if Meteor.isClient
         pageNumber = instance.parent().numberOfPages.get()
       if pageNumber
         Template.instance().parent().currentPageNumber.set pageNumber
-
 
 
 if Meteor.isServer

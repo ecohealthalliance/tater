@@ -25,11 +25,16 @@
     &:last-of-type
       border 1px solid $border-gray
       border-top 0
+      overflow hidden
     &:last-of-type
       border-bottom-left-radius 4px
       border-bottom-right-radius 4px
     &:hover
       background $background-secondary
+      transition()
+      .doc-options
+        background $background-secondary
+        color $m-gray
 
   .list-link
     padding-right 60px
@@ -61,20 +66,87 @@
   &:hover
     color $primary
 
-.delete-document-button
+.doc-options
+.doc-options-buttons
   position absolute
   top 0
   bottom 0
   right 0
   margin-bottom 0
-  width 50px
+  min-width 50px
   font-size 1.5em
   color $m-gray
+
+$doc-options-border-color = lighten($l-gray, 20%)
+
+.doc-options
+  right 0
+  color $l-gray
+  z-index $mid-layer
+  background white
+  border-left 1px solid $doc-options-border-color
+  &:hover
+    color $d-gray
+    background $ll-gray
+  &.active
+    background $l-gray !important
+    color $d-gray !important
+
+.doc-options-buttons
+  visibility hidden
+  opacity 0
+  min-width 103px
+  right 0
+  display flex
+  justify-content flex-end
+  align-items center
+  flex-direction row-reverse
+  z-index $bottom-layer
+  background white
+  transition .1s
+  border-left 3px solid $m-gray
+  &.active
+    right 50px
+    visibility visible
+    opacity 1
+    background $m-gray
+  button
+    &:last-child
+      border-left 0
+
+.delete-document-button
+.mturk-enable-button
+  height 100%
+  margin-bottom 0
+  min-width 50px
+  font-size 100%
+  background white
+  border-left 1px solid $doc-options-border-color
+  color $d-gray
+  &:hover
+    background-color $confirm
+    color white
+  &:active
+    background-color darken($confirm, 10%)
+
+.mturk-enable-button
+  flex-grow 1
+  padding-left 10px
+  padding-right 10px
+  font-size .85em
+  span
+    font-size .7em
+  span
+  i
+    vertical-align middle
+
+
+.delete-document-button
   &:hover
     background-color $delete
-    color white
-  i
-    centerPosition()
+  &:active
+    background-color darken($delete, 10%)
+
 
 .document-filtration
   min-width 70%
