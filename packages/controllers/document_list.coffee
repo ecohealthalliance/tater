@@ -149,7 +149,7 @@ if Meteor.isServer
       user = Meteor.users.findOne @userId
       query = {}
 
-      if user.admin? # the current user is an admin
+      if user.admin # the current user is an admin
         if group? and typeof group is 'string'
           query = { groupId: group }
       else # normal user
@@ -168,6 +168,6 @@ if Meteor.isServer
             $options: 'i'
           } ]
 
-        Documents.find query, fields: fields
+      Documents.find query, fields: fields
     else
       @ready()
