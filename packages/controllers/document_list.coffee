@@ -138,6 +138,7 @@ if Meteor.isClient
       $(element).blur()
 
   Template.document.onCreated ->
+    @subscribe('mTurkJob', @data._id)
     @document = new Document(_.pick(@data, _.keys(Document.getFields())))
     @docOptionsShowing = new ReactiveVar false
 
@@ -151,8 +152,12 @@ if Meteor.isClient
     showing: ->
       if Template.instance().docOptionsShowing.get()
         'active'
-    hideGroup: ->
-      Template.instance().docOptionsShowing.get()
+    hideInfo: ->
+      if Template.instance().docOptionsShowing.get()
+        'hide-info'
+
+    mTurkEnabled: ->
+      Documents.findOne(@_id).mTurkEnabled()
 
   Template.document.events
     'click .doc-options': (event) ->

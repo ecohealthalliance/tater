@@ -6,9 +6,10 @@ template(name="documentDetail")
         h1.document-title= document.title
         .document-options
           if isAdmin
-            a.btn.btn-primary.crowdsource-btn(data-toggle="modal" data-document-id=document._id data-target="#create-mturk-job-modal" )
-              i.fa.fa-users
-              | Crowdsource Annotation
+            unless mTurkEnabled document
+              a.btn.btn-primary.crowdsource-btn(data-toggle="modal" data-document-id=document._id data-target="#create-mturk-job-modal" )
+                i.fa.fa-users
+                | Crowdsource
           a.help-link.help-link-document.pull-right(href="{{path route='/help?topic=annotating-documents'}}")
             +tooltipIcon icon='question-circle' placement='left'
           if accessCode
@@ -16,6 +17,16 @@ template(name="documentDetail")
               i.fa.fa-check-circle.icon-left
               span Finished Annotating
       .document-container.pane.pane-middle
+        if mTurkEnabled document
+          .crowdsource-details
+            if isAdmin
+              .admin-details
+                i.fa.fa-cogs
+                p Document has been submitted for annotation and is being processed.
+            else
+              .user-details
+                i.fa.fa-exclamation-triangle
+                p This document has been crowdsourced and does not require annotation.
         #documentContainer
           #documentBody.document-body
             .document-wrapper
@@ -52,7 +63,7 @@ template(name="documentDetail")
           p.instructions Thanks for completing this HIT.  Please enter this code into Mechanical Turk.
           h5.completion-code Code:
             span {{accessCode}}
-  +createMTurkJobModal
+  +createMTurkJobModal document=document
 
 template(name="documentDetailAnnotation")
   li(data-annotation-id=_id class="annotation-color-#{color} {{selected}}")

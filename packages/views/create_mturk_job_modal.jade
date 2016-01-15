@@ -6,6 +6,9 @@ template(name="createMTurkJobModal")
           button(type="button" class="close" data-dismiss="modal" aria-label="Close")
             i.fa.fa-times-circle
         .modal-body
+          h4 Crowdsource Annotation
+          h5.secondary-info Document:
+            span=documentTitle
           form#mturk-job-form
             input.form-control#docId(name="docId" type="hidden")
             .form-group

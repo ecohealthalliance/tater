@@ -64,6 +64,7 @@ if Meteor.isClient
     @subscribe('documentDetail', @data.documentId, @accessCode)
     @subscribe('docAnnotations', @data.documentId, @accessCode, @userToken)
     @subscribe('users', @data.documentId, @accessCode)
+    @subscribe('mTurkJob', @data.documentId)
     @startOffset = new ReactiveVar()
     @endOffset = new ReactiveVar()
     @annotations = new ReactiveVar()
@@ -136,6 +137,9 @@ if Meteor.isClient
 
     searching: ->
       Template.instance().searching.get()
+
+    mTurkEnabled: (doc) ->
+      doc.mTurkEnabled()
 
   Template.documentDetail.events
     'mousedown .document-container': (event, instance) ->
@@ -440,3 +444,6 @@ if Meteor.isServer
           emails: 1
     else
       @ready()
+
+  Meteor.publish 'mTurkJob', (documentId) ->
+    MTurkJobs.find({docId: documentId})
