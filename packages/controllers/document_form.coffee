@@ -1,6 +1,6 @@
 if Meteor.isClient
 
-  handleUploadedFile = (files, callback) ->
+  handleUploadedFile = (files) ->
     if !files or files.length < 1
       throw new Meteor.Error 'No files provided'
 
@@ -16,8 +16,17 @@ if Meteor.isClient
       (e) ->
         # Decode the base64 data
         data = atob(theReader.result.split(',').pop())
-        if typeof callback is 'function'
-          callback data, theFile.name
+
+        Meteor.call 'uploadDocument', data, theFile.name, (error, response) ->
+          if error
+            if error.reason
+              for key, value of error.reason
+                toastr.error('Error: ' + value)
+            else
+              toastr.error('Unknown Error')
+          else
+            $('#document-title').val(response)
+
     )(file, fileReader)
     fileReader.readAsDataURL file
 
@@ -30,16 +39,7 @@ if Meteor.isClient
 
   Template.documentForm.events
     'change .drop-zone input': (event, instance) ->
-      handleUploadedFile event.target.files, (data, fileName) ->
-        Meteor.call 'uploadDocument', data, fileName, (error, response) ->
-          if error
-            if error.reason
-              for key, value of error.reason
-                toastr.error('Error: ' + value)
-            else
-              toastr.error('Unknown Error')
-          else
-            console.log response
+      handleUploadedFile event.target.files
       event.currentTarget.value = '' # if the next file has the same file name
 
     'dragenter .drop-zone, dragover .drop-zone': (event, instance) ->
@@ -49,16 +49,7 @@ if Meteor.isClient
     'drop .drop-zone': (event, instance) ->
       event.preventDefault()
       event.stopPropagation()
-      handleUploadedFile event.originalEvent.dataTransfer.files, (data, fileName) ->
-        Meteor.call 'uploadDocument', data, fileName, (error, response) ->
-          if error
-            if error.reason
-              for key, value of error.reason
-                toastr.error('Error: ' + value)
-            else
-              toastr.error('Unknown Error')
-          else
-            console.log response
+      handleUploadedFile event.originalEvent.dataTransfer.files
 
     'submit #new-document-form': (event, instance) ->
       event.preventDefault()
