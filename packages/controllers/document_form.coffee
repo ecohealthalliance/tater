@@ -1,4 +1,26 @@
 if Meteor.isClient
+
+  handleUploadedFile = (files, callback) ->
+    if !files or files.length < 1
+      throw new Meteor.Error 'No files provided'
+
+    file = files[0]
+
+    if file.size > 4000000
+      return toastr.error "File #{file.name} is too large"
+    else if file.size < 1
+      return toastr.error "File #{file.name} is empty"
+
+    fileReader = new FileReader()
+    fileReader.onload = ((theFile, theReader) ->
+      (e) ->
+        # Decode the base64 data
+        data = atob(theReader.result.split(',').pop())
+        if typeof callback is 'function'
+          callback data, theFile.name
+    )(file, fileReader)
+    fileReader.readAsDataURL file
+
   Template.documentForm.onCreated ->
     @subscribe 'groups'
 
@@ -7,6 +29,37 @@ if Meteor.isClient
       Groups.find({}, { sort: { name: 1 } })
 
   Template.documentForm.events
+    'change .drop-zone input': (event, instance) ->
+      handleUploadedFile event.target.files, (data, fileName) ->
+        Meteor.call 'uploadDocument', data, fileName, (error, response) ->
+          if error
+            if error.reason
+              for key, value of error.reason
+                toastr.error('Error: ' + value)
+            else
+              toastr.error('Unknown Error')
+          else
+            console.log response
+      event.currentTarget.value = '' # if the next file has the same file name
+
+    'dragenter .drop-zone, dragover .drop-zone': (event, instance) ->
+      event.preventDefault()
+      event.stopPropagation()
+
+    'drop .drop-zone': (event, instance) ->
+      event.preventDefault()
+      event.stopPropagation()
+      handleUploadedFile event.originalEvent.dataTransfer.files, (data, fileName) ->
+        Meteor.call 'uploadDocument', data, fileName, (error, response) ->
+          if error
+            if error.reason
+              for key, value of error.reason
+                toastr.error('Error: ' + value)
+            else
+              toastr.error('Unknown Error')
+          else
+            console.log response
+
     'submit #new-document-form': (event, instance) ->
       event.preventDefault()
       form = event.target
@@ -32,7 +85,6 @@ if Meteor.isClient
           go 'documentDetail', { _id: response }
 
 
-
 Meteor.methods
   createDocument: (fields) ->
     unless fields.groupId
@@ -53,3 +105,13 @@ Meteor.methods
         throw new Meteor.Error('Unauthorized')
     else
       throw new Meteor.Error('Not logged in')
+
+
+if Meteor.isServer
+
+  Meteor.methods
+    uploadDocument: (data, fileName)->
+      check data, String
+      if fileName then check fileName, String
+      console.log data
+      fileName

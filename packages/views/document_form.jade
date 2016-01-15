@@ -10,6 +10,20 @@ template(name="documentForm")
             input#document-title.form-control(type='string' name='title')
     .form-group
       .row
+        .col-sm-6
+          label Title
+            input#document-title.form-control(type='string' name='title')
+      .row
+        .col-sm-12
+          label Body
+          textarea#document-body.form-control(name='body')
+      .row
+        .col-sm-12
+          label.drop-zone
+            span Drop a document file here or upload from your computer
+            input(type="file")
+    if isAdmin
+      .row
         .col-sm-12
           label
             span.space-btm-0.required Body
