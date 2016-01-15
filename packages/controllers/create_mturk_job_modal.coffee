@@ -6,6 +6,8 @@ if Meteor.isClient
       MTurkJob.getFields().description.default
     defaultLifetimeMinutes: ->
       Math.floor(MTurkJob.getFields().HITLifetimeInSeconds.default / 60)
+    documentTitle: ->
+      Template.instance().data.document.title
 
   Template.createMTurkJobModal.events
     'click .clear-title': (event) ->

@@ -55,7 +55,9 @@ do ->
 
     @When 'I click on the Delete Document button', ->
       @browser
-        .waitForVisible('.delete-document-button')
+        .waitForVisible('.doc-options')
+        .moveToObject('.doc-options')
+        .waitForVisible('.doc-options-buttons')
         .click(".delete-document-button")
 
     @When 'I confirm the document deletion', ->

@@ -57,3 +57,6 @@ Document = Astro.Class
       postTagBody = body.slice(endOffset, body.length)
 
       "#{preTagBody}#{openTag}#{annotatedText}#{closeTag}#{postTagBody}"
+
+    mTurkEnabled: ->
+      MTurkJobs.findOne({docId: @_id})

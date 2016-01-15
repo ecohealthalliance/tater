@@ -49,14 +49,26 @@
     float left
     padding-left 10px
 
-  .document-group
+  .document-info
+    display flex
+    justify-content flex-end
+    flex-direction row
+    align-items center
     position relative
-    width 40%
-    float right
     text-align right
     color darken($m-gray, 10%)
     font-size 95%
     font-style italic
+    transition .3s opacity ease-in-out
+    opacity 1
+    &.hide-info
+      opacity 0
+
+.document-group
+  padding-right 2px
+
+.crowdsource-status
+  min-width 30px
 
 .annotation-state
   float left
@@ -68,6 +80,7 @@
 
 .doc-options
 .doc-options-buttons
+.delete-document-button
   position absolute
   top 0
   bottom 0
@@ -79,12 +92,15 @@
 
 $doc-options-border-color = lighten($l-gray, 20%)
 
+.delete-document-button
 .doc-options
   right 0
   color $l-gray
   z-index $mid-layer
   background white
   border-left 1px solid $doc-options-border-color
+
+.doc-options
   &:hover
     color $d-gray
     background $ll-gray
@@ -95,7 +111,6 @@ $doc-options-border-color = lighten($l-gray, 20%)
 .doc-options-buttons
   visibility hidden
   opacity 0
-  min-width 103px
   right 0
   display flex
   justify-content flex-end
@@ -114,38 +129,46 @@ $doc-options-border-color = lighten($l-gray, 20%)
     &:last-child
       border-left 0
 
+  .mturk-enable-button
+  .delete-document-button
+    height 100%
+    min-width 50px
+    margin-bottom 0
+    border-left 1px solid $doc-options-border-color
+    background white
+    font-size 100%
+    color $d-gray
+
+  .mturk-enable-button
+    &:hover
+      background-color $confirm
+      color white
+    &:active
+      background-color darken($confirm, 10%)
+
+  .mturk-enable-button
+    flex-grow 1
+    padding-left 10px
+    padding-right 10px
+    font-size .85em
+    span
+      font-size .7em
+    span
+    i
+      vertical-align middle
+
+  .delete-document-button
+    position static
+
+
+.doc-options-buttons .delete-document-button
 .delete-document-button
-.mturk-enable-button
-  height 100%
-  margin-bottom 0
-  min-width 50px
-  font-size 100%
-  background white
-  border-left 1px solid $doc-options-border-color
-  color $d-gray
   &:hover
-    background-color $confirm
     color white
-  &:active
-    background-color darken($confirm, 10%)
-
-.mturk-enable-button
-  flex-grow 1
-  padding-left 10px
-  padding-right 10px
-  font-size .85em
-  span
-    font-size .7em
-  span
-  i
-    vertical-align middle
-
-
-.delete-document-button
-  &:hover
-    background-color $delete
-  &:active
-    background-color darken($delete, 10%)
+    background $delete
+  &.active
+    color white
+    background darken($delete, 20%)
 
 
 .document-filtration
