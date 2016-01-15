@@ -17,7 +17,10 @@ if Meteor.isClient
         # Decode the base64 data
         data = atob(theReader.result.split(',').pop())
 
-        Meteor.call 'uploadDocument', data, theFile.name, (error, response) ->
+        if $('#document-title').val() is ''
+          $('#document-title').val theFile.name
+
+        Meteor.call 'uploadDocument', data, (error, response) ->
           if error
             if error.reason
               for key, value of error.reason
@@ -25,7 +28,7 @@ if Meteor.isClient
             else
               toastr.error('Unknown Error')
           else
-            $('#document-title').val(response)
+            $('#document-body').val(response)
 
     )(file, fileReader)
     fileReader.readAsDataURL file
@@ -101,8 +104,6 @@ Meteor.methods
 if Meteor.isServer
 
   Meteor.methods
-    uploadDocument: (data, fileName)->
+    uploadDocument: (data)->
       check data, String
-      if fileName then check fileName, String
-      console.log data
-      fileName
+      "Document text returned from the server"
