@@ -138,9 +138,6 @@ if Meteor.isClient
     searching: ->
       Template.instance().searching.get()
 
-    mTurkEnabled: (doc) ->
-      doc.mTurkEnabled()
-
   Template.documentDetail.events
     'mousedown .document-container': (event, instance) ->
       temporaryAnnotation = instance.temporaryAnnotation.get()

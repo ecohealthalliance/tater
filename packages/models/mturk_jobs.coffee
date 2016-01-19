@@ -46,10 +46,13 @@ MTurkJob = Astro.Class
   events:
     afterSave: () ->
       if Meteor.isServer and not @createHITResponse
+        doc = Documents.findOne(@docId)
+        doc.set('mTurkEnabled', true)
+        doc.save()
+
         unless process.env.AWS_ACCESS_KEY
           console.log "AWS_ACCESS_KEY is not defined, cannot call mechanical turk api."
           return
-        doc = Documents.findOne(@docId)
         # Parameters documented here:
         # http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_CreateHITOperation.html
         service = "AWSMechanicalTurkRequester"

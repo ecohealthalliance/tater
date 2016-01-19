@@ -6,7 +6,7 @@ template(name="documentDetail")
         h1.document-title= document.title
         .document-options
           if isAdmin
-            unless mTurkEnabled document
+            unless document.mTurkEnabled
               a.btn.btn-primary.crowdsource-btn(data-toggle="modal" data-document-id=document._id data-target="#create-mturk-job-modal" )
                 i.fa.fa-users
                 | Crowdsource
@@ -17,7 +17,7 @@ template(name="documentDetail")
               i.fa.fa-check-circle.icon-left
               span Finished Annotating
       .document-container.pane.pane-middle
-        if mTurkEnabled document
+        if document.mTurkEnabled
           .crowdsource-details
             if isAdmin
               .admin-details

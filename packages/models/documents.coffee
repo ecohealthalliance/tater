@@ -19,6 +19,9 @@ Document = Astro.Class
     annotated:
       type: 'number'
       default: 0
+    mTurkEnabled:
+      type: 'boolean'
+      default: false
     createdAt: 'date'
     accessCode:
       type: 'string'
@@ -57,6 +60,3 @@ Document = Astro.Class
       postTagBody = body.slice(endOffset, body.length)
 
       "#{preTagBody}#{openTag}#{annotatedText}#{closeTag}#{postTagBody}"
-
-    mTurkEnabled: ->
-      MTurkJobs.findOne({docId: @_id})

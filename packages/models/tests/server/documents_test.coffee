@@ -32,6 +32,9 @@ describe 'Document', ->
     document.save
     expect(document.updatedAt).not.to.be.an('undefined')
 
+  it 'includes mTurkEnabled', ->
+    expect(document.mTurkEnabled).to.eq(false)
+
   describe '#textWithAnnotation', =>
     it 'returns the text with the given annotations represented with spans', ->
       headerId = Headers.insert(color: 2)
@@ -51,19 +54,3 @@ describe 'Document', ->
 
       document.set('groupId', group._id)
       expect(document.groupName()).to.eq('Test Group Name')
-
-  describe '#mTurkEnabled', =>
-    it 'checks if a Mechanical Turk job has been created for the document', ->
-      if process.env.AWS_ACCESS_KEY
-        job = new MTurkJob(
-          title: "Tater test"
-          description: "tater"
-          rewardUSD: 1
-          docId: document._id
-          HITLifetimeInSeconds: 120
-          maxAssignments: 1
-        )
-        job.save()
-        expect(document.mTurkEnabled()).to.be.ok()
-      else
-        console.log "Skipping MTurk test because AWS_ACCESS_KEY is not defined."
