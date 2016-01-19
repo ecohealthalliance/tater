@@ -3,6 +3,8 @@ template(name="groupDocuments")
     .view-header.primary-bg
       .container
         h1.inline Documents
+          a.help-link(href="../../help?topic=documents")
+            i.fa.fa-question-circle
         if showNewDocumentLink
           a.new-document-link.btn.header-btn.btn-primary(href="{{path route='newDocument' params=newDocumentParams}}")
             span Add Document
@@ -10,5 +12,5 @@ template(name="groupDocuments")
         p.group-name
           span Document Group:
           | #{group.name}
-    .container
+    .container.container-list
       +documentList group=group
