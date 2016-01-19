@@ -25,7 +25,7 @@ Document = Astro.Class
   behaviors: ['timestamp']
   events:
     beforeSave: ->
-      if Meteor.isServer
+      if Meteor.isServer and not this.accessCode
         @generateAccessCode()
 
   methods:

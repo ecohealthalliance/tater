@@ -45,7 +45,7 @@ do ->
 
     @When 'I navigate to the test document with an access code', ->
       @browser
-        .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid?generateCode=true"))
+        .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid?accessToken=faketoken123"))
         .waitForExist('.document-container')
 
     @When 'I click on the New Document link', ->

@@ -66,9 +66,9 @@ if Meteor.isClient
       if selectedCodes.length
         query = _.map selectedCodes, (code) ->
           {codeId: code._id}
-        query = {$and: [{$or:query}, {accessCode: null}] }
+        query = {$and: [{$or:query}, {userToken: null}] }
       else
-        query = {accessCode: null}
+        query = {userToken: null}
 
       if instance.showFlagged.get()
         query.flagged = true
@@ -151,7 +151,7 @@ if Meteor.isClient
       Template.instance().documents.find().count() or Template.instance().selectedGroups.find().count()
 
     noAnnotations: ->
-      if Documents.findOne({_id: @_id}).annotated == 0
+      if Documents.findOne(@_id).annotated == 0
         'disabled'
 
     annotationsLoaded: ->
@@ -169,20 +169,20 @@ if Meteor.isClient
       Groups.find({}, {sort: {name: 1}})
 
     groupDocuments: ->
-      # lets us break arrays with annotaitons and without annotations apart and sort 
-      # them separately.  This allows us to keep unannotated documents at the bottom 
+      # lets us break arrays with annotaitons and without annotations apart and sort
+      # them separately.  This allows us to keep unannotated documents at the bottom
       # of the list and then sort them by title.
       annotatedDocs = Documents.find({groupId: @_id, annotated: {$gt: 0}}, {sort: {title: 1}}).fetch()
       unAnnotatedDocs = Documents.find(
         {
           $and:[
-            groupId: @_id, 
+            groupId: @_id,
             $or: [
               {annotated: {$lt: 1}},
               {annotated: {$exists: false}}
             ]
           ]
-        }, 
+        },
         {sort: {title: 1}}
       ).fetch()
       annotatedDocs.concat(unAnnotatedDocs)
@@ -411,6 +411,7 @@ Meteor.methods
           )
         )
 
+
 if Meteor.isServer
   Meteor.publish 'groupsAndDocuments', ->
     user = Meteor.users.findOne @userId
@@ -420,7 +421,7 @@ if Meteor.isServer
         documents = Documents.find()
       else if user?
         documents = Documents.find groupId: user.group
-      docIds = documents.map((d)-> d._id)
+      # docIds = documents.map((d)-> d._id)
       [
         documents
         groups

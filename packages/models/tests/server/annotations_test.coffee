@@ -29,10 +29,10 @@ describe 'Annotation', ->
     annotation.save()
     expect(annotation.endOffset).to.eq(15)
 
-  it 'includes accessCode', ->
-    annotation.set('accessCode', "fakecode")
+  it 'includes userToken', ->
+    annotation.set('userToken', "faketoken456")
     annotation.save()
-    expect(annotation.accessCode).to.eq("fakecode")
+    expect(annotation.userToken).to.eq("faketoken456")
 
   it 'includes flagged', ->
     annotation.set('flagged', true)

@@ -10,7 +10,7 @@ Annotation = Astro.Class
       validator: Validators.required()
     startOffset: 'number'
     endOffset: 'number'
-    accessCode: 'string'
+    userToken: 'string'
     flagged: 'boolean'
   behaviors: ['timestamp']
 
