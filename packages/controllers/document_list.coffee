@@ -43,6 +43,7 @@ if Meteor.isClient
         newShadowDocument.groupId = originalDocument.groupId
         newShadowDocument.annotated = originalDocument.annotated
         newShadowDocument.groupName = originalDocument.groupName()
+        newShadowDocument.mTurkEnabled = originalDocument.mTurkEnabled
         # upsert
         if shadowDocuments.findOne(originalDocument._id) is undefined
           #insert
@@ -138,7 +139,6 @@ if Meteor.isClient
       $(element).blur()
 
   Template.document.onCreated ->
-    @subscribe('mTurkJob', @data._id)
     @document = new Document(_.pick(@data, _.keys(Document.getFields())))
     @docOptionsShowing = new ReactiveVar false
 
@@ -155,9 +155,6 @@ if Meteor.isClient
     hideInfo: ->
       if Template.instance().docOptionsShowing.get()
         'hide-info'
-
-    mTurkEnabled: ->
-      Documents.findOne(@_id).mTurkEnabled()
 
   Template.document.events
     'click .doc-options': (event) ->
