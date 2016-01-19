@@ -79,6 +79,9 @@ template(name="documentListPages")
         a(href="#page-1") «
       each this
         li(class="{{#if active}}active{{/if}}")
-          a(href="#page-{{number}}")= number
+          if number
+            a(href="#page-{{number}}")= number
+          else
+            a ...
       li
-        a(href="#page-1") »
+        a(href="#page-#{this.length}") »

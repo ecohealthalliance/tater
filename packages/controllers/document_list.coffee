@@ -64,27 +64,52 @@ if Meteor.isClient
       sortBy = instance.sortBy.get()
       amountToSkip = (instance.currentPageNumber.get() - 1) * perPage
       shadowDocuments.find({}, sort: sortBy, limit: perPage, skip: amountToSkip)
+
     noDocumentsFound: ->
       Documents.find().count() is 0
+
     sortBy: (column, order) ->
       instance = Template.instance()
       sortBy = instance.sortBy.get()
       sortBy[column]? and order is sortBy[column]
+
     sortByTitle: ->
       Template.instance().sortBy.get().title
+
     sortByColumn: ->
       _.keys(Template.instance().sortBy.get())[0]
+
     sortDirection: (order) ->
       _.values(Template.instance().sortBy.get())[0] is order
+
     pages: ->
       instance = Template.instance()
       totalPages = instance.numberOfPages.get()
       currentPageNumber = instance.currentPageNumber.get()
       returnArray = []
+      visiblePagingLimit = 10 # max number of visible paging buttons
+      skip = 0
       i = 0
-      while i < totalPages
-        returnArray[i++] = { number: i, active: currentPageNumber is i }
+      p = 1
+      if totalPages > visiblePagingLimit # overflow
+        visiblePagingHalfLimit = Math.floor(visiblePagingLimit / 2)
+        # left ellipsis
+        if currentPageNumber > visiblePagingHalfLimit + 1 # skip the first two
+          returnArray.push null # left ...
+          i++
+          skip = currentPageNumber - visiblePagingHalfLimit
+          if totalPages - currentPageNumber <= visiblePagingHalfLimit
+            skip -= visiblePagingHalfLimit - (totalPages - currentPageNumber) - 1 + Math.ceil(visiblePagingLimit % 2)
+          p += skip
+      while i < visiblePagingLimit and p <= totalPages
+        i++
+        if i == visiblePagingLimit and totalPages - p # it's the last cycle
+          returnArray.push null # right ...
+          break
+        returnArray.push { number: p, active: currentPageNumber is p }
+        p++
       returnArray
+
     multiplePages: ->
       Template.instance().numberOfPages.get() > 1
 
@@ -131,7 +156,8 @@ if Meteor.isClient
         pageNumber = 1
       else if $(event.currentTarget).parent().is(':last-child')
         pageNumber = instance.parent().numberOfPages.get()
-      Template.instance().parent().currentPageNumber.set pageNumber
+      if pageNumber
+        Template.instance().parent().currentPageNumber.set pageNumber
 
 
 
