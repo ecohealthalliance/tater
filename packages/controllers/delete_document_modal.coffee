@@ -1,20 +1,21 @@
 if Meteor.isClient
 
-  Template.deleteDocumentModal.onCreated(->
-    @ignoreClicks = false
-  )
+  noClickClassName = 'dont-click'
 
   Template.deleteDocumentModal.events
     'click #confirm-delete-document': (event, instance) ->
-      unless instance.ignoreClicks
-        instance.ignoreClicks = true
-        documentId = event.target.attr('data-document-id')
-        Meteor.call 'deleteDocument', documentId, (error) ->
+      $button = $ event.target
+      unless $button.hasClass noClickClassName
+        $button.addClass noClickClassName
+        documentId = $button.attr('data-document-id')
+        Meteor.call 'deleteDocument', documentId, (error, isServer) ->
           if error
             toastr.error("Server Error")
-            instance.ignoreClicks = false
           else
             toastr.success("Success")
+          if isServer
+            $button.removeClass noClickClassName
+
 
 
 Meteor.methods
@@ -30,3 +31,4 @@ Meteor.methods
       Annotations.remove(documentId: documentId)
     else
       throw new Meteor.Error("Document is not accessible.")
+    Meteor.isServer
