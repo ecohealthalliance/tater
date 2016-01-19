@@ -173,20 +173,23 @@ if Meteor.isServer
   fields = { title: true, createdAt: true, groupId: true, annotated: true }
 
   Meteor.publish 'documents', (group, searchText)->
-    if @userId?
+    if @userId
       user = Meteor.users.findOne @userId
       query = {}
 
       if user.admin # the current user is an admin
-        if group? and typeof group is 'string'
+        if group
+          check group, String
           query = { groupId: group }
       else # normal user
         query = { groupId: user.group }
-        if group? and typeof group is 'string'
+        if group
+          check group, String
           if user.group != group
             @ready()
 
-      if searchText? and typeof searchText is 'string'
+      if searchText
+        check searchText, String
         query.$or = [ body: {
             $regex: regexEscape(searchText)
             $options: 'i'

@@ -371,19 +371,21 @@ Meteor.methods
 
 if Meteor.isServer
 
+  fields = { accessCode: false }
+
   Meteor.publish 'documentDetail', (documentId, code) ->
     check documentId, String
-    document = Documents.findOne documentId
     if @userId
-      group = Groups.findOne document.groupId
-      user = Meteor.users.findOne @userId
+      user = Meteor.users.findOne(@userId)
+      document = Documents.findOne(documentId)
+      group = Groups.findOne(document.groupId)
       if group?.viewableByUser(user)
-        Documents.find documentId
+        Documents.find(documentId, fields: fields)
       else
         @ready()
     else if code
       check code, String
-      Documents.find _id: documentId, accessCode: code
+      Documents.find({ _id: documentId, accessCode: code }, fields: fields)
     else
       @ready()
 
@@ -406,7 +408,7 @@ if Meteor.isServer
 
   Meteor.publish 'users', (documentId, code) ->
     check documentId, String
-    if code? then check code, String
+    if code then check code, String
     if @userId
       document = Documents.findOne documentId
       group = Groups.findOne document.groupId

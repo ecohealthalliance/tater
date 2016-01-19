@@ -23,6 +23,10 @@ Document = Astro.Class
     accessCode:
       type: 'string'
   behaviors: ['timestamp']
+  events:
+    beforeSave: ->
+      if Meteor.isServer
+        @generateAccessCode()
 
   methods:
     groupName: ->
@@ -56,5 +60,4 @@ Document = Astro.Class
 
     generateAccessCode: ->
       randomToken = Random.id 20
-      this.set(accessCode: randomToken)
-      this
+      @set(accessCode: randomToken)

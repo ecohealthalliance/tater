@@ -94,19 +94,8 @@ Meteor.methods
       group = Groups.findOne(fields.groupId)
       user = Meteor.user()
       if group?.viewableByUser(user)
-        if fields.accessCode
-          if not user?.admin
-            throw new Meteor.error('Not allowed')
-          else
-            if Meteor.isServer
-              generateAccessCode = true
-
         document = new Document()
-        delete fields.accessCode
         document.set(fields)
-        if generateAccessCode
-          document.generateAccessCode()
-
         if document.validate()
           document.save()
         else
