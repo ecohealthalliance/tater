@@ -192,7 +192,12 @@ if Meteor.isServer
   regexEscape = (s)->
     s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
 
-  fields = { title: true, createdAt: true, groupId: true, annotated: true }
+  fields =
+    title: true
+    createdAt: true
+    groupId: true
+    annotated: true
+    mTurkEnabled: true
 
   Meteor.publish 'documents', (group, searchText)->
     if @userId
