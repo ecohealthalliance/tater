@@ -21,7 +21,7 @@ fi
 # Connect to mongo, use a database named after the currently selected port
 tail -f testoutput.txt &
 MONGO_URL=mongodb://localhost:27017/${port} meteor --port ${port} &
-CUCUMBER_TAIL=1 ./node_modules/.bin/chimp --tags=${TAGS} --ddp=http://localhost:${port} --browser=chrome --path=tests/cucumber/features/ --coffee=true --chai=true --sync=false > testoutput.txt
+CUCUMBER_TAIL=1 chimp --tags=${TAGS} --ddp=http://localhost:${port} --browser=chrome --path=tests/cucumber/features/ --coffee=true --chai=true --sync=false > testoutput.txt
 kill `lsof -t -i:${port}`
 
 # Determine exit code based on test output
