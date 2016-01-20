@@ -17,10 +17,7 @@ if Meteor.isClient
         # Decode the base64 data
         data = atob(theReader.result.split(',').pop())
 
-        if $('#document-title').val() is ''
-          $('#document-title').val theFile.name
-
-        Meteor.call 'uploadDocument', data, (error, response) ->
+        Meteor.call 'uploadDocument', data, theFile.type, (error, text) ->
           if error
             if error.reason
               for key, value of error.reason
@@ -28,7 +25,8 @@ if Meteor.isClient
             else
               toastr.error('Unknown Error')
           else
-            $('#document-body').val(response)
+            $('#document-title').val theFile.name
+            $('#document-body').val text
 
     )(file, fileReader)
     fileReader.readAsDataURL file
@@ -103,7 +101,27 @@ Meteor.methods
 
 if Meteor.isServer
 
+  Future = Npm.require('fibers/future')
+
   Meteor.methods
-    uploadDocument: (data)->
-      check data, String
-      "Document text returned from the server"
+    uploadDocument: (blobData, mimeType)->
+      check blobData, String
+      future = new Future()
+
+      HTTP.call('PUT', 'http://localhost:9998/tika', {
+        content: blobData
+        headers:
+          'Accept': 'text/plain'
+          # 'Content-Type': mimeType
+          'Connection': 'close'
+      }, (error, response)->
+        if error
+          # throw new Meteor.Error "Unable to extract text data from the file"
+          console.error(error)
+          future.throw(new Meteor.Error "Unable to process the document")
+        else
+          console.log response
+          future.return(response.content)
+      )
+
+      future.wait()
