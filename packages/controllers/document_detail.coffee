@@ -421,7 +421,7 @@ if Meteor.isServer
     else if accessCode
       check accessCode, String
       check userToken, String
-      document = Documents.findOne(_id: documentId, accessCode: aaccessCode)
+      document = Documents.findOne(_id: documentId, accessCode: accessCode)
       if document
         Annotations.find(documentId: document._id, userToken: userToken)
       else
