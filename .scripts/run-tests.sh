@@ -2,6 +2,13 @@
 port=$RANDOM
 quit=0
 
+# Trap interruptions to avoid leaving files or meteor instances around
+function finish {
+  rm testoutput.txt
+  kill `lsof -t -i:${port}`
+}
+trap finish INT
+
 # Find an unused port (http://unix.stackexchange.com/questions/55913/whats-the-easiest-way-to-find-an-unused-local-port)
 while [ "$quit" -ne 1 ]; do
   netstat -a | grep $port >> /dev/null
