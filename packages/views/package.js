@@ -54,4 +54,5 @@ Package.onUse(function(api) {
   api.addFiles('help.jade', 'client');
   api.addFiles('register.jade', 'client');
   api.addFiles('eula.jade', 'client');
+  api.addFiles('tooltip_icon.jade', 'client');
 });

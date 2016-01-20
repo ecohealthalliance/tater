@@ -7,7 +7,7 @@ template(name="annotations")
           button.btn-plain.select-all(disabled="{{allSelected}}")
             i.fa.fa-eye
             span Select all
-          button.btn-plain.clear-filters(class="{{selectionState 'class'}}" 
+          button.btn-plain.clear-filters(class="{{selectionState 'class'}}"
                                       disabled="{{selectionState 'disabled'}}")
             i.fa.fa-times-circle
             span Clear selection
@@ -37,6 +37,8 @@ template(name="annotations")
 
       .annotation-list-heading.pane-head.pane-head-m
         h1 Annotations
+          a.help-link(href="{{path route='help?topic=annotations'}}")
+            +tooltipIcon icon="question-circle" placement="right"
         .pull-right
           .show-flagged.pull-left
             input(type="checkbox", checked=showFlagged)

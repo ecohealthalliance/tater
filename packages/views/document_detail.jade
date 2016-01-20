@@ -5,7 +5,7 @@ template(name="documentDetail")
       .document-heading.pane-head.pane-head-m
         h1.document-title= document.title
         a.help-link.help-link-document.pull-right(href="{{path route='/help?topic=annotating-documents'}}")
-          i.fa.fa-question-circle
+          +tooltipIcon icon='question-circle' placement='left'
 
         if accessCode
           button.finished-annotating.btn.btn-primary(data-toggle="modal" data-target="#completionCodeModal")

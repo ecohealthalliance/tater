@@ -17,14 +17,22 @@ template(name="userForm")
       .form-group
         label User Type
         .user-type
-          label.radio-inline(data-toggle="tooltip" title="Admin users have the ability to view, add and delete both admin and regular users, create document groups and all abilities of a Regular user.")
+          label.radio-inline
             input#admin.user-group(type="radio" name="group" checked="checked" value="")
             | Admin
-            i.fa.fa-question-circle.help-link
-          label.radio-inline(data-toggle="tooltip" title="Regular users only have the ability to add, annotate and analyze documents within an assigned document group.")
+            +tooltipIcon(
+              icon='question-circle'
+              placement='bottom'
+              title= 'Admin users have the ability to view, add and delete both admin and regular users, create document groups and all abilities of a Regular user.'
+              class='help-link')
+          label.radio-inline
             input#group.user-group(type="radio" name="group" value="group")
             | Regular (Group-level)
-            i.fa.fa-question-circle.help-link
+            +tooltipIcon(
+              icon='question-circle'
+              placement='bottom'
+              title= 'Regular users only have the ability to add, annotate and analyze documents within an assigned document group.'
+              class='help-link')
 
           span.groups.hidden
             label.space-top-1.space-btm-05 Choose a Document Group

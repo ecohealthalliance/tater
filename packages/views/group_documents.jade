@@ -4,7 +4,7 @@ template(name="groupDocuments")
       .container
         h1.inline Documents
           a.help-link(href="../../help?topic=documents")
-            i.fa.fa-question-circle
+            +tooltipIcon icon='question-circle' placement='right'
         if showNewDocumentLink
           a.new-document-link.btn.header-btn.btn-primary(href="{{path route='newDocument' params=newDocumentParams}}")
             span Add Document
