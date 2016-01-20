@@ -2,9 +2,10 @@
 port=$RANDOM
 quit=0
 
+touch testoutput${port}.txt
 # Trap interruptions to avoid leaving files or meteor instances around
 function finish {
-  rm testoutput.txt
+  rm testoutput${port}.txt
   kill `lsof -t -i:${port}`
 }
 trap finish INT
@@ -26,18 +27,18 @@ then
 fi
 
 # Connect to mongo, use a database named after the currently selected port
-tail -f testoutput.txt &
+tail -f testoutput${port}.txt &
 MONGO_URL=mongodb://localhost:3001/${port} meteor --port ${port} &
-CUCUMBER_TAIL=1 chimp --tags=${TAGS} --ddp=http://localhost:${port} --browser=chrome --path=tests/cucumber/features/ --coffee=true --chai=true --sync=false > testoutput.txt
+CUCUMBER_TAIL=1 chimp --tags=${TAGS} --ddp=http://localhost:${port} --browser=chrome --path=tests/cucumber/features/ --coffee=true --chai=true --sync=false > testoutput${port}.txt
 kill `lsof -t -i:${port}`
 
 # Determine exit code based on test output
-if grep -q "failed steps" testoutput.txt
+if grep -q "failed steps" testoutput${port}.txt
 then
-  rm testoutput.txt
+  rm testoutput${port}.txt
   echo "Tests Failed"
   exit 1
 fi
-rm testoutput.txt
+rm testoutput${port}.txt
 echo "Tests Passed"
 exit
