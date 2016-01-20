@@ -12,7 +12,25 @@ while [ "$quit" -ne 1 ]; do
   fi
 done
 
+# Start meteor server if it isn't already running
+if ! lsof -i:3000
+then
+  meteor &
+fi
+
 # Connect to mongo, use a database named after the currently selected port
+tail -f testoutput.txt &
 MONGO_URL=mongodb://localhost:27017/${port} meteor --port ${port} &
-CUCUMBER_TAIL=1 ./node_modules/.bin/chimp --tags=${TAGS} --ddp=http://localhost:${port} --browser=chrome --path=tests/cucumber/features/ --coffee=true --chai=true --sync=false
+CUCUMBER_TAIL=1 ./node_modules/.bin/chimp --tags=${TAGS} --ddp=http://localhost:${port} --browser=chrome --path=tests/cucumber/features/ --coffee=true --chai=true --sync=false > testoutput.txt
 kill `lsof -t -i:${port}`
+
+# Determine exit code based on test output
+if grep -q "failed steps" testoutput.txt
+then
+  rm testoutput.txt
+  echo "Tests Failed"
+  exit 1
+fi
+rm testoutput.txt
+echo "Tests Passed"
+exit
