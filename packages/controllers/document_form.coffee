@@ -11,8 +11,8 @@ if Meteor.isClient
       event.preventDefault()
       form = event.target
       fields = {
-        title: form.title?.value
-        body: form.body?.value
+        title: form.title?.value.trim()
+        body: form.body?.value.trim()
       }
       currentUser = Meteor.user()
       if currentUser.admin
