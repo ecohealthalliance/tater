@@ -12,12 +12,12 @@ if Meteor.isClient
       return toastr.error "File #{file.name} is empty"
 
     fileReader = new FileReader()
+
     fileReader.onload = ((theFile, theReader) ->
       (e) ->
-        # Decode the base64 data
-        data = atob(theReader.result.split(',').pop())
-
-        Meteor.call 'uploadDocument', data, theFile.type, (error, text) ->
+        # extract the base64 string from the data-URI
+        fileDataB64 = theReader.result.split(',').pop()
+        Meteor.call 'uploadDocument', fileDataB64, (error, text) ->
           if error
             if error.reason
               for key, value of error.reason
@@ -27,8 +27,8 @@ if Meteor.isClient
           else
             $('#document-title').val theFile.name
             $('#document-body').val text
-
     )(file, fileReader)
+
     fileReader.readAsDataURL file
 
   Template.documentForm.onCreated ->
@@ -101,27 +101,17 @@ Meteor.methods
 
 if Meteor.isServer
 
-  Future = Npm.require('fibers/future')
+  tikaURL = 'http://localhost:9998/tika'
 
   Meteor.methods
-    uploadDocument: (blobData, mimeType)->
-      check blobData, String
-      future = new Future()
+    uploadDocument: (fileDataB64)->
+      check fileDataB64, String
 
-      HTTP.call('PUT', 'http://localhost:9998/tika', {
-        content: blobData
-        headers:
-          'Accept': 'text/plain'
-          # 'Content-Type': mimeType
-          'Connection': 'close'
-      }, (error, response)->
-        if error
-          # throw new Meteor.Error "Unable to extract text data from the file"
-          console.error(error)
-          future.throw(new Meteor.Error "Unable to process the document")
-        else
-          console.log response
-          future.return(response.content)
-      )
+      blobStringUTF8 = new Buffer(fileDataB64, 'base64')#.toString()
 
-      future.wait()
+      res = request.putSync(tikaURL, {
+        body: blobStringUTF8,
+        encoding: null
+      })
+
+      new Buffer(res.body).toString()
