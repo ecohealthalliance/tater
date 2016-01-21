@@ -26,6 +26,21 @@ then
   meteor &
 fi
 
+# Check if Tika server is running on localhost
+document_text='Test Document String Ponies 123'
+tika_result=$(echo $document_text | curl -s -X PUT --data-binary @- http://localhost:9998/tika --header "Content-type: application/octet-stream" --header "Accept: text/plain")
+tika_result=$(echo $tika_result | xargs) # trim
+if [ "$tika_result" != "$document_text" ]
+then
+  # echo 'Unable to reach Tika on port 9998'
+  if [ ! -e "tika-server.jar" ]
+  then
+    # echo 'No Tika server binary found, downloading...'
+    curl -L h http://mirror.cc.columbia.edu/pub/software/apache/tika/tika-server-1.11.jar > tika-server.jar
+  fi
+  java -jar tika-server.jar &
+fi
+
 # Connect to mongo, use a database named after the currently selected port
 tail -f testoutput${port}.txt &
 MONGO_URL=mongodb://localhost:3001/${port} meteor --port ${port} &

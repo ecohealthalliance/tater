@@ -6,7 +6,8 @@ help:
 	@echo "      model   - Run model unit tests"
 	@echo "      test    - Run end-to-end tests"
 	@echo "      devtest - Perform a single test"
-	@echo "      install - Install required tools"
+	@echo "      install - Install required tools and components"
+	@echo "      tika    - Start a local Tika server to enable document parsing"
 	@echo "      data    - Copy production database to local machine"
 	@echo "      build   - Compile tater into binaries"
 	@echo "      docker  - Build the docker image"
@@ -28,6 +29,12 @@ install:
 	brew install node
 	npm install -g spacejam
 	npm install chimp
+
+tika:
+	@if [ ! -e "tika-server.jar" ]; then \
+		curl -L h http://mirror.cc.columbia.edu/pub/software/apache/tika/tika-server-1.11.jar > tika-server.jar; \
+	fi
+	java -jar tika-server.jar &
 
 data:
 	./.scripts/restore_database
