@@ -15,9 +15,7 @@ template(name="register")
             label Company/Organization
             input.form-control.org-name(name='orgName' type='text')
             label.required Customized Tater URL
-              i.fa.fa-info-circle(
-                title="The web address of your personalized Tater login."
-                data-toggle="tooltip")
+              +tooltipIcon icon='info-circle' title="The web address of your personalized Tater login"
             .row
               .col-sm-10
                 .input-group

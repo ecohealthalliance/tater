@@ -147,6 +147,8 @@ if Meteor.isClient
   Template.document.helpers
     groupName: ->
       Template.instance().document.groupName()
+    annotatedTitle: ->
+      "#{@annotated} annotations"
 
   Template.documentListPages.events
     'click a': (event, instance) ->
