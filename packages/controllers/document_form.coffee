@@ -17,7 +17,8 @@ if Meteor.isClient
       (e) ->
         # extract the base64 string from the data-URI
         fileDataB64 = theReader.result.split(',').pop()
-        Meteor.call 'uploadDocument', fileDataB64, (error, text) ->
+        # Meteor.call 'uploadDocument', fileDataB64, (error, text) ->
+        Meteor.call 'parseDocumentLocally', fileDataB64, (error, text) ->
           if error
             if error.reason
               for key, value of error.reason
@@ -101,10 +102,18 @@ Meteor.methods
 
 if Meteor.isServer
 
+
+  # Load future from fibers
+  Future = Npm.require("fibers/future")
+  # Load exec
+  spawn = Npm.require("child_process").spawn
+  exec = Npm.require("child_process").exec
+
   tikaURL = 'http://localhost:9998/tika'
 
   Meteor.methods
     uploadDocument: (fileDataB64)->
+      @unblock()
       check fileDataB64, String
 
       blobStringUTF8 = new Buffer(fileDataB64, 'base64')#.toString()
@@ -120,3 +129,29 @@ if Meteor.isServer
         plainText
       else
         throw new Meteor.Error('Unable to process the document')
+
+    parseDocumentLocally: (fileDataB64)->
+      @unblock()
+      future = new Future()
+
+      ###
+      # Run node with the child.js file as an argument
+      child = spawn 'java', ['-jar', '/tmp/tika.jar', '-t', '-']
+      # Send data to the child process via its stdin stream
+      child.stdin.write("Hello there!") # new Buffer(fileDataB64, 'base64').toString()
+      # Listen for any response from the child:
+      child.stdout.on 'data', (data)->
+        console.log('We received a reply: ' + data)
+      # Listen for any errors:
+      child.stderr.on 'data', (data)->
+        console.log('There was an error: ' + data)
+      ###
+
+      command = "echo #{fileDataB64} | base64 -D | java -jar /tmp/tika.jar -t -"
+      exec command, (error, stdout, stderr)->
+        if error
+          console.log(error)
+          throw new Meteor.Error(500, command + " failed")
+        console.log stdout
+        future.return stdout
+      future.wait()
