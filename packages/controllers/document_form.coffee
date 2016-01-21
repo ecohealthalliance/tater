@@ -26,7 +26,7 @@ if Meteor.isClient
               toastr.error('Unknown Error')
           else
             $('#document-title').val theFile.name.replace(/\.[^/.]+$/, '')
-            $('#document-body').val text
+            $('#document-body').val text.trim()
     )(file, fileReader)
 
     fileReader.readAsDataURL file
@@ -114,4 +114,9 @@ if Meteor.isServer
         encoding: null
       })
 
-      new Buffer(res.body).toString()
+      plainText = new Buffer(res.body).toString()
+
+      if plainText.length
+        plainText
+      else
+        throw new Meteor.Error('Unable to process the document')
