@@ -60,4 +60,5 @@ Package.onUse(function(api) {
   api.addFiles('help.coffee', ['client']);
   api.addFiles('register.coffee', ['client', 'server']);
   api.addFiles('eula.coffee', ['client', 'server']);
+  api.addFiles('tooltip_icon.coffee', ['client', 'server']);
 });

@@ -4,7 +4,6 @@ if Meteor.isClient
 
   Template.register.onRendered ->
     $('.content-wrap').addClass('no-margin-padding')
-    $("[data-toggle='tooltip']").tooltip()
 
   Template.register.helpers
     registering : ->

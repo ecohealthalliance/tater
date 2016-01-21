@@ -1,14 +1,5 @@
 if Meteor.isClient
 
-  Template.userForm.onRendered ->
-    $("[data-toggle='tooltip']").tooltip
-      placement: 'bottom'
-      container: 'body'
-      trigger: 'hover'
-      delay:
-        'show': 500
-        'hide': 100
-
   Template.userForm.helpers
     typeIsAdmin: () ->
       !Template.instance().data.group.get()?

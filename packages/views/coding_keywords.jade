@@ -3,7 +3,7 @@ template(name="codingKeywords")
     .container
       h1 Coding Keywords
         a.help-link(href="{{path route='help?topic=coding-keyword-management'}}")
-          i.fa.fa-question-circle
+          +tooltipIcon icon='question-circle' placement='right'
 
   .container.code-management-container
     if Template.subscriptionsReady
