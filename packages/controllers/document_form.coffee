@@ -31,8 +31,12 @@ if Meteor.isClient
           toastr.success('Success')
           go 'documentDetail', { _id: response }
 
+
+
 Meteor.methods
   createDocument: (fields) ->
+    unless fields.groupId
+      throw new Meteor.Error('Required', ['A document group has not been selected'])
     if @userId
       group = Groups.findOne fields.groupId
       user = Meteor.user()

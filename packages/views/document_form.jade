@@ -20,8 +20,9 @@ template(name="documentForm")
         .row
           .col-sm-7
             label
-              span Document Group
+              span.required Document Group
             select#document-group-id.form-control(name='groupId')
+              option(value='' disabled selected) Chose a Document Group
               each groups
                 option(value=_id)= name
     input.btn.btn-primary(type="submit" value="Add Document")
