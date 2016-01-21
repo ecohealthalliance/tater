@@ -25,7 +25,7 @@ if Meteor.isClient
             else
               toastr.error('Unknown Error')
           else
-            $('#document-title').val theFile.name
+            $('#document-title').val theFile.name.replace(/\.[^/.]+$/, '')
             $('#document-body').val text
     )(file, fileReader)
 
