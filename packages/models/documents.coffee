@@ -26,7 +26,7 @@ Document = Astro.Class
   events:
     beforeSave: ->
       if Meteor.isServer and not this.accessCode
-        @generateAccessCode()
+        @set(accessCode: Random.id 20)
 
   methods:
     groupName: ->
@@ -57,7 +57,3 @@ Document = Astro.Class
       postTagBody = body.slice(endOffset, body.length)
 
       "#{preTagBody}#{openTag}#{annotatedText}#{closeTag}#{postTagBody}"
-
-    generateAccessCode: ->
-      randomToken = Random.id 20
-      @set(accessCode: randomToken)
