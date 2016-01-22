@@ -23,4 +23,9 @@ Tenant = Astro.Class
         Validators.unique()
         Validators.regexp(/^[a-zA-Z0-9-]+$/, "Your Tater URL can only contain letters, numbers and '-'")
       ]
+    stripeToken:
+      type: 'string'
+      validator: [
+        Validators.required()
+      ]
   behaviors: ['timestamp']

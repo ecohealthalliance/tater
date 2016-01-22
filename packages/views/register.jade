@@ -21,6 +21,14 @@ template(name="register")
                 .input-group
                   input.form-control.tenant-name(name='tenantName' type='text' required)
                   .input-group-addon .tater.io
+            label.required Credit Card Number
+            input.form-control.card-number(data-stripe='cardNumber' type='text' required)
+            label.required CVC
+            input.form-control.cvc(data-stripe='cvc' type='text' required)
+            label.required Expiration Month
+            input.form-control.card-number(data-stripe='expirationMonth' type='text' required)
+            label.required Expiration Year
+            input.form-control.card-number(data-stripe='expirationYear' type='text' required)
             if registering
               input.btn.btn-primary(type='submit' value="Register")
             else

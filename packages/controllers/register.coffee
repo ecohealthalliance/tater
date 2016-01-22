@@ -24,15 +24,26 @@ if Meteor.isClient
         orgName: form.orgName.value
         tenantName: form.tenantName.value.toLowerCase()
 
-      Meteor.call 'registerTenant', tenantProps, (error, response) ->
-        if error
-          if error.reason
-            for key, reason of error.reason
-              toastr.error("Error: #{reason}")
-          else
-            toastr.error("Error: #{error.error}")
+      creditCardProps =
+        number: $('[data-stripe="cardNumber"]').val()
+        cvc: $('[data-stripe="cvc"]').val()
+        exp_month: parseInt($('[data-stripe="expirationMonth"]').val())
+        exp_year: parseInt($('[data-stripe="expirationYear"]').val())
+
+      Stripe.card.createToken creditCardProps, (status, response) ->
+        if response.error
+          toastr.error(response.error.message)
         else
-          template.registering.set(false)
+          tenantProps.stripeToken = response.id
+          Meteor.call 'registerTenant', tenantProps, (error, response) ->
+            if error
+              if error.reason
+                for key, reason of error.reason
+                  toastr.error("Error: #{reason}")
+              else
+                toastr.error("Error: #{error.error}")
+            else
+              template.registering.set(false)
 
 if Meteor.isServer
   Meteor.methods

@@ -1,7 +1,15 @@
 {
   "public": {
+    "stripe": {
+      "testPublishableKey": "pk_test_Jpzk9x7BpqVagS9sCsMYa1Y3"
+    },
     "analyticsSettings": {
       "Google Analytics" : {"trackingId": "UA-54918272-3"}
+    }
+  },
+  "private": {
+    "stripe": {
+      "testSecretKey": "sk_test_N55I0q6h0EBZKyQZSMZ3yHyc"
     }
   }
 }
