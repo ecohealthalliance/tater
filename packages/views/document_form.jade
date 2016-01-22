@@ -15,14 +15,19 @@ template(name="documentForm")
             span.space-btm-0.required Body
             span.requirements (Must contain at least 20 characters)
           textarea#document-body.form-control.space-btm-0(name='body')
-    if isAdmin
-      .form-group
-        .row
-          .col-sm-7
-            label
-              span.required Document Group
-            select#document-group-id.form-control(name='groupId')
-              option(value='' disabled selected) Choose a Document Group
-              each groups
-                option(value=_id)= name
-    input.btn.btn-primary(type="submit" value="Add Document")
+      .row
+        .col-sm-12
+          label.drop-zone
+            span Drop a document file here or upload from your computer
+            input(type="file")
+      if isAdmin
+        .form-group
+          .row
+            .col-sm-7
+              label
+                span.required Document Group
+              select#document-group-id.form-control(name='groupId')
+                option(value='' disabled selected) Choose a Document Group
+                each groups
+                  option(value=_id)= name
+      input.btn.btn-primary(type="submit" value="Add Document")
