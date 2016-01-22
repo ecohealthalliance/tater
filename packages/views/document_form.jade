@@ -1,18 +1,28 @@
 template(name="documentForm")
   form#new-document-form
-    .row
-      .col-sm-6
-        label Title
-          input#document-title.form-control(type='string' name='title')
-    .row
-      .col-sm-12
-        label Body
-        textarea#document-body.form-control(name='body')
-    if isAdmin
+    p.required-text.space-btm-2.pull-right #[span *] Indicates required field
+    .form-group
       .row
-        .col-sm-7
-          label Document Group
-          select#document-group-id.form-control(name='groupId')
-            each groups
-              option(value=_id)= name
+        .col-sm-6
+          label
+            span.space-btm-0.required Title
+            span.requirements (Must contain at least 5 characters)
+            input#document-title.form-control(type='string' name='title')
+    .form-group
+      .row
+        .col-sm-12
+          label
+            span.space-btm-0.required Body
+            span.requirements (Must contain at least 20 characters)
+          textarea#document-body.form-control.space-btm-0(name='body')
+    if isAdmin
+      .form-group
+        .row
+          .col-sm-7
+            label
+              span.required Document Group
+            select#document-group-id.form-control(name='groupId')
+              option(value='' disabled selected) Chose a Document Group
+              each groups
+                option(value=_id)= name
     input.btn.btn-primary(type="submit" value="Add Document")

@@ -11,8 +11,8 @@ if Meteor.isClient
       event.preventDefault()
       form = event.target
       fields = {
-        title: form.title?.value
-        body: form.body?.value
+        title: form.title?.value.trim()
+        body: form.body?.value.trim()
       }
       currentUser = Meteor.user()
       if currentUser.admin
@@ -31,8 +31,12 @@ if Meteor.isClient
           toastr.success('Success')
           go 'documentDetail', { _id: response }
 
+
+
 Meteor.methods
   createDocument: (fields) ->
+    unless fields.groupId
+      throw new Meteor.Error('Required', ['A document group has not been selected'])
     if @userId
       group = Groups.findOne fields.groupId
       user = Meteor.user()

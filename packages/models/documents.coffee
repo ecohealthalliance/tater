@@ -7,13 +7,13 @@ Document = Astro.Class
       type: 'string'
       validator: [
         Validators.required()
-        Validators.minLength(5, 'The title must be at least 5 characters')
+        Validators.minLength(5, 'The title must be at least 5 characters.')
       ]
     body:
       type: 'string'
       validator: [
         Validators.required()
-        Validators.minLength(20, 'The body must be at least 20 characters')
+        Validators.minLength(20, 'The body must be at least 20 characters.')
       ]
     groupId: 'string'
     annotated:
