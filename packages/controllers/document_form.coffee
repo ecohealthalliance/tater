@@ -6,7 +6,8 @@ if Meteor.isClient
 
     file = files[0]
 
-    if file.size > 4000000
+    # Limit the upload size to preserve server resources
+    if file.size > 4 * 1024 * 1024
       return toastr.error "File #{file.name} is too large"
     else if file.size < 1
       return toastr.error "File #{file.name} is empty"
