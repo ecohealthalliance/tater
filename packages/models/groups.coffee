@@ -3,7 +3,12 @@ Group = Astro.Class
   name: 'Group'
   collection: Groups
   fields:
-    name: 'string'
+    name:
+      type: 'string'
+      validator: [
+        Validators.required()
+        Validators.minLength(5, 'The group name must be at least 5 characters')
+      ]
     description: 'string'
     createdById: 'string'
   behaviors: ['timestamp']

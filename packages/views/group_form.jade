@@ -1,23 +1,21 @@
 template(name="groupForm")
-  if isAdmin
-    .view-header.secondary-bg.space-btm-2
-      .container
-        h1 Add a Document Group
+  .view-header.secondary-bg.space-btm-2
     .container
-      .row
-        .col-sm-8
-          form#new-group-form
-            .row
-              .col-sm-8
-                label Name
-                  input#group-name.form-control(name="name" type="text")
-            .row
-              .col-sm-12
-                label Description
-                  textarea#group-description.form-control(name="description")
-            input.btn.btn-primary(type="submit" value="Save")
-  else
-    .container
-      .row
-        .col-sm-12
-          p Please log in or sign up to continue.
+      h1 Add a Document Group
+  .container
+    .row
+      .col-sm-8
+        form#new-group-form
+          p.required-text.space-btm-1.pull-right #[span *] Indicates required field
+          .row
+            .col-sm-8
+              label
+                span.required.space-btm-0 Name
+                span.requirements (Must contain at least 5 characters)
+                input#group-name.form-control(name="name" type="text" )
+          .row
+            .col-sm-12
+              label
+                span Description
+                textarea#group-description.form-control(name="description")
+          input.btn.btn-primary(type="submit" value="Add Document Group")
