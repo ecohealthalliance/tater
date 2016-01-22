@@ -5,7 +5,7 @@ Manual annotation interface
 First install the Java Runtime Environment:
 http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html
 
-Also install spacejam (for running unit tests via command line interface): `npm install -g spacejam`
+Also install spacejam (for running unit tests via command line interface): `npm install -g spacejam@1.2.1`
 
 To run model unit tests:
 `spacejam test-packages packages/models/`
