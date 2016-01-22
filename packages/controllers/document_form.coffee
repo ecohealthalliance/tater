@@ -108,12 +108,11 @@ if Meteor.isServer
       @unblock()
       check fileDataB64, String
 
-      blobStringUTF8 = new Buffer(fileDataB64, 'base64')#.toString()
+      blobStringUTF8 = new Buffer(fileDataB64, 'base64')
 
-      res = request.putSync(tikaURL, {
-        body: blobStringUTF8,
+      res = request.putSync tikaURL,
+        body: blobStringUTF8
         encoding: null
-      })
 
       plainText = new Buffer(res.body).toString()
 
