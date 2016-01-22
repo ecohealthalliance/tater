@@ -291,7 +291,7 @@ if Meteor.isClient
       $parent.addClass('deleting')
       parentInstance = instance.parent()
       setTimeout (->
-        Meteor.call 'deleteAnnotation', annotationId, parentInstance.accessCode, parentInstance.randomToken
+        Meteor.call 'deleteAnnotation', annotationId, parentInstance.accessCode, parentInstance.userToken
       ), 800
       if annotationId is selectedAnnotation.get()?.id
         selectedAnnotation.set id: null

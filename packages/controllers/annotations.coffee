@@ -169,7 +169,7 @@ if Meteor.isClient
       Groups.find({}, {sort: {name: 1}})
 
     groupDocuments: ->
-      # lets us break arrays with annotaitons and without annotations apart and sort
+      # lets us break arrays with annotations and without annotations apart and sort
       # them separately.  This allows us to keep unannotated documents at the bottom
       # of the list and then sort them by title.
       annotatedDocs = Documents.find({groupId: @_id, annotated: {$gt: 0}}, {sort: {title: 1}}).fetch()
@@ -421,7 +421,6 @@ if Meteor.isServer
         documents = Documents.find()
       else if user?
         documents = Documents.find groupId: user.group
-      # docIds = documents.map((d)-> d._id)
       [
         documents
         groups
