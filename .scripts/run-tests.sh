@@ -20,12 +20,6 @@ while [ "$quit" -ne 1 ]; do
   fi
 done
 
-# Start meteor server if it isn't already running
-if ! lsof -i:3000
-then
-  meteor &
-fi
-
 # Check if Tika server is running on localhost
 document_text='Test Document String Ponies 123'
 tika_result=$(echo $document_text | curl -s -X PUT --data-binary @- http://localhost:9998/tika --header "Content-type: application/octet-stream" --header "Accept: text/plain")
@@ -39,6 +33,12 @@ then
     curl -L h http://mirror.cc.columbia.edu/pub/software/apache/tika/tika-server-1.11.jar > tika-server.jar
   fi
   java -jar tika-server.jar &
+fi
+
+# Start meteor server if it isn't already running
+if ! lsof -i:3000
+then
+  meteor &
 fi
 
 # Connect to mongo, use a database named after the currently selected port
