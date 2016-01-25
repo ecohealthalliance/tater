@@ -27,8 +27,7 @@ install:
 	xcode-select –install
 	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 	brew install node
-	npm install -g spacejam
-	npm install chimp
+	npm -g install
 
 tika:
 	@if [ ! -e "tika-server.jar" ]; then \
