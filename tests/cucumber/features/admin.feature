@@ -9,7 +9,6 @@ Feature: Admin page
     When I log in as the test user
     And I navigate to "/profile/edit"
     When I fill out the profile edit form as "John Doe"
-    When I toggle my email address from my profile
     Then I should see a "Success" toast
 
     When I navigate to the admin page

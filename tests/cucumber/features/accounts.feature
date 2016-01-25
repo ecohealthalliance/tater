@@ -19,16 +19,6 @@ Feature: Accounts
     Then I should see content "John Doe"
 
   @accounts
-  Scenario: Hiding/displaying email address on profile page
-    Given there is a test user in the database
-    When I log in as the test user
-    And I view my public profile
-    Then I should not see content "test@example.com"
-    When I toggle my email address from my profile
-    And I view my public profile
-    Then I should see content "test@example.com"
-
-  @accounts
   Scenario: Creating an account for another user
     Given there is a test user in the database
     And there is a group in the database
