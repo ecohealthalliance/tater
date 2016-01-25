@@ -2,7 +2,7 @@ if Meteor.isClient
 
   Template.userForm.helpers
     typeIsAdmin: () ->
-      !Template.instance().data.group.get()?
+      not Template.instance().data.group.get()?
 
     groups: () ->
       Groups.find()
@@ -49,6 +49,8 @@ if Meteor.isClient
         else
           toastr.success("Success")
           form.reset()
+          if $(".document_groups").is(":visible")
+            $('#admin').click()
           $('.modal').modal('hide')
 
 

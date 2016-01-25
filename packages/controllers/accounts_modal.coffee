@@ -7,7 +7,7 @@ AccountsTemplates.configure
     unless err
       $('.accounts-modal').modal('hide')
       # sign in fields are cleared so they don't remain populated after a logout
-      $('.accounts-modal input').val("")
+      $('.accounts-modal input').val('')
       if state is 'changePwd'
         toastr.success("Success")
         setTimeout(->
