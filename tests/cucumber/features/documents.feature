@@ -75,7 +75,7 @@ Feature: Documents
     When I navigate to "/"
     When I log in as the test user
     And I click on the Add Document link in the header
-    And I should see content "Drop a document file here or upload from your computer"
+    And I should see content "Drop a document file here or click to upload from your computer"
     And I fill out the new document form with title "Test Document" and select the test group
     And I should see a "Success" toast
     And I should see content "Test Document"

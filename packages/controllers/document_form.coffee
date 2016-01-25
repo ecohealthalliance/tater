@@ -50,6 +50,12 @@ if Meteor.isClient
       handleUploadedFile event.target.files
       event.currentTarget.value = '' # if the next file has the same file name
 
+    'dragenter .drop-zone': (event, instance) ->
+      $(event.currentTarget).toggleClass('active')
+
+    'dragleave .drop-zone': (event, instance) ->
+      $(event.currentTarget).toggleClass('active')
+
     'dragenter .drop-zone, dragover .drop-zone': (event, instance) ->
       event.preventDefault()
       event.stopPropagation()
