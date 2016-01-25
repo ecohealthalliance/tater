@@ -1,0 +1,25 @@
+template(name="createMTurkJobModal")
+  #create-mturk-job-modal.modal.fade(tabindex="-1" role="dialog")
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+            i.fa.fa-times-circle
+        .modal-body
+          form#mturk-job-form
+            input.form-control#docId(name="docId" type="hidden")
+            .row
+              .col-sm-6
+                label Title
+                  input.form-control(type='string' name='title' placeholder=defaultTitle)
+            .row
+              .col-sm-12
+                label Description
+                textarea.form-control(name='description' placeholder=defaultDescription)
+            .row
+              .col-sm-6
+                label Task Lifetime in Minutes
+                input.form-control(type='int' name='lifetimeMinutes' placeholder=defaultLifetimeMinutes)
+        .modal-footer
+          button.btn.btn-default(data-dismiss='modal' aria-hidden='true') Cancel
+          button.btn.btn-success#create-mturk-job Crowdsource Annotation
