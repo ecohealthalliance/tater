@@ -108,7 +108,7 @@ Meteor.methods
 
 if Meteor.isServer
 
-  tikaURL = 'http://localhost:9998/tika'
+  tikaURL = 'http://tika.tater.io:9998/tika'
 
   Meteor.methods
     uploadDocument: (fileDataB64)->
