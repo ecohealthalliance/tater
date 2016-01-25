@@ -1,5 +1,4 @@
 do ->
-
   'use strict'
 
   _ = require('underscore')
