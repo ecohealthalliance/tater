@@ -22,7 +22,6 @@ if Meteor.isClient
         fullName: form.fullName?.value
         jobTitle: form.jobTitle?.value
         bio: form.bio?.value
-        emailHidden: form.emailHidden?.checked
         phoneNumber: form.phoneNumber?.value
         address1: form.address1?.value
         address2: form.address2?.value
