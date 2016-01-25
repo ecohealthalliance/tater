@@ -6,7 +6,6 @@ UserProfile = Astro.Class
     userId: 'string'
     fullName: 'string'
     jobTitle: 'string'
-    emailHidden: 'boolean'
     emailAddress: 'string'
     phoneNumber: 'string'
     address1: 'string'
@@ -19,14 +18,12 @@ UserProfile = Astro.Class
 
   methods:
     update: (fields, callback) ->
-      filteredFields = _.pick(fields, 'fullName',
-                              'jobTitle', 'emailHidden', 'phoneNumber',
+      filteredFields = _.pick(fields, 'fullName', 'jobTitle', 'phoneNumber',
                               'address1', 'address2', 'city', 'state', 'zip',
                               'country')
       this.set(filteredFields)
       this.save ->
         callback?()
-
 
 
 if Meteor.isServer
@@ -37,7 +34,6 @@ if Meteor.isServer
       userId: user._id
       fullName: user.fullName
       emailAddress: user.emails[0].address
-      emailHidden: true
     profile.save(-> {})
     user.admin = options.admin
     user.group = options.group

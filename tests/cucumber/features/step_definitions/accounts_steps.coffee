@@ -37,13 +37,6 @@ do ->
         .click('.sign-in')
         .waitForExist('.accounts-modal.modal.in')
 
-    @When "I toggle my email address from my profile", ->
-      @browser
-        .url(url.resolve(process.env.ROOT_URL, '/profile/edit'))
-        .waitForExist('#edit-profile-form')
-        .click("#profile-email-hidden")
-        .submitForm('#edit-profile-form')
-
     @When /^I fill out the profile edit form as "([^"]*)"$/, (fullName) ->
       @browser
         .url(url.resolve(process.env.ROOT_URL, '/profile/edit'))
