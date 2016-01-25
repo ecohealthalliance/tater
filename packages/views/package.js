@@ -55,4 +55,5 @@ Package.onUse(function(api) {
   api.addFiles('register.jade', 'client');
   api.addFiles('eula.jade', 'client');
   api.addFiles('tooltip_icon.jade', 'client');
+  api.addFiles('create_mturk_job_modal.jade', 'client');
 });
