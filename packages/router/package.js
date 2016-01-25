@@ -13,5 +13,4 @@ Package.onUse(function(api) {
   api.use('kadira:flow-router@2.10.0');
   api.use('tater:controllers');
   api.addFiles('router.coffee', ['client', 'server']);
-  api.addFiles('logged_in_routes.coffee', ['client', 'server']);
 });

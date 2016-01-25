@@ -34,10 +34,16 @@ if Meteor.isClient
 
   Template.documentForm.onCreated ->
     @subscribe 'groups'
+    @codeAccessible = new ReactiveVar(false)
+
+  Template.documentForm.onRendered ->
+    $("[data-toggle='tooltip']").tooltip()
 
   Template.documentForm.helpers
     groups: ->
       Groups.find({}, { sort: { name: 1 } })
+    codeAccessible: ->
+      Template.instance().codeAccessible.get()
 
   Template.documentForm.events
     'change .drop-zone input': (event, instance) ->
@@ -67,8 +73,8 @@ if Meteor.isClient
         fields.groupId = currentUser.group
 
       Meteor.call 'createDocument', fields, (error, response) ->
-        if error
-          if error.reason
+        if error?
+          if error.reason?
             for key, value of error.reason
               toastr.error('Error: ' + value)
           else
@@ -80,18 +86,18 @@ if Meteor.isClient
 
 Meteor.methods
   createDocument: (fields) ->
+    check fields, Object
     unless fields.groupId
       throw new Meteor.Error('Required', ['A document group has not been selected'])
+    check fields.groupId, String
     if @userId
-      group = Groups.findOne fields.groupId
+      group = Groups.findOne(fields.groupId)
       user = Meteor.user()
       if group?.viewableByUser(user)
         document = new Document()
         document.set(fields)
-
         if document.validate()
-          document.save ->
-            document
+          document.save()
         else
           document.throwValidationException()
       else

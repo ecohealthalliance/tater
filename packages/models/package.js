@@ -14,6 +14,7 @@ Package.onUse(function(api) {
   api.use('accounts-password');
   api.use('useraccounts:core@1.7.0');
   api.use('mongo');
+  api.use('random');
   api.addFiles('user_profiles.coffee', ['client', 'server']);
   api.addFiles('groups.coffee', ['client', 'server']);
   api.addFiles('documents.coffee', ['client', 'server']);
@@ -38,6 +39,7 @@ Package.onTest(function(api) {
   api.use('tater:models');
   api.use('practicalmeteor:munit');
   api.use('test-helpers');
+  api.use('random');
   api.addFiles('tests/server/user_profiles_test.coffee', 'server');
   api.addFiles('tests/server/groups_test.coffee', 'server');
   api.addFiles('tests/server/documents_test.coffee', 'server');
