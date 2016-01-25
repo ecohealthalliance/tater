@@ -1,5 +1,15 @@
 if Meteor.isClient
 
+  handleError = (error) ->
+    reason = error.reason
+    if reason and _.isString(reason)
+      toastr.error('Error: ' + reason)
+    else if reason
+      for key, value of reason
+        toastr.error('Error: ' + value)
+    else
+      toastr.error('Unknown Error')
+
   handleUploadedFile = (files) ->
     if !files or files.length < 1
       throw new Meteor.Error 'No files provided'
@@ -20,11 +30,7 @@ if Meteor.isClient
         fileDataB64 = theReader.result.split(',').pop()
         Meteor.call 'uploadDocument', fileDataB64, (error, text) ->
           if error
-            if error.reason
-              for key, value of error.reason
-                toastr.error('Error: ' + value)
-            else
-              toastr.error('Unknown Error')
+            handleError(error)
           else
             $('#document-title').val theFile.name.replace(/\.[^/.]+$/, '')
             $('#document-body').val text.trim()
@@ -79,12 +85,8 @@ if Meteor.isClient
         fields.groupId = currentUser.group
 
       Meteor.call 'createDocument', fields, (error, response) ->
-        if error?
-          if error.reason?
-            for key, value of error.reason
-              toastr.error('Error: ' + value)
-          else
-            toastr.error('Unknown Error')
+        if error
+          handleError(error)
         else
           toastr.success('Success')
           go 'documentDetail', { _id: response }
@@ -107,9 +109,9 @@ Meteor.methods
         else
           document.throwValidationException()
       else
-        throw new Meteor.Error('Unauthorized')
+        throw new Meteor.Error('Unauthorized', 'You cannot upload documents to this group')
     else
-      throw new Meteor.Error('Not logged in')
+      throw new Meteor.Error('Unauthorized', 'You must be logged in to add documents')
 
 
 if Meteor.isServer
@@ -132,4 +134,4 @@ if Meteor.isServer
       if plainText.length
         plainText
       else
-        throw new Meteor.Error('Unable to process the document')
+        throw new Meteor.Error('Upload error', 'Unable to process the document')
