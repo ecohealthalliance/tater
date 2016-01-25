@@ -50,7 +50,7 @@ if Meteor.isClient
           toastr.success("Success")
           form.reset()
           if $(".document_groups").is(":visible")
-            $('#admin').click()
+            $('#admin').prop('checked', true)
           $('.modal').modal('hide')
 
 
