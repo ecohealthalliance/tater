@@ -8,6 +8,7 @@ if Meteor.isClient
       unless $button.hasClass noClickClassName
         $button.addClass noClickClassName
         documentId = $button.attr('data-document-id')
+        if not gConnected then return toastr.error gConnectionErrorText
         Meteor.call 'deleteDocument', documentId, (error, isServer) ->
           if error
             toastr.error("Server Error")

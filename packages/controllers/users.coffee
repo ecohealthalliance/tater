@@ -6,10 +6,10 @@ if Meteor.isClient
     @subscribe('userProfiles')
 
   Template.users.helpers
-    filters: =>
+    filters: ->
       filters = []
       filters
-    settings: =>
+    settings: ->
       fields = []
 
       fields.push
@@ -58,6 +58,7 @@ if Meteor.isClient
       $('#remove-user-modal').modal('show')
 
     'click .confirm-remove-user': (event, instance) ->
+      if not gConnected then return toastr.error gConnectionErrorText
       userId = instance.userToDeleteId.get()
       Meteor.call 'removeUser', userId, (error, response) ->
         if error
@@ -78,7 +79,7 @@ Meteor.methods
     if Meteor.users.findOne(@userId)?.admin
       Meteor.users.remove userId
     else
-      throw 'Unauthorized'
+      throw new Meteor.Error 'Unauthorized'
 
 
 if Meteor.isServer

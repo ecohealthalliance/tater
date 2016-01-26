@@ -285,6 +285,7 @@ if Meteor.isClient
 
     'click li .delete-annotation': (event, instance) ->
       event.stopImmediatePropagation()
+      if not gConnected then return toastr.error gConnectionErrorText
       target = event.currentTarget
       $parent = $(target).parent()
       annotationId = instance.data._id

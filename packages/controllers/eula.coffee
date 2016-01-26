@@ -1,6 +1,7 @@
 if Meteor.isClient
   Template.eula.events
     'click .accept-eula': (event) ->
+      if not gConnected then return toastr.error gConnectionErrorText
       Meteor.call 'acceptEULA', (error, response) ->
         if error
           toastr.error("Error")

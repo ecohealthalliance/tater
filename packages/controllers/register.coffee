@@ -26,6 +26,7 @@ if Meteor.isClient
 
     'submit #tenant-registration': (event, template) ->
       event.preventDefault()
+      if not gConnected then return toastr.error gConnectionErrorText
       form = event.target
       tenantProps =
         fullName: form.fullName.value

@@ -1,6 +1,7 @@
 if Meteor.isClient
   Template.deleteHeaderModal.events
     'click #confirm-delete-header': (event, instance) ->
+      if not gConnected then return toastr.error gConnectionErrorText
       id = instance.data.headerToDelete.get()?._id
       Meteor.call 'deleteHeader', id, (error) ->
         if error
@@ -11,7 +12,7 @@ if Meteor.isClient
           unless Headers.findOne(id)
             instance.data.selectedCodes.set('headerId', null)
           toastr.success("Success")
-          
+
 if Meteor.isServer
   Meteor.methods
     deleteHeader: (id) ->
@@ -26,7 +27,7 @@ if Meteor.isServer
       else if subHeaders.length > 0
         Headers.update id,
           $set:
-            archived: true        
+            archived: true
         SubHeaders.update {headerId: id},
           {$set:
             archived: true}
@@ -34,6 +35,6 @@ if Meteor.isServer
         CodingKeywords.update {subHeaderId: {$in: _.pluck(subHeaders, "_id")}},
           {$set:
             archived: true}
-          {multi: true}        
+          {multi: true}
       else
         Headers.remove(id)
