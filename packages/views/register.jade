@@ -36,7 +36,7 @@ template(name='register')
                 .col-sm-7
                   label.required Expiration Date
                   .row
-                    .col-xs-6.col-sm-8
+                    .col-xs-6.col-sm-6.col-md-8
                       select.form-control.col-sm-4(data-stripe='expirationMonth' required)
                         option(valeu='' disabled) Month
                         option(value='01') 01 - January
@@ -51,7 +51,7 @@ template(name='register')
                         option(value='10') 10 - October
                         option(value='11') 11 - November
                         option(value='12') 12 - December
-                    .col-xs-6.col-sm-4
+                    .col-xs-6.col-sm-6.col-md-4
                       select.form-control.col-sm-4(data-stripe='expirationYear' required)
                         option(value='' disabled) Year
                         option(value="2016") 2016

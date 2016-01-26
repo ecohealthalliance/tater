@@ -4,6 +4,7 @@ if Meteor.isClient
 
   Template.register.onRendered ->
     $('.content-wrap').addClass('no-margin-padding')
+    $('.page-wrap').addClass('register-wrap')
 
   Template.register.helpers
     registering : ->
