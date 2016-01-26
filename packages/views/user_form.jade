@@ -43,15 +43,6 @@ template(name="userForm")
                   each groups
                     option(value="#{_id}") #{name}
 
-    .form-group
-      label
-        span Password
-        input.user-password.form-control(name="password" type="password")
-
-      label
-        span Password confirm
-        input.user-password-confirm.form-control(name="passwordconfirm" type="password")
-
     .modal-buttons
       input.btn.btn-default.cancel(type="button" value="Cancel" data-dismiss="modal")
       input.btn.btn-primary(type="submit" value="Add User")

@@ -28,6 +28,11 @@ do ->
         $set: {admin: true, acceptedEULA: true}
       })
 
+    'setUserAccountPasswordFixture': (attributes) ->
+      user = Meteor.users.findOne 'emails.address': attributes.email
+      Accounts.setPassword user._id, attributes.password
+      # Meteor.users.update { email: attributes.email }, $set: { password: attributes.password }
+
     'createTestGroup': (attributes) ->
       attributes ?= {}
       attributes.name ?= "Test Group"
