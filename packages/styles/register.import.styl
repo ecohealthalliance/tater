@@ -1,6 +1,13 @@
 .register
+  +below(2)
+    padding-left 15px
+    padding-right 15px
   h1
     font-size 2.5em
+  h2
+    margin-bottom 15px
+    font-size 1.5em
+    color $body-color
   input
     margin-bottom 20px
     max-width 700px
@@ -34,9 +41,14 @@
 .registration
   position relative
   margin-bottom 20px
+  section
+    margin-bottom 40px
+    &:last-of-type
+      margin-bottom 20px
   input[type=submit]
     width 100%
     margin-top 40px
+    margin-bottom 50px
     padding-top 12px
     padding-bottom 12px
     +above(2)
@@ -80,4 +92,12 @@
 
 .curtain-register
   @extend .curtain-white
-  background RGBA(249, 249, 249, .8)
+  background rgba(249, 249, 249, .8)
+
+.card-details
+  +above(3)
+    max-width 550px
+
+.cc-number
+  +above(3)
+    max-width 500px

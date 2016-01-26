@@ -18,8 +18,8 @@ do ->
     @When 'I add my credit card information', ->
       @browser
         .setValue('[data-stripe=cardNumber]', '4242424242424242')
-        .setValue('[data-stripe=expirationMonth]', '08')
-        .setValue('[data-stripe=expirationYear]', '30')
+        .selectByValue('[data-stripe=expirationMonth]', '08')
+        .selectByValue('[data-stripe=expirationYear]', '2020')
         .setValue('[data-stripe=cvc]', '123')
 
     @When 'I submit the tenant registration form', ->
