@@ -4,7 +4,7 @@ template(name="admin")
       .groups-container
         .table-header.clearfix
           h2.pull-left Document Groups
-            a.help-link(href="{{path route='help?topic=group-management'}}")
+            a.help-link(href="{{path route='help?topic=document-groups'}}")
               +tooltipIcon icon='question-circle' placement='right'
           a.btn.btn-primary.new-group-link.header-btn.pull-right(href="{{path route='newGroup'}}")
             i.fa.fa-files-o
@@ -13,7 +13,7 @@ template(name="admin")
       .users-container
         .table-header.clearfix
           h2.pull-left Users
-            a.help-link(href="{{path route='help?topic=user-types'}}")
+            a.help-link(href="{{path route='help?topic=users'}}")
               +tooltipIcon icon='question-circle' placement='right'
           a.btn.btn-primary.new-user-link.header-btn.add-admin.pull-right(data-toggle="modal" data-target="#add-user-modal")
             i.fa.fa-user-plus
