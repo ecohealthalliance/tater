@@ -71,14 +71,60 @@ select
     color $deny
     padding-left 2px
 
+.drop-zone-active
+  background $background-secondary
+  border-style solid
+  border-color $secondary
+
+.drop-zone-container
+  position relative
+  padding-right 0
+  min-height 300px
+
 .drop-zone
-  cursor pointer
-  font-weight normal
-  text-align center
-  border 4px dotted $m-gray
+  pointer()
+  border 2px dotted $m-gray
   border-radius 6px
-  background $l-gray
-  padding 30px
+  background $ll-gray
+  text-align center
+  font-weight normal
+  &:hover
+    @extend .drop-zone-active
+    .fa
+      color $secondary
+  &:active
+    background darken($background-secondary, 5%)
+  +above(4)
+    min-height 300px
   input
     display inline
     outline none
+    max-width 100%
+    display none
+  &.active
+    @extend .drop-zone-active
+  .fa
+    margin-bottom 20px
+    font-size 5em
+    color $l-gray
+
+.drop-zone-content
+  centerVertically()
+  padding 30px
+
+.or-container
+  position relative
+  text-align center
+  padding 0
+  min-width 100%
+  p
+    text-align center
+    font-weight bold
+    margin 1.25em 0
+  +above(4)
+    min-height 300px
+    min-width 4%
+    p
+      centerVertically()
+      width 100%
+      margin 0
