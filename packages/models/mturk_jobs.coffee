@@ -51,7 +51,7 @@ MTurkJob = Astro.Class
         doc.save()
 
         unless process.env.AWS_ACCESS_KEY
-          console.log "AWS_ACCESS_KEY is not defined, cannot call mechanical turk api."
+          console.warn "AWS_ACCESS_KEY is not defined, cannot call mechanical turk API."
           return
         # Parameters documented here:
         # http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_CreateHITOperation.html
@@ -64,13 +64,13 @@ MTurkJob = Astro.Class
         ))
         # rootUrl cannot be localhost or calls to mturk will fail.
         if process.env.ROOT_URL.match("localhost")
-          rootUrl = "https://test.example.com"
+          rootUrl = "https://staging.tater.io"
         else
           rootUrl = process.env.ROOT_URL
         if process.env.MTURK_URL
           mturkUrl = process.env.MTURK_URL
         else
-          console.log "MTURK_URL is not defined, defaulting to the sandbox API."
+          console.warn "MTURK_URL is not defined, defaulting to the sandbox API."
           mturkUrl = "https://mechanicalturk.sandbox.amazonaws.com"
         response = HTTP.post(mturkUrl, {
           params:
@@ -87,7 +87,7 @@ MTurkJob = Astro.Class
               <ExternalURL>#{Meteor.absoluteUrl("mtAnnotate", {
                 secure: true
                 rootUrl: rootUrl
-              })}/#{@docId}</ExternalURL>
+              })}/#{@docId}?accessToken=#{@doc.accessCode}</ExternalURL>
               <FrameHeight>600</FrameHeight>
             </ExternalQuestion>
             """
@@ -105,15 +105,3 @@ MTurkJob = Astro.Class
           explicitArray: false
         }).CreateHITResponse)
         @save()
-
-if Meteor.isServer
-  Meteor.methods
-    createMTurkJob: (properties)->
-      if Meteor.user()?.admin
-        properties.rewardUSD = 1
-        job = new MTurkJob(properties)
-        if not job.validate()
-          job.throwValidationException()
-        job.save()
-      else
-        throw new Meteor.Error("Unauthorized")

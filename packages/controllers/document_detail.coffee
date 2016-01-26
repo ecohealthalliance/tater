@@ -443,4 +443,16 @@ if Meteor.isServer
       @ready()
 
   Meteor.publish 'mTurkJob', (documentId) ->
-    MTurkJobs.find({docId: documentId})
+    MTurkJobs.find(docId: documentId)
+
+
+  Meteor.methods
+    createMTurkJob: (properties) ->
+      if Meteor.user()?.admin
+        properties.rewardUSD = 1
+        job = new MTurkJob(properties)
+        unless job.validate()
+          job.throwValidationException()
+        job.save()
+      else
+        throw new Meteor.Error 'Unauthorized'

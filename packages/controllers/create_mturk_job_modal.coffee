@@ -16,9 +16,7 @@ if Meteor.isClient
 
     'click #create-mturk-job': (event, instance) ->
       event.preventDefault()
-      console.log instance
       form = instance.$('#mturk-job-form')[0]
-      console.log instance.$("#create-mturk-job-modal").data("bs.modal").options.documentId
       if form.lifetimeMinutes?.value
         lifetimeSeconds = form.lifetimeMinutes?.value * 60
       fields = {
