@@ -39,8 +39,6 @@ checkMark(center=false)
 .listing
   .showing:not(.selected)
     background none !important
-  .clear-codes-container
-    margin-top -10px
 
 .code-header
 .code-sub-header
@@ -57,11 +55,11 @@ checkMark(center=false)
       content '\f138'
       @extend .icon
     &.up
-      transition .2s
+      transition .1s
       transform rotate(90deg)
     &:hover
       color darken($secondary-dark, 20%)
-      transition .2s ease-in-out
+      transition .1s ease-in-out
 
 .code-header > span
 .code-sub-header > span
@@ -71,11 +69,6 @@ checkMark(center=false)
   border-bottom-left-radius 3px
   &:not(.selectable-code)
     color $m-gray
-
-.clear-codes-container
-  margin 15px
-  button
-    makeButton(darken($background-secondary, 10%), black, true, true)
 
 .code-header
   margin-bottom 5px

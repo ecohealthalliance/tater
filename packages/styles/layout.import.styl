@@ -3,7 +3,7 @@
   top 0
   bottom 0
   width 22.5%
-  padding-top 85px
+  padding-top 65px
   padding-bottom 15px
   z-index $mid-layer
   overflow-y auto
@@ -32,7 +32,7 @@
   width 22.5%
   background $sub-header-BG
   padding 15px
-  border-bottom 1px solid lighten($primary-light, 60%)
+  border-bottom 2px solid lighten($primary-light, 70%)
   input
     margin-bottom 0
   h1
@@ -62,3 +62,36 @@
 
 .pane-head-r
   right 0
+
+.pane-actions
+  display flex
+  align-items center
+  margin-bottom 15px
+  padding-top 10px
+  padding-bottom 10px
+  padding-left 15px
+  padding-right 15px
+  border-bottom 1px solid lighten($border-color, 70%)
+  &.pane-actions-middle
+    padding-left 20px
+    padding-right 20px
+  &.align-right
+    justify-content flex-end
+    button
+      flex-grow 0
+  button
+    flex-grow 1
+    margin 0
+    line-height 1
+    color $primary-light
+    font-size 12px
+    &:hover
+      color darken($primary-light, 40%)
+    &:disabled
+      color desaturate(lighten($primary-light, 70%), 20%)
+      cursor not-allowed
+  i
+    font-size 13px
+    margin-right 4px
+    +below(1000px)
+      font-size 20px

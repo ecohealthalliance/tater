@@ -2,16 +2,14 @@ template(name="annotations")
   .document-detail-container
     .document-list-heading.pane-head.pane-head-l
       h2 Document Groups
-      .actions
+    .document-list-container.pane.pane-l
+      .pane-actions
         button.btn-plain.select-all(disabled="{{allSelected}}")
           i.fa.fa-eye
-          span Select all
-        button.btn-plain.clear-filters(class="{{selectionState 'class'}}"
-                                    disabled="{{selectionState 'disabled'}}")
+          | Select all
+        button.btn-plain.clear-filters(class="{{selectionState 'class'}}" disabled="{{selectionState 'disabled'}}")
           i.fa.fa-times-circle
-          span Clear selection
-
-    .document-list-container.pane.pane-l
+          | Clear selection
       if Template.subscriptionsReady
         if isAdmin
           ul.all-docs-list.list-unstyled
@@ -40,17 +38,20 @@ template(name="annotations")
           +tooltipIcon icon="question-circle" placement="right"
       .pull-right.pane-head-m-options
         if annotationsLoaded
-          .show-flagged
-            button.btn.btn-default.btn-sm
-              if showFlagged
-                i.fa.fa-flag
-              else
-                i.fa.fa-flag-o
-              | View Flagged
           a.btn.btn-default.btn-sm.download-csv
             i.fa.fa-download
             span Generate CSV
     .annotations-list-container.pane.pane-m
+      .pane-actions.pane-actions-middle.align-right
+        .show-flagged
+          button.btn-plain(disabled="{{#unless annotationsLoaded}} disabled {{/unless}}")
+            if showFlagged
+              i.fa.fa-check-square-o
+            else
+              i.fa.fa-square-o
+            | Show Flagged
+            i.fa.fa-flag-o
+
       if documentSelected
         unless annotationsLoaded
           p.no-results.text-center No annotations found.

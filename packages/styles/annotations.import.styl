@@ -1,6 +1,5 @@
 .annotations-list-container
   .pagesCont
-    margin-top -30px
     margin-bottom 20px
     min-height 300px
 
@@ -169,28 +168,8 @@
   h2
     body-font()
     font-size 18px
-    width 50%
     +below(1000px)
       font-size 16px
-  .actions
-    centerVertically()
-    right 15px
-    button
-      margin 0
-      line-height 1
-      color $primary-light
-      &:hover
-        color darken($primary-light, 40%)
-      &:disabled
-        color desaturate(lighten($primary-light, 70%), 20%)
-    i
-      font-size 13px
-      +below(1000px)
-        font-size 20px
-    span
-      font-size 12px
-      +below(1000px)
-        display none
 
 +below(1000px)
   .clear-filters
