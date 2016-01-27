@@ -10,6 +10,14 @@ body
   font-family inherit
   text-shadow 0 0 1px rgba(255,255,255,.5)
 
+  &:not(.now-connected)
+    .connection-problem
+      display block
+
+  &:not(.now-connected)
+    header nav
+      opacity .25
+
 .page-wrap
   min-height 100vh
   &.register-wrap

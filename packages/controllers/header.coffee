@@ -1,7 +1,7 @@
 if Meteor.isClient
 
   @gConnected = true
-  @gConnectionErrorText = 'No connection to the server, please try again later'
+  @gConnectionErrorText = 'No connection, please try again later'
   setConnected = (online) =>
     @gConnected = not not online
 
@@ -16,14 +16,14 @@ if Meteor.isClient
     s = (amount) -> if amount isnt 1 then 's' else ''
     tock = ->
       if status.status is 'connecting'
-        $('#reconnecting-in').text ''
+        $('.reconnecting-in').text ''
         return
       if reconnectingIn > 0
-        $('#reconnecting-in').text """Attempting to reconnect
+        $('.reconnecting-in').text """Attempting to reconnect
         in #{reconnectingIn} second#{s(reconnectingIn)}…"""
       else
         Meteor.reconnect()
-        $('#reconnecting-in').text ''
+        $('.reconnecting-in').text ''
         reconnectIntervalStep += 1
         if reconnectIntervalStep >= reconnectIntervals.length
           reconnectIntervalStep = reconnectIntervals.length - 1
@@ -41,7 +41,7 @@ if Meteor.isClient
       else # the connection is back
         clearInterval tickerId
         tickerId = 0
-        $('#reconnecting-in').text ''
+        $('.reconnecting-in').text ''
         reconnectIntervalStep = 0
 
   Template.header.helpers
@@ -54,7 +54,7 @@ if Meteor.isClient
       _id: Meteor.user().group
 
   Template.header.events
-    'click #reconnect': (event) ->
+    'click .reconnect': (event) ->
       event.preventDefault()
       Meteor.reconnect()
 

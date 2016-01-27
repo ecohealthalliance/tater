@@ -1,8 +1,10 @@
 template(name="header")
   header
-    .connection-problem Unable to reach the Tater server.
-      span#reconnecting-in
-      a#reconnect(href="#") Reconnect now
+    .connection-problem
+      i.fa.fa-exclamation-triangle
+      span Lost connection to Tater.
+      span.reconnecting-in
+      a.btn.reconnect(href="#") Reconnect now
     nav.navbar
       .container-fluid
         .navbar-header
