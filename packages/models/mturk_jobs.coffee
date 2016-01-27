@@ -50,17 +50,19 @@ MTurkJob = Astro.Class
         doc.set('mTurkEnabled', true)
         doc.save()
 
-        unless process.env.AWS_ACCESS_KEY
-          console.warn "AWS_ACCESS_KEY is not defined, cannot call mechanical turk API."
+        unless Meteor.settings.private.AWS_ACCESS_KEY
+          console.log "AWS_ACCESS_KEY is not defined, cannot call mechanical turk API."
           return
         # Parameters documented here:
         # http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_CreateHITOperation.html
-        service = "AWSMechanicalTurkRequester"
+        service   = "AWSMechanicalTurkRequester"
         operation = "CreateHIT"
-        timestamp = (new Date()).toISOString()
+        # timestamp = new Date().toISOString().replace(/\.\d+Z/, '') + "+00:00"
+        timestamp = new Date().toISOString().replace(/\.\d+/, '')
+        # timestamp = new Date().toISOString().replace(/\.\d+Z/, '') + "-00:00"
         signature = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(
           service + operation + timestamp,
-          process.env.AWS_SECRET_KEY
+          Meteor.settings.private.AWS_SECRET_KEY
         ))
         # rootUrl cannot be localhost or calls to mturk will fail.
         if process.env.ROOT_URL.match("localhost")
@@ -70,16 +72,17 @@ MTurkJob = Astro.Class
         if process.env.MTURK_URL
           mturkUrl = process.env.MTURK_URL
         else
-          console.warn "MTURK_URL is not defined, defaulting to the sandbox API."
+          console.log "MTURK_URL is not defined, defaulting to the sandbox API."
           mturkUrl = "https://mechanicalturk.sandbox.amazonaws.com"
         response = HTTP.post(mturkUrl, {
           params:
             Service: service
+            AWSAccessKeyId: Meteor.settings.private.AWS_ACCESS_KEY
+            # Version: "2014-08-15"
+            Version: "2008-08-02"
             Operation: operation
             Timestamp: timestamp
             Signature: signature
-            AWSAccessKeyId: process.env.AWS_ACCESS_KEY
-            Version: "2014-08-15"
             Title: @title
             Description: @description
             Question: """
@@ -87,7 +90,7 @@ MTurkJob = Astro.Class
               <ExternalURL>#{Meteor.absoluteUrl("mtAnnotate", {
                 secure: true
                 rootUrl: rootUrl
-              })}/#{@docId}?accessToken=#{@doc.accessCode}</ExternalURL>
+              })}/#{@docId}?accessToken=#{doc.accessCode}</ExternalURL>
               <FrameHeight>600</FrameHeight>
             </ExternalQuestion>
             """
@@ -101,6 +104,7 @@ MTurkJob = Astro.Class
             # features to the application.
             AutoApprovalDelayInSeconds: 0
         })
+        console.log response
         @set('createHITResponse', xml2js.parseStringSync(response.content, {
           explicitArray: false
         }).CreateHITResponse)
