@@ -16,9 +16,9 @@ template(name="annotations")
             each groups
               li.group-selector-wrap
                 .group-selector(data-group=_id class="{{toggleEnabled}}")
-                  i.down
+                  i(class="{{#if showGroup}} up {{else}} down {{/if}}")
                   span(class="{{selectedGroup}}")=name
-                ul.group-docs.list-unstyled.hidden
+                ul.group-docs.list-unstyled(class="{{#unless showGroup}} hidden {{/unless}}")
                   each groupDocuments
                     li.document-selector(data-id=_id class="{{selectedDoc}}")
                       span.doc-title(class="{{noAnnotations}}") #{title}
