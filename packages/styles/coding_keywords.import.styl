@@ -79,9 +79,11 @@ checkMark(center=false)
 
 .code-header
   margin-bottom 5px
-  font-size 18px
-  font-weight 800
+  font-size 16px
+  font-weight 700
   color $body-text
+  +above(4)
+    font-size 18px
   > span
     pointer()
     display block
@@ -154,6 +156,7 @@ checkMark(center=false)
               &.selected
                 background-color $color
                 font-weight bold
+                border-bottom 1px solid desaturate(darken($color, 10%), 15%)
             &:hover
               &::after
                 centerVertically()
@@ -162,11 +165,13 @@ checkMark(center=false)
 .code-sub-headers
 .code-keywords
   margin 5px 0 15px 0
+  font-size 14px
+  +above(4)
+    font-size 15px
 
 .code-sub-header
   padding-left 53px
   margin-bottom 2px
-  font-size 15px
   font-weight 600
   span
     display block

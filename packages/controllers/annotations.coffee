@@ -137,9 +137,6 @@ if Meteor.isClient
     docGroup: ->
       @groupName()
 
-    showingAnnotations: ->
-      Template.instance().documents.find().count()
-
     selectionState: (attr) ->
       if Template.instance().documents.find().count() is 0
         if attr is 'class'
