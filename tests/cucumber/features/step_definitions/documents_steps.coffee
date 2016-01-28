@@ -43,7 +43,7 @@ do ->
         .url(url.resolve(process.env.ROOT_URL, "/groups/fakegroupid/documents"))
         .waitForVisible('.group-documents')
 
-    @When 'I navigate to the test document with an access code', ->
+    @When 'I navigate to the test document with an access token', ->
       @browser
         .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid?accessToken=faketoken123"))
         .waitForExist('.document-container')
@@ -100,7 +100,7 @@ do ->
         .pause(10000)
         .waitForVisible('.modal.in')
 
-    @Then "I should see an access code in a modal", ->
+    @Then "I should see an access token in a modal", ->
       @browser
         .getHTML '#completionCodeModal', (error, response) ->
           assert.notOk(error)

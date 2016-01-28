@@ -56,7 +56,7 @@ do ->
       document = new Document()
       attributes['body'] ?= 'Test Body'
       attributes['groupId'] ?= 'fakegroupid'
-      attributes['accessCode'] ?= 'faketoken123'
+      attributes['accessToken'] ?= 'faketoken123'
       document.set(attributes)
       document.save()
 

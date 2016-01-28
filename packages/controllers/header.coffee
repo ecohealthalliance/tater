@@ -6,7 +6,7 @@ if Meteor.isClient
   Template.header.helpers
     accountsState: -> Template.instance().accountsState
 
-    usingAccessCode: ->
+    usingaccessToken: ->
       window.location.search.match('generateCode=')
 
     documentsLinkParams: ->

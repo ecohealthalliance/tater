@@ -57,9 +57,7 @@ MTurkJob = Astro.Class
         # http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_CreateHITOperation.html
         service   = "AWSMechanicalTurkRequester"
         operation = "CreateHIT"
-        # timestamp = new Date().toISOString().replace(/\.\d+Z/, '') + "+00:00"
-        timestamp = new Date().toISOString().replace(/\.\d+/, '')
-        # timestamp = new Date().toISOString().replace(/\.\d+Z/, '') + "-00:00"
+        timestamp = new Date().toISOString()
         signature = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(
           service + operation + timestamp,
           Meteor.settings.private.AWS_SECRET_KEY
@@ -78,8 +76,7 @@ MTurkJob = Astro.Class
           params:
             Service: service
             AWSAccessKeyId: Meteor.settings.private.AWS_ACCESS_KEY
-            # Version: "2014-08-15"
-            Version: "2008-08-02"
+            Version: "2014-08-15"
             Operation: operation
             Timestamp: timestamp
             Signature: signature
@@ -90,7 +87,7 @@ MTurkJob = Astro.Class
               <ExternalURL>#{Meteor.absoluteUrl("mtAnnotate", {
                 secure: true
                 rootUrl: rootUrl
-              })}/#{@docId}?accessToken=#{doc.accessCode}</ExternalURL>
+              })}/#{@docId}?accessToken=#{doc.accessToken}</ExternalURL>
               <FrameHeight>600</FrameHeight>
             </ExternalQuestion>
             """
@@ -104,7 +101,6 @@ MTurkJob = Astro.Class
             # features to the application.
             AutoApprovalDelayInSeconds: 0
         })
-        console.log response
         @set('createHITResponse', xml2js.parseStringSync(response.content, {
           explicitArray: false
         }).CreateHITResponse)

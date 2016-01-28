@@ -56,14 +56,14 @@ if Meteor.isClient
 
   Template.documentDetail.onCreated ->
     if @data.accessToken
-      @accessCode = @data.accessToken
+      @accessToken = @data.accessToken
       @userToken = localStorage.getItem 'userToken'
       if not @userToken
         @userToken = Random.id(20) + '~' + +new Date()
         localStorage.setItem 'userToken', @userToken
-    @subscribe('documentDetail', @data.documentId, @accessCode)
-    @subscribe('docAnnotations', @data.documentId, @accessCode, @userToken)
-    @subscribe('users', @data.documentId, @accessCode)
+    @subscribe('documentDetail', @data.documentId, @accessToken)
+    @subscribe('docAnnotations', @data.documentId, @accessToken, @userToken)
+    @subscribe('users', @data.documentId, @accessToken)
     @subscribe('mTurkJob', @data.documentId)
     @startOffset = new ReactiveVar()
     @endOffset = new ReactiveVar()
@@ -118,8 +118,8 @@ if Meteor.isClient
     annotations: ->
       Template.instance().annotations.get()
 
-    accessCode: ->
-      Template.instance().accessCode
+    accessToken: ->
+      Template.instance().accessToken
 
     annotationUserEmail: ->
       @userEmail()
@@ -219,7 +219,7 @@ if Meteor.isClient
           documentId:  instance.data.documentId
           startOffset: temporaryAnnotation.startOffset
           endOffset:   temporaryAnnotation.endOffset
-        Meteor.call 'createAnnotation', attributes, instance.accessCode, instance.userToken, (error, response) ->
+        Meteor.call 'createAnnotation', attributes, instance.accessToken, instance.userToken, (error, response) ->
           if error
             toastr.error("Invalid annotation")
 
@@ -292,7 +292,7 @@ if Meteor.isClient
       $parent.addClass('deleting')
       parentInstance = instance.parent()
       setTimeout (->
-        Meteor.call 'deleteAnnotation', annotationId, parentInstance.accessCode, parentInstance.userToken
+        Meteor.call 'deleteAnnotation', annotationId, parentInstance.accessToken, parentInstance.userToken
       ), 800
       if annotationId is selectedAnnotation.get()?.id
         selectedAnnotation.set id: null
@@ -305,11 +305,11 @@ if Meteor.isClient
 
 Meteor.methods
 
-  createAnnotation: (attributes, accessCode, userToken) ->
+  createAnnotation: (attributes, accessToken, userToken) ->
     @unblock()
     check attributes, Object
-    if accessCode
-      check accessCode, String
+    if accessToken
+      check accessToken, String
       check userToken, String
     document = Documents.findOne attributes.documentId
     if Meteor.isServer
@@ -318,7 +318,7 @@ Meteor.methods
       if user
         accessible = group?.viewableByUser(user)
       else
-        if accessCode and document.accessCode is accessCode
+        if accessToken and document.accessToken is accessToken
           accessible = true
           _userToken = userToken
     else
@@ -337,11 +337,11 @@ Meteor.methods
     else
       throw new Meteor.Error 'Unauthorized'
 
-  deleteAnnotation: (annotationId, accessCode, userToken) ->
+  deleteAnnotation: (annotationId, accessToken, userToken) ->
     @unblock()
     check annotationId, String
-    if accessCode
-      check accessCode, String
+    if accessToken
+      check accessToken, String
       check userToken, String
     annotation = Annotations.findOne(annotationId)
     document = Documents.findOne(annotation.documentId)
@@ -351,7 +351,7 @@ Meteor.methods
       if user
         accessible = group?.viewableByUser(user)
       else
-        if accessCode and document.accessCode is accessCode
+        if accessToken and document.accessToken is accessToken
           accessible = true
           _userToken = userToken
     else
@@ -391,9 +391,9 @@ Meteor.methods
 
 if Meteor.isServer
 
-  fields = { accessCode: false }
+  fields = { accessToken: false }
 
-  Meteor.publish 'documentDetail', (documentId, accessCode) ->
+  Meteor.publish 'documentDetail', (documentId, accessToken) ->
     check documentId, String
     if @userId
       user = Meteor.users.findOne(@userId)
@@ -403,13 +403,17 @@ if Meteor.isServer
         Documents.find(documentId, fields: fields)
       else
         @ready()
-    else if accessCode
-      check accessCode, String
-      Documents.find({ _id: documentId, accessCode: accessCode }, fields: fields)
+    else if accessToken
+      check accessToken, String
+      Documents.find({
+        _id: documentId
+        accessToken: accessToken
+        mTurkEnabled: true
+      }, fields: fields)
     else
       @ready()
 
-  Meteor.publish 'docAnnotations', (documentId, accessCode, userToken) ->
+  Meteor.publish 'docAnnotations', (documentId, accessToken, userToken) ->
     check documentId, String
     if @userId
       document = Documents.findOne(documentId)
@@ -419,10 +423,14 @@ if Meteor.isServer
         Annotations.find(documentId: documentId)
       else
         @ready()
-    else if accessCode
-      check accessCode, String
+    else if accessToken
+      check accessToken, String
       check userToken, String
-      document = Documents.findOne(_id: documentId, accessCode: accessCode)
+      document = Documents.findOne(
+        _id: documentId
+        accessToken: accessToken
+        mTurkEnabled: true
+      )
       if document
         Annotations.find(documentId: document._id, userToken: userToken)
       else

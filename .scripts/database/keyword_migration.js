@@ -24,7 +24,7 @@ keywordCount = db.codingKeywords.find({header: {$ne: null}, subHeader: {$ne: nul
 while(headers.hasNext()){
   header = headers.next();
   db.headers.insert({label: header.header, color: header.color, _id: header._id});
-  annotations = db.annotations.find({codeId: header._id, accessCode: null})
+  annotations = db.annotations.find({codeId: header._id, accessToken: null})
   //check to see if any annotations use this header
   if(annotations.count() > 0){
     headerKeywords += annotations.count();
@@ -36,7 +36,7 @@ while(headers.hasNext()){
   while(subHeaders.hasNext()){
     subHeader = subHeaders.next();
     db.subHeaders.insert({label: subHeader.subHeader, headerId: header._id, _id: subHeader._id});
-    annotations = db.annotations.find({codeId: subHeader._id, accessCode: null});
+    annotations = db.annotations.find({codeId: subHeader._id, accessToken: null});
     //check to see if any annotations use this subHeader
     if(annotations.count() > 0){
       subheaderKeywords += annotations.count();
@@ -70,7 +70,7 @@ function createOtherKeyword(subHeader, header){
   //If a header was passed in, update all annotations that use that header.
   //If no header was passed in, then update all annotations that use the subheader
   updateId = header == null ? subHeader._id : header._id
-  db.annotations.update({codeId: updateId, accessCode: null},
+  db.annotations.update({codeId: updateId, accessToken: null},
     {
       $set:
       {

@@ -8,7 +8,7 @@ template(name="documentDetailCodingKeywords")
     ul.list-unstyled.code-list(class=action)
       if Template.subscriptionsReady
         each headers
-          if ../accessCode
+          if ../accessToken
             li.code-header.count.highlighted.selectable(class='code-header-#{color}')
               span.header-name.selectable-code= label
           else
