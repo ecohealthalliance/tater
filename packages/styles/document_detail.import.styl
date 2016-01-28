@@ -82,11 +82,7 @@
 
 .document-wrapper
   position relative
-
-  pre
-    white-space pre-wrap
-    word-wrap break-word
-    word-break break-word
+  text-shadow none
 
   .document-annotations
     position absolute
@@ -100,11 +96,15 @@
       color transparent
 
   pre
-    background none
     border 0
     padding 0
+    overflow hidden
+    background none
     text-align left
     line-height 1.6em
+    white-space pre-wrap
+    word-wrap break-word
+    word-break break-word
     body-font()
     font-size 1em
     &::selection
