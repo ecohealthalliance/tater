@@ -1,17 +1,3 @@
-.document-detail-container
-  position fixed
-  top $header-height
-  bottom 0
-  left 0
-  right 0
-  z-index $mid-layer
-  .loading
-    loading(false)
-    position absolute
-    top 100px
-    transform translate(-50%, 0)
-    left 50%
-
 .annotations-selected-container
   background alpha($background-primary, 55%)
   padding 10px 10px 10px 10px
@@ -135,10 +121,11 @@
       color transparent
 
   pre
-    border 0
-    padding 0
+    padding 0 0 100px 0
+    margin 0
     overflow hidden
     background none
+    border 0
     text-align left
     line-height 1.6em
     white-space pre-wrap

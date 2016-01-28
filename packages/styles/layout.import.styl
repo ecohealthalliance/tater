@@ -1,10 +1,25 @@
+.pane-container
+  @extend .gradient-bottom
+  position fixed
+  top $header-height
+  bottom 0
+  left 0
+  right 0
+  z-index $mid-layer
+  .loading
+    loading(false)
+    position absolute
+    top 100px
+    transform translate(-50%, 0)
+    left 50%
+
 .pane
   position absolute
   top 0
   bottom 0
   width 22.5%
   padding-top 65px
-  padding-bottom 15px
+  padding-bottom 75px
   z-index $mid-layer
   overflow-y auto
   background white
@@ -30,7 +45,6 @@
   overflow hidden
   z-index $top-layer
   width 22.5%
-  background $sub-header-BG
   padding 15px
   border-bottom 2px solid lighten($primary-light, 70%)
   input
@@ -44,6 +58,7 @@
     font-size 25px
   h2
     font-size 20px
+    color $primary-light
 
 .pane-head-l
   left 0
@@ -54,6 +69,7 @@
   padding 15px 20px 10px 20px
   border-left $border
   border-right $border
+  background $sub-header-BG
 
 .pane-head-m-options
   display flex
@@ -63,10 +79,16 @@
 .pane-head-r
   right 0
 
+.pane-head-l
+.pane-head-r
+  background lighten($sub-header-BG, 50%)
+
+
 .pane-actions
   display flex
   align-items center
   margin-bottom 15px
+  padding-top 10px
   padding-top 10px
   padding-bottom 10px
   padding-left 15px
