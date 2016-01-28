@@ -12,7 +12,7 @@ template(name="documentDetail")
                 | Crowdsource
           a.help-link.help-link-document.pull-right(href="{{path route='/help?topic=annotating-documents'}}")
             +tooltipIcon icon='question-circle' placement='left'
-          if accessToken
+          if hitId
             button.finished-annotating.btn.btn-primary(data-toggle="modal" data-target="#completionCodeModal")
               i.fa.fa-check-circle.icon-left
               span Finished Annotating
@@ -62,12 +62,12 @@ template(name="documentDetail")
         .modal-body
           p.instructions Thanks for completing this HIT.  Please enter this code into Mechanical Turk.
           h5.completion-code Code:
-            span {{accessToken}}
+            span {{hitId}}
   +createMTurkJobModal document=document
 
 template(name="documentDetailAnnotation")
   li(data-annotation-id=_id class="annotation-color-#{color} {{selected}}")
-    if accessToken
+    if hitId
       span.code
         span.header= header
     else

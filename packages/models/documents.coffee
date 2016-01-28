@@ -23,13 +23,7 @@ Document = Astro.Class
       type: 'boolean'
       default: false
     createdAt: 'date'
-    accessToken:
-      type: 'string'
   behaviors: ['timestamp']
-  events:
-    beforeSave: ->
-      if Meteor.isServer and not this.accessToken
-        @set(accessToken: Random.id 20)
 
   methods:
     groupName: ->

@@ -12,7 +12,6 @@ help:
 	@echo "      data    - Copy production database to local machine"
 	@echo "      build   - Compile tater into binaries"
 	@echo "      docker  - Build the docker image"
-	@echo "      run     - Run the meteor dev environment"
 	@echo ""
 
 server:
@@ -49,6 +48,3 @@ build:
 
 docker:
 	docker build -t tater .
-
-run:
-	meteor --settings settings-production.json

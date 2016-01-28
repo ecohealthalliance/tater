@@ -60,7 +60,6 @@ Feature: Documents
 
   @documents
   Scenario: Adding a document as an admin
-    When I navigate to "/"
     When I log in as the test user
     And I click on the Add Document link in the header
     And I fill out the new document form with title "Test Document" and select the test group
@@ -72,7 +71,6 @@ Feature: Documents
 
   @documents
   Scenario: Uploading document file as an admin
-    When I navigate to "/"
     When I log in as the test user
     And I click on the Add Document link in the header
     And I should see content "Drop a document file here or click to upload from your computer"
@@ -98,10 +96,20 @@ Feature: Documents
     And I should not see content "Test Document"
 
   @documents
+  Scenario: Crowdsourcing annotations for a document
+    Given there is a test group in the database
+    And there is a document with title "Test Document" in the test group
+    When I log in as the test user
+    And I navigate to the test document
+    And I click on "Crowdsource"
+    And I click on "Crowdsource Annotation"
+    Then I should see a "Success" toast
+
+  @documents
   Scenario: Viewing a document with an access token
     Given there is a test group in the database
     And there is a document with title "Test Document" in the test group
-    When I navigate to the test document with an access token
+    When I navigate to the test document with hitId
     Then I should see content "Test Document"
     When I click on the Finished Annotating button
     Then I should see an access token in a modal

@@ -55,16 +55,16 @@ if Meteor.isClient
 
 
   Template.documentDetail.onCreated ->
-    if @data.accessToken
-      @accessToken = @data.accessToken
+    if @data.hitId
+      @hitId = @data.hitId
       @userToken = localStorage.getItem 'userToken'
       if not @userToken
         @userToken = Random.id(20) + '~' + +new Date()
         localStorage.setItem 'userToken', @userToken
-    @subscribe('documentDetail', @data.documentId, @accessToken)
-    @subscribe('docAnnotations', @data.documentId, @accessToken, @userToken)
-    @subscribe('users', @data.documentId, @accessToken)
-    @subscribe('mTurkJob', @data.documentId)
+    @subscribe('documentDetail', @data.documentId, @hitId)
+    @subscribe('docAnnotations', @data.documentId, @hitId, @userToken)
+    @subscribe('users', @data.documentId, @hitId)
+    # @subscribe('mTurkJob', @data.documentId, @hitId)
     @startOffset = new ReactiveVar()
     @endOffset = new ReactiveVar()
     @annotations = new ReactiveVar()
@@ -118,8 +118,8 @@ if Meteor.isClient
     annotations: ->
       Template.instance().annotations.get()
 
-    accessToken: ->
-      Template.instance().accessToken
+    hitId: ->
+      Template.instance().hitId
 
     annotationUserEmail: ->
       @userEmail()
@@ -219,7 +219,7 @@ if Meteor.isClient
           documentId:  instance.data.documentId
           startOffset: temporaryAnnotation.startOffset
           endOffset:   temporaryAnnotation.endOffset
-        Meteor.call 'createAnnotation', attributes, instance.accessToken, instance.userToken, (error, response) ->
+        Meteor.call 'createAnnotation', attributes, instance.hitId, instance.userToken, (error, response) ->
           if error
             toastr.error("Invalid annotation")
 
@@ -292,7 +292,7 @@ if Meteor.isClient
       $parent.addClass('deleting')
       parentInstance = instance.parent()
       setTimeout (->
-        Meteor.call 'deleteAnnotation', annotationId, parentInstance.accessToken, parentInstance.userToken
+        Meteor.call 'deleteAnnotation', annotationId, parentInstance.hitId, parentInstance.userToken
       ), 800
       if annotationId is selectedAnnotation.get()?.id
         selectedAnnotation.set id: null
@@ -305,11 +305,12 @@ if Meteor.isClient
 
 Meteor.methods
 
-  createAnnotation: (attributes, accessToken, userToken) ->
+  createAnnotation: (attributes, hitId, userToken) ->
     @unblock()
     check attributes, Object
-    if accessToken
-      check accessToken, String
+    check attributes.documentId, String
+    if hitId
+      check hitId, String
       check userToken, String
     document = Documents.findOne attributes.documentId
     if Meteor.isServer
@@ -318,7 +319,7 @@ Meteor.methods
       if user
         accessible = group?.viewableByUser(user)
       else
-        if accessToken and document.accessToken is accessToken
+        if hitId and MturkJobs.find(documentId: document._id, HITId: hitId).count()
           accessible = true
           _userToken = userToken
     else
@@ -337,11 +338,11 @@ Meteor.methods
     else
       throw new Meteor.Error 'Unauthorized'
 
-  deleteAnnotation: (annotationId, accessToken, userToken) ->
+  deleteAnnotation: (annotationId, hitId, userToken) ->
     @unblock()
     check annotationId, String
-    if accessToken
-      check accessToken, String
+    if hitId
+      check hitId, String
       check userToken, String
     annotation = Annotations.findOne(annotationId)
     document = Documents.findOne(annotation.documentId)
@@ -351,7 +352,7 @@ Meteor.methods
       if user
         accessible = group?.viewableByUser(user)
       else
-        if accessToken and document.accessToken is accessToken
+        if hitId and MturkJobs.find(documentId: document._id, HITId: hitId).count()
           accessible = true
           _userToken = userToken
     else
@@ -388,32 +389,29 @@ Meteor.methods
       throw new Meteor.Error 'Unauthorized'
 
 
-
 if Meteor.isServer
 
-  fields = { accessToken: false }
-
-  Meteor.publish 'documentDetail', (documentId, accessToken) ->
+  Meteor.publish 'documentDetail', (documentId, hitId) ->
     check documentId, String
     if @userId
       user = Meteor.users.findOne(@userId)
       document = Documents.findOne(documentId)
       group = Groups.findOne(document.groupId)
       if group?.viewableByUser(user)
-        Documents.find(documentId, fields: fields)
+        Documents.find(documentId)
       else
         @ready()
-    else if accessToken
-      check accessToken, String
-      Documents.find({
-        _id: documentId
-        accessToken: accessToken
-        mTurkEnabled: true
-      }, fields: fields)
+    else if hitId
+      check hitId, String
+      if MTurkJobs.find(documentId: documentId, HITId: hitId).count()
+        Documents.find({
+          _id: documentId
+          mTurkEnabled: true
+        }, fields: fields)
     else
       @ready()
 
-  Meteor.publish 'docAnnotations', (documentId, accessToken, userToken) ->
+  Meteor.publish 'docAnnotations', (documentId, hitId, userToken) ->
     check documentId, String
     if @userId
       document = Documents.findOne(documentId)
@@ -423,12 +421,11 @@ if Meteor.isServer
         Annotations.find(documentId: documentId)
       else
         @ready()
-    else if accessToken
-      check accessToken, String
+    else if hitId
+      check hitId, String
       check userToken, String
       document = Documents.findOne(
         _id: documentId
-        accessToken: accessToken
         mTurkEnabled: true
       )
       if document
@@ -450,17 +447,11 @@ if Meteor.isServer
     else
       @ready()
 
-  Meteor.publish 'mTurkJob', (documentId) ->
-    MTurkJobs.find(documentId: documentId)
-
-
-  Meteor.methods
-    createMTurkJob: (properties) ->
-      if Meteor.user()?.admin
-        properties.rewardAmount = 1
-        job = new MTurkJob(properties)
-        unless job.validate()
-          job.throwValidationException()
-        job.save()
-      else
-        throw new Meteor.Error 'Unauthorized'
+  Meteor.publish 'mTurkJob', (documentId, hitId) ->
+    check documentId, String
+    if hitId
+      check hitId, String
+    if @userId
+      MTurkJobs.find(documentId: documentId, HITId: hitId)
+    else
+      @ready()

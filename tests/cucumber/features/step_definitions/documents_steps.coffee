@@ -43,9 +43,14 @@ do ->
         .url(url.resolve(process.env.ROOT_URL, "/groups/fakegroupid/documents"))
         .waitForVisible('.group-documents')
 
-    @When 'I navigate to the test document with an access token', ->
+    @When 'I navigate to the test document', ->
       @browser
-        .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid?accessToken=faketoken123"))
+        .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid"))
+        .waitForExist('.document-container')
+
+    @When 'I navigate to the test document with hitId', ->
+      @browser
+        .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid?hitId=fakeHITId"))
         .waitForExist('.document-container')
 
     @When 'I click on the New Document link', ->

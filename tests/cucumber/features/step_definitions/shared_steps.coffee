@@ -111,3 +111,8 @@ do ->
             assert.notOk(match)
           else
             assert.ok(match)
+
+    @When /^I click on "([^"]*)"$/, (linkText) ->
+      @client
+        .waitForVisible("a:contains('#{linkText}'), button:contains('#{linkText}')")
+        .click("a:contains('#{linkText}'):last, button:contains('#{linkText}'):last")

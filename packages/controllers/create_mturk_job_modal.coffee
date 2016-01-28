@@ -1,4 +1,5 @@
 if Meteor.isClient
+
   Template.createMTurkJobModal.helpers
     defaultTitle: ->
       MTurkJob.getFields().title.default
@@ -8,11 +9,12 @@ if Meteor.isClient
       Math.floor(MTurkJob.getFields().HITLifetimeInSeconds.default / 60)
 
   Template.createMTurkJobModal.events
-    'click .clear-title': (event) ->
-      $('input[name=title]').val('')
+    'click .clear-title': (event, instance) ->
+      console.log instance.$('*')
+      instance.$('input[name=title]').val('')
 
-    'click .clear-description': (event) ->
-      $('textarea[name=description]').val('')
+    'click .clear-description': (event, instance) ->
+      instance.$('textarea[name=description]').val('')
 
     'click #create-mturk-job': (event, instance) ->
       event.preventDefault()
@@ -32,3 +34,25 @@ if Meteor.isClient
         else
           toastr.success('Success')
           $('#create-mturk-job-modal').modal('hide')
+
+
+if Meteor.isServer
+
+  Meteor.methods
+    createMTurkJob: (properties) ->
+      check properties, Object
+      if Meteor.user()?.admin
+        fields = {
+          documentId: properties.documentId
+          title: properties.title
+          description: properties.description
+          rewardAmount: 1
+        }
+        job = new MTurkJob(fields)
+        unless job.validate()
+          job.throwValidationException()
+        job.save()
+        if not job.HITId
+          throw new Meteor.Error 'Unable to create Mechanical Turk task'
+      else
+        throw new Meteor.Error 'Unauthorized'
