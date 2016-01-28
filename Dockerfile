@@ -8,13 +8,14 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selectio
 
 #Install apt package dependencies
 RUN echo "deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) main universe" >> /etc/apt/sources.list
-RUN apt-get clean all && apt-get update
-RUN apt-get -y install wget curl python make g++ git mongodb supervisor
-RUN apt-get clean all
+RUN apt-get clean all && apt-get update && \
+    apt-get -y install wget curl python make g++ git mongodb supervisor && \
+    apt-get clean all
 
 #Install nodejs
-RUN wget https://nodejs.org/download/release/v0.10.40/node-v0.10.40-linux-x64.tar.gz
-RUN tar -zxf node-v0.10.40-linux-x64.tar.gz && rm node-v0.10.40-linux-x64.tar.gz
+RUN wget https://nodejs.org/download/release/v0.10.40/node-v0.10.40-linux-x64.tar.gz && \
+    tar -zxf node-v0.10.40-linux-x64.tar.gz && \
+    rm node-v0.10.40-linux-x64.tar.gz
 ENV PATH $PATH:/node-v0.10.40-linux-x64/bin
 
 #Install MeteorJS
