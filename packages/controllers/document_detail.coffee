@@ -451,13 +451,13 @@ if Meteor.isServer
       @ready()
 
   Meteor.publish 'mTurkJob', (documentId) ->
-    MTurkJobs.find(docId: documentId)
+    MTurkJobs.find(documentId: documentId)
 
 
   Meteor.methods
     createMTurkJob: (properties) ->
       if Meteor.user()?.admin
-        properties.rewardUSD = 1
+        properties.rewardAmount = 1
         job = new MTurkJob(properties)
         unless job.validate()
           job.throwValidationException()

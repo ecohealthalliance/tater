@@ -10,8 +10,8 @@ describe 'MTurkJob', ->
       job = new MTurkJob(
         title: "Tater test"
         description: "tater"
-        rewardUSD: 1
-        docId: doc._id
+        rewardAmount: 1
+        documentId: doc._id
         HITLifetimeInSeconds: 120
         maxAssignments: 1
       )
@@ -19,4 +19,3 @@ describe 'MTurkJob', ->
       expect(job.createHITResponse.HIT.HITId).not.to.be.an('undefined')
     else
       console.log "Skipping MTurk test because AWS_ACCESS_KEY is not defined."
-

@@ -21,8 +21,8 @@ MTurkJob = Astro.Class
         Validators.required()
         Validators.maxLength(2000, 'Mechanical Turk does not allow descriptions longer than 2000 characters.')
       ]
-    docId: 'string'
-    rewardUSD:
+    documentId: 'string'
+    rewardAmount:
       type: 'number'
       validator: [
         Validators.required()
@@ -46,9 +46,9 @@ MTurkJob = Astro.Class
   events:
     afterSave: () ->
       if Meteor.isServer and not @createHITResponse
-        doc = Documents.findOne(@docId)
-        doc.set('mTurkEnabled', true)
-        doc.save()
+        document = Documents.findOne(@documentId)
+        document.set('mTurkEnabled', true)
+        document.save()
 
         unless Meteor.settings.private.AWS_ACCESS_KEY
           console.log "AWS_ACCESS_KEY is not defined, cannot call mechanical turk API."
@@ -87,11 +87,11 @@ MTurkJob = Astro.Class
               <ExternalURL>#{Meteor.absoluteUrl("mtAnnotate", {
                 secure: true
                 rootUrl: rootUrl
-              })}/#{@docId}?accessToken=#{doc.accessToken}</ExternalURL>
+              })}/#{@documentId}?accessToken=#{document.accessToken}</ExternalURL>
               <FrameHeight>600</FrameHeight>
             </ExternalQuestion>
             """
-            "Reward.1.Amount": @rewardUSD
+            "Reward.1.Amount": @rewardAmount
             "Reward.1.CurrencyCode": "USD"
             AssignmentDurationInSeconds: 6000
             LifetimeInSeconds: @HITLifetimeInSeconds

@@ -17,13 +17,10 @@ if Meteor.isClient
     'click #create-mturk-job': (event, instance) ->
       event.preventDefault()
       form = instance.$('#mturk-job-form')[0]
-      if form.lifetimeMinutes?.value
-        lifetimeSeconds = form.lifetimeMinutes?.value * 60
       fields = {
-        docId: instance.$("#create-mturk-job-modal").data("bs.modal").options.documentId
+        documentId: instance.$("#create-mturk-job-modal").data("bs.modal").options.documentId
         title: form.title?.value
         description: form.description?.value
-        HITLifetimeInSeconds: lifetimeSeconds
       }
       Meteor.call 'createMTurkJob', fields, (error, response) ->
         if error
