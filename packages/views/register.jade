@@ -38,7 +38,7 @@ template(name='register')
                   .row
                     .col-xs-6.col-sm-6.col-md-8
                       select.form-control.col-sm-4(data-stripe='expirationMonth' required)
-                        option(valeu='' disabled) Month
+                        option(value='' disabled) Month
                         option(value='01') 01 - January
                         option(value='02') 02 - February
                         option(value='03') 03 - March
@@ -54,17 +54,8 @@ template(name='register')
                     .col-xs-6.col-sm-6.col-md-4
                       select.form-control.col-sm-4(data-stripe='expirationYear' required)
                         option(value='' disabled) Year
-                        option(value="2016") 2016
-                        option(value="2017") 2017
-                        option(value="2018") 2018
-                        option(value="2019") 2019
-                        option(value="2020") 2020
-                        option(value="2021") 2021
-                        option(value="2022") 2022
-                        option(value="2023") 2023
-                        option(value="2024") 2024
-                        option(value="2025") 2025
-                        option(value="2026") 2026
+                        each expirationYear
+                          option(value=this)= this
                 .col-xs-4.col-sm-3.col-sm-offset-1
                   label.required CVC
                     +tooltipIcon icon='info-circle' title='3-digit code found on the back of your card' placement="right"

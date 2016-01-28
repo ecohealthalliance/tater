@@ -10,6 +10,14 @@ if Meteor.isClient
     registering : ->
       Template.instance().registering.get()
 
+    expirationYear : ->
+      currentDate = new Date()
+      currentYear = currentDate.getUTCFullYear()
+      yearOptions = []
+      _.each _.range(11), (index) ->
+        yearOptions.push(currentYear + index)
+      yearOptions
+
   Template.register.events
     'input .tenant-name': (event, template) ->
       target = event.target
