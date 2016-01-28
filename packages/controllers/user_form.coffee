@@ -2,7 +2,7 @@ if Meteor.isClient
 
   Template.userForm.helpers
     typeIsAdmin: () ->
-      !Template.instance().data.group.get()?
+      not Template.instance().data.group.get()?
 
     groups: () ->
       Groups.find()
@@ -25,9 +25,6 @@ if Meteor.isClient
       if not form.name.value or form.name.value.trim() is ''
         toastr.error("A name is required")
         return
-      if form.password.value != form.passwordconfirm.value
-        toastr.error("Password mismatch")
-        return
       groupId = null
       if $(".document_groups").is(":visible")
         groupId = $(".document_groups").val()
@@ -36,7 +33,6 @@ if Meteor.isClient
 
       fields = {
         email: form.email.value
-        password: form.password.value
         groupId: groupId
         admin:  !groupId     #if no group provided then user is admin
         fullName: form.name.value
@@ -49,6 +45,8 @@ if Meteor.isClient
         else
           toastr.success("Success")
           form.reset()
+          if $(".document_groups").is(":visible")
+            $('#admin').prop('checked', true)
           $('.modal').modal('hide')
 
 
@@ -60,7 +58,6 @@ if Meteor.isServer
       if Meteor.user()?.admin
         userId = Accounts.createUser
           email:    fields.email
-          password: fields.password
           admin:    fields.admin
           group:    fields.groupId
         #update the profile to include full name

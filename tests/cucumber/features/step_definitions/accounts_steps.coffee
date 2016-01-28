@@ -61,24 +61,23 @@ do ->
 
     @Then /I am( not)? logged in/, (amNot) ->
       @browser
-        .execute((->
+        .execute ->
           Meteor.userId()
-        ), (err, ret) ->
-          assert.ifError(err)
+        , (err, ret) ->
+          assert.ifError err
           if amNot
-            assert.equal(ret.value, null, 'Authenticated')
+            assert.equal ret.value, null, 'Authenticated'
           else
-            assert(ret.value, 'Not authenticated')
-        )
+            assert ret.value, 'Not authenticated'
 
     @Then 'I am logged in as an admin user', ->
       @browser
-        .execute((->
+        .execute ->
           Meteor.user().admin
-        ), (err, ret) ->
-          assert.ifError(err)
-          assert.equal(ret.value, true, 'Not admin')
-        )
+        , (err, ret) ->
+          assert.ifError err
+          assert.equal ret.value, true, 'Not admin'
+
 
     @When 'I create a user account for "$email"', (email) ->
       @browser
@@ -89,11 +88,14 @@ do ->
         .waitForEnabled('#add-user-modal .user-email')
         .setValue('#add-user-modal .user-email', email)
         .setValue('#add-user-modal .user-name', 'John Doe')
-        .setValue('#add-user-modal .user-password', 'testuser')
-        .setValue('#add-user-modal .user-password-confirm', 'testuser')
         .submitForm('#add-user-modal .user-email')
         .waitForVisible('.toast-success')
-        .pause(1500)
+        .then =>
+          @server
+            .call 'setUserAccountPasswordFixture',
+              email: email
+              password: 'testuser'
+        .pause(500)
 
     @When 'I create an admin user account for "$email"', (email) ->
       @browser
@@ -104,11 +106,14 @@ do ->
         .waitForEnabled('#add-user-modal .user-email')
         .setValue('#add-user-modal .user-email', email)
         .setValue('#add-user-modal .user-name', 'John Doe')
-        .setValue('#add-user-modal .user-password', 'testuser')
-        .setValue('#add-user-modal .user-password-confirm', 'testuser')
         .submitForm('#add-user-modal .user-email')
         .waitForVisible('.toast-success')
-        .pause(1500)
+        .then =>
+          @server
+            .call 'setUserAccountPasswordFixture',
+              email: email
+              password: 'testuser'
+        .pause(500)
 
     @When 'I log out', ->
       @browser

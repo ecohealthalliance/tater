@@ -10,15 +10,16 @@ template(name="userForm")
       input.form-control(name="group" type="hidden" value=group._id)
     .form-group
       label Email
-        input.user-email.form-control(name="email" type="text")
+        input.user-email.form-control(name="email" type="email")
       label Full Name
         input.user-name.form-control(name="name" type="text")
+
     if typeIsAdmin
       .form-group
         label User Type
         .user-type
           label.radio-inline
-            input#admin.user-group(type="radio" name="group" checked="checked" value="")
+            input#admin.user-group(type="radio" name="group" checked="checked" value="" required)
             | Admin
             +tooltipIcon(
               icon='question-circle'
@@ -41,15 +42,6 @@ template(name="userForm")
                 select.form-control.document_groups
                   each groups
                     option(value="#{_id}") #{name}
-
-    .form-group
-      label
-        span Password
-        input.user-password.form-control(name="password" type="password")
-
-      label
-        span Password confirm
-        input.user-password-confirm.form-control(name="passwordconfirm" type="password")
 
     .modal-buttons
       input.btn.btn-default.cancel(type="button" value="Cancel" data-dismiss="modal")
