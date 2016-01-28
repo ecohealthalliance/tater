@@ -3,6 +3,7 @@ all: help
 help:
 	@echo ""
 	@echo "make:"
+	@echo "      server  - Run meteor server with development settings"
 	@echo "      model   - Run model unit tests"
 	@echo "      test    - Run end-to-end tests"
 	@echo "      devtest - Perform a single test"
@@ -12,6 +13,9 @@ help:
 	@echo "      build   - Compile tater into binaries"
 	@echo "      docker  - Build the docker image"
 	@echo ""
+
+server:
+	meteor --settings settings-development.json
 
 model:
 	spacejam test-packages packages/models/
