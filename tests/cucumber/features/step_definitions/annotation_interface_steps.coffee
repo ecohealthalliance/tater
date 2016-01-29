@@ -10,7 +10,7 @@ do ->
     _test_document = {title: "Test Document", body: "This is a doc for testing", _id: "fakedocumentid"}
 
     @Given 'there is a test document in the database', ->
-      @server.call('createTestDocument', _test_document)
+      @server.call('createTestDocumentFixture', _test_document)
 
     @When 'I navigate to the annotation interface for the test document', ->
       @browser

@@ -11,17 +11,17 @@ do ->
     @Given /^there is an annotation with codingKeyword header "([^"]*)", subHeader "([^"]*)" and key "([^"]*)"$/, (header, subHeader, keyword) ->
       that = @
       @server
-        .call('createCodingKeyword', header, subHeader, keyword, 1)
+        .call('createCodingKeywordFixture', header, subHeader, keyword, 1)
         .then (codeId) ->
-          that.server.call('createTestAnnotation', {codeId: codeId})
+          that.server.call('createTestAnnotationFixture', {codeId: codeId})
           codeId
 
     @Given 'there is a test annotation in the database', ->
-      @server.call('createTestAnnotation', {})
+      @server.call('createTestAnnotationFixture', {})
 
     @Given /^there are (\d+) test annotations in the database$/, (number) ->
       Promise.all _.range(number).map =>
-        @server.call('createTestAnnotation', {})
+        @server.call('createTestAnnotationFixture', {})
 
     @When 'I visit the search annotations page', ->
       @browser

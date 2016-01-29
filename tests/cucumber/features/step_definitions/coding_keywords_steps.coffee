@@ -6,13 +6,13 @@ do ->
   module.exports = ->
 
     @Given /^there is a coding keyword with header "([^"]*)" in the database$/, (header) ->
-      @server.call('createCodingKeyword', header, "Test Sub-Header", "Test Keyword", 1)
+      @server.call('createCodingKeywordFixture', header, "Test Sub-Header", "Test Keyword", 1)
 
     @Given /^there is a coding keyword with header "([^"]*)" and sub\-header "([^"]*)" in the database$/, (header, subHeader) ->
-      @server.call('createCodingKeyword', header, subHeader, "Test Keyword", 1)
+      @server.call('createCodingKeywordFixture', header, subHeader, "Test Keyword", 1)
 
     @Given /^there is a coding keyword with header "([^"]*)", sub-header "([^"]*)" and keyword "([^"]*)" in the database$/, (header, subHeader, keyword) ->
-      @server.call('createCodingKeyword', header, subHeader, keyword, 1)
+      @server.call('createCodingKeywordFixture', header, subHeader, keyword, 1)
 
     @When /^I click on a "([^"]*)"$/, (level) ->
       if level == 'header'
