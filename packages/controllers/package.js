@@ -64,4 +64,5 @@ Package.onUse(function(api) {
   api.addFiles('tooltip_icon.coffee', ['client', 'server']);
   api.addFiles('create_mturk_job_modal.coffee', ['client', 'server']);
   api.addFiles('stripe.coffee', 'client');
+  api.addFiles('connection_status.coffee', ['client', 'server']);
 });

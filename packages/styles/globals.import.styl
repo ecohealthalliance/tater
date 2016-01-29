@@ -10,13 +10,19 @@ body
   font-family inherit
   text-shadow 0 0 1px rgba(255,255,255,.5)
 
-  &:not(.now-connected)
-    .connection-problem
-      display block
+  &::before
+    visible(false)
+    content ''
+    background transparent
 
   &:not(.now-connected)
-    header nav
-      opacity .25
+    .connection-status
+      visible(true)
+
+    &::before
+      overlay(white, 75%)
+      visible(true)
+      content ''
 
 .page-wrap
   min-height 100vh
@@ -35,6 +41,7 @@ h3
 
 h4
   color desaturate($primary, 20%)
+
 
 h5
   font-weight 400
