@@ -101,18 +101,13 @@ Feature: Documents
     And there is a document with title "Test Document" in the test group
     When I log in as the test user
     And I navigate to the test document
-    And I click on "Crowdsource"
-    And I click on "Crowdsource Annotation"
+    And I click on the Crowdsource button
+    And I submit the Crowdsource Annotation form
     Then I should see a "Success" toast
-
-  @documents
-  Scenario: Viewing a document with an access token
-    Given there is a test group in the database
-    And there is a document with title "Test Document" in the test group
-    When I navigate to the test document with hitId
+    Then I fake HITId for the test document
+    And I log out
+    And I navigate to the test document using hitId
     Then I should see content "Test Document"
-    When I click on the Finished Annotating button
-    Then I should see an access token in a modal
 
   @documents
   Scenario: Increasing and decreasing a document's annotation count

@@ -407,7 +407,7 @@ if Meteor.isServer
         Documents.find({
           _id: documentId
           mTurkEnabled: true
-        }, fields: fields)
+        })
     else
       @ready()
 

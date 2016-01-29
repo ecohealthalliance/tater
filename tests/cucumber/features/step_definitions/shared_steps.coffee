@@ -13,9 +13,9 @@ do ->
       body:  "This is a doc for testing"
 
     _testUser =
-      email:     'test@example.com'
+      email:    'test@example.com'
       fullName: 'test name'
-      password:  'password'
+      password: 'password'
 
     @Before (callback) ->
       @server.call('reset')
@@ -111,8 +111,3 @@ do ->
             assert.notOk(match)
           else
             assert.ok(match)
-
-    @When /^I click on "([^"]*)"$/, (linkText) ->
-      @client
-        .waitForVisible("a:contains('#{linkText}'), button:contains('#{linkText}')")
-        .click("a:contains('#{linkText}'):last, button:contains('#{linkText}'):last")

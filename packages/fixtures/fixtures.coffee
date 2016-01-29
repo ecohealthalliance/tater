@@ -74,3 +74,8 @@ do ->
       subHeaderDoc = SubHeaders.findOne({headerId: headerId, label: subHeader})
       subHeaderId = if subHeaderDoc then subHeaderDoc._id else SubHeaders.insert({headerId: headerId, label: subHeader})
       keywordId = CodingKeywords.insert(subHeaderId: subHeaderId, label: keyword)
+
+    setHIDIdFixture: (documentId) ->
+      MTurkJob = MTurkJobs.findOne(documentId: documentId)
+      MTurkJob.set(HITId: "fakeHITId")
+      MTurkJob.save()
