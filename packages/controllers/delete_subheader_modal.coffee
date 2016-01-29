@@ -2,7 +2,6 @@ if Meteor.isClient
   Template.deleteSubHeaderModal.events
     'click #confirm-delete-subheader': (event, instance) ->
       id = instance.data.subHeaderToDelete.get()?._id
-      if not gConnected then return toastr.error gConnectionErrorText
       Meteor.call 'deleteSubHeader', id, (error) ->
         if error
           toastr.error("Error: #{error.message}")

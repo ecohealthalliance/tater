@@ -14,7 +14,6 @@ if Meteor.isClient
   Template.profileEdit.events
     'submit form': (event) ->
       event.preventDefault()
-      if not gConnected then return toastr.error gConnectionErrorText
       form = event.target
       if not form.fullName.value or form.fullName.value.trim() is ''
         toastr.error("Full name is required")

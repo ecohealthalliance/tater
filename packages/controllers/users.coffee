@@ -58,7 +58,6 @@ if Meteor.isClient
       $('#remove-user-modal').modal('show')
 
     'click .confirm-remove-user': (event, instance) ->
-      if not gConnected then return toastr.error gConnectionErrorText
       userId = instance.userToDeleteId.get()
       Meteor.call 'removeUser', userId, (error, response) ->
         if error

@@ -11,7 +11,6 @@ if Meteor.isClient
       toastr.error('Unknown Error')
 
   handleUploadedFile = (files) ->
-    if not gConnected then return toastr.error gConnectionErrorText
     if !files or files.length < 1
       throw new Meteor.Error 'No files provided'
 
@@ -85,7 +84,6 @@ if Meteor.isClient
       else
         fields.groupId = currentUser.group
 
-      if not gConnected then return toastr.error gConnectionErrorText
       Meteor.call 'createDocument', fields, (error, response) ->
         if error
           handleError(error)

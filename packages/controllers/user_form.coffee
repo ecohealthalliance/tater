@@ -18,7 +18,6 @@ if Meteor.isClient
     'submit form': (event, template) ->
       event.preventDefault()
       event.stopImmediatePropagation()
-      if not gConnected then return toastr.error gConnectionErrorText
       form = event.target
       if not form.email.value or form.email.value.trim() is ''
         toastr.error("An email address is required")

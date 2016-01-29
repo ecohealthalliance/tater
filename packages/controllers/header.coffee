@@ -1,13 +1,7 @@
 if Meteor.isClient
 
-  @gConnected = true
-  @gConnectionErrorText = 'No connection, please try again later'
-  setConnected = (online) =>
-    @gConnected = not not online
-
   Template.header.onCreated ->
     @accountsState = new ReactiveVar "signIn"
-
     tickerId = 0
     reconnectIntervals = [ 3, 10, 15, 30, 60 ] # seconds
     reconnectIntervalStep = 0
@@ -32,7 +26,6 @@ if Meteor.isClient
 
     @autorun ->
       status = Meteor.status()
-      setConnected status.connected
       document.body.className = 'now-' + status.status
       if not status.connected
         if not tickerId

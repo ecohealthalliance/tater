@@ -30,7 +30,6 @@ if Meteor.isClient
     'submit form': (event, instance) ->
       event.preventDefault()
       event.stopImmediatePropagation()
-      if not gConnected then return toastr.error gConnectionErrorText
       form = event.target
       keywordProps =
         header: form.header.value

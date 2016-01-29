@@ -215,7 +215,6 @@ if Meteor.isClient
     'click .download-csv': (event, instance) ->
       instance.csvData.set(null)
       $('#download-csv-modal').modal('show')
-      if not gConnected then return toastr.error gConnectionErrorText
       Meteor.call 'generateCsv', instance.query.get(), ((err, csvData)->
         if err
           $('#download-csv-modal').modal('hide')

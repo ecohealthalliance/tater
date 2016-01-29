@@ -128,7 +128,6 @@ if Meteor.isClient
 
     'click .unarchive-keyword-button': (event, instance) ->
       keywordId = event.target.parentElement.getAttribute("data-keyword-id")
-      if not gConnected then return toastr.error gConnectionErrorText
       Meteor.call 'unarchiveKeyword', keywordId, (error, instance) ->
         if error
           toastr.error("Error: #{error.message}")
@@ -137,7 +136,6 @@ if Meteor.isClient
 
     'click .unarchive-subheader-button': (event, instance) ->
       subHeaderId = event.target.parentElement.getAttribute("data-subheader-id")
-      if not gConnected then return toastr.error gConnectionErrorText
       Meteor.call 'unarchiveSubHeader', subHeaderId, (error, instance) ->
         if error
           toastr.error("Error: #{error.message}")
@@ -146,7 +144,6 @@ if Meteor.isClient
 
     'click .unarchive-header-button': (event, instance) ->
       headerId = event.target.parentElement.getAttribute("data-header-id")
-      if not gConnected then return toastr.error gConnectionErrorText
       Meteor.call 'unarchiveHeader', headerId, (error, instance) ->
         if error
           toastr.error("Error: #{error.message}")
@@ -177,7 +174,6 @@ if Meteor.isClient
         label: form.header.value
         color: instance.codeColor?.get()
 
-      if not gConnected then return toastr.error gConnectionErrorText
       Meteor.call 'addHeader', headerProps, (error, response) ->
         if error
           toastr.error("Error: #{error.message}")
@@ -195,7 +191,6 @@ if Meteor.isClient
         headerId: instance.selectedCodes.get('headerId')
         label: form.subHeader.value
 
-      if not gConnected then return toastr.error gConnectionErrorText
       Meteor.call 'addSubHeader', subHeaderProps, (error, response) ->
         if error
           toastr.error("Error: #{error.message}")
@@ -214,7 +209,6 @@ if Meteor.isClient
         subHeaderId: instance.selectedCodes.get('subHeaderId')
         label: form.keyword.value
 
-      if not gConnected then return toastr.error gConnectionErrorText
       Meteor.call 'addKeyword', keywordProps, (error, response) ->
         if error
           toastr.error("Error: #{error.message}")

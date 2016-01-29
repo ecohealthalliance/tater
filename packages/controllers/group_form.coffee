@@ -2,7 +2,6 @@ if Meteor.isClient
   Template.groupForm.events
     'submit form': (event) ->
       event.preventDefault()
-      if not gConnected then return toastr.error gConnectionErrorText
       form = event.target
       fields = {
         name: form.name?.value.trim()

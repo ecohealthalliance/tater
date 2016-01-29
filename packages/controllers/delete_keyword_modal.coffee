@@ -8,7 +8,6 @@ if Meteor.isClient
 
   Template.deleteKeywordModal.events
     'click #confirm-delete-keyword': (event) ->
-      if not gConnected then return toastr.error gConnectionErrorText
       keywordId = event.target.getAttribute('data-keyword-id')
       Meteor.call 'deleteKeyword', keywordId, (error) ->
         if error
