@@ -45,16 +45,19 @@ do ->
 
     @When 'I select the test group', ->
       @browser
+        .waitForExist('.group-selector-wrap')
         .click('.group-selector')
         .waitForExist('.annotation-detail')
 
     @When 'I expand the test group', ->
       @browser
+        .waitForExist('.group-selector-wrap')
         .click('.down')
         .waitForExist('.group-docs')
 
     @Then /^I should see (\d+) greyed out document$/, (number) ->
       @client
+        .waitForExist('.group-selector-wrap')
         .elements '.doc-title.disabled', (error, elements) ->
           assert(elements.value.length == parseInt(number),
             "Expected #{elements.value.length} to equal #{number}")

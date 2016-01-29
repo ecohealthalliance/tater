@@ -7,22 +7,31 @@ template(name="annotationsCodingKeywords")
           i.fa.fa-times-circle.clear-search
   .coding-container.pane.pane-r
     ul.list-unstyled.code-list.listing
-      if selectedCodes
-        .clear-codes-container
-          button.btn.btn-block.btn-default.btn-sm.clear-selected-codes Clear Selected Codes
+      .pane-actions
+        button.toggle-all-codes.btn-plain(disabled="{{#unless enableCodeOptions}} disabled {{/unless}}")
+          if showingAllCodes
+            i.fa.fa-chevron-circle-right
+            | Collapse codes
+          else
+            i.fa.fa-chevron-circle-down
+            | Show codes
+        if selectedCodes
+          button.btn-plain.clear-selected-codes
+            i.fa.fa-times-circle
+            | Clear Selection
       if Template.subscriptionsReady
         each selectableHeaders
           li.code-header.selectable(class="code-header-#{color}" )
             span.selectable-code.selectable-header(data-id=_id class="{{selectedHeader}}")= label
             if selectableSubHeaders _id
-              i.up
-              ul.code-sub-headers.list-unstyled
+              i(class="{{#if showingAllCodes}} up {{else}} down {{/if}}")
+              ul.code-sub-headers.list-unstyled(class="{{#unless showingAllCodes}} hidden  {{/unless}}")
                 each selectableSubHeaders _id
                   li.code-sub-header.selectable.subHeader
                     span.selectable-code.selectable-subheader(data-id=_id class="{{selectedSubHeader}}")= label
                     if selectableKeywords _id
-                      i.up
-                      ul.code-keywords.list-unstyled
+                      i(class="{{#if showingAllCodes}} up {{else}} down {{/if}}")
+                      ul.code-keywords.list-unstyled(class="{{#unless showingAllCodes}} hidden {{/unless}}")
                         each selectableKeywords _id
                           li.code-keyword.selectable
                             span.selectable-code.selectable-keyword(data-id=_id class="{{selectedKeyword}}")= label

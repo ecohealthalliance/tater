@@ -6,6 +6,7 @@ if Meteor.isClient
     @filteredHeaders = new ReactiveVar()
     @filteredSubHeaders = new ReactiveVar()
     @filteredCodes = new ReactiveVar()
+    @showingAllCodes = new ReactiveVar(true)
     @selectableCodes = @data.selectableCodes
 
   Template.documentDetailCodingKeywords.onRendered ->
@@ -87,6 +88,9 @@ if Meteor.isClient
     searching: ->
       Template.instance().searching.get()
 
+    showingAllCodes: ->
+      Template.instance().showingAllCodes.get()
+
   Template.documentDetailCodingKeywords.events
 
     'input .code-search': _.debounce ((e, instance) ->
@@ -106,6 +110,10 @@ if Meteor.isClient
 
     'click .code-sub-header > i': (e) ->
       $(e.target).toggleClass('down up').siblings('.code-keywords').toggleClass('hidden').siblings('span').toggleClass('showing')
+
+    'click .toggle-all-codes': (e, instance) ->
+      instance.showingAllCodes.set(!instance.showingAllCodes.get())
+
 
 if Meteor.isServer
   Meteor.publish 'codingKeywords', () ->

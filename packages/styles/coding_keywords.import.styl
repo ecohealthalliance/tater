@@ -39,8 +39,6 @@ checkMark(center=false)
 .listing
   .showing:not(.selected)
     background none !important
-  .clear-codes-container
-    margin-top -10px
 
 .code-header
 .code-sub-header
@@ -57,11 +55,11 @@ checkMark(center=false)
       content '\f138'
       @extend .icon
     &.up
-      transition .2s
+      transition .1s
       transform rotate(90deg)
     &:hover
       color darken($secondary-dark, 20%)
-      transition .2s ease-in-out
+      transition .1s ease-in-out
 
 .code-header > span
 .code-sub-header > span
@@ -72,16 +70,13 @@ checkMark(center=false)
   &:not(.selectable-code)
     color $m-gray
 
-.clear-codes-container
-  margin 15px
-  button
-    makeButton(darken($background-secondary, 10%), black, true, true)
-
 .code-header
   margin-bottom 5px
-  font-size 18px
-  font-weight 800
+  font-size 16px
+  font-weight 700
   color $body-text
+  +above(4)
+    font-size 18px
   > span
     pointer()
     display block
@@ -154,6 +149,7 @@ checkMark(center=false)
               &.selected
                 background-color $color
                 font-weight bold
+                border-bottom 1px solid desaturate(darken($color, 10%), 15%)
             &:hover
               &::after
                 centerVertically()
@@ -162,11 +158,13 @@ checkMark(center=false)
 .code-sub-headers
 .code-keywords
   margin 5px 0 15px 0
+  font-size 14px
+  +above(4)
+    font-size 15px
 
 .code-sub-header
   padding-left 53px
   margin-bottom 2px
-  font-size 15px
   font-weight 600
   span
     display block

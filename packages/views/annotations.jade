@@ -1,70 +1,73 @@
 template(name="annotations")
-  if currentUser
-    .document-detail-container
-      .document-list-heading.pane-head.pane-head-l
-        h2 Documents
-        .actions
-          button.btn-plain.select-all(disabled="{{allSelected}}")
-            i.fa.fa-eye
-            span Select all
-          button.btn-plain.clear-filters(class="{{selectionState 'class'}}"
-                                      disabled="{{selectionState 'disabled'}}")
-            i.fa.fa-times-circle
-            span Clear selection
-
-      .document-list-container.pane.pane-l
-        if Template.subscriptionsReady
-          if isAdmin
-            ul.all-docs-list.list-unstyled
-              each groups
-                li.group-selector-wrap
-                  .group-selector(data-group=_id class="{{toggleEnabled}}")
-                    i.down
-                    span(class="{{selectedGroup}}")=name
-                  ul.group-docs.list-unstyled.hidden
-                    each groupDocuments
-                      li.document-selector(data-id=_id class="{{selectedDoc}}")
-                        span.doc-title(class="{{noAnnotations}}") #{title}
-          else
-            ul.group-docs-list.list-unstyled
-              each documents
-                li.document-selector(data-id=_id class="{{selectedDoc}}")
-                  span.doc-title(class="{{noAnnotations}}") #{title}
-                  if isAdmin
-                    span.doc-group=docGroup
+  .document-detail-container
+    .document-list-heading.pane-head.pane-head-l
+      h2 Document Groups
+    .document-list-container.pane.pane-l
+      .pane-actions
+        button.btn-plain.select-all(disabled="{{allSelected}}")
+          i.fa.fa-eye
+          | Select all
+        button.btn-plain.clear-filters(class="{{selectionState 'class'}}" disabled="{{selectionState 'disabled'}}")
+          i.fa.fa-times-circle
+          | Clear selection
+      if Template.subscriptionsReady
+        if isAdmin
+          ul.all-docs-list.list-unstyled
+            each groups
+              li.group-selector-wrap
+                .group-selector(data-group=_id class="{{toggleEnabled}}")
+                  i(class="{{#if showGroup}} up {{else}} down {{/if}}")
+                  span(class="{{selectedGroup}}")=name
+                ul.group-docs.list-unstyled(class="{{#unless showGroup}} hidden {{/unless}}")
+                  each groupDocuments
+                    li.document-selector(data-id=_id class="{{selectedDoc}}")
+                      span.doc-title(class="{{noAnnotations}}") #{title}
         else
-          .loading
+          ul.group-docs-list.list-unstyled
+            each documents
+              li.document-selector(data-id=_id class="{{selectedDoc}}")
+                span.doc-title(class="{{noAnnotations}}") #{title}
+                if isAdmin
+                  span.doc-group=docGroup
+      else
+        .loading
 
-      .annotation-list-heading.pane-head.pane-head-m
-        h1 Annotations
-          a.help-link(href="{{path route='help?topic=annotations'}}")
-            +tooltipIcon icon="question-circle" placement="right"
-        .pull-right
-          .show-flagged.pull-left
-            input(type="checkbox", checked=showFlagged)
-            | View Flagged
+    .annotation-list-heading.pane-head.pane-head-m
+      h1 Annotations
+        a.help-link(href="{{path route='help?topic=annotations'}}")
+          +tooltipIcon icon="question-circle" placement="right"
+      .pull-right.pane-head-m-options
+        if annotationsLoaded
+          a.btn.btn-default.btn-sm.download-csv
+            i.fa.fa-download
+            span Generate CSV
+    .annotations-list-container.pane.pane-m
+      .pane-actions.pane-actions-middle.align-right
+        .show-flagged
+          button.btn-plain(disabled="{{#unless annotationsLoaded}} disabled {{/unless}}")
+            if showFlagged
+              i.fa.fa-check-square-o
+            else
+              i.fa.fa-square-o
+            | Show Flagged
             i.fa.fa-flag-o
-          if showingAnnotations
-            a.btn.btn-default.btn-sm.download-csv.pull-left
-              i.fa.fa-download
-              span Generate CSV
-      .annotations-list-container.pane.pane-m
-        if documentSelected
-          unless annotationsLoaded
-            p.no-results.text-center No annotations found.
-          +pages
-          +pagesNav
-        else
-          p.text-center Select a group or document to view annotations
-      +annotationsCodingKeywords(
-        selectedCodes=selectedCodes
-        selectedHeaders=selectedHeaders
-        selectedSubHeaders=selectedSubHeaders
-        keywordQuery=keywordQuery
-      )
-  else
-    .container.space-top-2
-      p Please log in or sign up to continue.
+
+      if documentSelected
+        unless annotationsLoaded
+          p.no-results.text-center No annotations found.
+        +pages
+        +pagesNav
+      else
+        p.no-annotations
+          i.fa.fa-arrow-left
+          | Select a document group or individual document to view annotations.
+
+    +annotationsCodingKeywords(
+      selectedCodes=selectedCodes
+      selectedHeaders=selectedHeaders
+      selectedSubHeaders=selectedSubHeaders
+      keywordQuery=keywordQuery
+    )
 
   #download-csv-modal.modal.fade(tabindex="-1" role="dialog")
     .modal-dialog

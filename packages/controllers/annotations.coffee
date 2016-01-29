@@ -137,9 +137,6 @@ if Meteor.isClient
     docGroup: ->
       @groupName()
 
-    showingAnnotations: ->
-      Template.instance().documents.find().count()
-
     selectionState: (attr) ->
       if Template.instance().documents.find().count() is 0
         if attr is 'class'
@@ -202,6 +199,9 @@ if Meteor.isClient
       if csvData
         "data:text/csv;charset=utf-8," + encodeURIComponent(csvData)
 
+    showGroup: ->
+      Template.instance().selectedGroups.findOne({id: @_id})
+
   resetKeywords = ->
     instance = Template.instance()
     instance.filtering.set(false)
@@ -209,6 +209,7 @@ if Meteor.isClient
 
   resetPage = ->
     AnnotationsPages.sess("currentPage", 1)
+
 
   Template.annotations.events
     'click .download-csv': (event, instance) ->

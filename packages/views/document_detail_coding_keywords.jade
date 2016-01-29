@@ -7,20 +7,28 @@ template(name="documentDetailCodingKeywords")
   .coding-container.pane(class="pane-l")
     ul.list-unstyled.code-list(class=action)
       if Template.subscriptionsReady
+        .pane-actions
+          button.toggle-all-codes.btn-plain
+            if showingAllCodes
+              i.fa.fa-chevron-circle-right
+              | Collapse all codes
+            else
+              i.fa.fa-chevron-circle-down
+              | Show all codes
         each headers
           if ../accessCode
             li.code-header.count.highlighted.selectable(class='code-header-#{color}')
               span.header-name.selectable-code= label
           else
             li.code-header.coding.highlighted.selectable(class='code-header-#{color}')
-              i.up
+              i(class="{{#if showingAllCodes}} up {{else}} down {{/if}}")
               span.selectable-code(class="{{highlightHeading}}")= label
-              ul.code-sub-headers.coding.list-unstyled
+              ul.code-sub-headers.coding.list-unstyled(class="{{#unless showingAllCodes}} hidden {{/unless}}")
                 each subHeaders _id
                   li.code-sub-header.selectable
-                    i.up
+                    i(class="{{#if showingAllCodes}} up {{else}} down {{/if}}")
                     span.selectable-code.showing= label
-                    ul.code-keywords.list-unstyled
+                    ul.code-keywords.list-unstyled(class="{{#unless showingAllCodes}} hidden {{/unless}}")
                       each keywords _id
                         li.code-keyword.coding.selectable
                           span.selectable-code(data-id=_id)= label

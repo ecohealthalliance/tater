@@ -7,6 +7,7 @@ if Meteor.isClient
     @filteredHeaders = new ReactiveVar()
     @filteredSubHeaders = new ReactiveVar()
     @filteredCodes = new ReactiveVar()
+    @showingAllCodes = new ReactiveVar(true)
     @keywordQuery = @data.keywordQuery
 
   Template.annotationsCodingKeywords.onRendered ->
@@ -109,6 +110,11 @@ if Meteor.isClient
     searching: ->
       Template.instance().searching.get()
 
+    showingAllCodes: ->
+      Template.instance().showingAllCodes.get()
+
+    enableCodeOptions: ->
+      Headers.findOne()
 
   Template.annotationsCodingKeywords.events
 
@@ -134,6 +140,10 @@ if Meteor.isClient
       instance.data.selectedHeaders.remove({})
       instance.data.selectedSubHeaders.remove({})
       instance.data.selectedCodes.remove({})
+
+    'click .toggle-all-codes': (e, instance) ->
+      instance.showingAllCodes.set(!instance.showingAllCodes.get())
+
 
 
 if Meteor.isServer
