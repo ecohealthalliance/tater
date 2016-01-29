@@ -1,89 +1,90 @@
 template(name="codingKeywords")
-  .view-header.primary-bg
-    .container
-      h1 Coding Keywords
-        a.help-link(href="{{path route='help?topic=coding-keyword-management'}}")
-          +tooltipIcon icon='question-circle' placement='right'
+  if isAdmin
+    .view-header.primary-bg
+      .container
+        h1 Coding Keywords
+          a.help-link(href="{{path route='help?topic=coding-keyword-management'}}")
+            +tooltipIcon icon='question-circle' placement='right'
 
-  .container.code-management-container
-    if Template.subscriptionsReady
-      .row
-        .code-management-list-wrap.col-sm-4
-          .code-management-list-header
-            h4 Headers
-            i.add-code.add-header.fa.fa-plus(data-level="header" class="{{#if addingCode 'header'}}active{{/if}}")
-          .code-management-list-container
-            if headersLoading
-              .loading
-            else
-              if addingCode 'header'
-                .adding-code.clearfix
-                  +newHeaderForm headers=headers codeColor=codeColor
-              ul.code-list.list.list-unstyled.level-1
-                each headers
-                  li.code.list-link.code-level-1(class="{{selected 'header'}} {{#if archived}}disabled{{/if}} header-color-#{color}" data-id=_id)
-                    span= label
-                    if archived
-                      button.btn-plain.unarchive-header-button.header-button(data-header-id=_id)
-                        i.fa.fa-reply
-                    else
-                      button.btn-plain.delete-header-button.header-button(data-toggle="modal" data-header-id=_id data-target="#confirm-delete-header-modal")
-                        i.fa.fa-trash-o
-        .code-management-list-wrap.col-sm-4
-          unless currentlySelectedHeader
-            +curtain
-          .code-management-list-header
-            h4 Sub-Headers
-            i.add-code.add-subHeader.fa.fa-plus(data-level="subHeader" class="{{#if addingCode 'subHeader'}}active{{/if}}")
-          .code-management-list-container
-            if currentlySelectedHeader
-              if subHeadersLoading
+    .container.code-management-container
+      if Template.subscriptionsReady
+        .row
+          .code-management-list-wrap.col-sm-4
+            .code-management-list-header
+              h4 Headers
+              i.add-code.add-header.fa.fa-plus(data-level="header" class="{{#if addingCode 'header'}}active{{/if}}")
+            .code-management-list-container
+              if headersLoading
                 .loading
               else
-                if addingCode 'subHeader'
+                if addingCode 'header'
                   .adding-code.clearfix
-                    +newSubheaderForm
-                ul.code-list.list.list-unstyled.level-2
-                  each subHeaders
-                    li.code.list-link.code-level-2(class="{{selected 'subHeader'}} {{#if archived}}disabled{{/if}}" data-id=_id)
+                    +newHeaderForm headers=headers codeColor=codeColor
+                ul.code-list.list.list-unstyled.level-1
+                  each headers
+                    li.code.list-link.code-level-1(class="{{selected 'header'}} {{#if archived}}disabled{{/if}} header-color-#{color}" data-id=_id)
                       span= label
                       if archived
-                        button.btn-plain.unarchive-subheader-button.subheader-button(data-subheader-id=_id)
+                        button.btn-plain.unarchive-header-button.header-button(data-header-id=_id)
                           i.fa.fa-reply
                       else
-                        button.btn-plain.delete-subheader-button.subheader-button(data-toggle="modal" data-subheader-id=_id data-target="#confirm-delete-subheader-modal")
+                        button.btn-plain.delete-header-button.header-button(data-toggle="modal" data-header-id=_id data-target="#confirm-delete-header-modal")
                           i.fa.fa-trash-o
-        .code-management-list-wrap.col-sm-4
-          unless currentlySelectedSubHeader
-            +curtain
-          .code-management-list-header
-            h4 Keywords
-            unless addingKeyword
-              i.add-code.add-keyword.fa.fa-plus(data-level="keyword" class="{{#if addingCode 'keyword'}}active{{/if}}")
-          .code-management-list-container
-            if currentlySelectedSubHeader
-              if keywordsLoading
-                .loading
-              else
-                if addingCode 'keyword'
-                  .adding-code.clearfix
-                    +newKeywordForm
-                ul.code-list.list.list-unstyled.level-3
-                  each keywords
-                    li.code.code-level-3.not-clickable(class="{{#if archived}}disabled{{/if}}")
-                      span= label
-                      if restorable
-                        button.btn-plain.unarchive-keyword-button.keyword-button(data-keyword-id=_id)
-                          i.fa.fa-reply
-                      else if unarchived
-                        button.btn-plain.delete-keyword-button.keyword-button(data-toggle="modal" data-keyword-id=_id data-target="#confirm-delete-keyword-modal" )
-                          i.fa.fa-trash-o
-    else
-      .loading
+          .code-management-list-wrap.col-sm-4
+            unless currentlySelectedHeader
+              +curtain
+            .code-management-list-header
+              h4 Sub-Headers
+              i.add-code.add-subHeader.fa.fa-plus(data-level="subHeader" class="{{#if addingCode 'subHeader'}}active{{/if}}")
+            .code-management-list-container
+              if currentlySelectedHeader
+                if subHeadersLoading
+                  .loading
+                else
+                  if addingCode 'subHeader'
+                    .adding-code.clearfix
+                      +newSubheaderForm
+                  ul.code-list.list.list-unstyled.level-2
+                    each subHeaders
+                      li.code.list-link.code-level-2(class="{{selected 'subHeader'}} {{#if archived}}disabled{{/if}}" data-id=_id)
+                        span= label
+                        if archived
+                          button.btn-plain.unarchive-subheader-button.subheader-button(data-subheader-id=_id)
+                            i.fa.fa-reply
+                        else
+                          button.btn-plain.delete-subheader-button.subheader-button(data-toggle="modal" data-subheader-id=_id data-target="#confirm-delete-subheader-modal")
+                            i.fa.fa-trash-o
+          .code-management-list-wrap.col-sm-4
+            unless currentlySelectedSubHeader
+              +curtain
+            .code-management-list-header
+              h4 Keywords
+              unless addingKeyword
+                i.add-code.add-keyword.fa.fa-plus(data-level="keyword" class="{{#if addingCode 'keyword'}}active{{/if}}")
+            .code-management-list-container
+              if currentlySelectedSubHeader
+                if keywordsLoading
+                  .loading
+                else
+                  if addingCode 'keyword'
+                    .adding-code.clearfix
+                      +newKeywordForm
+                  ul.code-list.list.list-unstyled.level-3
+                    each keywords
+                      li.code.code-level-3.not-clickable(class="{{#if archived}}disabled{{/if}}")
+                        span= label
+                        if restorable
+                          button.btn-plain.unarchive-keyword-button.keyword-button(data-keyword-id=_id)
+                            i.fa.fa-reply
+                        else if unarchived
+                          button.btn-plain.delete-keyword-button.keyword-button(data-toggle="modal" data-keyword-id=_id data-target="#confirm-delete-keyword-modal" )
+                            i.fa.fa-trash-o
+      else
+        .loading
 
-  +deleteHeaderModal(headerToDelete=headerToDelete selectedCodes=selectedCodes)
-  +deleteSubHeaderModal(subHeaderToDelete=subHeaderToDelete selectedCodes=selectedCodes)
-  +deleteKeywordModal(keywordToDelete=keywordToDelete)
+    +deleteHeaderModal(headerToDelete=headerToDelete selectedCodes=selectedCodes)
+    +deleteSubHeaderModal(subHeaderToDelete=subHeaderToDelete selectedCodes=selectedCodes)
+    +deleteKeywordModal(keywordToDelete=keywordToDelete)
 
 template(name="curtain")
   .curtain-white
