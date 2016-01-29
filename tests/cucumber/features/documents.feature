@@ -81,7 +81,6 @@ Feature: Documents
     And I click on the test group
     Then I should see content "Test Document"
 
-
   @documents
   Scenario: Deleting a document
     Given there is a test group in the database
@@ -95,7 +94,7 @@ Feature: Documents
     Then I should see a "Success" toast
     And I should not see content "Test Document"
 
-  @documents
+  @ignore
   Scenario: Crowdsourcing annotations for a document
     Given there is a test group in the database
     And there is a document with title "Test Document" in the test group
