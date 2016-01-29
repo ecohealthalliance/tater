@@ -43,25 +43,37 @@ if Meteor.isClient
         if response.error
           toastr.error(response.error.message)
         else
-          tenantProps.stripeToken = response.id
-          Meteor.call 'registerTenant', tenantProps, (error, response) ->
-            if error
-              if error.reason
-                for key, reason of error.reason
-                  toastr.error("Error: #{reason}")
+          Meteor.call 'createStripeCustomer', response.id, tenantProps.emailAddress, (error, response) ->
+            tenantProps.stripeCustomerId = response.id
+            Meteor.call 'registerTenant', tenantProps, (error, response) ->
+              if error
+                if error.reason
+                  for key, reason of error.reason
+                    toastr.error("Error: #{reason}")
+                else
+                  toastr.error("Error: #{error.error}")
               else
-                toastr.error("Error: #{error.error}")
-            else
-              template.registering.set(false)
+                template.registering.set(false)
 
 if Meteor.isServer
   Meteor.methods
+    'createStripeCustomer': (token, email) ->
+      Future = Npm.require('fibers/future')
+      secret = Meteor.settings.private.stripe.testSecretKey
+      StripeServer = StripeAPI(secret)
+      stripeCustomer = new Future()
+      StripeServer.customers.create {card: token, email: email}, (error, result) ->
+        if error
+          stripeCustomer.return(error)
+        else
+          stripeCustomer.return(result)
+      stripeCustomer.wait()
+
     'registerTenant': (tenantProps) ->
         tenant = new Tenant()
         tenant.set(tenantProps)
         if tenant.validate()
           tenant.save()
-          # Email to EHA
           Email.send
             to: 'tater-beta@ecohealthalliance.org'
             from: 'no-reply@tater.io'
