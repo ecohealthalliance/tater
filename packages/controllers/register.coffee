@@ -34,10 +34,10 @@ if Meteor.isClient
         tenantName: form.tenantName.value.toLowerCase()
 
       creditCardProps =
-        number: $('[data-stripe="cardNumber"]').val()
-        cvc: $('[data-stripe="cvc"]').val()
-        exp_month: parseInt($('[data-stripe="expirationMonth"]').val())
-        exp_year: parseInt($('[data-stripe="expirationYear"]').val())
+        number: template.$('[data-stripe="cardNumber"]').val().trim()
+        cvc: template.$('[data-stripe="cvc"]').val().trim()
+        exp_month: parseInt(template.$('[data-stripe="expirationMonth"]').val().trim())
+        exp_year: parseInt(template.$('[data-stripe="expirationYear"]').val().trim())
 
       Stripe.card.createToken creditCardProps, (status, response) ->
         if response.error
