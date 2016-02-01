@@ -12,10 +12,11 @@ template(name="documentDetail")
                 | Crowdsource
           a.help-link.help-link-document.pull-right(href="{{path route='/help?topic=annotating-documents'}}")
             +tooltipIcon icon='question-circle' placement='left'
-          if hitId
-            button.finished-annotating.btn.btn-primary(data-toggle="modal" data-target="#completionCodeModal")
-              i.fa.fa-check-circle.icon-left
-              span Finished Annotating
+          if assignmentId
+            unless mechanicalTurkPreview
+              button.finished-annotating.btn.btn-primary
+                i.fa.fa-check-circle.icon-left
+                span Finished Annotating
       .document-container.pane.pane-middle
         if document.mTurkEnabled
           .crowdsource-details
@@ -24,7 +25,7 @@ template(name="documentDetail")
                 i.fa.fa-cogs
                 p Document has been submitted for annotation and is being processed.
             else
-              unless hitId
+              unless assignmentId
                 .user-details
                   i.fa.fa-exclamation-triangle
                   p This document has been crowdsourced and does not require annotation.
@@ -57,13 +58,6 @@ template(name="documentDetail")
           else
             .loading
 
-  #completionCodeModal.modal.fade
-    .modal-dialog
-      .modal-content
-        .modal-body
-          p.instructions Thanks for completing this HIT.  Please enter this code into Mechanical Turk.
-          h5.completion-code Code:
-            span {{hitId}}
   +createMTurkJobModal document=document
 
 template(name="documentDetailAnnotation")

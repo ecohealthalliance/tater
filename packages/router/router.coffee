@@ -48,14 +48,14 @@ FlowRouter.route '/reset-password/:token',
   action: (params) ->
     BlazeLayout.render 'layout',
       main: 'resetPassword'
-      params: {"token": params.token}
+      params: {'token': params.token}
 
 FlowRouter.route '/enroll-account/:token',
   name: 'enrollAccount'
   action: (params) ->
     BlazeLayout.render 'layout',
       main: 'enrollAccount'
-      params: {"token": params.token}
+      params: {'token': params.token}
 
 FlowRouter.route '/register',
   name: 'register'
@@ -75,7 +75,7 @@ loggedIn.route '/profiles/:_id',
   action: (params) ->
     BlazeLayout.render 'layout',
       main: 'profileDetail'
-      params: {"profileId": params._id}
+      params: {'profileId': params._id}
 
 loggedIn.route '/documents',
   name: 'documents'
@@ -95,9 +95,12 @@ FlowRouter.route '/documents/:_id',
    BlazeLayout.render 'layout',
      main: 'documentDetail'
      params: {
-       "documentId": params._id
-       "annotationId": query.annotationId
-       "hitId": query.hitId
+       'documentId': params._id
+       'annotationId': query.annotationId
+       'assignmentId': query.assignmentId
+       'hitId': query.hitId
+       'workerId': query.workerId
+       'turkSubmitTo': query.turkSubmitTo
      }
 
 loggedIn.route '/admin',
@@ -123,21 +126,21 @@ loggedIn.route '/groups/:_id',
   action: (params) ->
     BlazeLayout.render 'layout',
       main: 'groupDetail'
-      params: {"groupId": params._id}
+      params: {'groupId': params._id}
 
 loggedIn.route '/groups/:_id/randomDocument',
   name: 'randomDocument'
   action: (params) ->
     BlazeLayout.render 'layout',
       main: 'randomDocument'
-      params: {"groupId": params._id}
+      params: {'groupId': params._id}
 
 loggedIn.route '/groups/:_id/documents',
   name: 'groupDocuments'
   action: (params) ->
     BlazeLayout.render 'layout',
       main: 'groupDocuments'
-      params: {"groupId": params._id}
+      params: {'groupId': params._id}
 
 loggedIn.route '/codingKeywords',
   name: 'codingKeywords'
