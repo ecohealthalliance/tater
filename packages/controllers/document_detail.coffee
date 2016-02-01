@@ -12,7 +12,6 @@ if Meteor.isClient
     else # unhighlight
       $(".document-text span").removeClass('highlighted, not-highlighted')
 
-
   scrollToAnnotation = (annotationId, scrollTheText, scrollTheList, sameLine) ->
     $documentContainer = $ '.document-container'
     documentContainerHeight = $documentContainer.innerHeight()
@@ -55,16 +54,19 @@ if Meteor.isClient
 
 
   Template.documentDetail.onCreated ->
-    if @data.hitId
+    if @data.assignmentId
+      @assignmentId = @data.assignmentId
       @hitId = @data.hitId
+      @workerId = @data.workerId
+      @turkSubmitTo = @data.turkSubmitTo
       @userToken = localStorage.getItem 'userToken'
       if not @userToken
-        @userToken = Random.id(20) + '~' + +new Date()
+        @userToken = Random.id(20)
         localStorage.setItem 'userToken', @userToken
-    @subscribe('documentDetail', @data.documentId, @hitId)
-    @subscribe('docAnnotations', @data.documentId, @hitId, @userToken)
-    @subscribe('users', @data.documentId, @hitId)
-    # @subscribe('mTurkJob', @data.documentId, @hitId)
+    @subscribe('documentDetail', @data.documentId)
+    @subscribe('docAnnotations', @data.documentId, @userToken)
+    @subscribe('users', @data.documentId)
+    # @subscribe('mTurkJob', @data.documentId)
     @startOffset = new ReactiveVar()
     @endOffset = new ReactiveVar()
     @annotations = new ReactiveVar()
@@ -118,8 +120,11 @@ if Meteor.isClient
     annotations: ->
       Template.instance().annotations.get()
 
-    hitId: ->
-      Template.instance().hitId
+    assignmentId: ->
+      Template.instance().assignmentId
+
+    mechanicalTurkPreview: ->
+      Template.instance().assignmentId is 'ASSIGNMENT_ID_NOT_AVAILABLE'
 
     annotationUserEmail: ->
       @userEmail()
@@ -219,7 +224,7 @@ if Meteor.isClient
           documentId:  instance.data.documentId
           startOffset: temporaryAnnotation.startOffset
           endOffset:   temporaryAnnotation.endOffset
-        Meteor.call 'createAnnotation', attributes, instance.hitId, instance.userToken, (error, response) ->
+        Meteor.call 'createAnnotation', attributes, instance.userToken, (error, response) ->
           if error
             toastr.error("Invalid annotation")
 
@@ -240,6 +245,10 @@ if Meteor.isClient
         .val('')
         .trigger('input')
         .focus()
+    'click .finished-annotating': (event, instance) ->
+      form = $('<form method="POST" id="mturkForm">')
+      form.attr('action', "https://workersandbox.mturk.com/mturk/externalSubmit?assignmentId=#{instance.assignmentId}&foo=bar")
+      form.submit()
 
   Template.documentDetailAnnotation.helpers
     header: ->
@@ -292,7 +301,7 @@ if Meteor.isClient
       $parent.addClass('deleting')
       parentInstance = instance.parent()
       setTimeout (->
-        Meteor.call 'deleteAnnotation', annotationId, parentInstance.hitId, parentInstance.userToken
+        Meteor.call 'deleteAnnotation', annotationId, parentInstance.userToken
       ), 800
       if annotationId is selectedAnnotation.get()?.id
         selectedAnnotation.set id: null
@@ -305,25 +314,24 @@ if Meteor.isClient
 
 Meteor.methods
 
-  createAnnotation: (attributes, hitId, userToken) ->
+  createAnnotation: (attributes, userToken) ->
     @unblock()
     check attributes, Object
     check attributes.documentId, String
-    if hitId
-      check hitId, String
-      check userToken, String
-    document = Documents.findOne attributes.documentId
-    if Meteor.isServer
-      group = Groups.findOne document.groupId
-      user = Meteor.users.findOne @userId
+    console.log(arguments)
+    document = Documents.findOne(attributes.documentId)
+    if Meteor.isClient
+      accessible = true
+    else
+      group = Groups.findOne(document.groupId)
+      user = Meteor.user()
       if user
         accessible = group?.viewableByUser(user)
-      else
-        if hitId and MturkJobs.find(documentId: document._id, HITId: hitId).count()
+      else if userToken
+        check userToken, String
+        if document.mTurkEnabled
           accessible = true
           _userToken = userToken
-    else
-      accessible = true # reduce the amount of logic on the client side
 
     if accessible
       annotation = new Annotation()
@@ -338,25 +346,24 @@ Meteor.methods
     else
       throw new Meteor.Error 'Unauthorized'
 
-  deleteAnnotation: (annotationId, hitId, userToken) ->
+  deleteAnnotation: (annotationId, userToken) ->
     @unblock()
     check annotationId, String
-    if hitId
-      check hitId, String
+    if userToken
       check userToken, String
     annotation = Annotations.findOne(annotationId)
     document = Documents.findOne(annotation.documentId)
-    if Meteor.isServer
+    if Meteor.isClient
+      accessible = true
+    else
       group = Groups.findOne(document.groupId)
-      user = Meteor.users.findOne(@userId)
+      user = Meteor.user()
       if user
         accessible = group?.viewableByUser(user)
       else
-        if hitId and MturkJobs.find(documentId: document._id, HITId: hitId).count()
+        if userToken and document.mTurkEnabled
           accessible = true
           _userToken = userToken
-    else
-      accessible = true # reduce the amount of logic on the client side
 
     if accessible
       if _userToken # mTurk
@@ -364,7 +371,7 @@ Meteor.methods
           annotation.remove()
         else
           throw new Meteor.Error 'Not authorized'
-      else # regular user
+      else if user # regular user
         annotation.remove()
     else
       throw new Meteor.Error 'Unauthorized'
@@ -391,7 +398,7 @@ Meteor.methods
 
 if Meteor.isServer
 
-  Meteor.publish 'documentDetail', (documentId, hitId) ->
+  Meteor.publish 'documentDetail', (documentId) ->
     check documentId, String
     if @userId
       user = Meteor.users.findOne(@userId)
@@ -401,17 +408,13 @@ if Meteor.isServer
         Documents.find(documentId)
       else
         @ready()
-    else if hitId
-      check hitId, String
-      if MTurkJobs.find(documentId: documentId, HITId: hitId).count()
-        Documents.find({
-          _id: documentId
-          mTurkEnabled: true
-        })
     else
-      @ready()
+      Documents.find(
+        _id: documentId
+        mTurkEnabled: true
+      )
 
-  Meteor.publish 'docAnnotations', (documentId, hitId, userToken) ->
+  Meteor.publish 'docAnnotations', (documentId, userToken) ->
     check documentId, String
     if @userId
       document = Documents.findOne(documentId)
@@ -421,17 +424,9 @@ if Meteor.isServer
         Annotations.find(documentId: documentId)
       else
         @ready()
-    else if hitId
-      check hitId, String
+    else if userToken
       check userToken, String
-      document = Documents.findOne(
-        _id: documentId
-        mTurkEnabled: true
-      )
-      if document
-        Annotations.find(documentId: document._id, userToken: userToken)
-      else
-        @ready()
+      Annotations.find(documentId: documentId, userToken: userToken)
     else
       @ready()
 
@@ -444,14 +439,5 @@ if Meteor.isServer
         group: group._id
         fields:
           emails: 1
-    else
-      @ready()
-
-  Meteor.publish 'mTurkJob', (documentId, hitId) ->
-    check documentId, String
-    if hitId
-      check hitId, String
-    if @userId
-      MTurkJobs.find(documentId: documentId, HITId: hitId)
     else
       @ready()
