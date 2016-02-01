@@ -8,7 +8,7 @@ do ->
     url = require('url')
 
     @Given /^there is a profile with ID 'fakeid' where "([^"]*)" is "([^"]*)"$/, (field, value)->
-      @server.call('createProfile', field, value, 'fakeid')
+      @server.call('createProfileFixture', field, value, 'fakeid')
 
     registerAccount = (browser, email) ->
       browser

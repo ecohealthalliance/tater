@@ -8,22 +8,22 @@ do ->
     url = require('url')
 
     @Given /^there is a test document with title "([^"]*)" in group "([^"]*)"$/, (title, groupId) ->
-      @server.call 'createTestDocument', title: title, groupId: groupId
+      @server.call 'createTestDocumentFixture', title: title, groupId: groupId
 
     @Given 'there is a test document with title "$title" in the database', (title) ->
-      @server.call 'createTestDocument', title: title, groupId: 'fakegroupid', _id: 'fakedocid'
+      @server.call 'createTestDocumentFixture', title: title, groupId: 'fakegroupid', _id: 'fakedocid'
 
     @Given /^there is a document with title "([^"]*)" in the test group$/, (title) ->
-      @server.call 'createTestDocument', title: title, groupId: 'fakegroupid', _id: 'fakedocid'
+      @server.call 'createTestDocumentFixture', title: title, groupId: 'fakegroupid', _id: 'fakedocid'
 
     @Given /^there are (\d+) documents in the "([^"]*)" group$/, (number, groupId, callback) ->
       _(number).times (index)=>
-        @server.call 'createTestDocument', title: 'document ' + index, groupId: groupId
+        @server.call 'createTestDocumentFixture', title: 'document ' + index, groupId: groupId
       callback()
 
     @Given /^there are (\d+) documents in the database$/, (number, callback) ->
       _(number).times (index)=>
-        @server.call 'createTestDocument', title: 'document ' + index
+        @server.call 'createTestDocumentFixture', title: 'document ' + index
       callback()
 
     @When "I click the documents header link", ->

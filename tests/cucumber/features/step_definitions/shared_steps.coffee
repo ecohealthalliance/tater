@@ -18,31 +18,31 @@ do ->
       password:  'password'
 
     @Before (callback) ->
-      @server.call('reset')
+      @server.call('resetFixture')
       @client.url(url.resolve(process.env.ROOT_URL, '/'))
         .execute (->
           Meteor.logout()
         ), callback
 
     @Given 'there is a test user in the database', ->
-      @server.call('createTestUser', _testUser)
+      @server.call('createTestUserFixture', _testUser)
 
     @Given 'there is a group in the database', ->
-      @server.call('createTestGroup')
+      @server.call('createTestGroupFixture')
 
     @Given 'there is a test document in the database', ->
-      @server.call('createTestDocument', _test_document)
+      @server.call('createTestDocumentFixture', _test_document)
 
     @Given /^there is an annotation with codingKeyword header "([^"]*)", subHeader "([^"]*)" and key "([^"]*)"$/, (header, subHeader, keyword) ->
       that = @
       @server
-        .call('createCodingKeyword', header, subHeader, keyword, 1)
+        .call('createCodingKeywordFixture', header, subHeader, keyword, 1)
         .then (codeId) ->
-          that.server.call('createTestAnnotation', {codeId: codeId})
+          that.server.call('createTestAnnotationFixture', {codeId: codeId})
           codeId
 
     @Given 'there is a group in the database with id "$id"', (id)->
-      @server.call('createTestGroup', _id: id)
+      @server.call('createTestGroupFixture', _id: id)
 
     @When "I log in as the test user", ->
       @client

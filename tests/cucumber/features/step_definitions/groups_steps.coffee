@@ -8,7 +8,7 @@ do ->
     url = require('url')
 
     @Given /^there is a test group in the database$/, ->
-      @server.call('createTestGroup')
+      @server.call('createTestGroupFixture')
 
     @When "I click the new group link", ->
       @browser

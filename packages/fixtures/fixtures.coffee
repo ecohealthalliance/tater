@@ -4,7 +4,7 @@ do ->
 
   Meteor.methods
 
-    'reset': ->
+    resetFixture: ->
       Meteor.users.remove({})
       UserProfiles.remove({})
       Groups.remove({})
@@ -15,7 +15,7 @@ do ->
       CodingKeywords.remove({})
       Tenants.remove({})
 
-    'createTestUser': (attributes) ->
+    createTestUserFixture: (attributes) ->
       Meteor.users.remove({})
       account = Accounts.createUser
         email: attributes.email
@@ -28,12 +28,12 @@ do ->
         $set: {admin: true, acceptedEULA: true}
       })
 
-    'setUserAccountPasswordFixture': (attributes) ->
+    setUserAccountPasswordFixture: (attributes) ->
       user = Meteor.users.findOne 'emails.address': attributes.email
       Accounts.setPassword user._id, attributes.password
       # Meteor.users.update { email: attributes.email }, $set: { password: attributes.password }
 
-    'createTestGroup': (attributes) ->
+    createTestGroupFixture: (attributes) ->
       attributes ?= {}
       attributes.name ?= "Test Group"
       attributes.description ?= "Test Description"
@@ -44,7 +44,7 @@ do ->
       group.set(attributes)
       group.save()
 
-    'createProfile': (field, value, id) ->
+    createProfileFixture: (field, value, id) ->
       userProfile = new UserProfile()
       attributes = {}
       attributes[field] = value
@@ -52,7 +52,7 @@ do ->
       userProfile.set(attributes)
       userProfile.save()
 
-    'createTestDocument': (attributes) ->
+    createTestDocumentFixture: (attributes) ->
       document = new Document()
       attributes['body'] ?= 'Test Body'
       attributes['groupId'] ?= 'fakegroupid'
@@ -60,7 +60,7 @@ do ->
       document.set(attributes)
       document.save()
 
-    'createTestAnnotation': (attributes) ->
+    createTestAnnotationFixture: (attributes) ->
       annotation = new Annotation()
       attributes['documentId'] ?= 'fakedocumentid'
       attributes['userId'] ?= 'fakeuserid'
@@ -69,7 +69,7 @@ do ->
       annotation.set(attributes)
       annotation.save()
 
-    'createCodingKeyword': (header, subHeader, keyword, color) ->
+    createCodingKeywordFixture: (header, subHeader, keyword, color) ->
       headerDoc = Headers.findOne({label: header})
       headerId = if headerDoc then headerDoc._id else Headers.insert({label: header, color: 1})
       subHeaderDoc = SubHeaders.findOne({headerId: headerId, label: subHeader})
