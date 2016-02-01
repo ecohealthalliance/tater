@@ -43,7 +43,7 @@ fi
 
 # Connect to mongo, use a database named after the currently selected port
 tail -f testoutput${port}.txt &
-MONGO_URL=mongodb://localhost:3001/${port} meteor --settings settings-production.json --port ${port} &
+MONGO_URL=mongodb://localhost:3001/${port} meteor --port ${port} &
 CUCUMBER_TAIL=1 chimp --tags=${TAGS} --ddp=http://localhost:${port} --browser=chrome --path=tests/cucumber/features/ --coffee=true --chai=true --sync=false > testoutput${port}.txt
 kill `lsof -t -i:${port}`
 
