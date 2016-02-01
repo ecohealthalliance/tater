@@ -1,0 +1,33 @@
+template(name="createMTurkJobModal")
+  #create-mturk-job-modal.modal.fade(tabindex="-1" role="dialog")
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+            i.fa.fa-times-circle
+        .modal-body
+          h4 Crowdsource Annotation
+          form#mturk-job-form
+            input.form-control#documentId(name="documentId" type="hidden")
+            .form-group
+              .row
+                .col-sm-8
+                  span.pull-right.clear-input.clear-title
+                    i.fa.fa-times-circle
+                    | Clear
+                  label
+                    span Title
+                    input.form-control(type='string' name='title' value=defaultTitle placeholder='Descriptive Title' maxlength='128')
+            .form-group
+              .row
+                .col-sm-12
+                  span.pull-right.clear-input.clear-description
+                    i.fa.fa-times-circle
+                    | Clear
+                  label
+                    span Description
+                    span.description Describe the annotation task and any special requirements.
+                    textarea.form-control(name='description' placeholder='Describe the annotation task and any special requirements.')=defaultDescription
+        .modal-footer
+          button.btn.btn-default(data-dismiss='modal' aria-hidden='true') Cancel
+          button.btn.btn-primary#create-mturk-job Crowdsource Annotation

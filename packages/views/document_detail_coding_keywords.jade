@@ -16,7 +16,7 @@ template(name="documentDetailCodingKeywords")
               i.fa.fa-chevron-circle-down
               | Show all codes
         each headers
-          if ../accessCode
+          if ../hitId
             li.code-header.count.highlighted.selectable(class='code-header-#{color}')
               span.header-name.selectable-code= label
           else

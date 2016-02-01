@@ -48,6 +48,41 @@
   i
     font-size 1.5em
 
+.document-container
+  width 55%
+  left 22.5%
+  padding 65px 0 0 0
+  line-height 1.75em
+  border $border
+  border-bottom 0
+  border-top 0
+
+.document-heading
+  display flex
+  height 100%
+  align-items center
+  h1
+    flex 2 0 0
+    position static
+    overflow hidden
+    text-overflow ellipsis
+    white-space nowrap
+    transform translate(0,0)
+    line-height 1.5em
+    +below(3)
+      flex 1 0 0
+
+.document-options
+  display flex
+  flex 1 0 0
+  height 100%
+  align-items center
+  justify-content flex-end
+  a
+    margin-left 15px
+  .help-link-document
+    font-size 1.5em
+
 .finished-annotating
   centerVertically()
   right 20px
@@ -58,23 +93,27 @@
     color darken($secondary, 10%)
     letter-spacing .05em
 
-.document-container
-  width 55%
-  left 22.5%
-  padding 75px 0 0 0
-  line-height 1.75em
-  border $border
-  border-bottom 0
-  border-top 0
-
-.document-title
-  width 80%
-
-.help-link-document
-  font-size 1.5em
-  position absolute
-  right 15px
-  centerVertically()
+.crowdsource-details
+  .admin-details
+  .user-details
+    min-height 50px
+    padding 15px 20px
+  .admin-details
+    background lighten($secondary-light,20%)
+    border-bottom 1px solid darken($background-secondary, 20%)
+  .user-details
+    background $deny
+    color white
+    @extend .dark-shadow
+  .fa
+    margin-right 10px
+    vertical-align middle
+    font-size 1.5em
+  p
+    display inline-block
+    margin-bottom 0
+    vertical-align middle
+    font-weight 600
 
 .document-body
   max-width 900px

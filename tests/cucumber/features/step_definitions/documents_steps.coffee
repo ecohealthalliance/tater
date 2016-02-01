@@ -43,9 +43,17 @@ do ->
         .url(url.resolve(process.env.ROOT_URL, "/groups/fakegroupid/documents"))
         .waitForVisible('.group-documents')
 
-    @When 'I navigate to the test document with an access code', ->
+    @When 'I navigate to the test document', ->
       @browser
-        .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid?accessToken=faketoken123"))
+        .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid"))
+        .waitForExist('.document-container')
+
+    @When "I fake HITId for the test document", ->
+      @server.call('setHIDIdFixture', 'fakedocid')
+
+    @When 'I navigate to the test document using hitId', ->
+      @browser
+        .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid?hitId=fakeHITId"))
         .waitForExist('.document-container')
 
     @When 'I click on the New Document link', ->
@@ -55,7 +63,9 @@ do ->
 
     @When 'I click on the Delete Document button', ->
       @browser
-        .waitForVisible('.delete-document-button')
+        .waitForVisible('.doc-options')
+        .moveToObject('.doc-options')
+        .waitForVisible('.doc-options-buttons')
         .click(".delete-document-button")
 
     @When 'I confirm the document deletion', ->
@@ -98,7 +108,7 @@ do ->
         .pause(10000)
         .waitForVisible('.modal.in')
 
-    @Then "I should see an access code in a modal", ->
+    @Then "I should see an access token in a modal", ->
       @browser
         .getHTML '#completionCodeModal', (error, response) ->
           assert.notOk(error)
@@ -154,3 +164,13 @@ do ->
             console.error error.message
           match = response.toString().match(documentName)
           assert.ok(match)
+
+    @When "I click on the Crowdsource button", ->
+      @browser
+        .waitForVisible('a.crowdsource-btn')
+        .click('a.crowdsource-btn')
+
+    @When "I submit the Crowdsource Annotation form", ->
+      @browser
+        .waitForVisible('#create-mturk-job')
+        .click('#create-mturk-job')

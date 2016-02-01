@@ -19,14 +19,11 @@ Document = Astro.Class
     annotated:
       type: 'number'
       default: 0
+    mTurkEnabled:
+      type: 'boolean'
+      default: false
     createdAt: 'date'
-    accessCode:
-      type: 'string'
   behaviors: ['timestamp']
-  events:
-    beforeSave: ->
-      if Meteor.isServer and not this.accessCode
-        @set(accessCode: Random.id 20)
 
   methods:
     groupName: ->

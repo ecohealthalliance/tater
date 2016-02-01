@@ -97,7 +97,7 @@ FlowRouter.route '/documents/:_id',
      params: {
        "documentId": params._id
        "annotationId": query.annotationId
-       "accessToken": query.accessToken
+       "hitId": query.hitId
      }
 
 loggedIn.route '/admin',

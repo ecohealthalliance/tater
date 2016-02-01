@@ -32,6 +32,9 @@ describe 'Document', ->
     document.save
     expect(document.updatedAt).not.to.be.an('undefined')
 
+  it 'includes mTurkEnabled', ->
+    expect(document.mTurkEnabled).to.eq(false)
+
   describe '#textWithAnnotation', =>
     it 'returns the text with the given annotations represented with spans', ->
       headerId = Headers.insert(color: 2)

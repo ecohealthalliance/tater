@@ -56,7 +56,6 @@ do ->
       document = new Document()
       attributes['body'] ?= 'Test Body'
       attributes['groupId'] ?= 'fakegroupid'
-      attributes['accessCode'] ?= 'faketoken123'
       document.set(attributes)
       document.save()
 
@@ -75,3 +74,8 @@ do ->
       subHeaderDoc = SubHeaders.findOne({headerId: headerId, label: subHeader})
       subHeaderId = if subHeaderDoc then subHeaderDoc._id else SubHeaders.insert({headerId: headerId, label: subHeader})
       keywordId = CodingKeywords.insert(subHeaderId: subHeaderId, label: keyword)
+
+    setHIDIdFixture: (documentId) ->
+      MTurkJob = MTurkJobs.findOne(documentId: documentId)
+      MTurkJob.set(HITId: "fakeHITId")
+      MTurkJob.save()

@@ -16,7 +16,7 @@ def annotator_category_for_phrase(db, phrase, access_code):
     death_count_id = db.codingKeywords.find_one({'header': "Death count"})['_id']
     case_count_id = db.codingKeywords.find_one({'header': "Case count"})['_id']
 
-    annotations = list(db.annotations.find({'accessCode': access_code}))
+    annotations = list(db.annotations.find({'accessToken': access_code}))
 
     for annotation in annotations:
         if annotation['startOffset'] <= phrase.start() and annotation['endOffset'] >= phrase.end():
@@ -54,7 +54,7 @@ def create_csv_for_document(db, documentId):
     phrases = list(numeric.finditer(document['body']))
 
     annotations = db.annotations.find({'documentId': document['_id']})
-    access_codes = map(lambda annotation: annotation['accessCode'], list(annotations))
+    access_codes = map(lambda annotation: annotation['accessToken'], list(annotations))
 
     # Remove codes that don't have access codes and duplicated values
     access_codes = filter(None, access_codes)

@@ -61,4 +61,5 @@ Package.onUse(function(api) {
   api.addFiles('register.coffee', ['client', 'server']);
   api.addFiles('eula.coffee', ['client', 'server']);
   api.addFiles('tooltip_icon.coffee', ['client', 'server']);
+  api.addFiles('create_mturk_job_modal.coffee', ['client', 'server']);
 });

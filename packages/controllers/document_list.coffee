@@ -43,6 +43,7 @@ if Meteor.isClient
         newShadowDocument.groupId = originalDocument.groupId
         newShadowDocument.annotated = originalDocument.annotated
         newShadowDocument.groupName = originalDocument.groupName()
+        newShadowDocument.mTurkEnabled = originalDocument.mTurkEnabled
         # upsert
         if shadowDocuments.findOne(originalDocument._id) is undefined
           #insert
@@ -114,11 +115,7 @@ if Meteor.isClient
       Template.instance().numberOfPages.get() > 1
 
   Template.documentList.events
-    'click .delete-document-button': (event) ->
-      $('#confirm-delete-document').attr(
-        "data-document-id",
-        event.target.parentElement.getAttribute("data-document-id")
-      )
+
     'input .document-search': _.debounce(( (event, instance)->
       searchQuery = $(event.currentTarget).val().trim()
       instance.searchText.set searchQuery
@@ -143,12 +140,38 @@ if Meteor.isClient
 
   Template.document.onCreated ->
     @document = new Document(_.pick(@data, _.keys(Document.getFields())))
+    @docOptionsShowing = new ReactiveVar false
 
   Template.document.helpers
     groupName: ->
       Template.instance().document.groupName()
+
     annotatedTitle: ->
       "#{@annotated} annotations"
+
+    showing: ->
+      if Template.instance().docOptionsShowing.get()
+        'active'
+    hideInfo: ->
+      if Template.instance().docOptionsShowing.get()
+        'hide-info'
+
+  Template.document.events
+    'click .doc-options': (event) ->
+      event.preventDefault()
+
+    'click .delete-document-button': (event) ->
+      $('#confirm-delete-document').attr(
+        "data-document-id",
+        event.target.parentElement.getAttribute("data-document-id")
+      )
+
+    'mouseover .doc-options-wrap': (event, instance) ->
+      instance.docOptionsShowing.set true
+
+    'mouseout .doc-options-wrap': (event, instance) ->
+      instance.docOptionsShowing.set false
+
 
   Template.documentListPages.events
     'click a': (event, instance) ->
@@ -162,7 +185,6 @@ if Meteor.isClient
         Template.instance().parent().currentPageNumber.set pageNumber
 
 
-
 if Meteor.isServer
 
   # Based on bobince's regex escape function.
@@ -170,7 +192,12 @@ if Meteor.isServer
   regexEscape = (s)->
     s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
 
-  fields = { title: true, createdAt: true, groupId: true, annotated: true }
+  fields =
+    title: true
+    createdAt: true
+    groupId: true
+    annotated: true
+    mTurkEnabled: true
 
   Meteor.publish 'documents', (group, searchText)->
     if @userId

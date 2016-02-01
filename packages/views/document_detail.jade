@@ -4,14 +4,29 @@ template(name="documentDetail")
       +documentDetailCodingKeywords
       .document-heading.pane-head.pane-head-m
         h1.document-title= document.title
-        a.help-link.help-link-document.pull-right(href="{{path route='/help?topic=annotating-documents'}}")
-          +tooltipIcon icon='question-circle' placement='left'
-
-        if accessCode
-          button.finished-annotating.btn.btn-primary(data-toggle="modal" data-target="#completionCodeModal")
-            i.fa.fa-check-circle.icon-left
-            span Finished Annotating
+        .document-options
+          if isAdmin
+            unless document.mTurkEnabled
+              a.btn.btn-primary.crowdsource-btn(data-toggle="modal" data-document-id=document._id data-target="#create-mturk-job-modal" )
+                i.fa.fa-users
+                | Crowdsource
+          a.help-link.help-link-document.pull-right(href="{{path route='/help?topic=annotating-documents'}}")
+            +tooltipIcon icon='question-circle' placement='left'
+          if hitId
+            button.finished-annotating.btn.btn-primary(data-toggle="modal" data-target="#completionCodeModal")
+              i.fa.fa-check-circle.icon-left
+              span Finished Annotating
       .document-container.pane.pane-middle
+        if document.mTurkEnabled
+          .crowdsource-details
+            if isAdmin
+              .admin-details
+                i.fa.fa-cogs
+                p Document has been submitted for annotation and is being processed.
+            else
+              .user-details
+                i.fa.fa-exclamation-triangle
+                p This document has been crowdsourced and does not require annotation.
         #documentContainer
           #documentBody.document-body
             .document-wrapper
@@ -47,11 +62,12 @@ template(name="documentDetail")
         .modal-body
           p.instructions Thanks for completing this HIT.  Please enter this code into Mechanical Turk.
           h5.completion-code Code:
-            span {{accessCode}}
+            span {{hitId}}
+  +createMTurkJobModal document=document
 
 template(name="documentDetailAnnotation")
   li(data-annotation-id=_id class="annotation-color-#{color} {{selected}}")
-    if accessCode
+    if hitId
       span.code
         span.header= header
     else
