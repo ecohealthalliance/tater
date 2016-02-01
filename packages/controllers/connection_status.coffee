@@ -24,10 +24,10 @@ if Meteor.isClient
       reconnectingIn -= 1
 
     @autorun ->
-      status = Meteor.status()
       if Meteor.user()
-        document.body.className = 'now-' + status.status
+        status = Meteor.status()
         if not status.connected
+          document.body.classList.add('not-connected')
           if not tickerId
             reconnectingIn = reconnectIntervals[reconnectIntervalStep]
             tickerId = setInterval tock, 1000
@@ -36,6 +36,11 @@ if Meteor.isClient
           tickerId = 0
           $('.reconnecting-in').text ''
           reconnectIntervalStep = 0
+          document.body.classList.remove('not-connected')
+
+  Template.connectionStatus.helpers
+    connected: ->
+      Meteor.status().connected
 
   Template.connectionStatus.events
     'click .reconnect': (event) ->
