@@ -98,12 +98,12 @@
 
 .connection-status
   position absolute
-  top 0
+  top $header-height
   left 0
   right 0
   visible(false)
   layerCosmos(10)
-  padding 10px
+  padding 15px
   background $connection-warning
   text-align center
   text-shadow none
@@ -117,7 +117,7 @@
   makeButton(alpha(#FFFFFF, 75%), $body-text, true)
   padding-top 5px
   padding-bottom 5px
-  margin 10px auto
+  margin 10px auto 0 auto
   border 2px solid $secondary
   font-size .95em
   &:hover
