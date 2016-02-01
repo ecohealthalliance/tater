@@ -81,7 +81,7 @@ MTurkJob = Astro.Class
             Description: @description
             Question: """
             <ExternalQuestion xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2006-07-14/ExternalQuestion.xsd">
-              <ExternalURL>#{Meteor.absoluteUrl("mtAnnotate", {
+              <ExternalURL>#{Meteor.absoluteUrl("documents", {
                 secure: true
                 rootUrl: rootUrl
               })}/#{@documentId}</ExternalURL>
