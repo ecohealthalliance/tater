@@ -24,9 +24,10 @@ template(name="documentDetail")
                 i.fa.fa-cogs
                 p Document has been submitted for annotation and is being processed.
             else
-              .user-details
-                i.fa.fa-exclamation-triangle
-                p This document has been crowdsourced and does not require annotation.
+              unless hitId
+                .user-details
+                  i.fa.fa-exclamation-triangle
+                  p This document has been crowdsourced and does not require annotation.
         #documentContainer
           #documentBody.document-body
             .document-wrapper
