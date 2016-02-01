@@ -1,8 +1,46 @@
+layerCosmos($galaxyDistance=0)
+  z-index $cosmos-layer + $galaxyDistance
+
+layerModal()
+  z-index $modal-layer
+
+layerTop()
+  z-index $top-layer
+
+layerMid()
+  z-index $mid-layer
+
+layerBtm()
+  z-index $bottom-layer
+
+layerPage()
+  z-index $page-layer
+
 clearFix()
   &::after
     clear both
     display block
     content ''
+
+cover()
+  position absolute
+  top 0
+  bottom 0
+  left 0
+  right 0
+  layerCosmos()
+
+overlay($color, $opacity)
+  cover()
+  background alpha($color, $opacity)
+
+visible($visible)
+  if $visible
+    visibility visible
+    opacity 1
+  else
+    visibility hidden
+    opacity 0
 
 addFont($fontTitle, $allTypes = true, type = '')
   @font-face
@@ -64,7 +102,7 @@ loading($positioned=true)
     centerPosition()
     top 50%
     left 50%
-    z-index $cosmos-layer
+    layerCosmos()
   opacity 1
   font-size 5em
   color $m-gray
@@ -140,14 +178,6 @@ centerVertically(position=true)
   top 50%
   transform translate(0, -50%)
 
-cover()
-  position absolute
-  top 0
-  bottom 0
-  left 0
-  right 0
-  z-index $mid-layer
-
 addBorder($w=false, $h, $color)
   if $w
     border-{$w} unit($h,'px') solid $color
@@ -155,7 +185,7 @@ addBorder($w=false, $h, $color)
     border unit($h, 'px') solid $color
 
 shadow($color, $opacity)
-  text-shadow 0 1px 0 rgba($color, $color, $color, $opacity)
+  text-shadow 0 0 1px rgba($color, $color, $color, $opacity)
 
 linkColor($color, $hover = darken($color, 35%))
   color $color
@@ -176,4 +206,3 @@ borderRadius($tl,$tr,$br,$bl)
 
 selectedBG()
   background-color desaturate(lighten($secondary-light, 90%), 70%)
-

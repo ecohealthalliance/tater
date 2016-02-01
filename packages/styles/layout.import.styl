@@ -95,3 +95,33 @@
     margin-right 4px
     +below(1000px)
       font-size 20px
+
+.connection-status
+  position absolute
+  top $header-height
+  left 0
+  right 0
+  visible(false)
+  layerCosmos(10)
+  padding 15px
+  background $connection-warning
+  text-align center
+  text-shadow none
+  font-weight 600
+  min-height $header-height+1
+  @extend .light-shadow
+  border-bottom 5px solid darken(alpha($warning, 50%), 20%)
+  .fa
+    color darken($warning, 30%)
+.reconnect
+  makeButton(alpha(#FFFFFF, 75%), $body-text, true)
+  padding-top 5px
+  padding-bottom 5px
+  margin 10px auto 0 auto
+  border 2px solid $secondary
+  font-size .95em
+  &:hover
+  &:focus
+    background white
+    color black
+    border 2px solid $secondary

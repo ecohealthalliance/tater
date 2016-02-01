@@ -340,7 +340,7 @@ Meteor.methods
   unarchiveKeyword: (keywordId) ->
     if Meteor.users.findOne(@userId)?.admin
       CodingKeywords.update keywordId,
-        $set: 
+        $set:
           archived: false
     else
       throw new Meteor.Error('Unauthorized')
@@ -348,7 +348,7 @@ Meteor.methods
   unarchiveSubHeader: (subHeaderId) ->
     if Meteor.users.findOne(@userId)?.admin
       SubHeaders.update subHeaderId,
-        $set: 
+        $set:
           archived: false
       CodingKeywords.update {subHeaderId: subHeaderId},
         {

@@ -31,6 +31,8 @@ $btn-default          = $secondary
 $confirm              = rgba(103, 169, 104, 1) // Green
 $deny                 = rgba(219, 82, 75, 1) // Red
 $delete               = $deny
+$warning              = rgba(242, 173, 64, 1)
+$connection-warning = alpha(lighten($warning, 10%), 80%)
 
 $header-BG            = white
 $footer-BG            = white
@@ -91,7 +93,9 @@ $body-font = $open-sans
 // =============================
 
 // Rupture Scale (Follows Bootstrap)
-rupture.scale = 0 480px 768px 992px 1200px
+rupture.scale = 0        480px        768px      992px      1200px
+//              └────┬────┘ └────┬────┘ └────┬────┘ └────┬────┘
+//                   1           2           3           4
 
 // Typographic settings
 $line-height-ratio  = 1.75

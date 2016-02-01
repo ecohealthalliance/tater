@@ -10,6 +10,20 @@ body
   font-family inherit
   text-shadow 0 0 1px rgba(255,255,255,.5)
 
+  &::before
+    visible(false)
+    content ''
+    background transparent
+
+  &.not-connected
+    .connection-status
+      visible(true)
+
+    &::before
+      overlay(white, 75%)
+      visible(true)
+      content ''
+
 .page-wrap
   min-height 100vh
   &.register-wrap
@@ -27,6 +41,7 @@ h3
 
 h4
   color desaturate($primary, 20%)
+
 
 h5
   font-weight 400

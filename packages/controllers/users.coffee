@@ -6,10 +6,10 @@ if Meteor.isClient
     @subscribe('userProfiles')
 
   Template.users.helpers
-    filters: =>
+    filters: ->
       filters = []
       filters
-    settings: =>
+    settings: ->
       fields = []
 
       fields.push
@@ -78,7 +78,7 @@ Meteor.methods
     if Meteor.users.findOne(@userId)?.admin
       Meteor.users.remove userId
     else
-      throw 'Unauthorized'
+      throw new Meteor.Error 'Unauthorized'
 
 
 if Meteor.isServer
