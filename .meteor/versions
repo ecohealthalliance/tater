@@ -72,6 +72,7 @@ mongo-id@1.0.1
 mquandalle:jade@0.4.5
 mquandalle:jade-compiler@0.4.5
 mquandalle:stylus@1.1.1
+mrgalaxy:stripe@2.2.1
 mrt:jquery-easing@1.3.0
 npm-bcrypt@0.7.8_2
 npm-mongo@1.4.39_1

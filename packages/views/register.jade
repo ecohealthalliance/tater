@@ -1,4 +1,4 @@
-template(name="register")
+template(name='register')
   .fluid-container.register.clearfix
     .row
       .col-sm-7.block
@@ -6,23 +6,62 @@ template(name="register")
           h1 Organization Registration
           p.required-text #[span *] Indicates required field
           form#tenant-registration.registration.space-top-2
-            .row
-              .col-sm-8
-                label.required Your Name
-                input.form-control.full-name(name='fullName' type='text' required)
-                label.required Your Email
-                input.form-control.email(name='emailAddress' type='email' required)
-            label Company/Organization
-            input.form-control.org-name(name='orgName' type='text')
-            label.required Customized Tater URL
-              +tooltipIcon icon='info-circle' title="The web address of your personalized Tater login"
-            .row
-              .col-sm-10
-                .input-group
-                  input.form-control.tenant-name(name='tenantName' type='text' required)
-                  .input-group-addon .tater.io
+            section
+              .row
+                .col-sm-8
+                  label.required Your Name
+                  input.form-control.full-name(name='fullName' type='text' required)
+                  label.required Your Email
+                  input.form-control.email(name='emailAddress' type='email' required)
+              .row
+                .col-sm-10
+                  label Company/Organization
+                  input.form-control.org-name(name='orgName' type='text')
+                  label.required Customized Tater URL
+                    +tooltipIcon icon='info-circle' title='The web address of your personalized Tater login'
+              .row
+                .col-sm-10
+                  .input-group
+                    input.form-control.tenant-name(name='tenantName' type='text' required)
+                    .input-group-addon .tater.io
+
+            section
+              h2 Payment information
+              label.required Credit Card Number
+              .row.cc-number
+                .col-sm-10.col-md-8
+                  input.form-control.card-number(data-stripe='cardNumber' type='text' required)
+
+              .row.card-details
+                .col-sm-7
+                  label.required Expiration Date
+                  .row
+                    .col-xs-6.col-sm-6.col-md-8
+                      select.form-control.col-sm-4(data-stripe='expirationMonth' required)
+                        option(value='' disabled) Month
+                        option(value='01') 01 - January
+                        option(value='02') 02 - February
+                        option(value='03') 03 - March
+                        option(value='04') 04 - April
+                        option(value='05') 05 - May
+                        option(value='06') 06 - June
+                        option(value='07') 07 - July
+                        option(value='08') 08 - August
+                        option(value='09') 09 - September
+                        option(value='10') 10 - October
+                        option(value='11') 11 - November
+                        option(value='12') 12 - December
+                    .col-xs-6.col-sm-6.col-md-4
+                      select.form-control.col-sm-4(data-stripe='expirationYear' required)
+                        option(value='' disabled) Year
+                        each expirationYear
+                          option(value=this)= this
+                .col-xs-4.col-sm-3.col-sm-offset-1
+                  label.required CVC
+                    +tooltipIcon icon='info-circle' title='3-digit code found on the back of your card' placement="right"
+                  input.form-control.cvc(data-stripe='cvc' type='text' required maxlength='3')
             if registering
-              input.btn.btn-primary(type='submit' value="Register")
+              input.btn.btn-primary(type='submit' value='Register')
             else
               .curtain-register
           unless registering

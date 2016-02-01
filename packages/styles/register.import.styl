@@ -1,6 +1,13 @@
 .register
+  +below(2)
+    padding-left 15px
+    padding-right 15px
   h1
     font-size 2.5em
+  h2
+    margin-bottom 15px
+    font-size 1.5em
+    color $body-color
   input
     margin-bottom 20px
     max-width 700px
@@ -9,8 +16,7 @@
   label
     margin-bottom 5px
   .block
-    background $ll-gray
-    height 90vh
+    height 100%
     min-height 600px
     padding 0
     +below(2)
@@ -20,10 +26,16 @@
     padding 0
     display none
     +above(3)
+      position absolute
+      top 0
+      bottom 0
+      right 0
+      width 40%
+      display block
+      z-index $bottom-layer
       background url('../../../images/marketing/annotated-docs-2.svg') #576E83 repeat-y
       background-position center -30px
       background-size 75% 100%
-      display block
   .form-wrapper
     padding 30px 15px
     +above(3)
@@ -34,9 +46,14 @@
 .registration
   position relative
   margin-bottom 20px
+  section
+    margin-bottom 40px
+    &:last-of-type
+      margin-bottom 20px
   input[type=submit]
     width 100%
     margin-top 40px
+    margin-bottom 50px
     padding-top 12px
     padding-bottom 12px
     +above(2)
@@ -80,4 +97,12 @@
 
 .curtain-register
   @extend .curtain-white
-  background RGBA(249, 249, 249, .8)
+  background rgba(249, 249, 249, .8)
+
+.card-details
+  +above(3)
+    max-width 550px
+
+.cc-number
+  +above(3)
+    max-width 500px

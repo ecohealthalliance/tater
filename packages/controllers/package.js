@@ -24,6 +24,7 @@ Package.onUse(function(api) {
   api.use('mrt:jquery-easing');
   api.use('harrison:babyparse');
   api.use('alethes:pages@1.8.4');
+  api.use('mrgalaxy:stripe@2.2.1');
   api.use('email');
   api.addFiles('admin.coffee', ['client', 'server']);
   api.addFiles('delete_document_modal.coffee', ['client', 'server']);
@@ -62,4 +63,5 @@ Package.onUse(function(api) {
   api.addFiles('eula.coffee', ['client', 'server']);
   api.addFiles('tooltip_icon.coffee', ['client', 'server']);
   api.addFiles('create_mturk_job_modal.coffee', ['client', 'server']);
+  api.addFiles('stripe.coffee', 'client');
 });
