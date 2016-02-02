@@ -66,7 +66,6 @@ if Meteor.isClient
     @subscribe('documentDetail', @data.documentId)
     @subscribe('docAnnotations', @data.documentId, @userToken)
     @subscribe('users', @data.documentId)
-    # @subscribe('mTurkJob', @data.documentId)
     @startOffset = new ReactiveVar()
     @endOffset = new ReactiveVar()
     @annotations = new ReactiveVar()
@@ -318,7 +317,6 @@ Meteor.methods
     @unblock()
     check attributes, Object
     check attributes.documentId, String
-    console.log(arguments)
     document = Documents.findOne(attributes.documentId)
     if Meteor.isClient
       accessible = true

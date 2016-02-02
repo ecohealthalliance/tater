@@ -103,7 +103,6 @@ MTurkJob = Astro.Class
         }).CreateHITResponse
         @set('createHITResponse', responseJSON)
         if responseJSON.HIT?.HITId
-          console.log responseJSON.HIT.HITId
           @set('HITId', responseJSON.HIT.HITId)
           document = Documents.findOne(@documentId)
           document.set('mTurkEnabled', true)
