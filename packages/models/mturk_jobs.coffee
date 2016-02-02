@@ -146,8 +146,8 @@ MTurkJob = Astro.Class
           document = Documents.findOne(@documentId)
           document.set('mTurkEnabled', false)
           document.save()
-        else
-          event.preventDefault()
+        # We never actually delete these records
+        event.preventDefault()
 
   methods:
     obtainSubmitUrl: (assignmentId) ->
