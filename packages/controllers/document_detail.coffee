@@ -254,6 +254,9 @@ if Meteor.isClient
           form.attr('action', submitUrl)
           form.submit()
 
+    'click #cancel-mturk-job': (event, instance) ->
+      Meteor.call('cancelMechTurkJob', instance.data.documentId)
+
   Template.documentDetailAnnotation.helpers
     header: ->
       @header()
@@ -391,13 +394,16 @@ Meteor.methods
         accessible = group?.viewableByUser(user)
     else
       accessible = true # reduce the amount of logic on the client side
-
     if accessible
       annotation.set(flagged: not annotation.flagged)
       annotation.save()
     else
       throw new Meteor.Error 'Unauthorized'
 
+  cancelMechTurkJob: (documentId) ->
+    @unblock()
+    check documentId, String
+    MTurkJobs.findOne(documentId: documentId)?.remove()
 
 if Meteor.isServer
 

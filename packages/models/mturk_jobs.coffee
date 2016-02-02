@@ -99,16 +99,55 @@ MTurkJob = Astro.Class
             # features to the application.
             AutoApprovalDelayInSeconds: 0
         })
-        responseJSON = xml2js.parseStringSync(response.content, {
-          explicitArray: false
-        }).CreateHITResponse
-        @set('createHITResponse', responseJSON)
-        if responseJSON.HIT?.HITId
-          @set('HITId', responseJSON.HIT.HITId)
+        CreateHITResponseJSON = xml2json(response.content).CreateHITResponse
+        @set('createHITResponse', CreateHITResponseJSON)
+        if CreateHITResponseJSON.HIT?.HITId
+          @set('HITId', CreateHITResponseJSON.HIT.HITId)
           document = Documents.findOne(@documentId)
           document.set('mTurkEnabled', true)
           document.save()
         @save()
+    beforeRemove: (event) ->
+      if Meteor.isServer
+        unless Meteor.settings.private.AWS_ACCESS_KEY
+          console.log "AWS_ACCESS_KEY is not defined, cannot call mechanical turk API."
+          return
+        # Parameters documented here:
+        # http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_DisableHITOperation.html
+        service   = "AWSMechanicalTurkRequester"
+        operation = "DisableHIT"
+        timestamp = new Date().toISOString()
+        signature = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(
+          service + operation + timestamp,
+          Meteor.settings.private.AWS_SECRET_KEY
+        ))
+        # rootUrl cannot be localhost or calls to mturk will fail.
+        if process.env.ROOT_URL.match("localhost")
+          rootUrl = "https://staging.tater.io"
+        else
+          rootUrl = process.env.ROOT_URL
+        if process.env.MTURK_URL
+          mturkUrl = process.env.MTURK_URL
+        else
+          console.log "MTURK_URL is not defined, defaulting to the sandbox API."
+          mturkUrl = "https://mechanicalturk.sandbox.amazonaws.com"
+        response = HTTP.post(mturkUrl, {
+          params:
+            Service: service
+            AWSAccessKeyId: Meteor.settings.private.AWS_ACCESS_KEY
+            Version: "2014-08-15"
+            Operation: operation
+            Timestamp: timestamp
+            Signature: signature
+            HITId: @HITId
+        })
+        DisableHITResponseJSON = xml2json(response.content).DisableHITResponse
+        if DisableHITResponseJSON.DisableHITResult?.Request?.IsValid is 'True'
+          document = Documents.findOne(@documentId)
+          document.set('mTurkEnabled', false)
+          document.save()
+        else
+          event.preventDefault()
 
   methods:
     obtainSubmitUrl: (assignmentId) ->
@@ -122,3 +161,9 @@ MTurkJob = Astro.Class
           console.log "MTURK_URL is not defined, defaulting to the sandbox API."
           mturkWorkerUrl = "https://workersandbox.mturk.com"
         "#{mturkWorkerUrl}/mturk/externalSubmit?assignmentId=#{assignmentId}&t=#{(Date.now())}"
+
+
+xml2json = (xml) ->
+  xml2js.parseStringSync(xml, {
+    explicitArray: false
+  })
