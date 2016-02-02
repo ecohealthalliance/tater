@@ -8,5 +8,5 @@ cd /tater/programs/server && npm install
 #service supervisor start
 
 #Run our meteor app in production mode
-export export METEOR_SETTINGS=$(cat /shared/settings-production.json)
+export METEOR_SETTINGS=$(cat /shared/settings-production.json)
 cd /tater && node main.js
