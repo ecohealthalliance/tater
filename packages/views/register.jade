@@ -60,6 +60,11 @@ template(name='register')
                   label.required CVC
                     +tooltipIcon icon='info-circle' title='3-digit code found on the back of your card' placement="right"
                   input.form-control.cvc(data-stripe='cvc' type='text' required maxlength='3')
+
+                .row
+                  .col-xs-4
+                    label.required Zip Code
+                    input.form-control.zip-code(data-stripe='addressZip' type='text' required maxlength='5')
             if registering
               input.btn.btn-primary(type='submit' value='Register')
             else

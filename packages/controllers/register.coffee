@@ -38,6 +38,7 @@ if Meteor.isClient
         cvc: template.$('[data-stripe="cvc"]').val().trim()
         exp_month: parseInt(template.$('[data-stripe="expirationMonth"]').val().trim())
         exp_year: parseInt(template.$('[data-stripe="expirationYear"]').val().trim())
+        address_zip: parseInt(template.$('[data-stripe="addressZip"]').val().trim())
 
       Stripe.card.createToken creditCardProps, (status, response) ->
         if response.error
