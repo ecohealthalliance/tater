@@ -16,22 +16,18 @@ template(name="documentDetailCodingKeywords")
               i.fa.fa-chevron-circle-down
               | Show all codes
         each headers
-          if ../hitId
-            li.code-header.count.highlighted.selectable(class='code-header-#{color}')
-              span.header-name.selectable-code= label
-          else
-            li.code-header.coding.highlighted.selectable(class='code-header-#{color}')
-              i(class="{{#if showingAllCodes}} up {{else}} down {{/if}}")
-              span.selectable-code(class="{{highlightHeading}}")= label
-              ul.code-sub-headers.coding.list-unstyled(class="{{#unless showingAllCodes}} hidden {{/unless}}")
-                each subHeaders _id
-                  li.code-sub-header.selectable
-                    i(class="{{#if showingAllCodes}} up {{else}} down {{/if}}")
-                    span.selectable-code.showing= label
-                    ul.code-keywords.list-unstyled(class="{{#unless showingAllCodes}} hidden {{/unless}}")
-                      each keywords _id
-                        li.code-keyword.coding.selectable
-                          span.selectable-code(data-id=_id)= label
+          li.code-header.coding.highlighted.selectable(class='code-header-#{color}')
+            i(class="{{#if showingAllCodes}} up {{else}} down {{/if}}")
+            span.selectable-code(class="{{highlightHeading}}")= label
+            ul.code-sub-headers.coding.list-unstyled(class="{{#unless showingAllCodes}} hidden {{/unless}}")
+              each subHeaders _id
+                li.code-sub-header.selectable
+                  i(class="{{#if showingAllCodes}} up {{else}} down {{/if}}")
+                  span.selectable-code.showing= label
+                  ul.code-keywords.list-unstyled(class="{{#unless showingAllCodes}} hidden {{/unless}}")
+                    each keywords _id
+                      li.code-keyword.coding.selectable
+                        span.selectable-code(data-id=_id)= label
         else
           if searching
             .no-results
