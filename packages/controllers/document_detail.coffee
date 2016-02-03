@@ -73,6 +73,8 @@ if Meteor.isClient
     @searching = new ReactiveVar(false)
     @temporaryAnnotation = new ReactiveVar(new Annotation())
     @selectedAnnotation = new ReactiveVar(id: @data.annotationId, onLoad: true)
+    if @hitId
+      $(document.body).addClass('mturk')
 
   Template.documentDetail.onRendered ->
     instance = Template.instance()
