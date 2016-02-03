@@ -6,9 +6,6 @@ if Meteor.isClient
   Template.header.helpers
     accountsState: -> Template.instance().accountsState
 
-    usingHITId: ->
-      window.location.search.match('hitId=')
-
     documentsLinkParams: ->
       _id: Meteor.user().group
 
