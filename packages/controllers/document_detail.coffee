@@ -1,5 +1,4 @@
 if Meteor.isClient
-  Meteor.subscribe 'mturkjobs'
 
   $annotationSpanElement = (annotationId) ->
     $ ".document-text span[data-annotation-id='#{annotationId}']"
@@ -401,9 +400,6 @@ Meteor.methods
 
 
 if Meteor.isServer
-
-  Meteor.publish 'mturkjobs', ->
-    MTurkJobs.find()
 
   Meteor.publish 'documentDetail', (documentId) ->
     check documentId, String
