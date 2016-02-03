@@ -58,13 +58,13 @@ template(name='register')
                           option(value=this)= this
                 .col-xs-4.col-sm-3.col-sm-offset-1
                   label.required CVC
-                    +tooltipIcon icon='info-circle' title='3-digit code found on the back of your card' placement="right"
+                    +tooltipIcon icon='info-circle' title='3-digit code found on the back of your card' placement="top"
                   input.form-control.cvc(data-stripe='cvc' type='text' required maxlength='3')
 
-                .row
-                  .col-xs-4
-                    label.required Zip Code
-                    input.form-control.zip-code(data-stripe='addressZip' type='text' required maxlength='5')
+                .col-xs-4
+                  label.required Zip Code
+                  input.form-control.zip-code(data-stripe='addressZip' type='text' required maxlength='5')
+
             if registering
               input.btn.btn-primary(type='submit' value='Register')
             else
