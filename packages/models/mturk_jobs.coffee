@@ -44,6 +44,7 @@ MTurkJob = Astro.Class
       ]
     createHITResponse: 'object'
   behaviors: ['timestamp']
+
   events:
     afterSave: ->
       if Meteor.isServer and not @createHITResponse
@@ -108,3 +109,16 @@ MTurkJob = Astro.Class
           document.set('mTurkEnabled', true)
           document.save()
         @save()
+
+  methods:
+    obtainSubmitUrl: (assignmentId) ->
+      if Meteor.isServer and @createHITResponse
+        unless Meteor.settings.private.AWS_ACCESS_KEY
+          console.log "AWS_ACCESS_KEY is not defined, cannot call mechanical turk API."
+          return
+        if process.env.MTURK_WORKER_URL
+          mturkWorkerUrl = process.env.MTURK_WORKER_URL
+        else
+          console.log "MTURK_URL is not defined, defaulting to the sandbox API."
+          mturkWorkerUrl = "https://workersandbox.mturk.com"
+        "#{mturkWorkerUrl}/mturk/externalSubmit?assignmentId=#{assignmentId}&t=#{(Date.now())}"

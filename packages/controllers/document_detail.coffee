@@ -1,4 +1,5 @@
 if Meteor.isClient
+  Meteor.subscribe 'mturkjobs'
 
   $annotationSpanElement = (annotationId) ->
     $ ".document-text span[data-annotation-id='#{annotationId}']"
@@ -226,7 +227,6 @@ if Meteor.isClient
         Meteor.call 'createAnnotation', attributes, instance.userToken, (error, response) ->
           if error
             toastr.error("Invalid annotation")
-
         temporaryAnnotation.set startOffset: null, endOffset: null
         instance.temporaryAnnotation.set temporaryAnnotation
 
@@ -245,9 +245,15 @@ if Meteor.isClient
         .trigger('input')
         .focus()
     'click .finished-annotating': (event, instance) ->
-      form = $('<form method="POST" id="mturkForm">')
-      form.attr('action', "https://workersandbox.mturk.com/mturk/externalSubmit?assignmentId=#{instance.assignmentId}&foo=bar")
-      form.submit()
+      documentId = instance.data.documentId
+      assignmentId = instance.assignmentId
+      Meteor.call 'finishAssignment', documentId, assignmentId, (error, submitUrl) ->
+        if error
+          toastr.error("Unable to finish the annotation")
+        else
+          form = $('<form method="POST" id="mturkForm">')
+          form.attr('action', submitUrl)
+          form.submit()
 
   Template.documentDetailAnnotation.helpers
     header: ->
@@ -396,6 +402,9 @@ Meteor.methods
 
 if Meteor.isServer
 
+  Meteor.publish 'mturkjobs', ->
+    MTurkJobs.find()
+
   Meteor.publish 'documentDetail', (documentId) ->
     check documentId, String
     if @userId
@@ -439,3 +448,12 @@ if Meteor.isServer
           emails: 1
     else
       @ready()
+
+  Meteor.methods
+    finishAssignment: (documentId, assignmentId) ->
+      @unblock()
+      mTurkJob = MTurkJobs.findOne(documentId: documentId)
+      if mTurkJob
+        mTurkJob.obtainSubmitUrl(assignmentId)
+      else
+        throw new Meteor.Error('The task has not been found')
