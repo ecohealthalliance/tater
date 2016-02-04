@@ -95,7 +95,7 @@ MTurkJob = Astro.Class
               <ExternalURL>#{Meteor.absoluteUrl("documents", {
                 secure: true
                 rootUrl: rootUrl
-              })}/#{@documentId}</ExternalURL>
+              })}/#{@documentId}?noHeader=1</ExternalURL>
               <FrameHeight>600</FrameHeight>
             </ExternalQuestion>
             """
