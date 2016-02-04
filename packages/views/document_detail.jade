@@ -1,19 +1,22 @@
 template(name="documentDetail")
   if document
-    .document-detail-container.pane-container
-      +documentDetailCodingKeywords
-      .document-heading.pane-head.pane-head-m
-        h1.document-title= document.title
-        .document-options
-          if isAdmin
-            unless document.mTurkEnabled
-              a.btn.btn-primary.crowdsource-btn(data-toggle="modal" data-document-id=document._id data-target="#create-mturk-job-modal" )
-                i.fa.fa-users
-                | Crowdsource
-          a.help-link.help-link-document.pull-right(href="{{path route='/help?topic=annotating-documents'}}")
-            +tooltipIcon icon='question-circle' placement='left'
-          if assignmentId
-            unless mechanicalTurkPreview
+    if mechanicalTurkPreview
+      p Mechanical Turk instrutions.
+    else
+      +createMTurkJobModal document=document
+      .document-detail-container
+        +documentDetailCodingKeywords
+        .document-heading.pane-head.pane-head-m
+          h1.document-title= document.title
+          .document-options
+            if isAdmin
+              unless document.mTurkEnabled
+                a.btn.btn-primary.crowdsource-btn(data-toggle="modal" data-document-id=document._id data-target="#create-mturk-job-modal" )
+                  i.fa.fa-users
+                  | Crowdsource
+            a.help-link.help-link-document.pull-right(href="{{path route='/help?topic=annotating-documents'}}")
+              +tooltipIcon icon='question-circle' placement='left'
+            if assignmentId
               button.finished-annotating.btn.btn-primary
                 i.fa.fa-check-circle.icon-left
                 span Finish Annotating
@@ -58,8 +61,6 @@ template(name="documentDetail")
                   p No annotations currently present.
           else
             .loading
-
-  +createMTurkJobModal document=document
 
 template(name="documentDetailAnnotation")
   li(data-annotation-id=_id class="annotation-color-#{color} {{selected}}")
