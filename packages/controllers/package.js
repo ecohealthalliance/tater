@@ -67,4 +67,5 @@ Package.onUse(function(api) {
   api.addFiles('stripe.coffee', 'client');
   api.addFiles('connection_status.coffee', ['client', 'server']);
   api.addFiles('password_field.coffee', 'client');
+  api.addFiles('marketing_page.coffee', 'client');
 });
