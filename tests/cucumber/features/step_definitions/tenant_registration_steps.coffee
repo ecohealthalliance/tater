@@ -15,12 +15,17 @@ do ->
         .setValue('.org-name', 'Organization Name')
         .setValue('.tenant-name', 'test')
 
-    @When 'I add my credit card information', ->
+    @When /^I add my credit card information( with incorrect zip code)?$/, (incorrectZipCode) ->
+      if incorrectZipCode
+        cardNumber = "4000000000000036"
+      else
+        cardNumber = "4242424242424242"
       @browser
-        .setValue('[data-stripe=cardNumber]', '4242424242424242')
+        .setValue('[data-stripe=cardNumber]', cardNumber)
         .selectByValue('[data-stripe=expirationMonth]', '08')
         .selectByValue('[data-stripe=expirationYear]', '2020')
         .setValue('[data-stripe=cvc]', '123')
+        .setValue('[data-stripe=addressZip]', '10003')
 
     @When 'I submit the tenant registration form', ->
       @browser
