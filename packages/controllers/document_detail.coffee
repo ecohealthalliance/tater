@@ -403,7 +403,8 @@ Meteor.methods
   cancelMechTurkJob: (documentId) ->
     @unblock()
     check documentId, String
-    MTurkJobs.findOne(documentId: documentId)?.remove()
+    if Meteor.user()?.admin
+      MTurkJobs.findOne(documentId: documentId)?.cancel()
 
 if Meteor.isServer
 

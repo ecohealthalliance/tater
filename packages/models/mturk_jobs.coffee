@@ -43,6 +43,7 @@ MTurkJob = Astro.Class
         Validators.lte(100, 'Max assignments is limited to 100 as a precaution.')
       ]
     createHITResponse: 'object'
+    disableHITResponse: 'object'
   behaviors: ['timestamp']
 
   events:
@@ -107,8 +108,10 @@ MTurkJob = Astro.Class
           document.set('mTurkEnabled', true)
           document.save()
         @save()
-    beforeRemove: (event) ->
-      if Meteor.isServer
+
+  methods:
+    cancel: ->
+      if Meteor.isServer and @createHITResponse
         unless Meteor.settings.private.AWS_ACCESS_KEY
           console.log "AWS_ACCESS_KEY is not defined, cannot call mechanical turk API."
           return
@@ -142,14 +145,13 @@ MTurkJob = Astro.Class
             HITId: @HITId
         })
         DisableHITResponseJSON = xml2json(response.content).DisableHITResponse
+        @set('disableHITResponse', CreateHITResponseJSON)
         if DisableHITResponseJSON.DisableHITResult?.Request?.IsValid is 'True'
           document = Documents.findOne(@documentId)
           document.set('mTurkEnabled', false)
           document.save()
-        # We never actually delete these records
-        event.preventDefault()
+        @save()
 
-  methods:
     obtainSubmitUrl: (assignmentId) ->
       if Meteor.isServer and @createHITResponse
         unless Meteor.settings.private.AWS_ACCESS_KEY
