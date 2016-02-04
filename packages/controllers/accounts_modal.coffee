@@ -6,6 +6,7 @@ AccountsTemplates.configure
   onSubmitHook: (err, state)->
     unless err
       $('.accounts-modal').modal('hide')
+      $('.accounts-modal').off('hidden.bs.modal')
       # sign in fields are cleared so they don't remain populated after a logout
       $('.accounts-modal input').val('')
       if state is 'changePwd'
@@ -16,6 +17,10 @@ AccountsTemplates.configure
 
 Template.accountsModal.onCreated ->
   @state = Template.currentData()?.state
+
+Template.accountsModal.onRendered ->
+  $('.accounts-modal').on 'hidden.bs.modal', ->
+    AccountsTemplates.state.form.set('error', '')
 
 Template.accountsModal.helpers
   state: -> Template.instance().state.get()
