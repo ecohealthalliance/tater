@@ -3,6 +3,7 @@ MTurkJob = Astro.Class
   name: 'MTurkJob'
   collection: MTurkJobs
   fields:
+    documentId: 'string'
     title:
       type: 'string'
       default: """
@@ -21,27 +22,7 @@ MTurkJob = Astro.Class
         Validators.required()
         Validators.maxLength(2000, 'Mechanical Turk does not allow descriptions longer than 2000 characters.')
       ]
-    documentId: 'string'
     HITId: 'string'
-    rewardAmount:
-      type: 'number'
-      validator: [
-        Validators.required()
-        Validators.lt(30, 'Rewards greater than 30 USD are not supported as a precaution.')
-      ]
-    HITLifetimeInSeconds:
-      type: 'number'
-      default: 30 * 24 * 60 * 60 # 30 days
-      validator: [
-        Validators.gte(30, 'HIT lifetime must be greater than 30 seconds.')
-        Validators.lte(31536000, 'HIT lifetime cannot exceed 31536000 seconds.')
-      ]
-    maxAssignments:
-      type: 'number'
-      default: 1
-      validator: [
-        Validators.lte(100, 'Max assignments is limited to 100 as a precaution.')
-      ]
     createHITResponse: 'object'
   behaviors: ['timestamp']
 
@@ -89,11 +70,13 @@ MTurkJob = Astro.Class
               <FrameHeight>600</FrameHeight>
             </ExternalQuestion>
             """
-            "Reward.1.Amount": @rewardAmount
+            "Reward.1.Amount": 1
             "Reward.1.CurrencyCode": "USD"
             AssignmentDurationInSeconds: 6000
-            LifetimeInSeconds: @HITLifetimeInSeconds
-            MaxAssignments: @maxAssignments
+            # HIT lifetime must be greater than 30 seconds.
+            # HIT lifetime cannot exceed 31536000 seconds.
+            LifetimeInSeconds: 30 * 24 * 60 * 60 # 30 days
+            MaxAssignments: 1
             Keywords: "annotation, highlighting, QDA, tater"
             # Leaving this at 0 for instant approval until we add some review
             # features to the application.
