@@ -145,7 +145,7 @@ MTurkJob = Astro.Class
             HITId: @HITId
         })
         DisableHITResponseJSON = xml2json(response.content).DisableHITResponse
-        @set('disableHITResponse', CreateHITResponseJSON)
+        @set('disableHITResponse', DisableHITResponseJSON)
         if DisableHITResponseJSON.DisableHITResult?.Request?.IsValid is 'True'
           document = Documents.findOne(@documentId)
           document.set('mTurkEnabled', false)
