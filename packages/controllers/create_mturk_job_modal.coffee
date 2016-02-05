@@ -40,13 +40,15 @@ if Meteor.isServer
 
   Meteor.methods
     createMTurkJob: (properties) ->
-      check properties, Object
+      check properties,
+        documentId: String
+        title: String
+        description: String
       if Meteor.user()?.admin
         fields = {
           documentId: properties.documentId
           title: properties.title
           description: properties.description
-          rewardAmount: 1
         }
         job = new MTurkJob(fields)
         unless job.validate()

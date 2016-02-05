@@ -10,10 +10,7 @@ describe 'MTurkJob', ->
       job = new MTurkJob(
         title: "Tater test"
         description: "tater"
-        rewardAmount: 1
         documentId: doc._id
-        HITLifetimeInSeconds: 120
-        maxAssignments: 1
       )
       job.save()
       expect(job.createHITResponse.HIT.HITId).not.to.be.an('undefined')

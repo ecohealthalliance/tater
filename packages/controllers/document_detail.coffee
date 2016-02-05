@@ -323,8 +323,11 @@ Meteor.methods
 
   createAnnotation: (attributes, userToken) ->
     @unblock()
-    check attributes, Object
-    check attributes.documentId, String
+    check attributes,
+      codeId: String
+      documentId: String
+      startOffset: Number
+      endOffset: Number
     document = Documents.findOne(attributes.documentId)
     if Meteor.isClient
       accessible = true
