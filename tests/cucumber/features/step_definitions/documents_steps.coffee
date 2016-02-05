@@ -48,12 +48,16 @@ do ->
         .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid"))
         .waitForExist('.document-container')
 
-    @When "I fake HITId for the test document", ->
+    @When "I stub out HIT request for the test document", ->
       @server.call('setHIDIdFixture', 'fakedocid')
+
+    @When 'I preview the test document using hitId', ->
+      @browser
+        .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid?assignmentId=ASSIGNMENT_ID_NOT_AVAILABLE&hitId=fakeHITId&noHeader=1"))
 
     @When 'I navigate to the test document using hitId', ->
       @browser
-        .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid?hitId=fakeHITId"))
+        .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid?assignmentId=X&hitId=fakeHITId&noHeader=1"))
         .waitForExist('.document-container')
 
     @When 'I click on the New Document link', ->
