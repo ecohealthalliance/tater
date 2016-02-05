@@ -108,7 +108,7 @@ Feature: Documents
     And there is a document with title "Test Document" in the test group
     Then I stub out HIT request for the test document
     And I preview the test document using hitId
-    Then I should see content "Mechanical Turk instructions"
+    Then I should see content "Instructions"
     Then I should not see content "Sign In"
 
   @documents

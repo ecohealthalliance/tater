@@ -1,7 +1,7 @@
 template(name="documentDetail")
   if document
     if mechanicalTurkPreview
-      p Mechanical Turk instructions.
+      +mTurkPreview
     else
       +createMTurkJobModal document=document
       .document-detail-container
