@@ -40,10 +40,10 @@ if Meteor.isServer
 
   Meteor.methods
     createMTurkJob: (properties) ->
-      check properties, Object
-      check properties.documentId, String
-      check properties.title, String
-      check properties.description, String
+      check properties,
+        documentId: String
+        title: String
+        description: String
       if Meteor.user()?.admin
         fields = {
           documentId: properties.documentId
