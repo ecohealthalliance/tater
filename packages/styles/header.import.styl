@@ -2,6 +2,11 @@ header
   position relative
   z-index $top-layer
 
+// Hide header if body has 'no-header class'
+.no-header
+  header
+    display none
+
 .container > .navbar-header
   +below(3)
     margin 0

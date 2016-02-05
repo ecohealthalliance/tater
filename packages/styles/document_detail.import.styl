@@ -1,3 +1,23 @@
+.document-detail-container
+  position fixed
+  top $header-height
+  bottom 0
+  left 0
+  right 0
+  z-index $mid-layer
+  .loading
+    loading(false)
+    position absolute
+    top 100px
+    transform translate(-50%, 0)
+    left 50%
+
+// If body has .no-header class and position container at top
+.no-header
+  .document-detail-container
+    top 0
+
+>>>>>>> Move no-header styles to corresponding stylus files
 .annotations-selected-container
   background alpha($background-primary, 55%)
   padding 10px 10px 10px 10px
