@@ -8,12 +8,12 @@ if Meteor.isClient
       unless $button.hasClass noClickClassName
         $button.addClass noClickClassName
         documentId = $button.attr('data-document-id')
-        Meteor.call 'deleteDocument', documentId, (error, isServer) ->
+        Meteor.call 'deleteDocument', documentId, (error, isClient) ->
           if error
             toastr.error('Server Error')
           else
             toastr.success('Success')
-          if isServer
+          if isClient
             $button.removeClass noClickClassName
 
 
@@ -26,7 +26,7 @@ Meteor.methods
     if not document then throw new Meteor.Error('Document does not exist.')
     group = Groups.findOne(document.groupId)
     if group?.viewableByUser(user)
-      Documents.remove(documentId)
+      document.remove()
       Annotations.remove(documentId: documentId)
     else
       throw new Meteor.Error('Document is not accessible.')

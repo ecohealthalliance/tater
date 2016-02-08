@@ -255,7 +255,7 @@ if Meteor.isClient
           form.submit()
 
     'click #cancel-mturk-job': (event, instance) ->
-      Meteor.call('cancelMechTurkJob', instance.data.documentId)
+      Meteor.call('cancelMechTurkJobs', instance.data.documentId)
 
   Template.documentDetailAnnotation.helpers
     header: ->
@@ -400,11 +400,11 @@ Meteor.methods
     else
       throw new Meteor.Error 'Unauthorized'
 
-  cancelMechTurkJob: (documentId) ->
+  cancelMechTurkJobs: (documentId) ->
     @unblock()
     check documentId, String
     if Meteor.user()?.admin
-      MTurkJobs.findOne(documentId: documentId)?.cancel()
+      Documents.findOne(documentId)?.removeAllRelatedMTurkJobs()
 
 if Meteor.isServer
 
