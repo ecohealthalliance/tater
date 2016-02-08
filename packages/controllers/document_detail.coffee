@@ -457,6 +457,10 @@ if Meteor.isServer
       @unblock()
       mTurkJob = MTurkJobs.findOne(documentId: documentId)
       if mTurkJob
+        doc = Documents.findOne(documentId)
+        if doc
+          doc.set(mTurkEnabled: false)
+          doc.save()
         mTurkJob.obtainSubmitUrl(assignmentId)
       else
         throw new Meteor.Error('The task has not been found')
