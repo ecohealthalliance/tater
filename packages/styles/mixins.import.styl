@@ -96,7 +96,7 @@ makeButton($color, $text = white, $dark = false, $noOutline = false, $hoverColor
     &:focus
       outline 0
 
-loading($positioned=true)
+loading($positioned=true, $loadingText=false)
   @extend .icon
   if $positioned
     centerPosition()
@@ -106,9 +106,21 @@ loading($positioned=true)
   opacity 1
   font-size 5em
   color $m-gray
+  -webkit-filter blur(0)
+  text-align center
   &::before
     animate(1s)
     content '\f1ce'
+    display block
+    transform-origin 49.4% 49% //Fixes the wobble in most cases
+  if $showLoadingText
+    &::after
+      display block
+      content 'loading'
+      margin-top -10px
+      font-size .25em
+      color $m-gray
+
 
 animate($speed)
   animation spin $speed infinite ease-in-out
