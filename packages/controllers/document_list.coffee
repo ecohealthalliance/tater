@@ -160,11 +160,8 @@ if Meteor.isClient
     'click .doc-options': (event) ->
       event.preventDefault()
 
-    'click .delete-document-button': (event) ->
-      $('#confirm-delete-document').attr(
-        "data-document-id",
-        event.target.parentElement.getAttribute("data-document-id")
-      )
+    'click .delete-document-button': (event, instance) ->
+      $('#confirm-delete-document').attr 'data-document-id', instance.document._id
 
     'mouseover .doc-options-wrap': (event, instance) ->
       instance.docOptionsShowing.set true
