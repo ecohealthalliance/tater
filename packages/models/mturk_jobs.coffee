@@ -1,3 +1,5 @@
+xml2json = (xml) -> xml2js.parseStringSync(xml, explicitArray: false)
+
 MTurkJobs = new Mongo.Collection('mturkJobs')
 MTurkJob = Astro.Class
   name: 'MTurkJob'
@@ -170,9 +172,3 @@ MTurkJob = Astro.Class
           console.log "MTURK_URL is not defined, defaulting to the sandbox API."
           mturkWorkerUrl = "https://workersandbox.mturk.com"
         "#{mturkWorkerUrl}/mturk/externalSubmit?assignmentId=#{assignmentId}&t=#{(Date.now())}"
-
-
-xml2json = (xml) ->
-  xml2js.parseStringSync(xml, {
-    explicitArray: false
-  })
