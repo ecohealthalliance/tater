@@ -21,6 +21,13 @@ MTurkJob = Astro.Class
         Validators.required()
         Validators.maxLength(2000, 'Mechanical Turk does not allow descriptions longer than 2000 characters.')
       ]
+    userId:
+      type: 'string'
+      validator: [
+        Validators.required()
+        Validators.minLength(17, 'The userId can only be 17 characters long.')
+        Validators.maxLength(17, 'The userId can only be 17 characters long.')
+      ]
     documentId: 'string'
     HITId: 'string'
     rewardAmount:
