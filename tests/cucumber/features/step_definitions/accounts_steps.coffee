@@ -181,3 +181,14 @@ do ->
           _browser
             .url(url.resolve(process.env.ROOT_URL, "/authenticate?userAccessKey=#{token}"))
             .pause(3000)
+
+    @When 'I open the forgot password modal', ->
+      @browser
+        .click('.sign-in')
+        .waitForVisible('.accounts-modal.modal.in')
+        .click('#at-forgotPwd')
+
+    @When 'I fill out the forgot password form using email "$email"', (email) ->
+      @browser
+        .setValue('#at-field-email', email)
+        .submitForm('#at-pwd-form')
