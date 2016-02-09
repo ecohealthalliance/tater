@@ -45,6 +45,13 @@ checkMark(center=false)
   position relative
   > span
     padding 2px 20px 2px 5px
+  &.up
+  &.down
+    > i
+      transition .1s ease-in-out
+  &.up
+    > i
+      transform rotate(90deg)
   i
     position absolute
     left 15px
@@ -54,9 +61,6 @@ checkMark(center=false)
     &::before
       content '\f138'
       @extend .icon
-    &.up
-      transition .1s
-      transform rotate(90deg)
     &:hover
       color darken($secondary-dark, 20%)
       transition .1s ease-in-out
@@ -170,8 +174,7 @@ checkMark(center=false)
     margin-left 2px
   i
     left 38px
-    top 0
-    font-size 1.2em
+    top 2px
 
 .code-keywords
   padding-left 10px
@@ -191,7 +194,7 @@ checkMark(center=false)
   font-weight 400
   span
     truncateString(false)
-    padding 5px 15px 5px 5px
+    padding 5px 20px 5px 5px
 
 .filteredCodes
   margin-bottom 20px

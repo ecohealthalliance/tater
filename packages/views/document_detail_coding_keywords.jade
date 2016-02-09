@@ -16,13 +16,13 @@ template(name="documentDetailCodingKeywords")
               i.fa.fa-chevron-circle-down
               | Show all codes
         each headers
-          li.code-header.coding.highlighted.selectable(class='code-header-#{color}')
-            i(class="{{#if showingAllCodes}} up {{else}} down {{/if}}")
+          li.code-header.coding.highlighted.selectable(class="code-header-#{color} {{#if showingAllCodes}} up {{else}} down {{/if}}")
+            i
             span.selectable-code(class="{{highlightHeading}}")= label
             ul.code-sub-headers.coding.list-unstyled(class="{{#unless showingAllCodes}} hidden {{/unless}}")
               each subHeaders _id
-                li.code-sub-header.selectable
-                  i(class="{{#if showingAllCodes}} up {{else}} down {{/if}}")
+                li.code-sub-header.selectable(class="{{#if showingAllCodes}} up {{else}} down {{/if}}")
+                  i
                   span.selectable-code.showing= label
                   ul.code-keywords.list-unstyled(class="{{#unless showingAllCodes}} hidden {{/unless}}")
                     each keywords _id
