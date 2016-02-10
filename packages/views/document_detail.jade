@@ -9,31 +9,28 @@ template(name="documentDetail")
         .document-heading.pane-head.pane-head-m
           h1.document-title= document.title
           .document-options
-            if isAdmin
-              unless document.mTurkEnabled
-                a.btn.btn-primary.crowdsource-btn(data-toggle="modal" data-document-id=document._id data-target="#create-mturk-job-modal" )
-                  i.fa.fa-users
-                  | Crowdsource
+            if crowdsourceDoc document
+              a.btn.btn-primary.crowdsource-btn(data-toggle="modal" data-document-id=document._id data-target="#create-mturk-job-modal" )
+                i.fa.fa-users
+                | Crowdsource
             a.help-link.help-link-document.pull-right(href="{{path route='/help?topic=annotating-documents'}}")
               +tooltipIcon icon='question-circle' placement='left'
-            if assignmentId
-              unless mechanicalTurkPreview
-                button.finished-annotating.btn.btn-primary
-                  i.fa.fa-check-circle.icon-left
-                  span Finish Annotating
+            if mTurkAnnotating
+              button.finished-annotating.btn.btn-primary
+                i.fa.fa-check-circle.icon-left
+                span Finish Annotating
         .document-container.pane.pane-middle
-          if document.mTurkEnabled
+          if crowdsourceAdminMessage
             .crowdsource-details
-              if isAdmin
                 .admin-details
                   i.fa.fa-cogs
                   p Document has been submitted for annotation and is being processed.
                   a.btn.btn-primary#cancel-mturk-job Cancel this job
-              else
-                unless assignmentId
-                  .user-details
-                    i.fa.fa-exclamation-triangle
-                    p This document has been crowdsourced and does not require annotation.
+          else if document.mTurkEnabled
+            .crowdsource-details
+              .user-details
+                i.fa.fa-exclamation-triangle
+                p This document has been crowdsourced and does not require annotation.
           #documentContainer
             #documentBody.document-body
               .document-wrapper
