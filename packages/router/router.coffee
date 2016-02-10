@@ -103,6 +103,14 @@ FlowRouter.route '/documents/:_id',
        'turkSubmitTo': query.turkSubmitTo
      }
 
+FlowRouter.route '/authenticate',
+  action: (params, query) ->
+    BlazeLayout.render 'layout',
+      main: 'splashPage'
+      params: {}
+    Meteor.startup ->
+      Meteor.loginWithToken(query.bsveAccessKey);
+
 loggedIn.route '/admin',
   name: 'admin'
   action: () ->

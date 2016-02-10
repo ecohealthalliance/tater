@@ -62,3 +62,10 @@ Feature: Accounts
     And I log out
     And I log in with my new password
     Then I am logged in
+
+  @accounts
+  Scenario: Automatic logging in using url parameters
+    When there is a test user in the database
+    And I am not logged in
+    Then I log in by passing the secret access token via URL
+    And I am logged in

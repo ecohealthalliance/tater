@@ -60,15 +60,22 @@ do ->
         .waitForExist('.profile-detail')
 
     @Then /I am( not)? logged in/, (amNot) ->
-      @browser
-        .execute ->
-          Meteor.userId()
-        , (err, ret) ->
-          assert.ifError err
-          if amNot
-            assert.equal ret.value, null, 'Authenticated'
-          else
-            assert ret.value, 'Not authenticated'
+      if amNot
+        @browser
+          .execute ->
+            userId = Meteor.userId()
+            if typeof userId is 'string'
+              throw new Meteor.Error 'Still logged in'
+          , (err, ret) ->
+            assert.ifError err
+      else
+        @browser
+          .execute ->
+            userId = Meteor.userId()
+            if typeof userId isnt 'string'
+              throw new Meteor.Error 'Not logged in'
+          , (err, ret) ->
+            assert.ifError err
 
     @Then 'I am logged in as an admin user', ->
       @browser
@@ -166,3 +173,7 @@ do ->
         .setValue('#at-field-password', 'newPassword')
         .submitForm('#at-field-email')
         .waitForExist('.sign-out')
+
+    @When 'I log in by passing the secret access token via URL', ->
+      @browser
+        .url(url.resolve(process.env.ROOT_URL, '/authenticate?bsveAccessKey=wVCLfs9kttmBF5M6L8ABSMiPZJh8HwKjXZdvxDTs4I8'))
