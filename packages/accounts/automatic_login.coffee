@@ -8,15 +8,7 @@ if Meteor.isServer
       token: token
       when: new Date
 
-    func = ->
+    Meteor.startup ->
       rootUser = Accounts.findUserByEmail email
       if rootUser
         Accounts._insertLoginToken(rootUser._id, tokenObject)
-        true
-      false
-
-    Meteor.startup ->
-      if not func()
-        handle = Meteor.users.find()
-        handle.observeChanges
-          added: func

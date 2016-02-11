@@ -174,6 +174,11 @@ do ->
         .submitForm('#at-field-email')
         .waitForExist('.sign-out')
 
-    @When 'I log in by passing the secret access token via URL', ->
-      @browser
-        .url(url.resolve(process.env.ROOT_URL, '/authenticate?bsveAccessKey=wVCLfs9kttmBF5M6L8ABSMiPZJh8HwKjXZdvxDTs4I8'))
+    @When 'I log in by passing a secret access token via URL', ->
+      _browser = @browser
+      @server
+        .call 'obtainUserAccessTokenFixture'
+        .then (token) ->
+          _browser
+            .url(url.resolve(process.env.ROOT_URL, "/authenticate?userAccessKey=#{token}"))
+            .pause(3000)

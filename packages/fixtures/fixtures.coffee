@@ -28,6 +28,27 @@ do ->
         $set: {admin: true, acceptedEULA: true}
       })
 
+    createTestUserWithAccessTokenFixture: (attributes) ->
+      Meteor.users.remove({})
+      account = Accounts.createUser
+        email: attributes.email
+        password: attributes.password
+      userProfile = UserProfiles.findOne(userId: account)
+      userProfile.update(
+        fullName: attributes.fullName
+      )
+      Meteor.users.update(account, {
+        $set: {admin: true, acceptedEULA: true}
+      })
+      tokenObject =
+        token: Meteor.settings.private.accounts?.loginToken
+        when: new Date
+      user = Accounts.findUserByEmail(attributes.email)
+      Accounts._insertLoginToken(user._id, tokenObject)
+
+    obtainUserAccessTokenFixture: ->
+      Meteor.settings.private.accounts?.loginToken
+
     setUserAccountPasswordFixture: (attributes) ->
       user = Meteor.users.findOne 'emails.address': attributes.email
       Accounts.setPassword user._id, attributes.password

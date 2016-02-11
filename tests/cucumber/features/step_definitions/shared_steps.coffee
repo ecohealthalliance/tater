@@ -8,9 +8,9 @@ do ->
     url = require 'url'
 
     _test_document =
-      _id:   "fakedocumentid"
-      title: "Test Document"
-      body:  "This is a doc for testing"
+      _id:   'fakedocumentid'
+      title: 'Test Document'
+      body:  'This is a doc for testing'
 
     _testUser =
       email:    'test@example.com'
@@ -26,6 +26,9 @@ do ->
 
     @Given 'there is a test user in the database', ->
       @server.call('createTestUserFixture', _testUser)
+
+    @Given 'there is a test user in the database with an access token', ->
+      @server.call('createTestUserWithAccessTokenFixture', _testUser)
 
     @Given 'there is a group in the database', ->
       @server.call('createTestGroupFixture')
@@ -44,7 +47,7 @@ do ->
     @Given 'there is a group in the database with id "$id"', (id)->
       @server.call('createTestGroupFixture', _id: id)
 
-    @When "I log in as the test user", ->
+    @When 'I log in as the test user', ->
       @client
         .url(url.resolve(process.env.ROOT_URL, '/'))
         .waitForExist('.sign-in')
