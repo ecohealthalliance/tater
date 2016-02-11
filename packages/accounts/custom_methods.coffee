@@ -2,13 +2,12 @@ if Meteor.isClient
 
   Accounts.forgotPassword = (options, callback) ->
     unless options.email
-      throw new Error("Must pass options.email")
-    Accounts.connection.call("taterForgotPassword", options, callback)
+      throw new Error('Please provide an email address')
+    Accounts.connection.call('taterForgotPassword', options, callback)
 
-else # Meteor.isServer
 
-  # Method called by a user to request a password reset email. This is
-  # the start of the reset process.
+if Meteor.isServer
+
   Meteor.methods
     taterForgotPassword: (options) ->
       check(options, email: String)
