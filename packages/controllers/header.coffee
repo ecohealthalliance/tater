@@ -17,5 +17,6 @@ if Meteor.isClient
         $('.navbar-collapse').collapse('toggle')
 
     'click .sign-in' : (event, instance) ->
+      AccountsTemplates.setState('signIn')
       instance.accountsState.set("signIn")
       $('.accounts-modal').modal('show')

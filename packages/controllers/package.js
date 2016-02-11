@@ -65,4 +65,5 @@ Package.onUse(function(api) {
   api.addFiles('create_mturk_job_modal.coffee', ['client', 'server']);
   api.addFiles('stripe.coffee', 'client');
   api.addFiles('connection_status.coffee', ['client', 'server']);
+  api.addFiles('password_field.coffee', 'client');
 });

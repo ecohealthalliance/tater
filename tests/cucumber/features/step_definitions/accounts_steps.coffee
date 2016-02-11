@@ -153,8 +153,8 @@ do ->
     @When 'I fill out the change password form', ->
       @browser
         .setValue('#at-field-current_password', 'password')
-        .setValue('#at-field-password', 'newPassword')
-        .setValue('#at-field-password_again', 'newPassword')
+        .setValue('#at-field-password', 'newPassword1')
+        .setValue('#at-field-password_again', 'newPassword1')
         .submitForm('#at-pwd-form')
 
     @When 'I log in with my new password', ->
@@ -162,6 +162,6 @@ do ->
         .click('.sign-in')
         .waitForExist('.accounts-modal.modal.in')
         .setValue('#at-field-email', 'test@example.com')
-        .setValue('#at-field-password', 'newPassword')
+        .setValue('#at-field-password', 'newPassword1')
         .submitForm('#at-field-email')
         .waitForExist('.sign-out')
