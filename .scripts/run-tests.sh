@@ -12,6 +12,7 @@ trap finish INT
 
 # Find an unused port (http://unix.stackexchange.com/questions/55913/whats-the-easiest-way-to-find-an-unused-local-port)
 while [ "$quit" -ne 1 ]; do
+  echo $port
   netstat -a | grep $port >> /dev/null
   if [ $? -gt 0 ]; then
     quit=1
