@@ -45,6 +45,13 @@ checkMark(center=false)
   position relative
   > span
     padding 2px 20px 2px 5px
+  &.up
+  &.down
+    > i
+      transition .1s ease-in-out
+  &.up
+    > i
+      transform rotate(90deg)
   i
     position absolute
     left 15px
@@ -54,9 +61,6 @@ checkMark(center=false)
     &::before
       content '\f138'
       @extend .icon
-    &.up
-      transition .1s
-      transform rotate(90deg)
     &:hover
       color darken($secondary-dark, 20%)
       transition .1s ease-in-out
@@ -72,11 +76,11 @@ checkMark(center=false)
 
 .code-header
   margin-bottom 5px
-  font-size 16px
+  font-size 1.1em
   font-weight 700
   color $body-text
-  +above(4)
-    font-size 18px
+  +above(5)
+    font-size 1.3em
   > span
     pointer()
     display block
@@ -158,9 +162,7 @@ checkMark(center=false)
 .code-sub-headers
 .code-keywords
   margin 5px 0 15px 0
-  font-size 14px
-  +above(4)
-    font-size 15px
+  font-size .9em
 
 .code-sub-header
   padding-left 53px
@@ -172,8 +174,7 @@ checkMark(center=false)
     margin-left 2px
   i
     left 38px
-    top 0
-    font-size 1.2em
+    top 2px
 
 .code-keywords
   padding-left 10px
@@ -190,11 +191,10 @@ checkMark(center=false)
   right 40px
 
 .code-keyword
-  font-size 13px
   font-weight 400
   span
     truncateString(false)
-    padding 5px 15px 5px 5px
+    padding 5px 20px 5px 5px
 
 .filteredCodes
   margin-bottom 20px
@@ -242,6 +242,7 @@ checkMark(center=false)
   overflow hidden
 
 .code-management-list-wrap
+  @extend .gradient-bottom
   position relative
   min-height 700px
   border-right 1px solid lighten($primary-light, 60%)
@@ -255,8 +256,8 @@ checkMark(center=false)
   bottom 0
   left 0
   right 0
-  margin 50px 0 0 0
-  padding-bottom 50px
+  padding-top 50px
+  padding-bottom 75px
   z-index $bottom-layer
   .code-list
     margin-bottom 0
@@ -294,7 +295,7 @@ checkMark(center=false)
 .code-management-list-header
   position absolute
   max-height 50px
-  z-index $bottom-layer
+  z-index $mid-layer
   top 0
   left 0
   right 0

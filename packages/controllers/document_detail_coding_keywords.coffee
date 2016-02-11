@@ -105,11 +105,17 @@ if Meteor.isClient
     'click .code-search-container .clear-search': (e, instance) ->
       $('.code-search-container .code-search').val('').trigger('input').focus()
 
-    'click .code-header > i': (e) ->
-      $(e.target).toggleClass('down up').siblings('.code-sub-headers').toggleClass('hidden')
+    'click .code-header > i, click .code-header > span': (e) ->
+      e.stopPropagation()
+      $target = $(e.currentTarget)
+      $target.parent().toggleClass('down up')
+      $target.siblings('.code-sub-headers').toggleClass('hidden')
 
-    'click .code-sub-header > i': (e) ->
-      $(e.target).toggleClass('down up').siblings('.code-keywords').toggleClass('hidden').siblings('span').toggleClass('showing')
+    'click .code-sub-header > i, click .code-sub-header > span': (e) ->
+      e.stopPropagation()
+      $target = $(e.currentTarget)
+      $target.parent().toggleClass('down up')
+      $target.siblings('.code-keywords').toggleClass('hidden').siblings('span').toggleClass('showing')
 
     'click .toggle-all-codes': (e, instance) ->
       instance.showingAllCodes.set(!instance.showingAllCodes.get())
