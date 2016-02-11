@@ -155,11 +155,19 @@ MTurkJob = Astro.Class
         })
         DisableHITResponseJSON = xml2json(response.content).DisableHITResponse
         @set('disableHITResponse', DisableHITResponseJSON)
-        if DisableHITResponseJSON.DisableHITResult?.Request?.IsValid is 'True'
+        responseRequest = DisableHITResponseJSON.DisableHITResult?.Request
+        # Note: the cancel operation should be considered successful if we got both 'True' and "HITDoesNotExist" responses.
+        if responseRequest?.IsValid is 'True'
+          ok = true
+        else if responseRequest?.Errors?.Error?.Code is 'AWS.MechanicalTurk.HITDoesNotExist'
+          ok = true
+        otherJobForTheSameDocument = MTurkJobs.findOne(documentId: @documentId, _id: $ne: @_id)
+        if ok and not otherJobForTheSameDocument
           document = Documents.findOne(@documentId)
           document.set('mTurkEnabled', false)
           document.save()
         @save()
+        ok
 
     obtainSubmitUrl: (assignmentId) ->
       if Meteor.isServer and @createHITResponse

@@ -7,13 +7,13 @@ Document = Astro.Class
       type: 'string'
       validator: [
         Validators.required()
-        Validators.minLength(5, 'The title must be at least 5 characters.')
+        Validators.minLength(5, 'The title must be at least 5 characters long.')
       ]
     body:
       type: 'string'
       validator: [
         Validators.required()
-        Validators.minLength(20, 'The body must be at least 20 characters.')
+        Validators.minLength(20, 'The body must be at least 20 characters long.')
       ]
     groupId: 'string'
     annotated:
@@ -24,6 +24,13 @@ Document = Astro.Class
       default: false
     createdAt: 'date'
   behaviors: ['timestamp']
+
+  events:
+    beforeRemove: (event) ->
+      if Meteor.isServer
+        if not @removeAllRelatedMTurkJobs()
+          event.preventDefault()
+          throw new Meteor.Error 'Failed to cancel all related HITs'
 
   methods:
     groupName: ->
@@ -54,3 +61,19 @@ Document = Astro.Class
       postTagBody = body.slice(endOffset, body.length)
 
       "#{preTagBody}#{openTag}#{annotatedText}#{closeTag}#{postTagBody}"
+
+    removeAllRelatedMTurkJobs: ->
+      if Meteor.isServer
+        ok = true
+        totalHITsForThisDocument = 0
+        cancelledHITs = 0
+        mTurkJobs = MTurkJobs.find(documentId: @_id).forEach (job) ->
+          totalHITsForThisDocument += 1
+          if job.cancel()
+            cancelledHITs += 1
+        if cancelledHITs < totalHITsForThisDocument
+          ok = false
+        else
+          @set(mTurkEnabled: false)
+          @save()
+        ok

@@ -9,6 +9,8 @@ if Meteor.isClient
       Math.floor(MTurkJob.getFields().HITLifetimeInSeconds.default / 60)
 
   Template.createMTurkJobModal.events
+    'submit form': (event, instance) ->
+      event.preventDefault()
     'click .clear-title': (event, instance) ->
       console.log instance.$('*')
       instance.$('input[name=title]').val('')
