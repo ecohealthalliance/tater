@@ -125,9 +125,6 @@ if Meteor.isClient
     mechanicalTurkPreview: ->
       Template.instance().assignmentId is 'ASSIGNMENT_ID_NOT_AVAILABLE'
 
-    annotationUserEmail: ->
-      @userEmail()
-
     annotationLayers: ->
       temporaryAnnotation = Template.instance().temporaryAnnotation.get()
       annotations = Annotations.find(documentId: @documentId).fetch()
@@ -289,6 +286,12 @@ if Meteor.isClient
         'selected'
       else if id?
         'not-selected'
+
+    annotationUser: ->
+      if @userToken
+        'Crowdsourced User'
+      else
+        @userEmail()
 
   Template.documentDetailAnnotation.events
     'click li': (event, instance) ->
