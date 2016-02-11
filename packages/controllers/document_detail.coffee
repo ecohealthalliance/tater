@@ -199,14 +199,16 @@ if Meteor.isClient
     'click .document-container': (event, instance) ->
       temporaryAnnotation = instance.temporaryAnnotation.get()
 
+      elementClassName = 'document-text'
       selection = window.getSelection()
       range = selection.getRangeAt(0)
-      selectionInDocument = selection.anchorNode.parentElement.getAttribute('class') == 'document-text'
-      textHighlighted = range and (range.endOffset > range.startOffset)
+      selectionInDocument = selection.anchorNode.parentElement.getAttribute('class') == elementClassName
+      textHighlighted = range and (range.endOffset > range.startOffset or range.endOffset == 0)
+      lastCharOffset = $(".#{elementClassName}").first().text().length
 
       if selectionInDocument and textHighlighted
         startOffset = range.startOffset
-        endOffset = range.endOffset
+        endOffset = range.endOffset or lastCharOffset
 
         temporaryAnnotation.set(startOffset: startOffset, endOffset: endOffset)
         instance.temporaryAnnotation.set(temporaryAnnotation)
