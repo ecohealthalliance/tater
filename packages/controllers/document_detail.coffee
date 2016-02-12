@@ -143,10 +143,8 @@ if Meteor.isClient
       Meteor.user().admin and not Documents.findOne(@documentId).mTurkEnabled
 
     mTurkAnnotating: (document) ->
-      Template.instance().assignmentId and Template.instance().assignmentId is not 'ASSIGNMENT_ID_NOT_AVAILABLE'
-
-    crowdsourceAdminMessage: (document) ->
-      Meteor.user().admin and Documents.findOne(@documentId).mTurkEnabled
+      Template.instance().assignmentId and
+        Template.instance().assignmentId isnt 'ASSIGNMENT_ID_NOT_AVAILABLE'
 
   Template.documentDetail.events
     'mousedown .document-container': (event, instance) ->
@@ -496,7 +494,7 @@ if Meteor.isServer
             subject: 'Tater tenant billing failure'
             text: """
               A payment failed on the tentant at #{Meteor.absoluteUrl()}
-              
+
               Error details:
               #{String(error)}
               """
