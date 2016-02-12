@@ -81,4 +81,3 @@ do ->
         .waitForVisible('ul.pagination li:nth-last-child(2):not(.disabled)')
         .execute -> # Can't just use .click() because it may not be visible
           $('ul.pagination li:nth-last-child(2):not(.disabled) a').click()
-        .pause(2000) # Give Meteor a moment to update the list
