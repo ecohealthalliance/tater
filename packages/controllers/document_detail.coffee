@@ -477,8 +477,8 @@ if Meteor.isServer
       if mTurkJob
         mTurkJob.set('completionTimestamp', new Date())
         mTurkJob.set('workerId', workerId)
-        tenant = TenantHelper.getCurrentTenant()
-        Stripe = StripeAPI(tenant.stripeSecret)
+        tenant = TenantHelpers.getCurrentTenant()
+        Stripe = StripeAPI(Meteor.settings.private.stripe.secretKey)
         createChargeSync = Meteor.wrapAsync(Stripe.charges.create, Stripe.charges)
         try
           chargeResult = createChargeSync(

@@ -112,10 +112,12 @@ MTurkJob = Astro.Class
             # features to the application.
             AutoApprovalDelayInSeconds: 0
         })
-        CreateHITResponseJSON = xml2json(response.content).CreateHITResponse
-        @set('createHITResponse', CreateHITResponseJSON)
-        if CreateHITResponseJSON.HIT?.HITId
-          @set('HITId', CreateHITResponseJSON.HIT.HITId)
+        responseJSON = xml2js.parseStringSync(response.content, {
+          explicitArray: false
+        }).CreateHITResponse
+        @set('createHITResponse', responseJSON)
+        if responseJSON.HIT?.HITId
+          @set('HITId', responseJSON.HIT.HITId)
           document = Documents.findOne(@documentId)
           document.set('mTurkEnabled', true)
           document.save()
