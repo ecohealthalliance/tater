@@ -95,6 +95,7 @@ do ->
             .call 'setUserAccountPasswordFixture',
               email: email
               password: 'testuser'
+        .pause(100)
 
     @When 'I create an admin user account for "$email"', (email) ->
       @browser
@@ -112,6 +113,7 @@ do ->
             .call 'setUserAccountPasswordFixture',
               email: email
               password: 'testuser'
+        .pause(100)
 
     @When 'I log out', ->
       @browser
