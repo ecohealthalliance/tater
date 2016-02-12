@@ -52,7 +52,10 @@ MTurkJob = Astro.Class
         Validators.lte(100, 'Max assignments is limited to 100 as a precaution.')
       ]
     createHITResponse: 'object'
-    disableHITResponse: 'object'
+    chargeDetails: 'object'
+    completionTimestamp: 'date'
+    workerId: 'string'
+    paymentFailed: 'boolean'
   behaviors: ['timestamp']
 
   events:

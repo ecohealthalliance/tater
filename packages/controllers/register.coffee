@@ -60,7 +60,8 @@ if Meteor.isServer
   Meteor.methods
     'createStripeCustomer': (token, email) ->
       Future = Npm.require('fibers/future')
-      secret = Meteor.settings.private.stripe.secretKey
+      tenant = TenantHelper.getCurrentTenant()
+      secret = tenant.stripeSecret
       StripeServer = StripeAPI(secret)
       stripeCustomer = new Future()
       StripeServer.customers.create {card: token, email: email}, (error, result) ->

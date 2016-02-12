@@ -23,3 +23,4 @@ QueryHelpers.limitQueryToUserDocs = (query, user)->
   else
     query.documentId = {$in: docIds}
   query
+
