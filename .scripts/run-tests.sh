@@ -36,6 +36,7 @@ then
 fi
 
 # Start meteor server if it isn't already running
+echo "Laaaatest"
 if ! lsof -i:3000
 then
   meteor &
