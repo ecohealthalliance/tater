@@ -1,5 +1,7 @@
 #!/bin/bash
+
 port=$RANDOM
+SECONDS=0
 quit=0
 
 touch testoutput${port}.txt
@@ -46,6 +48,8 @@ tail -f testoutput${port}.txt &
 MONGO_URL=mongodb://localhost:3001/${port} meteor --settings settings-development.json --port ${port} &
 CUCUMBER_TAIL=1 chimp --tags=${TAGS} --ddp=http://localhost:${port} --browser=chrome --path=tests/cucumber/features/ --coffee=true --chai=true --sync=false > testoutput${port}.txt
 kill `lsof -t -i:${port}`
+
+echo "$(($SECONDS / 60)) minutes and $(($SECONDS % 60)) seconds elapsed"
 
 # Determine exit code based on test output
 if grep -q "failed steps" testoutput${port}.txt
