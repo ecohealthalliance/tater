@@ -1,0 +1,29 @@
+template(name="mTurkPreview")
+  .m-turk-preview-wrapper.fluid-container
+    .task-title
+      .container
+        h1 Instructions
+
+    .container.intro
+      .row
+        ul.instructions.list-unstyled.col-md-5
+          li
+            span.number 1
+            .step-description
+              p While reading document, identify spans of text that relate codes in the column on the left
+          li
+            span.number 2
+            .step-description
+              p Highlight a single span of text
+          li
+            span.number 3
+            .step-description
+              p Click on the related code found in the column on the left
+              p.secondary The code will appear on the right
+          li
+            span.number 4
+            .step-description
+              p Repeat until all identified spans are coded
+
+        .col-md-7
+          img.interface(src="/images/help/annotating-animation.gif")

@@ -76,6 +76,21 @@ do ->
       keywordId = CodingKeywords.insert(subHeaderId: subHeaderId, label: keyword)
 
     setHIDIdFixture: (documentId) ->
-      MTurkJob = MTurkJobs.findOne(documentId: documentId)
-      MTurkJob.set(HITId: "fakeHITId")
-      MTurkJob.save()
+      fields = {
+        userId: 'fakeUserId1234567'
+        documentId: documentId
+        title: 'Annotate a document'
+        description: 'Annotate a document using a pre-set collection of labels.'
+        rewardAmount: 1
+        HITLifetimeInSeconds: 30 * 24 * 60 * 60
+        createHITResponse: {fake: true}
+        HITId: "fakeHITId"
+        maxAssignments: 1
+      }
+      job = new MTurkJob(fields)
+      unless job.validate()
+        job.throwValidationException()
+      job.save()
+      doc = Documents.findOne(documentId)
+      doc.set(mTurkEnabled: true)
+      doc.save()

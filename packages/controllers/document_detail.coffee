@@ -139,6 +139,15 @@ if Meteor.isClient
     searching: ->
       Template.instance().searching.get()
 
+    crowdsourceDoc: (document) ->
+      Meteor.user().admin and not Documents.findOne(@documentId).mTurkEnabled
+
+    mTurkAnnotating: (document) ->
+      Template.instance().assignmentId and Template.instance().assignmentId is not 'ASSIGNMENT_ID_NOT_AVAILABLE'
+
+    crowdsourceAdminMessage: (document) ->
+      Meteor.user().admin and Documents.findOne(@documentId).mTurkEnabled
+
   Template.documentDetail.events
     'mousedown .document-container': (event, instance) ->
       temporaryAnnotation = instance.temporaryAnnotation.get()

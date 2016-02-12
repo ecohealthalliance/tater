@@ -42,14 +42,14 @@ if Meteor.isServer
 
   Meteor.methods
     createMTurkJob: (properties) ->
-      check properties, Object
+      check properties, documentId: String, title: String, description: String
       user = Meteor.user()
       if user?.admin
         fields = {
           documentId: properties.documentId
-          userId: user._id
           title: properties.title
           description: properties.description
+          userId: user._id
           rewardAmount: 1
         }
         job = new MTurkJob(fields)

@@ -1,6 +1,12 @@
 if Meteor.isClient
   BlazeLayout.setRoot('body')
 
+  FlowRouter._triggersEnter.push (route) ->
+    if route.queryParams['noHeader']
+      document.body.classList.add 'no-header'
+    else
+      document.body.classList.remove 'no-header'
+
 FlowRouter.subscriptions = () ->
   @register 'userInfo', Meteor.subscribe 'userInfo'
 

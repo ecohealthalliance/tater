@@ -1,65 +1,64 @@
 template(name="documentDetail")
   if document
-    .document-detail-container.pane-container
-      +documentDetailCodingKeywords
-      .document-heading.pane-head.pane-head-m
-        h1.document-title= document.title
-        .document-options
-          if isAdmin
-            unless document.mTurkEnabled
+    if mechanicalTurkPreview
+      +mTurkPreview
+    else
+      +createMTurkJobModal document=document
+      .document-detail-container
+        +documentDetailCodingKeywords
+        .document-heading.pane-head.pane-head-m
+          h1.document-title= document.title
+          .document-options
+            if crowdsourceDoc document
               a.btn.btn-primary.crowdsource-btn(data-toggle="modal" data-document-id=document._id data-target="#create-mturk-job-modal" )
                 i.fa.fa-users
                 | Crowdsource
-          a.help-link.help-link-document.pull-right(href="{{path route='/help?topic=annotating-documents'}}")
-            +tooltipIcon icon='question-circle' placement='left'
-          if assignmentId
-            unless mechanicalTurkPreview
+            a.help-link.help-link-document.pull-right(href="{{path route='/help?topic=annotating-documents'}}")
+              +tooltipIcon icon='question-circle' placement='left'
+            if mTurkAnnotating
               button.finished-annotating.btn.btn-primary
                 i.fa.fa-check-circle.icon-left
                 span Finish Annotating
-      .document-container.pane.pane-middle
-        if document.mTurkEnabled
-          .crowdsource-details
-            if isAdmin
-              .admin-details
-                i.fa.fa-cogs
-                p Document has been submitted for annotation and is being processed.
-                a.btn.btn-primary#cancel-mturk-job Cancel this job
-            else
-              unless assignmentId
-                .user-details
-                  i.fa.fa-exclamation-triangle
-                  p This document has been crowdsourced and does not require annotation.
-        #documentContainer
-          #documentBody.document-body
-            .document-wrapper
-              pre.document-text= document.body
-              if Template.subscriptionsReady
-                each annotationLayers
-                  .document-annotations
-                    pre.document-text= this
-      .annotation-search-container.pane-head.pane-head-r
-        if Template.subscriptionsReady
-          input#annotation-search-field.annotation-search.form-control(type="text" placeholder="Search Annotations")
-          if searching
-            i.fa.fa-times-circle.clear-search
-      .annotation-container.pane.pane-r
-        ul.annotations.list-unstyled
+        .document-container.pane.pane-middle
+          if crowdsourceAdminMessage
+            .crowdsource-details
+                .admin-details
+                  i.fa.fa-cogs
+                  p Document has been submitted for annotation and is being processed.
+                  a.btn.btn-primary#cancel-mturk-job Cancel this job
+          else if document.mTurkEnabled
+            .crowdsource-details
+              .user-details
+                i.fa.fa-exclamation-triangle
+                p This document has been crowdsourced and does not require annotation.
+          #documentContainer
+            #documentBody.document-body
+              .document-wrapper
+                pre.document-text= document.body
+                if Template.subscriptionsReady
+                  each annotationLayers
+                    .document-annotations
+                      pre.document-text= this
+        .annotation-search-container.pane-head.pane-head-r
           if Template.subscriptionsReady
-            each annotations
-              +documentDetailAnnotation
-            else
-              if searching
-                .no-results
-                  i.fa.fa-search
-                  p Sorry, no annotations found.
+            input#annotation-search-field.annotation-search.form-control(type="text" placeholder="Search Annotations")
+            if searching
+              i.fa.fa-times-circle.clear-search
+        .annotation-container.pane.pane-r
+          ul.annotations.list-unstyled
+            if Template.subscriptionsReady
+              each annotations
+                +documentDetailAnnotation
               else
-                .no-results
-                  p No annotations currently present.
-          else
-            .loading
-
-  +createMTurkJobModal document=document
+                if searching
+                  .no-results
+                    i.fa.fa-search
+                    p Sorry, no annotations found.
+                else
+                  .no-results
+                    p No annotations currently present.
+            else
+              .loading
 
 template(name="documentDetailAnnotation")
   li(data-annotation-id=_id class="annotation-color-#{color} {{selected}}")

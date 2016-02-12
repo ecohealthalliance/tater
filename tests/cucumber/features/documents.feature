@@ -94,19 +94,22 @@ Feature: Documents
     Then I should see a "Success" toast
     And I should not see content "Test Document"
 
-  @ignore
+  @documents
   Scenario: Crowdsourcing annotations for a document
     Given there is a test group in the database
     And there is a document with title "Test Document" in the test group
-    When I log in as the test user
-    And I navigate to the test document
-    And I click on the Crowdsource button
-    And I submit the Crowdsource Annotation form
-    Then I should see a "Success" toast
-    Then I fake HITId for the test document
-    And I log out
+    Then I stub out HIT request for the test document
     And I navigate to the test document using hitId
     Then I should see content "Test Document"
+
+  @documents
+  Scenario: Display Mechanical Turk instructions
+    Given there is a test group in the database
+    And there is a document with title "Test Document" in the test group
+    Then I stub out HIT request for the test document
+    And I preview the test document using hitId
+    Then I should see content "Instructions"
+    Then I should not see content "Sign In"
 
   @documents
   Scenario: Increasing and decreasing a document's annotation count

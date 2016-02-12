@@ -1,0 +1,63 @@
+.m-turk-preview-wrapper
+  .intro
+    margin-top 60px
+    margin-bottom 60px
+  .task-title
+    background lighten($secondary, 20%)
+    margin-bottom 40px
+    padding 20px 0 10px 0
+    h1
+      color $body-text
+      shadow(255, .2)
+  img.interface
+    max-width 100%
+    +desktop()
+      padding-left 15px
+  .instructions
+    margin-bottom 50px
+    +desktop()
+      margin 0
+    li
+      display flex
+      flex-flow row nowrap
+      margin-bottom 50px
+      align-items center
+      &:last-of-type
+        margin-bottom 0
+    .number
+      height 1.95em
+      width 1.95em
+      display flex
+      align-items center
+      justify-content center
+      position relative
+      border-radius 50%
+      background-color lighten($secondary, 20%)
+      font-weight 800
+      font-size 2em
+      color white
+      margin-right 20px
+      flex-shrink 0
+      span
+        centerVertically()
+  .step-description
+    p
+      margin-bottom 0
+      font-size 1.25em
+      font-weight 600
+      &.secondary
+        margin-top 3px
+        color $d-gray
+        font-weight normal
+
+  .special-instructions
+    .title
+      background $l-gray
+      padding 10px 0
+      margin-bottom 20px
+      h2
+        color darken($d-gray, 20%)
+        font-size 1.5em
+        line-height 1.5em
+        margin 0
+
