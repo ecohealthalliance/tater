@@ -1,14 +1,15 @@
 if Meteor.isServer
 
-  token = Meteor.settings.private.accounts?.loginToken
-  email = Meteor.settings.private.accounts?.rootUserEmail
+  if process.env.ALLOW_TOKEN_ACCESS is 'true'
 
-  if token and email
-    tokenObject =
-      token: token
-      when: new Date
+    email = Meteor.settings.public.accounts?.tokenUser
+    token = Meteor.settings.private.accounts?.loginToken
 
-    Meteor.startup ->
-      rootUser = Accounts.findUserByEmail email
-      if rootUser
-        Accounts._insertLoginToken(rootUser._id, tokenObject)
+    if token and email
+      tokenObject =
+        token: token
+        when: new Date
+
+      Meteor.startup ->
+        if rootUser = Accounts.findUserByEmail email
+          Accounts._insertLoginToken(rootUser._id, tokenObject)

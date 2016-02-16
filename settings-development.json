@@ -5,6 +5,9 @@
     },
     "analyticsSettings": {
       "Google Analytics" : {"trackingId": "UA-54918272-3"}
+    },
+    "accounts": {
+      "tokenUser": "test@example.com"
     }
   },
   "private": {
@@ -12,7 +15,6 @@
       "secretKey": "sk_test_N55I0q6h0EBZKyQZSMZ3yHyc"
     },
     "accounts": {
-      "rootUserEmail": "test@example.com",
       "loginToken": "wVCLfs9kttmBF5M6L8ABSMiPZJh8HwKjXZdvxDTs4I8"
     }
   }
