@@ -51,7 +51,7 @@ if Meteor.isClient
                 if error.reason
                   for key, reason of error.reason
                     toastr.error("Error: #{reason}")
-                else
+                else 
                   toastr.error("Error: #{error.error}")
               else
                 template.registering.set(false)
@@ -60,8 +60,7 @@ if Meteor.isServer
   Meteor.methods
     'createStripeCustomer': (token, email) ->
       Future = Npm.require('fibers/future')
-      secret = Meteor.settings.private.stripe.secretKey
-      StripeServer = StripeAPI(secret)
+      StripeServer = StripeAPI(Meteor.settings.private.stripe.secretKey)
       stripeCustomer = new Future()
       StripeServer.customers.create {card: token, email: email}, (error, result) ->
         if error

@@ -44,6 +44,12 @@ if Meteor.isServer
     createMTurkJob: (properties) ->
       check properties, documentId: String, title: String, description: String
       user = Meteor.user()
+      if MTurkJobs.findOne(paymentFailed: true)
+        throw new Meteor.Error """
+        Your last charge could not be processed so you cannot create more
+        mechanical turk jobs.
+        Please email tater-bugs@ecohealthalliance.org to resolve your payment problems.
+        """
       if user?.admin
         fields = {
           documentId: properties.documentId

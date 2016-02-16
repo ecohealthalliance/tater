@@ -20,17 +20,18 @@ template(name="documentDetail")
                 i.fa.fa-check-circle.icon-left
                 span Finish Annotating
         .document-container.pane.pane-middle
-          if crowdsourceAdminMessage
-            .crowdsource-details
-                .admin-details
-                  i.fa.fa-cogs
-                  p Document has been submitted for annotation and is being processed.
-                  a.btn.btn-primary#cancel-mturk-job Cancel this job
-          else if document.mTurkEnabled
-            .crowdsource-details
-              .user-details
-                i.fa.fa-exclamation-triangle
-                p This document has been crowdsourced and does not require annotation.
+          if document.mTurkEnabled
+            if isAdmin
+              .crowdsource-details
+                  .admin-details
+                    i.fa.fa-cogs
+                    p Document has been submitted for annotation and is being processed.
+                    a.btn.btn-primary#cancel-mturk-job Cancel this job
+            else if currentUser
+              .crowdsource-details
+                .user-details
+                  i.fa.fa-exclamation-triangle
+                  p This document has been crowdsourced and does not require annotation.
           #documentContainer
             #documentBody.document-body
               .document-wrapper

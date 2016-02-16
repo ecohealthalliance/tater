@@ -143,10 +143,8 @@ if Meteor.isClient
       Meteor.user().admin and not Documents.findOne(@documentId).mTurkEnabled
 
     mTurkAnnotating: (document) ->
-      Template.instance().assignmentId and Template.instance().assignmentId is not 'ASSIGNMENT_ID_NOT_AVAILABLE'
-
-    crowdsourceAdminMessage: (document) ->
-      Meteor.user().admin and Documents.findOne(@documentId).mTurkEnabled
+      Template.instance().assignmentId and
+        Template.instance().assignmentId isnt 'ASSIGNMENT_ID_NOT_AVAILABLE'
 
   Template.documentDetail.events
     'mousedown .document-container': (event, instance) ->
@@ -254,9 +252,12 @@ if Meteor.isClient
     'click .finished-annotating': (event, instance) ->
       documentId = instance.data.documentId
       assignmentId = instance.assignmentId
-      Meteor.call 'finishAssignment', documentId, assignmentId, (error, submitUrl) ->
+      workerId = instance.workerId
+      Meteor.call 'finishAssignment', documentId, assignmentId, workerId, (error, submitUrl) ->
         if error
-          toastr.error("Unable to finish the annotation")
+          toastr.error("""
+          Unable to finish the annotation:
+          #{error.message}""")
         else
           form = $('<form method="POST" id="mturkForm">')
           form.attr('action', submitUrl)
@@ -467,14 +468,39 @@ if Meteor.isServer
       @ready()
 
   Meteor.methods
-    finishAssignment: (documentId, assignmentId) ->
-      @unblock()
+    finishAssignment: (documentId, assignmentId, workerId) ->
       mTurkJob = MTurkJobs.findOne(documentId: documentId)
+      if mTurkJob.chargeDetails
+        throw new Meteor.Error('The assignment has already been finished.')
       if mTurkJob
-        doc = Documents.findOne(documentId)
-        if doc
-          doc.set(mTurkEnabled: false)
-          doc.save()
+        mTurkJob.set('completionTimestamp', new Date())
+        mTurkJob.set('workerId', workerId)
+        tenant = TenantHelpers.getCurrentTenant()
+        Stripe = StripeAPI(Meteor.settings.private.stripe.secretKey)
+        createChargeSync = Meteor.wrapAsync(Stripe.charges.create, Stripe.charges)
+        try
+          chargeResult = createChargeSync(
+            # 25% margin - so the user is charged 1.33333 times the cost
+            # amount is in cents
+            amount: Math.round(mTurkJob.rewardAmount * 100 * 1.333333)
+            currency: 'usd'
+            customer: tenant.stripeCustomerId
+          )
+          mTurkJob.set('chargeDetails', chargeResult)
+        catch error
+          Email.send
+            to: 'tater-bugs@ecohealthalliance.org'
+            from: 'no-reply@tater.io'
+            subject: 'Tater tenant billing failure'
+            text: """
+              A payment failed on the tentant at #{Meteor.absoluteUrl()}
+
+              Error details:
+              #{String(error)}
+              """
+          mTurkJob.set('paymentFailed', true)
+          mTurkJob.set('chargeDetails', { error: String(error)})
+        mTurkJob.save()
         mTurkJob.obtainSubmitUrl(assignmentId)
       else
         throw new Meteor.Error('The task has not been found')
