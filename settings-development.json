@@ -9,8 +9,7 @@
   },
   "private": {
     "stripe": {
-      "secretKey": "sk_test_N55I0q6h0EBZKyQZSMZ3yHyc",
-      "stripeCustomerId": "cus_7qXgRfUJavt2Ry"
+      "secretKey": "sk_test_N55I0q6h0EBZKyQZSMZ3yHyc"
     }
   }
 }
