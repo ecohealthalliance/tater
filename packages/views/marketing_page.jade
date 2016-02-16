@@ -7,9 +7,11 @@ template(name="marketingPage")
             h1.tag-line Gain #[span(class='highlighted') in-depth insight] from your #[span qualitative data]
             p Tater is an easy to use annotation application that enables users to annotate documents and discover trends and patterns.
             a.btn.action-call(href="/register") Request an account
-            button.btn.action-call-secondary(data-toggle="modal" data-target="#video-modal" ) Watch video
+            button.btn.watch.action-call-secondary(data-toggle="modal" data-target="#video-modal" ) Watch video
           .col-md-4.col-md-offset-1.annotated-docs-img-wrapper
     section
+      .mobile-video
+        +video
       .container.topic-heading
         h2 Quickly and easily annotate your documents with a customizable set of codes.
       .fluid-container.content-block.annotating
@@ -30,7 +32,7 @@ template(name="marketingPage")
                   p Group documents are securely stored
 
     section
-      .container.topic-heading
+      .container.topic-heading.analyze
         h2 Analyze annotations across multiple documents.
       .fluid-container
         .multi-docs
@@ -60,9 +62,12 @@ template(name="marketingPage")
           .modal-header
             button.close(type="button" data-dismiss="modal" aria-label="Close")
               i.fa.fa-times-circle
-            .embed-responsive.embed-responsive-16by9
-              iframe.embed-responsive-item(
-                src="https://www.youtube.com/embed/z8sHKXWXXME"
-                frameborder="0"
-                allowfullscreen)
+          +video
   +footer
+
+template(name="video")
+  .embed-responsive.embed-responsive-16by9
+    iframe.embed-responsive-item(
+      src="https://www.youtube.com/embed/z8sHKXWXXME"
+      frameborder="0"
+      allowfullscreen)
