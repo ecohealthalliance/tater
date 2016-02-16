@@ -59,15 +59,16 @@ $green = #76C5A6
 
 .hero
   padding 0 20px
-  margin-top -20px
   background $blue
   +above(4)
-    min-height 675px
+    min-height 650px
     padding 0
 
 .topic-heading
-  width 75%
+  padding 0 10%
   margin-bottom 40px
+  +mobile()
+    padding 0 2%
 
 .tag-line
   color white
@@ -82,12 +83,12 @@ $green = #76C5A6
     font-weight 400
 
 .hero-text
-  padding 50px 0 50px 0
+  padding 50px 15px
   color white
   font-weight 400
   text-shadow none
   +above(3)
-    padding-top 130px
+    padding-top 100px
     padding-bottom 100px
   p
     font-size 1.25em
@@ -98,11 +99,10 @@ $green = #76C5A6
   display none
   +above(4)
     display block
-
-.annotated-docs-img
-  height 100%
-  max-height 680px
-  margin-left 15px
+    background url(../../images/marketing/annotated-docs.svg) no-repeat
+    min-height 600px
+    background-size auto
+    background-position center center
 
 .annotating
   margin-top 240px
@@ -130,6 +130,7 @@ $green = #76C5A6
 .sub-topic
   margin-bottom 60px
   padding 0 35px
+  text-align center
   +between(3,4)
     margin-bottom 20px
     padding 0 25px
@@ -146,7 +147,7 @@ $green = #76C5A6
     text-align center
 
 .multi-docs
-  background url('../../images/marketing/document-string.svg')
+  background url(../../images/marketing/document-string.svg)
   background-size 800px
   background-repeat no-repeat
   background-position center center
