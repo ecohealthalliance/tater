@@ -109,7 +109,7 @@ do ->
       @browser
         .waitForExist('.finished-annotating')
         .click('.finished-annotating')
-        .pause(10000)
+        .pause 1000
         .waitForVisible('.modal.in')
 
     @Then "I should see an access token in a modal", ->

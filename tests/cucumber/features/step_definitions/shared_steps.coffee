@@ -104,7 +104,7 @@ do ->
 
     @Then /^I should( not)? see content "([^"]*)"$/, (shouldNot, text) ->
       @client
-        .pause 8000 # Give Meteor enough time to populate the <body>
+        .pause 2000 # Give Blaze enough time to populate the <body>
         .getText 'body', (error, visibleText) ->
           match = visibleText?.toString().match(text)
           if shouldNot

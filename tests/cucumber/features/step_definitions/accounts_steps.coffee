@@ -83,7 +83,7 @@ do ->
       @browser
         .waitForVisible('.add-user')
         .click('.add-user')
-        .pause(500)
+        .pause(100)
         .waitForVisible('#add-user-modal')
         .waitForEnabled('#add-user-modal .user-email')
         .setValue('#add-user-modal .user-email', email)
@@ -95,13 +95,13 @@ do ->
             .call 'setUserAccountPasswordFixture',
               email: email
               password: 'testuser'
-        .pause(500)
+        .pause(100)
 
     @When 'I create an admin user account for "$email"', (email) ->
       @browser
         .waitForVisible('.add-admin')
         .click('.add-admin')
-        .pause(500)
+        .pause(100)
         .waitForVisible('#add-user-modal')
         .waitForEnabled('#add-user-modal .user-email')
         .setValue('#add-user-modal .user-email', email)
@@ -113,7 +113,7 @@ do ->
             .call 'setUserAccountPasswordFixture',
               email: email
               password: 'testuser'
-        .pause(500)
+        .pause(100)
 
     @When 'I log out', ->
       @browser
@@ -156,7 +156,6 @@ do ->
         .setValue('#at-field-password', 'newPassword')
         .setValue('#at-field-password_again', 'newPassword')
         .submitForm('#at-pwd-form')
-        .pause(1000)
 
     @When 'I log in with my new password', ->
       @browser

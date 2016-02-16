@@ -31,7 +31,6 @@ do ->
     setUserAccountPasswordFixture: (attributes) ->
       user = Meteor.users.findOne 'emails.address': attributes.email
       Accounts.setPassword user._id, attributes.password
-      # Meteor.users.update { email: attributes.email }, $set: { password: attributes.password }
 
     createTestGroupFixture: (attributes) ->
       attributes ?= {}
