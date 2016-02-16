@@ -15,7 +15,10 @@ if Meteor.isClient
         if err
           throw err
         reloadPage()
+        AccountsTemplates.setState('signIn')
+
     'click .change-password' : (evt, instance) ->
+      AccountsTemplates.setState('changePwd')
       @state.set("changePwd")
       $('.accounts-modal').modal('show')
 
