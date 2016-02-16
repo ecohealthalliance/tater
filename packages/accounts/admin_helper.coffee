@@ -3,6 +3,6 @@ if Meteor.isClient
     Meteor.user()?.admin
 
   UI.registerHelper 'onBSVEInstance', () ->
-    # Check whether a login token is defined in settings.json to determine
-    # whether this is a BSVE instance.
-    "loginToken" of Meteor.settings.private.accounts
+    Boolean(_.findWhere(Meteor.user()?.emails or [], {
+      address: Meteor.settings.public.accounts.tokenUser
+    }))
