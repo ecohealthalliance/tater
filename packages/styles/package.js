@@ -7,7 +7,7 @@ Package.describe({
 
 Package.onUse(function(api) {
   api.versionsFrom('1.1.0.2');
-  api.use('twbs:bootstrap@3.3.4');
+  api.use('twbs:bootstrap-noglyph');
   api.use('useraccounts:bootstrap');
   api.use('mquandalle:stylus');
   api.use('fortawesome:fontawesome');
@@ -41,6 +41,5 @@ Package.onUse(function(api) {
   api.addFiles('eula.import.styl');
   api.addFiles('velocity.import.styl');
   api.addFiles('mturk.import.styl');
-
   api.addFiles('main.styl');
 });
