@@ -31,13 +31,15 @@ template(name="header")
                 a(href="{{path route='annotations'}}" class="{{isActiveRoute 'annotations'}}")
                   span Annotations
               if isAdmin
-                li
-                  a(href="{{path route='admin'}}" class="{{isActiveRoute 'admin'}}")
-                    span Admin
+                unless onBSVEInstance
+                  li
+                    a(href="{{path route='admin'}}" class="{{isActiveRoute 'admin'}}")
+                      span Admin
                 li
                   a(href="{{path route='codingKeywords'}}" class="{{isActiveRoute 'codingKeywords'}}")
                     span Coding Keywords
-              +accountsHeaderButtons state=accountsState
+              unless onBSVEInstance
+                +accountsHeaderButtons state=accountsState
               li
                 a(href="{{path route='help'}}" class="{{isActiveRoute 'help'}}" title='Help')
                   i.fa.fa-question-circle
