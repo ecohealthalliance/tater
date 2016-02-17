@@ -501,6 +501,9 @@ if Meteor.isServer
           mTurkJob.set('paymentFailed', true)
           mTurkJob.set('chargeDetails', { error: String(error)})
         mTurkJob.save()
+        document = Documents.findOne(documentId)
+        document.set(mTurkEnabled: false)
+        document.save()
         mTurkJob.obtainSubmitUrl(assignmentId)
       else
         throw new Meteor.Error('The task has not been found')
