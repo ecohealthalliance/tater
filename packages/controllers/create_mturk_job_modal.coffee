@@ -2,17 +2,20 @@ if Meteor.isClient
 
   Template.createMTurkJobModal.helpers
     defaultTitle: ->
-      MTurkJob.getFields().title.default
+      Template.instance().mechanicalTurkJob.title
     defaultDescription: ->
-      MTurkJob.getFields().description.default
-    defaultLifetimeMinutes: ->
-      Math.floor(MTurkJob.getFields().HITLifetimeInSeconds.default / 60)
+      Template.instance().mechanicalTurkJob.description
+    cost: ->
+      dollars = Template.instance().mechanicalTurkJob.costInCents() / 100
+      "$#{dollars}"
+
+  Template.createMTurkJobModal.onCreated ->
+    @mechanicalTurkJob = new MTurkJob()
 
   Template.createMTurkJobModal.events
     'submit form': (event, instance) ->
       event.preventDefault()
     'click .clear-title': (event, instance) ->
-      console.log instance.$('*')
       instance.$('input[name=title]').val('')
 
     'click .clear-description': (event, instance) ->
@@ -56,7 +59,6 @@ if Meteor.isServer
           title: properties.title
           description: properties.description
           userId: user._id
-          rewardAmount: 1
         }
         job = new MTurkJob(fields)
         unless job.validate()

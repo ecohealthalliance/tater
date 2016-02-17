@@ -95,12 +95,22 @@ Feature: Documents
     And I should not see content "Test Document"
 
   @documents
-  Scenario: Crowdsourcing annotations for a document
+  Scenario: Displaying crowdsource price
+    Given there is a test group in the database
+    And there is a document with title "Test Document" in the test group
+    When I log in as the test user
+    And I navigate to the test document
+    And I click on the Crowdsource button
+    Then I should see content "\$1.33"
+
+  @documents
+  Scenario: Visiting document page via mechanical turk
     Given there is a test group in the database
     And there is a document with title "Test Document" in the test group
     Then I stub out HIT request for the test document
     And I navigate to the test document using hitId
     Then I should see content "Test Document"
+    And I should see content "Finish Annotating"
 
   @documents
   Scenario: Display Mechanical Turk instructions

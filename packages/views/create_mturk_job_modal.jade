@@ -10,6 +10,12 @@ template(name="createMTurkJobModal")
           form#mturk-job-form
             input.form-control#documentId(name="documentId" type="hidden")
             .form-group
+              .cost
+                i.fa.fa-money.fa-rotate-90
+                h3= cost
+                +tooltipIcon icon='info-circle' class='cost-explanation' title="The credit card on file will be charged this amount" placement='left'
+
+            .form-group
               .row
                 .col-sm-8
                   span.pull-right.clear-input.clear-title

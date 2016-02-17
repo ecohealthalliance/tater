@@ -480,9 +480,7 @@ if Meteor.isServer
         createChargeSync = Meteor.wrapAsync(Stripe.charges.create, Stripe.charges)
         try
           chargeResult = createChargeSync(
-            # 25% margin - so the user is charged 1.33333 times the cost
-            # amount is in cents
-            amount: Math.round(mTurkJob.rewardAmount * 100 * 1.333333)
+            amount: mTurkJob.costInCents()
             currency: 'usd'
             customer: tenant.stripeCustomerId
           )
