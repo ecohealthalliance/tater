@@ -83,7 +83,6 @@
 .pane-head-r
   background lighten($sub-header-BG, 50%)
 
-
 .pane-actions
   display flex
   align-items center
@@ -120,26 +119,45 @@
 
 .connection-status
   position absolute
-  top $header-height
+  top 0
   left 0
   right 0
+  display flex
+  align-items center
+  justify-content center
   visible(false)
   layerCosmos(10)
-  padding 15px
   background $connection-warning
   text-align center
   text-shadow none
   font-weight 600
   min-height $header-height+1
   @extend .light-shadow
-  border-bottom 5px solid darken(alpha($warning, 50%), 20%)
+  border-bottom 3px solid darken(alpha($warning, 50%), 20%)
   .fa
     color darken($warning, 30%)
+  .logo
+    position absolute
+    left 10px
+    top $brand-top-margin
+    bg('../../images/tater-logo', $brand-width, $brand-height,'png')
+    color white
+  span
+    line-height 1.2em
+  .lost-connection
+    font-weight 800
+    text-transform uppercase
+  .reconnecting-in
+    font-size .9em
+    font-weight 400
+    display block
+
 .reconnect
   makeButton(alpha(#FFFFFF, 75%), $body-text, true)
+  centerVertically()
+  right 10px
   padding-top 5px
   padding-bottom 5px
-  margin 10px auto 0 auto
   border 2px solid $secondary
   font-size .95em
   &:hover
