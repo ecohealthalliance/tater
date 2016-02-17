@@ -4,6 +4,8 @@ port=$RANDOM
 SECONDS=0
 quit=0
 
+export ALLOW_TOKEN_ACCESS=true
+
 touch testoutput${port}.txt
 # Trap interruptions to avoid leaving files or meteor instances around
 function finish {

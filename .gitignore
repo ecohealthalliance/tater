@@ -1,3 +1,4 @@
+testoutput*.txt
 /tests/cucumber/.screenshots/
 /tests/cucumber/node_modules/
 .vagrant/*
@@ -9,4 +10,3 @@ node_modules/
 *.jar
 **/*.swp
 **/*.swo
-

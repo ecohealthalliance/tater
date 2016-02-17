@@ -62,3 +62,19 @@ Feature: Accounts
     And I log out
     And I log in with my new password
     Then I am logged in
+
+  @dev
+  Scenario: Automatic logging in using url parameters
+    When there is a test user in the database with an access token
+    And I am not logged in
+    Then I log in by passing a secret access token via URL
+    And I am logged in
+
+  @dev
+    Scenario: Failing automatic logging in using url parameter
+      When there is a test user in the database
+      And I log in as the test user
+      Then I am logged in
+      And I log out
+      Then I log in by passing a secret access token via URL
+      And I am not logged in
