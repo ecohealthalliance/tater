@@ -17,6 +17,11 @@ do ->
       fullName: 'test name'
       password: 'password'
 
+    _tokenUser =
+      email:    'test-token-authentication@example.com'
+      fullName: 'test token name'
+      password: 'password'
+
     @Before (callback) ->
       @server.call('resetFixture')
       @client.url(url.resolve(process.env.ROOT_URL, '/'))
@@ -28,7 +33,7 @@ do ->
       @server.call('createTestUserFixture', _testUser)
 
     @Given 'there is a test user in the database with an access token', ->
-      @server.call('createTestUserWithAccessTokenFixture', _testUser)
+      @server.call('createTestUserWithAccessTokenFixture', _tokenUser)
 
     @Given 'there is a group in the database', ->
       @server.call('createTestGroupFixture')

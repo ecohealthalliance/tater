@@ -7,7 +7,7 @@
       "Google Analytics" : {"trackingId": "UA-54918272-3"}
     },
     "accounts": {
-      "tokenUser": "test@example.com"
+      "tokenUser": "test-token-authentication@example.com"
     }
   },
   "private": {
