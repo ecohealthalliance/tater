@@ -10,6 +10,7 @@ tater:models
 tater:fixtures
 tater:accounts
 tater:data
+tater:headers
 aslagle:reactive-table
 zimme:active-route
 standard-minifiers
