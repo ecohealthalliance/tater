@@ -34,6 +34,7 @@ MTurkJob = Astro.Class
     HITId: 'string'
     rewardAmount:
       type: 'number'
+      default: 1
       validator: [
         Validators.required()
         Validators.lt(30, 'Rewards greater than 30 USD are not supported as a precaution.')
@@ -126,7 +127,12 @@ MTurkJob = Astro.Class
   methods:
     descriptionWithHash: ->
       @description + " " +  Random.id()
-      
+
+    costInCents: ->
+      # 25% margin - so the user is charged 1.33333 times the cost
+      mechanicalTurkPrice = @rewardAmount * @maxAssignments
+      Math.round(mechanicalTurkPrice * 100 * 1.333333)
+
     cancel: ->
       if Meteor.isServer and @createHITResponse
         unless Meteor.settings.private.AWS_ACCESS_KEY

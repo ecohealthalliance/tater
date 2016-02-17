@@ -9,6 +9,9 @@ template(name="createMTurkJobModal")
           h4 Crowdsource Annotation
           form#mturk-job-form
             input.form-control#documentId(name="documentId" type="hidden")
+            p
+              | Cost:
+              = cost
             .form-group
               .row
                 .col-sm-8

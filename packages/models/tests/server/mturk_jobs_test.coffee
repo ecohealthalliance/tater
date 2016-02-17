@@ -1,5 +1,10 @@
 describe 'MTurkJob', ->
 
+  describe '#costInCents', ->
+    it 'calculates the cost with a 25% margin', ->
+      job = new MTurkJob(rewardAmount: 3, maxAssignments: 2)
+      expect(job.costInCents()).to.eq(800)
+
   it 'submits a HIT to the mechanical turk website when saved', ->
     if process.env.AWS_ACCESS_KEY
       doc = new Document(
