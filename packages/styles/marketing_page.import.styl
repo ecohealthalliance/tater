@@ -14,6 +14,10 @@ $green = #76C5A6
 
   section
     margin-bottom 80px
+    &:first-of-type
+      margin-bottom 0
+      +above(2)
+        margin-bottom 80px
     &:nth-of-type(3)
       margin-bottom 30px
     &:last-of-type
@@ -38,6 +42,10 @@ $green = #76C5A6
     background none
     border-color $green
     color $l-gray
+    &.watch
+      display none
+      +above(2)
+        display inline-block
     &:hover
       color white
       background alpha($green, 10%)
@@ -45,7 +53,6 @@ $green = #76C5A6
       @extend .icon
       margin-right 10px
       content '\f144'
-
   .modal-dialog
     +above(3)
       width 65%
@@ -59,21 +66,24 @@ $green = #76C5A6
 
 .hero
   padding 0 20px
-  margin-top -20px
   background $blue
   +above(4)
-    min-height 675px
+    min-height 650px
     padding 0
 
 .topic-heading
-  width 75%
+  padding 0 10%
   margin-bottom 40px
+  +mobile()
+    padding 0 2%
 
 .tag-line
   color white
-  font-size 3em
+  font-size 2.5em
   font-weight 300
   line-height 1.2em
+  +above(2)
+    font-size 3em
   +above(3)
     font-size 4.5em
   .highlighted
@@ -82,27 +92,31 @@ $green = #76C5A6
     font-weight 400
 
 .hero-text
-  padding 50px 0 50px 0
+  padding 50px 15px 100px 15px
   color white
   font-weight 400
   text-shadow none
   +above(3)
-    padding-top 130px
-    padding-bottom 100px
+    padding-top 100px
   p
     font-size 1.25em
     +above(3)
       font-size 1.5em
 
+.mobile-video
+  margin -60px 20px 40px 20px
+  box-shadow 0 -5px 10px rgba(100,100,100,0.3)
+  +above(2)
+    display none
+
 .annotated-docs-img-wrapper
   display none
   +above(4)
     display block
-
-.annotated-docs-img
-  height 100%
-  max-height 680px
-  margin-left 15px
+    background url(../../images/marketing/annotated-docs.svg) no-repeat
+    min-height 600px
+    background-size auto
+    background-position center center
 
 .annotating
   margin-top 240px
@@ -111,25 +125,33 @@ $green = #76C5A6
   background darken($ll-gray, 2%)
   position relative
   +between(2,3)
-    padding-top 100px
+    padding-top 225px
   +above(3)
     padding-top 350px
     padding-bottom 30px
-
 
 .annotation-interface-img
   position absolute
   top -200px
   left 50%
   transform translate(-50%, 0)
-  width 80%
+  background url(../../images/marketing/annotation-interface.svg) no-repeat
+  width 90%
+  height 500px
+  margin-bottom 30px
   +above(3)
     width 800px
-
+    height 452px
+    background url(../../images/marketing/annotation-interface_animated.gif) 800px 452px
+    background-size cover
+    background-position center center
+    border 10px solid white
+    border-radius 5px
 
 .sub-topic
   margin-bottom 60px
   padding 0 35px
+  text-align center
   +between(3,4)
     margin-bottom 20px
     padding 0 25px
@@ -146,8 +168,8 @@ $green = #76C5A6
     text-align center
 
 .multi-docs
-  background url('../../images/marketing/document-string.svg')
-  background-size 800px
+  background url(../../images/marketing/document-string.svg)
+  background-size auto
   background-repeat no-repeat
   background-position center center
   height 130px
@@ -156,8 +178,14 @@ $green = #76C5A6
     background-size auto
     height 100px
 
+.analyze
+  margin-bottom 0
+  +above(2)
+    margin-bottom inherit
+
 .analysis
-  margin-top 100px
+  +above(2)
+    margin-top 100px
   .sub-topic
     +between(1000px,1400px)
       padding 0 25px
