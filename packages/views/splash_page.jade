@@ -1,8 +1,9 @@
 template(name="splashPage")
   if currentUser
     if isAdmin
-      .groups-users
-        +admin
+      unless onBSVEInstance
+        .groups-users
+          +admin
     .container.spash-user-content.space-top-3
       .row
         .col-sm-8

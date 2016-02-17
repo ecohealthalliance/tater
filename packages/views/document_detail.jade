@@ -9,10 +9,11 @@ template(name="documentDetail")
         .document-heading.pane-head.pane-head-m
           h1.document-title= document.title
           .document-options
-            if crowdsourceDoc document
-              a.btn.btn-primary.crowdsource-btn(data-toggle="modal" data-document-id=document._id data-target="#create-mturk-job-modal" )
-                i.fa.fa-users
-                | Crowdsource
+            unless onBSVEInstance
+              if crowdsourceDoc document
+                a.btn.btn-primary.crowdsource-btn(data-toggle="modal" data-document-id=document._id data-target="#create-mturk-job-modal" )
+                  i.fa.fa-users
+                  | Crowdsource
             a.help-link.help-link-document.pull-right(href="{{path route='/help?topic=annotating-documents'}}")
               +tooltipIcon icon='question-circle' placement='left'
             if mTurkAnnotating

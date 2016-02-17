@@ -80,10 +80,11 @@ template(name="document")
         button.btn-plain.doc-options(data-document-id=_id class="{{showing}}")
           i.fa.fa-gear
         .doc-options-buttons(class="{{showing}}")
-          unless mTurkEnabled
-            button.btn-plain.mturk-enable-button(data-toggle="modal" data-document-id=_id data-target="#create-mturk-job-modal")
-              i.fa.fa-users
-              span Crowdsource
+          unless onBSVEInstance
+            unless mTurkEnabled
+              button.btn-plain.mturk-enable-button(data-toggle="modal" data-document-id=_id data-target="#create-mturk-job-modal")
+                i.fa.fa-users
+                span Crowdsource
           button.btn-plain.delete-document-button(data-toggle="modal" data-document-id=_id data-target="#confirm-delete-document-modal")
             i.fa.fa-trash-o
     else
