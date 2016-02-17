@@ -19,3 +19,9 @@ describe 'MTurkJob', ->
       expect(job.createHITResponse.HIT.HITId).not.to.be.an('undefined')
     else
       console.log "Skipping MTurk test because AWS_ACCESS_KEY is not defined."
+
+  it 'should append random string to end of descrption', ->
+    job = new MTurkJob(
+      description: "tater"
+    )
+    expect(job.descriptionWithHash()).not.to.eq(job.descriptionWithHash())

@@ -92,7 +92,7 @@ MTurkJob = Astro.Class
             Timestamp: timestamp
             Signature: signature
             Title: @title
-            Description: @description
+            Description: @descriptionWithHash()
             Question: """
             <ExternalQuestion xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2006-07-14/ExternalQuestion.xsd">
               <ExternalURL>#{Meteor.absoluteUrl("documents", {
@@ -124,6 +124,9 @@ MTurkJob = Astro.Class
         @save()
 
   methods:
+    descriptionWithHash: ->
+      @description + " " +  Random.id()
+      
     cancel: ->
       if Meteor.isServer and @createHITResponse
         unless Meteor.settings.private.AWS_ACCESS_KEY
