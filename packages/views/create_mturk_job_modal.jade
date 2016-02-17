@@ -9,9 +9,12 @@ template(name="createMTurkJobModal")
           h4 Crowdsource Annotation
           form#mturk-job-form
             input.form-control#documentId(name="documentId" type="hidden")
-            p
-              | Cost:
-              = cost
+            .form-group
+              .cost
+                i.fa.fa-money.fa-rotate-90
+                h3= cost
+                +tooltipIcon icon='info-circle' class='cost-explanation' title="The credit card on file will be charged this amount" placement='left'
+
             .form-group
               .row
                 .col-sm-8
