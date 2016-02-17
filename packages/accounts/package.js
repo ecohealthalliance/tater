@@ -14,4 +14,5 @@ Package.onUse(function(api) {
   api.addFiles('admin_helper.coffee', ['client']);
   api.addFiles('default_user.coffee', ['server']);
   api.addFiles('automatic_login.coffee', ['server']);
+  api.addFiles('custom_methods.coffee', ['server', 'client']);
 });

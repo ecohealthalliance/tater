@@ -78,3 +78,13 @@ Feature: Accounts
       And I log out
       Then I log in by passing a secret access token via URL
       And I am not logged in
+
+  @accounts
+  Scenario: Password restore
+    Given there is a test user in the database
+    When I open the forgot password modal
+    And I fill out the forgot password form using email "test@user.com"
+    Then I should not see content "Email reset link"
+    And I open the forgot password modal
+    Then I fill out the forgot password form using email "no@such.user"
+    Then I should not see content "Email reset link"
