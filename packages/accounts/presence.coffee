@@ -21,7 +21,7 @@ if Meteor.isClient
         if Presences.findOne(userId: userId, state: $gt: setBrowserToken())
           setBrowserToken(true)
           Meteor.logout()
-          toastr.error 'The account has been used from another browser'
+          toastr.error 'This account has been used from another browser'
           # Note: $gt will log out the "other" user,
           #       $lt will log out the current one
       else
@@ -31,7 +31,10 @@ if Meteor.isClient
 if Meteor.isServer
 
   Meteor.publish 'userPresence', () ->
-    # Publish only logged in users
-    filter = { userId: { $exists: true }}
+    if this.userId
+      # Publish only logged in users
+      filter = userId: this.userId
 
-    return Presences.find(filter, { fields: { state: true, userId: true }})
+      return Presences.find(filter, { fields: { state: true, userId: true }})
+    else
+      @ready()
