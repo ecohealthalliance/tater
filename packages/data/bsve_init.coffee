@@ -32,7 +32,7 @@ Meteor.startup ->
       else
         account = Accounts.createUser
           email: email
-        Meteor.users.update(account, $set: admin: true)
+        Meteor.users.update(account, $set: admin: true, acceptedEULA: true)
         tokenObject =
           token: token
           when: new Date
