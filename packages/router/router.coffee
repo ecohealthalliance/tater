@@ -115,7 +115,8 @@ FlowRouter.route '/authenticate',
       main: 'splashPage'
       params: {}
     Meteor.startup ->
-      Meteor.loginWithToken(query.userAccessKey);
+      Meteor.loginWithToken(query.userAccessKey)
+      FlowRouter.go '/'
 
 loggedIn.route '/admin',
   name: 'admin'
