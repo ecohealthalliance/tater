@@ -16,14 +16,16 @@ if Meteor.isClient
       browserToken
 
   Meteor.startup ->
+    tokenUser = Meteor.settings.public.accounts?.tokenUser
     Meteor.autorun ->
       if userId = Meteor.userId()
-        if Presences.findOne(userId: userId, state: $gt: setBrowserToken())
-          setBrowserToken(true)
-          Meteor.logout()
-          toastr.error 'This account has been used from another browser'
-          # Note: $gt will log out the "other" user,
-          #       $lt will log out the current one
+        if not Meteor.users.findOne(_id: userId, 'emails.address': tokenUser)
+          if Presences.findOne(userId: userId, state: $gt: setBrowserToken())
+            setBrowserToken(true)
+            Meteor.logout()
+            toastr.error 'This account has been used from another browser'
+            # Note: $gt will log out the "other" user,
+            #       $lt will log out the current one
       else
         setBrowserToken(true)
 
