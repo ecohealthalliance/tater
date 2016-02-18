@@ -37,8 +37,10 @@ Build the app with the shell script
 Build the docker image  
 `sudo docker build -t tater .`
 
-Run the newly built image  
-`sudo docker run --restart=always -e MONGO_URL=mongodb://<ip address>:<port>/<database name> -e ROOT_URL=http://<ip or FQDN> -e PORT=80 -p 80:80 --name tater tater`
+Run the newly built image using docker-compose  
+`sudo docker-compose -f <compose yml file> up -d`  
+Examples of compose files here:  
+https://github.com/ecohealthalliance/infrastructure/tree/master/docker/containers
 
 ## License
 Copyright 2016 EcoHealth Alliance
