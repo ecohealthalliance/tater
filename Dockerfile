@@ -26,7 +26,6 @@ ENV PATH $PATH:/meteor
 
 #Copy the tenant record for this instance from www
 ADD .scripts/database/copyTenantRecord.js /copyTenantRecord.js
-RUN mongo $MONGO_URL copyTenantRecord.js
 
 #Add the application files
 ADD run.sh /run.sh

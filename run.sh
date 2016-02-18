@@ -8,5 +8,6 @@ cd /tater/programs/server && npm install
 #service supervisor start
 
 #Run our meteor app in production mode
+#mongo $MONGO_URL copyTenantRecord.js
 export METEOR_SETTINGS=$(cat /shared/settings-production.json)
 cd /tater && node main.js
