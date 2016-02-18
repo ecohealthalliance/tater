@@ -35,10 +35,10 @@ Build the app with the shell script
 `./build.sh`
 
 Build the docker image  
-`docker build -t tater .`
+`sudo docker build -t tater .`
 
 Run the newly built image  
-`docker run --restart=always -e MONGO_URL=mongodb://<ip address>:<port>/<database name> -e ROOT_URL=http://<ip or FQDN> -e PORT=80 -p 80:80 --name tater tater`
+`sudo docker run --restart=always -e MONGO_URL=mongodb://<ip address>:<port>/<database name> -e ROOT_URL=http://<ip or FQDN> -e PORT=80 -p 80:80 --name tater tater`
 
 ## License
 Copyright 2016 EcoHealth Alliance
