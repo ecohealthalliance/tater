@@ -32,7 +32,6 @@ Meteor.startup ->
       else
         account = Accounts.createUser
           email: email
-          password: attributes.password
         Meteor.users.update(account, $set: admin: true)
         tokenObject =
           token: token
