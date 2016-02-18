@@ -18,3 +18,24 @@ Meteor.startup ->
       CodingKeywords.insert
         subHeaderId: subHeaderId
         label: "Dengue Fever"
+
+    email = Meteor.settings.public.accounts?.tokenUser
+    token = Meteor.settings.private.accounts?.loginToken
+
+    if token and email
+      tokenObject =
+        token: token
+        when: new Date
+
+      if rootUser = Accounts.findUserByEmail(email)
+        Accounts._insertLoginToken(rootUser._id, tokenObject)
+      else
+        account = Accounts.createUser
+          email: email
+          password: attributes.password
+        Meteor.users.update(account, $set: admin: true)
+        tokenObject =
+          token: token
+          when: new Date
+        user = Accounts.findUserByEmail(email)
+        Accounts._insertLoginToken(user._id, tokenObject)
