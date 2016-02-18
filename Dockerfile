@@ -8,8 +8,10 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selectio
 
 #Install apt package dependencies
 RUN echo "deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) main universe" >> /etc/apt/sources.list
+RUN echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.2 multiverse" > /etc/apt/sources.list.d/mongodb-org-3.2.list
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
 RUN apt-get clean all && apt-get update && \
-    apt-get -y install wget curl python make g++ git mongodb supervisor && \
+    apt-get -y install wget curl python make g++ git mongodb-org supervisor && \
     apt-get clean all
 
 #Install nodejs
