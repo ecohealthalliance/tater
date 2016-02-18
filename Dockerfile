@@ -24,6 +24,10 @@ RUN git clone https://github.com/meteor/meteor.git --depth 1 --branch $METEOR_VE
 RUN cd meteor && git checkout -b $METEOR_VERSION_TAG
 ENV PATH $PATH:/meteor
 
+#Copy the tenant record for this instance from www
+ADD .scripts/database/copyTenantRecord.js /copyTenantRecord.js
+RUN mongo $MONGO_URL copyTenantRecord.js
+
 #Add the application files
 ADD run.sh /run.sh
 ADD ./build/bundle /tater
