@@ -1,0 +1,21 @@
+{
+  "public": {
+    "stripe": {
+      "publishableKey": "pk_test_XXXX"
+    },
+    "analyticsSettings": {
+      "Google Analytics" : {"trackingId": "UA-XXXX"}
+    },
+    "accounts": {
+      "tokenUser": "bsve-user@ecohealthalliance.org"
+    }
+  },
+  "private": {
+    "stripe": {
+      "secretKey": "sk_test_XXX"
+    },
+    "accounts": {
+      "loginToken": "wVCLfs9kttmBF5M6L8ABSMiPZJh8HwKjXZdvxDTs4I8"
+    }
+  }
+}
