@@ -47,7 +47,10 @@ if Meteor.isClient
 
   Template.documentForm.helpers
     groups: ->
-      Groups.find({}, { sort: { name: 1 } })
+      if UI._globalHelpers.onBSVEInstance()
+        Groups.find(name: 'BSVE')
+      else
+        Groups.find({}, { sort: { name: 1 } })
     codeAccessible: ->
       Template.instance().codeAccessible.get()
 

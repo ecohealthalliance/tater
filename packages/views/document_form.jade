@@ -1,6 +1,5 @@
 template(name="documentForm")
   form#new-document-form
-    p.required-text.space-btm-2.pull-right #[span *] Indicates required field
     .form-group
       .row
         .col-sm-6
@@ -27,14 +26,19 @@ template(name="documentForm")
                 i.fa.fa-arrow-circle-down
                 span.space-btm-3 Drop a document file here or click to upload from your computer
                 input(type="file")
-    if isAdmin
-      .form-group
-        .row
-          .col-sm-4
-            label
-              span.required Document Group
-            select#document-group-id.form-control(name='groupId')
-              option(value='' disabled selected) Choose a Document Group
-              each groups
-                option(value=_id)= name
+      if onBSVEInstance
+        input(type='hidden' name='groupId' value='{{#each groups}}{{_id}}{{/each}}')
+      else
+        if isAdmin
+          .form-group
+            .row
+              .col-sm-4
+                label
+                  span.required Document Group
+                select#document-group-id.form-control(name='groupId')
+                  option(value='' disabled selected) Choose a Document Group
+                  each groups
+                    option(value=_id)= name
+
     input.btn.btn-primary(type="submit" value="Add Document")
+    p.required-text.space-btm-3 #[span *] Indicates required fields

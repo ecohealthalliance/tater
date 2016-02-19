@@ -32,12 +32,13 @@ template(name="documentList")
               i.fa.fa-caret-up
             | Number of Annotations
           if isAdmin
-            li.column(data-sort-by='groupName' data-title='Document Group')
-              if sortBy 'groupName' 1
-                i.fa.fa-caret-down
-              if sortBy 'groupName' -1
-                i.fa.fa-caret-up
-              | Document Group
+            unless onBSVEInstance
+              li.column(data-sort-by='groupName' data-title='Document Group')
+                if sortBy 'groupName' 1
+                  i.fa.fa-caret-down
+                if sortBy 'groupName' -1
+                  i.fa.fa-caret-up
+                | Document Group
     .form-group.document-search-wrap
       i.fa.fa-search
       input.form-control.document-search(placeholder="Search Documents")
@@ -70,7 +71,8 @@ template(name="document")
           +tooltipIcon icon='circle-o' placement='top' title='No annotations'
       span.document-title= title
       .document-info(class="{{hideInfo}}")
-        span.document-group= groupName
+        unless onBSVEInstance
+          span.document-group= groupName
         .crowdsource-status
           if mTurkEnabled
             i.fa.fa-cogs

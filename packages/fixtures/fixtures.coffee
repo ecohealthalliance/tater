@@ -29,6 +29,11 @@ do ->
       })
 
     createTestUserWithAccessTokenFixture: (attributes) ->
+      if not Groups.findOne(name: "BSVE")
+        group = new Group(
+          name: "BSVE"
+        )
+        group.save()
       Meteor.users.remove({})
       account = Accounts.createUser
         email: attributes.email
