@@ -8,6 +8,6 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.1.0.2');
   api.use(['coffeescript']);
-  api.addFiles('default_codes.coffee', ['server', 'client']);
+  api.addFiles('database_seeds.coffee', ['server']);
   api.addFiles('bsve_init.coffee', ['server']);
 });
