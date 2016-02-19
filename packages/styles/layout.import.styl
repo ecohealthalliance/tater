@@ -118,7 +118,7 @@
       font-size 20px
 
 .connection-status
-  position absolute
+  position fixed
   top 0
   left 0
   right 0
@@ -133,7 +133,7 @@
   font-weight 600
   min-height $header-height+1
   @extend .light-shadow
-  border-bottom 3px solid darken(alpha($warning, 50%), 20%)
+  border-bottom 2px solid darken(alpha($warning, 50%), 20%)
   .fa
     color darken($warning, 30%)
   .logo
@@ -148,10 +148,16 @@
     font-weight 800
     text-transform uppercase
   .reconnecting-in
-    font-size .9em
+    font-size .85em
     font-weight 400
     display block
-
+    &:not(:empty)
+      &::after
+        display inline-block
+        margin-left 5px
+        content '\f021'
+        icon()
+        animate(1.5s)
 .reconnect
   makeButton(alpha(#FFFFFF, 75%), $body-text, true)
   centerVertically()

@@ -13,7 +13,7 @@ if Meteor.isClient
         return
       if reconnectingIn > 0
         $('.reconnecting-in').text """Attempting to reconnect
-        in #{reconnectingIn} #{pluralize("second", reconnectingIn)}…"""
+        in #{reconnectingIn} #{pluralize("second", reconnectingIn)}"""
       else
         Meteor.reconnect()
         $('.reconnecting-in').text ''
