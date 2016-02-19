@@ -60,7 +60,7 @@
           text-decoration none
           &::after
             content '\f06e'
-            @extend .icon
+            icon()
             centerVertically(true)
             right 10px
             color darken($background-secondary, 20%)
@@ -100,7 +100,7 @@
     margin 15px 0
     color $primary
     &:before
-      @extend .icon
+      icon()
       font-size 1.25em
       content '\f249'
       margin-right 10px

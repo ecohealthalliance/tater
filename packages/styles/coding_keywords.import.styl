@@ -8,7 +8,7 @@ checkMark(center=false)
         transform translate(0, -50%)
       else
         top 3px
-      @extend .icon
+      icon()
       content '\f058'
 
 .clear-search
@@ -60,7 +60,7 @@ checkMark(center=false)
     font-size 1em
     &::before
       content '\f138'
-      @extend .icon
+      icon()
     &:hover
       color darken($secondary-dark, 20%)
       transition .1s ease-in-out
@@ -286,7 +286,7 @@ checkMark(center=false)
         &::after
           content ''
       &::after
-        @extend .icon
+        icon()
         content '\f054'
         centerVertically(true)
         right 15px
@@ -325,7 +325,7 @@ checkMark(center=false)
     pointer()
     &::after
       centerPosition()
-      @extend .icon
+      icon()
       top 50%
       left 50%
       content '\f00c'
@@ -370,7 +370,7 @@ checkMark(center=false)
     float left
 
   .close
-    @extend .icon
+    icon()
     position absolute
     right 5px
     top 5px
