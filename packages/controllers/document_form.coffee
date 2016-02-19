@@ -47,7 +47,13 @@ if Meteor.isClient
 
   Template.documentForm.helpers
     groups: ->
-      Groups.find({}, { sort: { name: 1 } })
+      currentUserBSVE =
+        _id: Meteor.userId(),
+        'emails.address': Meteor.settings.public.accounts?.tokenUser
+      if Meteor.users.findOne(currentUserBSVE)
+        Groups.find(name: 'BSVE')
+      else
+        Groups.find({}, { sort: { name: 1 } })
     codeAccessible: ->
       Template.instance().codeAccessible.get()
 
