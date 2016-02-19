@@ -35,7 +35,7 @@ Document = Astro.Class
   methods:
     groupName: ->
       currentUserBSVE =
-        _id: Meteor.userId(),
+        _id: @userId,
         'emails.address': Meteor.settings.public.accounts?.tokenUser
       if Meteor.users.findOne(currentUserBSVE)
         ''
