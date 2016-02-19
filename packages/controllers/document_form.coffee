@@ -47,10 +47,7 @@ if Meteor.isClient
 
   Template.documentForm.helpers
     groups: ->
-      currentUserBSVE =
-        _id: Meteor.userId(),
-        'emails.address': Meteor.settings.public.accounts?.tokenUser
-      if Meteor.users.findOne(currentUserBSVE)
+      if UI._globalHelpers.onBSVEInstance()
         Groups.find(name: 'BSVE')
       else
         Groups.find({}, { sort: { name: 1 } })

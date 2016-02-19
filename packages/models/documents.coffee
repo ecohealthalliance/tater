@@ -34,13 +34,7 @@ Document = Astro.Class
 
   methods:
     groupName: ->
-      currentUserBSVE =
-        _id: @userId,
-        'emails.address': Meteor.settings.public.accounts?.tokenUser
-      if Meteor.users.findOne(currentUserBSVE)
-        ''
-      else
-        Groups.findOne(@groupId)?.name
+      Groups.findOne(@groupId)?.name
 
     truncatedBody: ->
       splitText = @body?.split(' ')
