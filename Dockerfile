@@ -27,10 +27,12 @@ RUN cd meteor && git checkout -b $METEOR_VERSION_TAG
 ENV PATH $PATH:/meteor
 
 #Add the application files
-ADD run.sh /run.sh
 ADD ./build/bundle /tater
 ADD ./revision.txt /revision.txt
 ADD supervisor-mongod.conf /etc/supervisor/conf.d/mongod.conf
+ADD supervisor-tater.conf /etc/supervisor/conf.d/tater.conf
+ADD tater.sh /tater.sh
+ADD run.sh /run.sh
 
 #Prepare for production
 LABEL app="tater-frontend"
@@ -39,4 +41,4 @@ VOLUME /shared
 ENV MAIL_URL="smtp://AKIAIE2YD4YI4TQOU3QQ:AgELzBJTKCMedBlCfMafPzVBbvbEO8R5Sdm7on2+7v8y@email-smtp.us-east-1.amazonaws.com:465"
 
 #Start application
-CMD bash run.sh
+CMD /bin/bash /run.sh
