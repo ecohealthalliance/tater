@@ -7,7 +7,7 @@ template(name="help")
       .col-sm-3.help-nav-wrap
         ul.help-nav.nav.list-group.hidden-xs(data-spy="affix" id="nav")
 
-          if isAdmin
+          if showAdminContent
             li.list-group-item
               a(href="#users") Users
               ul.list-group
@@ -57,26 +57,26 @@ template(name="help")
               li.list-group-item
                 a(href="#exporting-downloading-annotations") Exporting &amp; Downloading Annotations
 
-          li.list-group-item
-            a(href="#account-management") Account Management
-            ul.list-group
-              li.list-group-item
-                a(href="#change-password") Change password
-              li.list-group-item
-                a(href="#edit-profile") Edit profile
+          unless onBSVEInstance
+            li.list-group-item
+              a(href="#account-management") Account Management
+              ul.list-group
+                li.list-group-item
+                  a(href="#change-password") Change password
+                li.list-group-item
+                  a(href="#edit-profile") Edit profile
 
-
-          li.list-group-item
-            a(href="#contacting-us") Contacting Us
-            ul.list-group
-              li.list-group-item
-                a(href="#reporting-bugs") Reporting a Bug
-              li.list-group-item
-                a(href="#contact-security") Contacting the Security Team
+            li.list-group-item
+              a(href="#contacting-us") Contacting Us
+              ul.list-group
+                li.list-group-item
+                  a(href="#reporting-bugs") Reporting a Bug
+                li.list-group-item
+                  a(href="#contact-security") Contacting the Security Team
 
       .col-sm-8.col-sm-offset-1.help-content
 
-        if isAdmin
+        if showAdminContent
           .help-topic-group#users
             h2 Users
 
@@ -169,7 +169,7 @@ template(name="help")
           .help-topic#uploading-documents
             h3 Uploading
             p To add a document, click the #[span(class="button-ref") New Document] button on the top of the page, right of the Tater logo. Fill out the new document form, naming the document in the Title section. You may enter the text of the document in the Body section or upload a document by dragging a file on your computer to the area marked with the #[i(class="fa fa-arrow-circle-down" title="Down Arrow")] icon or clicking the area and finding the file to upload on your computer.
-            if isAdmin
+            if showAdminContent
               | Select the Document Group using the dropdown menu then click #[span(class="button-ref") Save] to create the document.
             else
               | Click #[span(class="button-ref") Save] to create the document.
@@ -177,7 +177,7 @@ template(name="help")
 
           .help-topic#viewing-documents
             h3 Viewing
-            if isAdmin
+            if showAdminContent
               p Admins can navigate to a specific document in two ways. First, you can access a list of all Tater documents by clicking #[span(class="button-ref") Documents] in the navigation menu. The group name of each document can be found to the right of the document name in italics. Click on the document's name to open it in the annotation interface.
 
               p Admins can also navigate to a document through the #[i Document Groups] section on the Admin page. Click on the group name you are interested in and you will be forwarded to the group page listing all of the documents within that group. Click on the document's name to open it in the annotation interface.
@@ -198,7 +198,7 @@ template(name="help")
 
           img.interface-image(src="images/marketing/annotation-interface_animated.gif")
 
-          if isAdmin
+          if showAdminContent
             span(class="note") Note: Annotations added by admin account users will not display the user email.
 
           p To view the annotation associated with a specific section of highlighted text, simply click on the text and you will be guided to the annotation. To view the text associated with a specific annotation, click on the annotation in the right-hand column and you will be guided to the highlighted text in the document.
@@ -219,7 +219,7 @@ template(name="help")
 
         .help-topic-group#annotations
           h2 Annotations
-          if isAdmin
+          if showAdminContent
             p.featured To view annotated text across all documents, click #[span(class="button-ref") Annotations] in the navigation menu. This page displays three separate columns: #[i Documents], #[i Annotations], and #[i Code Keywords]. In the #[i Documents] column (left) Admin users see a list of all groups and documents. Regular users see all documents in their specific document group. In the #[i Annotations] column (middle) users see a list of annotations from selected groups/documents. In the #[i Code Keyword] column (right) users see a list of code keywords with which to filter the annotations.
           else
             p.featured To view annotated text across documents, click #[span(class="button-ref") Annotations] in the navigation menu. This page displays three separate columns: #[i Documents], #[i Annotations], and #[i Code Keywords]. In the #[i Documents] column (left) users see a list of documents, in the #[i Annotations] column (middle) users see a list of annotations from selected documents and in the #[i Code Keyword] column (right) users see a list of code keywords with which to filter the annotations.
@@ -242,23 +242,23 @@ template(name="help")
 
             p To download your filtered annotations, click the #[span(class="button-ref") Generate CSV] button in the #[i Annotations] column. The generated file will contain the document name, user email, header, sub-header, coding keyword, annotated text, flagged status and time of creation for each annotation.
 
-        .help-topic-group#account-management
-          h2 Account Management
-          .help-topic#change-password
-            h3 Change password
-            p To change your password, click #[span(class="button-ref") Account] in the navigation bar and then #[i Change Password]. Enter your previous password and then your new password twice and click #[i Update password]. Now, your password has been updated.
-          .help-topic#edit-profile
-            h3 Edit profile
-            p To edit your public profile, click #[span(class="button-ref") Account] or #[span(class="button-ref") your name] in the navigation menu and then select #[i Edit Profile]. If you wish, you may fill in the fields #[i Full Name],  #[i Job Title] and #[i Biography]. If you want to hide your email address from other Tater users, select #[i Hide Email Address?]. Be sure to click #[i Save] to save all account profile changes. Other Tater users will be able to view your public profile; you may view your public profile by clicking #[span(class="button-ref") View Public Profile]. #[span(class="note") Note: The #[span(class="button-ref") account] button will change to your full name in the navigation menu if you fill in the #[i Full Name] field.]
+        unless onBSVEInstance
+          .help-topic-group#account-management
+            h2 Account Management
+            .help-topic#change-password
+              h3 Change password
+              p To change your password, click #[span(class="button-ref") Account] in the navigation bar and then #[i Change Password]. Enter your previous password and then your new password twice and click #[i Update password]. Now, your password has been updated.
+            .help-topic#edit-profile
+              h3 Edit profile
+              p To edit your public profile, click #[span(class="button-ref") Account] or #[span(class="button-ref") your name] in the navigation menu and then select #[i Edit Profile]. If you wish, you may fill in the fields #[i Full Name],  #[i Job Title] and #[i Biography]. If you want to hide your email address from other Tater users, select #[i Hide Email Address?]. Be sure to click #[i Save] to save all account profile changes. Other Tater users will be able to view your public profile; you may view your public profile by clicking #[span(class="button-ref") View Public Profile]. #[span(class="note") Note: The #[span(class="button-ref") account] button will change to your full name in the navigation menu if you fill in the #[i Full Name] field.]
 
+          .help-topic-group#contacting-us
+            h2 Contacting Us
 
-        .help-topic-group#contacting-us
-          h2 Contacting Us
+            .help-topic#reporting-bugs
+              h3 Reporting a Bug
+              p To report an issue or bug, click Account (or your name) in the navigation menu and then select Report a bug to send a message to the Tater development team.
 
-          .help-topic#reporting-bugs
-            h3 Reporting a Bug
-            p To report an issue or bug, click Account (or your name) in the navigation menu and then select Report a bug to send a message to the Tater development team.
-
-          .help-topic#contact-security
-            h3 Contacting Security Team
-            p To report any security concerns, click Account (or your name) in the navigation menu and then select Security Concerns to send a message to the Tater security team.
+            .help-topic#contact-security
+              h3 Contacting Security Team
+              p To report any security concerns, click Account (or your name) in the navigation menu and then select Security Concerns to send a message to the Tater security team.

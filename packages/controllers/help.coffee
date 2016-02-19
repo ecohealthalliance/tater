@@ -21,9 +21,14 @@ if Meteor.isClient
       offset:
         top: $('.help-nav').offset().top - 20
 
+  Template.help.helpers
+    showAdminContent: ->
+      UI._globalHelpers.isAdmin() and not UI._globalHelpers.onBSVEInstance()
+
   Template.help.events
     'click .help-nav li a': (event) ->
       event.preventDefault()
       $(event.target).parent().addClass('active')
       scrollToElement(event.target.hash)
       $('.help-nav-wrap').scrollspy('refresh')
+
