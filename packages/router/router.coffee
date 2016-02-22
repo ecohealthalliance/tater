@@ -131,11 +131,23 @@ loggedIn.route '/admin',
     BlazeLayout.render 'layout',
       main: 'admin'
 
+loggedIn.route '/users',
+  name: 'users'
+  action: () ->
+    BlazeLayout.render 'layout',
+      main: 'users'
+
 loggedIn.route '/editCodingKeywords',
   name: 'editCodingKeywords'
   action: () ->
     BlazeLayout.render 'layout',
       main: 'editCodingKeywords'
+
+loggedIn.route '/groups/',
+  name: 'groups'
+  action: () ->
+    BlazeLayout.render 'layout',
+      main: 'groups'
 
 loggedIn.route '/groups/new',
   name: 'newGroup'
