@@ -50,14 +50,13 @@ template(name="annotations")
     .annotations-list-container.pane.pane-m
       .pane-actions.pane-actions-middle.align-right
         .show-flagged
-          if flagged
-            button.btn-plain
-              if showFlagged
-                i.fa.fa-check-square-o
-              else
-                i.fa.fa-square-o
-              | Flagged Only
-              i.fa.fa-flag-o
+          button.btn-plain(disabled="{{#unless flagged}}disabled{{/unless}}")
+            if showFlagged
+              i.fa.fa-check-square-o
+            else
+              i.fa.fa-square-o
+            | Show Flagged Only
+            i.fa.fa-flag-o
 
       if documentSelected
         unless annotationsLoaded

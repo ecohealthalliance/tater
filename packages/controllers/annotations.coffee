@@ -177,7 +177,7 @@ if Meteor.isClient
       # sort them separately. This allows us to keep unannotated documents at
       # the bottom of the list and then sort them by title.
       annotatedDocs = Documents.find(
-        { groupId: @_id, annotated: $gt: 0 }, { sort: title: 1 }
+        { groupId: @_id, annotated: {$gt: 0} }, { sort: {title: 1} }
       ).fetch()
       unAnnotatedDocs = Documents.find(
         {
@@ -189,7 +189,7 @@ if Meteor.isClient
             ]
           ]
         },
-        { sort: title: 1 }
+        { sort: {title: 1} }
       ).fetch()
       annotatedDocs.concat(unAnnotatedDocs)
 
@@ -233,8 +233,9 @@ if Meteor.isClient
       )
 
     'click .show-flagged': (event, instance) ->
-      resetPage()
-      instance.showFlagged.set(!instance.showFlagged.get())
+      unless event.currentTarget.childNodes[0].disabled
+        resetPage()
+        instance.showFlagged.set(!instance.showFlagged.get())
 
     'click .document-selector': (event, instance) ->
       resetKeywords()
