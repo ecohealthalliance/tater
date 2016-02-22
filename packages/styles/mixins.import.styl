@@ -73,7 +73,7 @@ addBorder($w=false, $h, $color)
   else
     border unit($h, 'px') solid $color
 
-makeButton($color, $text = white, $dark = false, $noOutline = false, $hoverColor = white)
+makeButton($color, $text = white, $dark = false, $noOutline = false, $hoverColor = white, $transition=true)
   addBorder(false, 1, darken($color, 10%))
   background $color
   if $dark
@@ -97,7 +97,8 @@ makeButton($color, $text = white, $dark = false, $noOutline = false, $hoverColor
     &:hover
       background desaturate($color, 50%)
       border-color desaturate(darken($color, 20%), 50%)
-  transition()
+  if $transition
+    transition()
   if $noOutline
     &:focus
       outline 0
@@ -177,12 +178,12 @@ centerSmall($marginBottom=0)
     if $marginBottom
       margin-bottom $marginBottom
 
-buttonHover($hoverBG, $bg=none)
-  transition()
+buttonHover($hoverBG, $bg=none, $transition=true)
+  if $transition
+    transition()
   background $bg
   &:hover
     background $hoverBG
-    transition()
     color white
 
 centerPosition($h=-50%, $v=-50%)
