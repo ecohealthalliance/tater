@@ -33,7 +33,7 @@ ADD supervisor-tater.conf /etc/supervisor/conf.d/tater.conf
 ADD tater.sh /tater.sh
 ADD run.sh /run.sh
 RUN mkdir /shared
-ADD settings-bsve.json /shared/settings-bsve.json
+ADD settings-bsve.json /shared/settings-production.json
 
 #Prepare for production
 LABEL app="tater-frontend"
