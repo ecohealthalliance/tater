@@ -21,7 +21,7 @@ model:
 	spacejam test-packages packages/models/
 
 test:
-	TAGS=~@ignore ./.scripts/run-tests.sh
+	./.scripts/run-tests.sh
 
 devtest:
 	TAGS=@dev ./.scripts/run-tests.sh
