@@ -95,7 +95,7 @@ do ->
 
     @Then /^I should( not)? see a "([^"]*)" toast$/, (noToast, message) ->
       @browser
-        .waitForVisible('.toast')
+        .waitForVisible('.toast', 1000)
         # This causes a warning if no toast is visible
         .getHTML('.toast', (error, response) ->
           match = response?.toString().match(message)
