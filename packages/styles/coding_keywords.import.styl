@@ -235,17 +235,21 @@ checkMark(center=false)
 .code-management-container
   position relative
   min-height 700px
-  border 1px solid $m-gray
+  containerShadow()
+  addBorder(false, 1, $border-gray)
   border-top 0
-  border-bottom-right-radius 3px
-  border-bottom-left-radius 3px
+  border-bottom-right-radius 4px
+  border-bottom-left-radius 4px
   overflow hidden
+  .curtain-white
+    &:last-of-type
+      border-bottom-right-radius 4px
 
 .code-management-list-wrap
   @extend .gradient-bottom
   position relative
   min-height 700px
-  border-right 1px solid lighten($primary-light, 60%)
+  addBorder('right', 1, $border-primary)
   &:last-of-type
     border-right 0
 
@@ -269,7 +273,7 @@ checkMark(center=false)
         color black
       &
       &:last-of-type
-        border-bottom 1px solid lighten($l-gray, 20%)
+        addBorder('bottom', 1, lighten($l-gray, 20%))
       &.selected
         background lighten($background-secondary, 20%)
         font-weight bold
@@ -301,7 +305,7 @@ checkMark(center=false)
   right 0
   padding 10px
   background $sub-header-BG
-  border-bottom 2px solid lighten($primary-light, 60%)
+  addBorder('bottom', 1, $border-primary)
   [class^='add']
     centerVertically(true)
     pointer()
@@ -321,7 +325,7 @@ checkMark(center=false)
     height 30px
     margin 1%
     border-radius 3px
-    border 2px solid transparent
+    addBorder(false, 2, transparent)
     pointer()
     &::after
       centerPosition()
@@ -358,7 +362,7 @@ checkMark(center=false)
 .adding-code
   padding 15px 10px
   position relative
-  border-bottom 1px solid lighten($primary-light, 60%)
+  addBorder('bottom', 1, lighten($primary-light, 60%))
   input
     margin 0 0 10px 0
   .add
@@ -380,4 +384,4 @@ for $color, $index in $annotation-colors
   .color-swatch-{$index+1}
     background-color $color
   .header-color-{$index+1}
-    border-left 12px solid $color
+    addBorder('left', 12, $color)

@@ -32,8 +32,8 @@
 .pane-m
   width 55%
   left 22.5%
-  border-left 2px solid lighten($primary-light, 50%)
-  border-right 2px solid lighten($primary-light, 50%)
+  addBorder('left', 1, $border-primary-l)
+  addBorder('right', 1, $border-primary-l)
 
 .pane-r
   right 0
@@ -46,7 +46,7 @@
   z-index $top-layer
   width 22.5%
   padding 15px
-  border-bottom 2px solid lighten($primary-light, 70%)
+  addBorder('bottom', 1, $border-primary)
   input
     margin-bottom 0
   h1
@@ -67,8 +67,8 @@
   width 55%
   left 22.5%
   padding 15px 20px 10px 20px
-  border-left $border
-  border-right $border
+  addBorder('left', 1, $border-primary-l)
+  addBorder('right', 1, $border-primary-l)
   background $sub-header-BG
 
 .pane-head-m-options
@@ -86,14 +86,14 @@
 .pane-actions
   display flex
   align-items center
+  min-height 34px
   margin-bottom 15px
   padding-top 10px
   padding-top 10px
   padding-bottom 10px
   padding-left 15px
   padding-right 15px
-  border-bottom 1px solid lighten($border-color, 70%)
-  min-height 34px
+  addBorder('bottom', 1, lighten($border-primary-l, 20%))
   &.pane-actions-middle
     padding-left 20px
     padding-right 20px
@@ -110,7 +110,7 @@
     &:hover
       color darken($primary-light, 40%)
     &:disabled
-      color desaturate(lighten($primary-light, 70%), 20%)
+      color desaturate($border-primary-l, 20%)
       cursor not-allowed
   i
     font-size 13px
@@ -134,7 +134,7 @@
   font-weight 600
   min-height $header-height+1
   @extend .light-shadow
-  border-bottom 2px solid darken(alpha($warning, 50%), 20%)
+  addBorder('bottom', 2, darken(alpha($warning, 50%), 20%))
   .fa
     color darken($warning, 30%)
   .logo
@@ -165,13 +165,13 @@
   right 10px
   padding-top 5px
   padding-bottom 5px
-  border 2px solid $secondary
+  addBorder(false, 2, $secondary)
   font-size .95em
   &:hover
   &:focus
     background white
     color black
-    border 2px solid $secondary
+    addBorder(false, 2, $secondary)
 
 .no-header
   .connection-status
