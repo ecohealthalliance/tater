@@ -26,7 +26,7 @@ Feature: Tenant Registration
   @tenantRegistration
   Scenario: Seed the database with initial tenant record
     When I seed the database with the test tenant record via URL
-    Then I should see a "The seed has been planted" toast
+    Then I should see a "Success" toast
     When I log in as the test user
     Then I am logged in
     And I am logged in as an admin user
@@ -34,10 +34,10 @@ Feature: Tenant Registration
   @tenantRegistration
   Scenario: Fail to seed the database with initial tenant record the second time
     When I seed the database with the test tenant record via URL
-    Then I should see a "The seed has been planted" toast
+    Then I should see a "Success" toast
     When I log in as the test user
     Then I am logged in
     And I am logged in as an admin user
     Then I log out
     And I seed the database with the test tenant record via URL
-    Then I should not see a "The seed has been planted" toast
+    Then I should not see a "Success" toast

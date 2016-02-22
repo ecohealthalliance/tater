@@ -122,7 +122,7 @@ FlowRouter.route '/seed',
   action: (params, query) ->
     Meteor.call 'seed', query, (err, ok) ->
       unless err instanceof Meteor.Error
-        toastr.success 'The seed has been planted'
+        toastr.success 'Success'
         FlowRouter.go '/'
 
 loggedIn.route '/admin',

@@ -31,7 +31,6 @@ do ->
     @When 'I submit the tenant registration form', ->
       @browser
         .submitForm('#tenant-registration')
-        .setValue('[data-stripe=addressZip]', '10003')
 
     @When 'I seed the database with the test tenant record via URL', ->
       @browser
