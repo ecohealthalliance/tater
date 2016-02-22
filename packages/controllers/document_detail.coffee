@@ -155,7 +155,7 @@ if Meteor.isClient
     # When the document wrapper is clicked, process all document-annotaiton
     # layers that are below the current layer and look for a highlight that
     # would be below the click coordinates.
-    'click .document-wrapper': (event, instance) ->
+    'mouseup .document-wrapper': (event, instance) ->
       if not window.getSelection().getRangeAt(0)?.collapsed then return
       x = event.pageX
       y = event.pageY
@@ -208,6 +208,7 @@ if Meteor.isClient
 
       elementClassName = 'document-text'
       selection = window.getSelection()
+      if selection.type != 'Range' then return
       range = selection.getRangeAt(0)
       selectionInDocument = selection.anchorNode.parentElement.getAttribute('class') == elementClassName
       textHighlighted = range and (range.endOffset > range.startOffset or range.endOffset == 0)
