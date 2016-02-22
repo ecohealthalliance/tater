@@ -43,6 +43,7 @@ then
   meteor &
 fi
 
+export ALLOW_TOKEN_ACCESS=false
 function test {
   # Connect to mongo, use a database named after the currently selected port
   tail -f testoutput${port}.txt &
@@ -57,7 +58,7 @@ then
 else
   test ~@ignore
 
-  export ALLOW_TOKEN_ACCESS=true
+  # export ALLOW_TOKEN_ACCESS=true
   test @bsve
 fi
 
