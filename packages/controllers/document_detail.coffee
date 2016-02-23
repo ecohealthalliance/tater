@@ -38,12 +38,14 @@ if Meteor.isClient
       $documentContainer = @.$('.document-container')
       documentContainerHeight = $documentContainer.innerHeight()
       documentContainerTopPadding = parseInt $documentContainer.css('padding-top')
+      documentCrowdsourceDetailsHeight = @.$('.crowdsource-details').height()
       documentBodyTopMargin = parseInt $documentContainer.find('.document-body').css('margin-top')
       documentContainerPaneHeadHeight = parseInt $('.document-heading').innerHeight()
       $documentTextToScrollTo = $documentContainer.find ".document-text span[data-annotation-id='#{annotationId}']"
       documentTextToScrollToHeight = $documentTextToScrollTo.innerHeight()
       documentTextToScrollToTop = $documentTextToScrollTo.position()?.top
       documentTextToScrollToTop += documentContainerTopPadding
+      documentTextToScrollToTop += documentCrowdsourceDetailsHeight
       documentTextToScrollToTop -= documentContainerPaneHeadHeight
       documentTextToScrollToTop += documentBodyTopMargin
       # The annotation labels on the right
