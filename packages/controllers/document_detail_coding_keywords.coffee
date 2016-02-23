@@ -1,4 +1,5 @@
 if Meteor.isClient
+
   Template.documentDetailCodingKeywords.onCreated ->
     @subscribe('codingKeywords')
     @searchText = new ReactiveVar('')
@@ -92,32 +93,32 @@ if Meteor.isClient
       Template.instance().showingAllCodes.get()
 
   Template.documentDetailCodingKeywords.events
+    'input .code-search': _.debounce((event, instance) ->
+      event.preventDefault()
+      searchText = event.target.value
+      instance.searchText.set searchText
+    ), 100
 
-    'input .code-search': _.debounce ((e, instance) ->
-        e.preventDefault()
-        searchText = e.target.value
-        instance.searchText.set searchText
-      ), 100
-    'input .code-search-container .code-search': (e, instance) ->
-        searchText = e.target.value
-        instance.searching.set searchText.length > 0
+    'input .code-search-container .code-search': (event, instance) ->
+      searchText = event.target.value
+      instance.searching.set searchText.length > 0
 
-    'click .code-search-container .clear-search': (e, instance) ->
+    'click .code-search-container .clear-search': (event, instance) ->
       $('.code-search-container .code-search').val('').trigger('input').focus()
 
-    'click .code-header > i, click .code-header > span': (e) ->
-      e.stopPropagation()
-      $target = $(e.currentTarget)
+    'click .code-header > i, click .code-header > span': (event) ->
+      event.stopPropagation()
+      $target = $(event.currentTarget)
       $target.parent().toggleClass('down up')
       $target.siblings('.code-sub-headers').toggleClass('hidden')
 
-    'click .code-sub-header > i, click .code-sub-header > span': (e) ->
-      e.stopPropagation()
-      $target = $(e.currentTarget)
+    'click .code-sub-header > i, click .code-sub-header > span': (event) ->
+      event.stopPropagation()
+      $target = $(event.currentTarget)
       $target.parent().toggleClass('down up')
       $target.siblings('.code-keywords').toggleClass('hidden').siblings('span').toggleClass('showing')
 
-    'click .toggle-all-codes': (e, instance) ->
+    'click .toggle-all-codes': (event, instance) ->
       instance.showingAllCodes.set(!instance.showingAllCodes.get())
 
 

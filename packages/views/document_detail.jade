@@ -36,11 +36,10 @@ template(name="documentDetail")
           #documentContainer
             #documentBody.document-body
               .document-wrapper
-                pre.document-text= document.body
+                .document-text= document.body
                 if Template.subscriptionsReady
                   each annotationLayers
-                    .document-annotations
-                      pre.document-text= this
+                    .document-annotations= this
         .annotation-search-container.pane-head.pane-head-r
           if Template.subscriptionsReady
             input#annotation-search-field.annotation-search.form-control(type="text" placeholder="Search Annotations")

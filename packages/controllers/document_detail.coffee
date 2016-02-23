@@ -22,16 +22,16 @@ if Meteor.isClient
     @selectedAnnotation = new ReactiveVar(id: @data.annotationId, onLoad: true)
 
     annotationSpanElement = (annotationId) ->
-      @.$ ".document-text span[data-annotation-id='#{annotationId}']"
+      @.$ "div.document-annotations span[data-annotation-id='#{annotationId}']"
 
     @highlightText = (annotationId) ->
       if annotationId?
-        @.$(".document-text span").addClass('not-highlighted')
+        @.$("div.document-annotations span").addClass('not-highlighted')
         annotationSpanElement(annotationId)
           .removeClass('not-highlighted')
           .addClass('highlighted')
       else # unhighlight
-        @.$(".document-text span").removeClass('highlighted, not-highlighted')
+        @.$("div.document-annotations span").removeClass('highlighted, not-highlighted')
 
     @scrollToAnnotation = (annotationId, scrollTheText, scrollTheList, sameLine) ->
       # The actual annotatings within the document body
@@ -41,7 +41,7 @@ if Meteor.isClient
       documentCrowdsourceDetailsHeight = @.$('.crowdsource-details').height()
       documentBodyTopMargin = parseInt $documentContainer.find('.document-body').css('margin-top')
       documentContainerPaneHeadHeight = parseInt $('.document-heading').innerHeight()
-      $documentTextToScrollTo = $documentContainer.find ".document-text span[data-annotation-id='#{annotationId}']"
+      $documentTextToScrollTo = $documentContainer.find "div.document-annotations span[data-annotation-id='#{annotationId}']"
       documentTextToScrollToHeight = $documentTextToScrollTo.innerHeight()
       documentTextToScrollToTop = $documentTextToScrollTo.position()?.top
       documentTextToScrollToTop += documentContainerTopPadding
@@ -158,10 +158,11 @@ if Meteor.isClient
     # layers that are below the current layer and look for a highlight that
     # would be below the click coordinates.
     'mouseup .document-wrapper': (event, instance) ->
+      # Do not continue if the mouseup has fired up due to selection
       if not window.getSelection().getRangeAt(0)?.collapsed then return
-      doNotBubbleUp = false
       x = event.pageX
       y = event.pageY
+      doNotBubbleUp = false
       documentWrapper = event.currentTarget
       searchIsNotNull = instance.searchText.get() != ''
       childrenCount = documentWrapper.childElementCount
@@ -172,6 +173,7 @@ if Meteor.isClient
       # loop through the annotations
       i = 0
       while i < childrenCount
+        i++
         elementAtPoint = document.elementFromPoint(x, y)
         if elementAtPoint.nodeName == 'SPAN' # it's span.annotation-highlight
           doNotBubbleUp = true
@@ -179,18 +181,15 @@ if Meteor.isClient
             instance.selectedAnnotation.set
               id: elementAtPoint.getAttribute 'data-annotation-id'
               noScroll: true
-
           if searchIsNotNull
             instance.searchText.set searchField.value = ''
             setTimeout pointAtAnnotation, 400
           else
             pointAtAnnotation()
           break
-        else if elementAtPoint.nodeName == 'PRE' # it's pre.document-text
-          # hide current annotation layer so we can click the layer below it
-          (hidden[i++] = elementAtPoint.parentNode).style.zIndex = -2
-        else
-          break # clicked through to .document-container
+        else if elementAtPoint.className == 'document-annotations' # it's a div element
+          # hide current annotation layer so we can click the layer beneath
+          (hidden[hidden.length] = elementAtPoint).style.zIndex = -2
 
       # restore z-indices
       none = ''
