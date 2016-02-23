@@ -120,6 +120,45 @@
       font-size 13px
       margin-right 4px
 
+.view-header
+  border-bottom 1px solid $border-primary
+  > .container
+    position relative
+    padding-top 15px
+    padding-bottom 10px
+  +below(2)
+    padding-left 15px
+    padding-right 15px
+    margin-bottom 0
+    margin-top -20px
+  &.primary-bg
+    background $background-primary
+  &.secondary-bg
+    background $background-secondary
+  &.no-border
+    border-bottom 0
+  h1
+    margin 0
+    text-shadow 0 1px 0 rgba(255,255,255,.8)
+
+.view-header-search
+  position absolute
+  top -65px
+  right 15px
+  margin 15px 0 0 0
+  width 30%
+  +below(2)
+    position static
+    padding 12px
+    margin 0
+    width 100%
+    background $border-gray
+  .form-group
+    margin 0
+    position relative
+  input
+    padding-left 28px
+
 .connection-status
   position fixed
   top 0
@@ -178,3 +217,6 @@
 .no-header
   .connection-status
     top 0
+
+.secondary-nav-wrap
+  background $background-primary
