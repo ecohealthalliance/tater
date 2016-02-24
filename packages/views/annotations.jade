@@ -1,7 +1,13 @@
 template(name="annotations")
   .annotation-list-container.pane-container
     .document-list-heading.pane-head.pane-head-l
-      h2 Document Groups
+      if onBSVEInstance
+        h2 Documents
+      else
+        if isAdmin
+          h2 Document Groups
+        else
+          h2 Documents
     .document-list-container.pane.pane-l
       .pane-actions
         button.btn-plain.select-all(disabled="{{allSelected}}")
@@ -44,12 +50,12 @@ template(name="annotations")
     .annotations-list-container.pane.pane-m
       .pane-actions.pane-actions-middle.align-right
         .show-flagged
-          button.btn-plain(disabled="{{#unless annotationsLoaded}} disabled {{/unless}}")
+          button.btn-plain(disabled="{{#unless flagged}}disabled{{/unless}}")
             if showFlagged
               i.fa.fa-check-square-o
             else
               i.fa.fa-square-o
-            | Show Flagged
+            | Show Flagged Only
             i.fa.fa-flag-o
 
       if documentSelected

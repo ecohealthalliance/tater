@@ -28,8 +28,8 @@ AnnotationsPages = new Meteor.Pagination Annotations,
         skip: skip
       }
     ]
-  templateName: "annotations"
-  itemTemplate: "annotation"
+  templateName: 'annotations'
+  itemTemplate: 'annotation'
   availableSettings:
     perPage: true
     sort: true
@@ -119,6 +119,11 @@ if Meteor.isClient
           else
             -1
       )
+
+    flagged: ->
+      Annotations.find(flagged: true).count() or
+        Template.instance().showFlagged.get()
+
     keywordQuery: ->
       Template.instance().keywordQuery
 
@@ -145,7 +150,8 @@ if Meteor.isClient
           true
 
     documentSelected: ->
-      Template.instance().documents.find().count() or Template.instance().selectedGroups.find().count()
+      Template.instance().documents.find().count() or
+        Template.instance().selectedGroups.find().count()
 
     noAnnotations: ->
       if Documents.findOne(@_id).annotated == 0
@@ -159,37 +165,39 @@ if Meteor.isClient
         'selected'
 
     selectedGroup: ->
-      if Template.instance().selectedGroups.find({id: @_id}).count() and Documents.find({groupId: @_id}).count()
+      if Template.instance().selectedGroups.find({id: @_id}).count() and
+          Documents.find({groupId: @_id}).count()
         'selected'
 
     groups: ->
       Groups.find({}, {sort: {name: 1}})
 
     groupDocuments: ->
-      # lets us break arrays with annotations and without annotations apart and sort
-      # them separately.  This allows us to keep unannotated documents at the bottom
-      # of the list and then sort them by title.
-      annotatedDocs = Documents.find({groupId: @_id, annotated: {$gt: 0}}, {sort: {title: 1}}).fetch()
+      # lets us break arrays with annotations and without annotations apart and
+      # sort them separately. This allows us to keep unannotated documents at
+      # the bottom of the list and then sort them by title.
+      annotatedDocs = Documents.find(
+        { groupId: @_id, annotated: {$gt: 0} }, { sort: {title: 1} }
+      ).fetch()
       unAnnotatedDocs = Documents.find(
         {
           $and:[
             groupId: @_id,
             $or: [
-              {annotated: {$lt: 1}},
-              {annotated: {$exists: false}}
+              { annotated: {$lt: 1} },
+              { annotated: {$exists: false} }
             ]
           ]
         },
-        {sort: {title: 1}}
+        { sort: {title: 1} }
       ).fetch()
       annotatedDocs.concat(unAnnotatedDocs)
 
     allSelected: ->
-      if Template.instance().documents.find().count() == Documents.find().count()
-        true
+      Template.instance().documents.find().count() == Documents.find().count()
 
     toggleEnabled: ->
-      if Documents.find({groupId: @_id}).count()
+      if Documents.find(groupId: @_id).count()
         'enabled'
       else
         'disabled'
@@ -197,19 +205,20 @@ if Meteor.isClient
     csvDataUri: ->
       csvData = Template.instance().csvData.get()
       if csvData
-        "data:text/csv;charset=utf-8," + encodeURIComponent(csvData)
+        'data:text/csv;charset=utf-8,' + encodeURIComponent(csvData)
 
     showGroup: ->
-      Template.instance().selectedGroups.findOne({id: @_id})
+      Template.instance().selectedGroups.findOne(@_id)
 
-  resetKeywords = ->
+
+  # Commmon functions for template events
+  resetKeywords = () ->
     instance = Template.instance()
     instance.filtering.set(false)
     instance.selectedCodes.remove({})
 
-  resetPage = ->
-    AnnotationsPages.sess("currentPage", 1)
-
+  resetPage = () ->
+    AnnotationsPages.sess('currentPage', 1)
 
   Template.annotations.events
     'click .download-csv': (event, instance) ->
@@ -218,14 +227,15 @@ if Meteor.isClient
       Meteor.call 'generateCsv', instance.query.get(), ((err, csvData)->
         if err
           $('#download-csv-modal').modal('hide')
-          alert "CSV Generation Error: " + err
+          toastr.error 'CSV Generation Error: ' + err
         else
           instance.csvData.set(csvData)
       )
 
     'click .show-flagged': (event, instance) ->
-      resetPage()
-      instance.showFlagged.set(!instance.showFlagged.get())
+      unless event.currentTarget.childNodes[0].disabled
+        resetPage()
+        instance.showFlagged.set(!instance.showFlagged.get())
 
     'click .document-selector': (event, instance) ->
       resetKeywords()
@@ -342,10 +352,10 @@ if Meteor.isClient
   Template.annotation.onRendered ->
     # This hides the code keyword labels for all but the first element of a
     # a code group.
-    prevAnnotationCodeText = @$(@.firstNode).prev().find("h3").text()
-    annotationCodeText = @$("h3").text()
+    prevAnnotationCodeText = @$(@.firstNode).prev().find('h3').text()
+    annotationCodeText = @$('h3').text()
     if prevAnnotationCodeText == annotationCodeText
-      @$("h3").addClass('hidden')
+      @$('h3').addClass('hidden')
 
   Template.annotation.helpers
     annotatedText: ->
@@ -368,7 +378,11 @@ if Meteor.isClient
       header = code?.headerLabel()
       subHeader = code?.subHeaderLabel()
       keyword = code?.label
-      Spacebars.SafeString("<span class='header'>#{header}</span> : <span class='sub-header'>#{subHeader}</span> : <span class='keyword'>#{keyword}</span>")
+      Spacebars.SafeString("""
+        <span class="header">#{header}</span> :
+        <span class="sub-header">#{subHeader}</span> :
+        <span class="keyword">#{keyword}</span>
+      """)
 
 
 Meteor.methods
@@ -386,9 +400,9 @@ Meteor.methods
         else if query.documentId.$in
           userDocIds = query.documentId.$in
         else
-          throw Meteor.Error("Query is not supported")
+          throw Meteor.Error('Query is not supported')
         if _.difference(userDocIds, docIds).length > 0
-          throw Meteor.Error("Invalid docIds")
+          throw Meteor.Error('Invalid docIds')
       else
         query.documentId = $in: docIds
       headerGetters =
@@ -420,11 +434,8 @@ if Meteor.isServer
     if user?
       if user?.admin
         documents = Documents.find()
-      else if user?
+      else
         documents = Documents.find groupId: user.group
-      [
-        documents
-        groups
-      ]
+      [ groups, documents ]
     else
       @ready()
