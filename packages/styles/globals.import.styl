@@ -25,6 +25,7 @@ body
       content ''
 
 .page-wrap
+  background lighten($ll-gray, 10%)
   min-height 100vh
   &.register-wrap
     background $ll-gray
@@ -51,50 +52,14 @@ h5
   font-weight 400
   color $d-gray
 
-.view-header
-  padding 20px 0
-  border-bottom 2px solid $border-gray
-  +below(2)
-    padding-left 15px
-    padding-right 15px
-    margin-bottom 0
-    margin-top -20px
-  &.primary-bg
-    background $background-primary
-  &.secondary-bg
-    background $background-secondary
-  &.no-border
-    border-bottom 0
-  h1
-    margin-bottom 0
-    text-shadow 0 1px 0 rgba(255,255,255,.8)
-  .container
-    padding 0
-
-.view-header-search
-  position absolute
-  top -70px
-  right 0
-  margin 15px 0 0 0
-  width 30%
-  +below(2)
-    position static
-    padding 12px
-    margin 0
-    width 100%
-    background $border-gray
-  .form-group
-    margin 0
-    position relative
-  input
-    padding-left 28px
-
 a
 button
 .btn
   transition()
   &:hover
     transition()
+  .fa
+    margin-right 5px
 
 a
   color $secondary
@@ -111,9 +76,9 @@ a
 
 .fa
   &.icon-right
-    margin-left 3px
+    margin-left 5px
   &.icon-left
-    margin-right 3px
+    margin-right 5px
 
 .btn-primary
   makeButton($secondary)
@@ -221,6 +186,7 @@ a
 
 .pagination
   margin-top 0 !important
+  containerShadow()
   > .active
     > a
     > span

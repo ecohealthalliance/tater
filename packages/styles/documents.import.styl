@@ -5,7 +5,7 @@
     color $primary-light
     font-weight 400
     font-style italic
-    margin 10px 0 0 0
+    margin 5px 0 0 0
     span
       font-style normal
       font-weight 700
@@ -14,8 +14,10 @@
 .search-list-result
   list-style none
 
-.document-list
+.document-list-container
   min-height 460px
+
+.document-list
   border-top 0
   +below(2)
     margin-top 0
@@ -172,7 +174,7 @@ $doc-options-border-color = lighten($l-gray, 20%)
 
 
 .document-filtration
-  min-width 70%
+  min-width 60%
   display flex
   flex-wrap nowrap
   justify-content flex-end

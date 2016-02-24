@@ -25,6 +25,12 @@ $l-gray               = #e7e7e7
 $m-gray               = #CCC
 $white-trans          = rgba(255,255,255,.7)
 
+$border-gray          = #DDD
+$border-primary       = lighten($primary-light, 70%)
+$border-primary-l     = lighten($border-primary, 20%)
+$border-primary-d     = darken($border-primary, 20%)
+$highlight-color      = lighten($primary-light, 70%)
+
 $body-text            = $dd-gray
 
 $btn-default          = $secondary
@@ -32,27 +38,21 @@ $confirm              = rgba(103, 169, 104, 1) // Green
 $deny                 = rgba(219, 82, 75, 1) // Red
 $delete               = $deny
 $warning              = rgba(242, 173, 64, 1)
-$connection-warning = alpha(lighten($warning, 10%), 80%)
+$connection-warning   = alpha(lighten($warning, 10%), 80%)
 
 $header-BG            = white
 $footer-BG            = white
 $footer-value         = 'dark'
-$nav-hover            = $secondary
-$header-link-color    = $primary
-$sub-header-BG        = lighten(desaturate(alpha($background-primary, 95%),100%),20%)
+$header-link-selected = $primary
+$header-link-hover    = $secondary
+$header-link-text     = $primary
+$sub-header-BG        = lighten(alpha($background-primary, 90%),20%)
 
-
-$border-gray          = #DDD
 $mapBG                = #CDD2D4
 
 $selection-color      = rgba(255, 255, 118, 1)
 
 $annotation-colors = rgba(248, 125, 112, 1) rgba(250, 146, 87, 1) rgba(251, 201, 100, 1) rgba(153, 200, 149, 1) rgba(94, 180, 179, 1) rgba(102, 154, 205, 1) rgba(198, 148, 198, 1) rgba(172, 121, 104, 1)
-
-$border-color = lighten($primary-light, 50%)
-$border = 2px solid $border-color
-$highlight-color = lighten($primary-light, 70%)
-
 
 // HEADER & FOOTER
 $header-height                   = 55px

@@ -32,8 +32,8 @@
 .pane-m
   width 55%
   left 22.5%
-  border-left 2px solid lighten($primary-light, 50%)
-  border-right 2px solid lighten($primary-light, 50%)
+  addBorder('left', 1, $border-primary-l)
+  addBorder('right', 1, $border-primary-l)
 
 .pane-r
   right 0
@@ -46,7 +46,7 @@
   z-index $top-layer
   width 22.5%
   padding 15px
-  border-bottom 2px solid lighten($primary-light, 70%)
+  addBorder('bottom', 1, $border-primary)
   input
     margin-bottom 0
   h1
@@ -67,8 +67,8 @@
   width 55%
   left 22.5%
   padding 15px 20px 10px 20px
-  border-left $border
-  border-right $border
+  addBorder('left', 1, $border-primary-l)
+  addBorder('right', 1, $border-primary-l)
   background $sub-header-BG
 
 .pane-head-m-options
@@ -86,14 +86,13 @@
 .pane-actions
   display flex
   align-items center
+  min-height 34px
   margin-bottom 15px
-  padding-top 10px
   padding-top 10px
   padding-bottom 10px
   padding-left 15px
   padding-right 15px
-  border-bottom 1px solid lighten($border-color, 70%)
-  min-height 34px
+  addBorder('bottom', 1, lighten($border-primary-l, 20%))
   &.pane-actions-middle
     padding-left 20px
     padding-right 20px
@@ -106,17 +105,59 @@
     margin 0
     line-height 1
     color $primary-light
-    font-size 12px
+    font-size .85em
+    +above(3)
+      font-size .9em
     &:hover
       color darken($primary-light, 40%)
     &:disabled
-      color desaturate(lighten($primary-light, 70%), 20%)
+      color desaturate($border-primary-l, 20%)
       cursor not-allowed
   i
-    font-size 13px
-    margin-right 4px
-    +below(1000px)
-      font-size 20px
+    display none
+    +above(3)
+      display inline-block
+      font-size 13px
+      margin-right 4px
+
+.view-header
+  border-bottom 1px solid $border-primary
+  > .container
+    position relative
+    padding-top 15px
+    padding-bottom 10px
+  +below(2)
+    padding-left 15px
+    padding-right 15px
+    margin-bottom 0
+    margin-top -20px
+  &.primary-bg
+    background $background-primary
+  &.secondary-bg
+    background $background-secondary
+  &.no-border
+    border-bottom 0
+  h1
+    margin 0
+    text-shadow 0 1px 0 rgba(255,255,255,.8)
+
+.view-header-search
+  position absolute
+  top -65px
+  right 15px
+  margin 15px 0 0 0
+  width 30%
+  +below(2)
+    position static
+    padding 12px
+    margin 0
+    width 100%
+    background $border-gray
+  .form-group
+    margin 0
+    position relative
+  input
+    padding-left 28px
 
 .connection-status
   position fixed
@@ -134,7 +175,7 @@
   font-weight 600
   min-height $header-height+1
   @extend .light-shadow
-  border-bottom 2px solid darken(alpha($warning, 50%), 20%)
+  addBorder('bottom', 2, darken(alpha($warning, 50%), 20%))
   .fa
     color darken($warning, 30%)
   .logo
@@ -165,14 +206,17 @@
   right 10px
   padding-top 5px
   padding-bottom 5px
-  border 2px solid $secondary
+  addBorder(false, 2, $secondary)
   font-size .95em
   &:hover
   &:focus
     background white
     color black
-    border 2px solid $secondary
+    addBorder(false, 2, $secondary)
 
 .no-header
   .connection-status
     top 0
+
+.secondary-nav-wrap
+  background $background-primary

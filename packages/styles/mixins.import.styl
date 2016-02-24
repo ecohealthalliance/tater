@@ -67,8 +67,14 @@ vAlign()
   display inline-block
   vertical-align middle
 
-makeButton($color, $text = white, $dark = false, $noOutline = false, $hoverColor = white)
-  border 1px solid darken($color, 10%)
+addBorder($w=false, $h, $color)
+  if $w
+    border-{$w} unit($h,'px') solid $color
+  else
+    border unit($h, 'px') solid $color
+
+makeButton($color, $text = white, $dark = false, $noOutline = false, $hoverColor = white, $transition=true)
+  addBorder(false, 1, darken($color, 10%))
   background $color
   if $dark
     @extend .light-shadow
@@ -91,7 +97,8 @@ makeButton($color, $text = white, $dark = false, $noOutline = false, $hoverColor
     &:hover
       background desaturate($color, 50%)
       border-color desaturate(darken($color, 20%), 50%)
-  transition()
+  if $transition
+    transition()
   if $noOutline
     &:focus
       outline 0
@@ -171,12 +178,12 @@ centerSmall($marginBottom=0)
     if $marginBottom
       margin-bottom $marginBottom
 
-buttonHover($hoverBG, $bg=none)
-  transition()
+buttonHover($hoverBG, $bg=none, $transition=true)
+  if $transition
+    transition()
   background $bg
   &:hover
     background $hoverBG
-    transition()
     color white
 
 centerPosition($h=-50%, $v=-50%)
@@ -188,12 +195,6 @@ centerVertically(position=true)
     position absolute
   top 50%
   transform translate(0, -50%)
-
-addBorder($w=false, $h, $color)
-  if $w
-    border-{$w} unit($h,'px') solid $color
-  else
-    border unit($h, 'px') solid $color
 
 shadow($color, $opacity)
   text-shadow 0 1px 0 rgba($color, $color, $color, $opacity)
@@ -220,3 +221,6 @@ selectedBG()
 
 icon()
   @extend .icon
+
+containerShadow()
+  box-shadow 0 1px 2px rgba(100,100,100,.15)
