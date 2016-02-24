@@ -12,5 +12,6 @@ Package.onUse(function(api) {
   api.use('kadira:blaze-layout');
   api.use('kadira:flow-router@2.10.0');
   api.use('tater:controllers');
+  api.use('zimme:active-route');
   api.addFiles('router.coffee', ['client', 'server']);
 });
