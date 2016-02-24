@@ -73,7 +73,7 @@ if Meteor.isClient
     subHeaders: (headerId) ->
       subHeaders = Template.instance().filteredSubHeaders.get()
       if Template.instance().filteredHeaders.get()
-        _.filter subHeaders, (subHeader) =>
+        _.filter subHeaders, (subHeader) ->
           subHeader?.headerId == headerId
       else
         SubHeaders.find(headerId: headerId)
@@ -81,7 +81,7 @@ if Meteor.isClient
     keywords: (subHeaderId) ->
       keywords = Template.instance().filteredCodes.get()
       if Template.instance().filteredHeaders.get()
-        _.filter keywords, (keyword) =>
+        _.filter keywords, (keyword) ->
           keyword?.subHeaderId == subHeaderId
       else
         CodingKeywords.find({subHeaderId: subHeaderId})
@@ -93,18 +93,18 @@ if Meteor.isClient
       Template.instance().showingAllCodes.get()
 
   Template.documentDetailCodingKeywords.events
-    'input .code-search': _.debounce((event, instance) ->
+    'input .code-search': _.debounce (event, instance) ->
       event.preventDefault()
       searchText = event.target.value
-      instance.searchText.set searchText
-    ), 100
+      instance.searchText.set(searchText)
+    , 100
 
-    'input .code-search-container .code-search': (event, instance) ->
+    'input  .code-search': (event, instance) ->
       searchText = event.target.value
-      instance.searching.set searchText.length > 0
+      instance.searching.set(searchText.length > 0)
 
-    'click .code-search-container .clear-search': (event, instance) ->
-      $('.code-search-container .code-search').val('').trigger('input').focus()
+    'click  .clear-search': (event, instance) ->
+      $(event.currentTarget.previousElementSibling).val('').trigger('input').focus()
 
     'click .code-header > i, click .code-header > span': (event) ->
       event.stopPropagation()
@@ -119,10 +119,11 @@ if Meteor.isClient
       $target.siblings('.code-keywords').toggleClass('hidden').siblings('span').toggleClass('showing')
 
     'click .toggle-all-codes': (event, instance) ->
-      instance.showingAllCodes.set(!instance.showingAllCodes.get())
+      instance.showingAllCodes.set(not instance.showingAllCodes.get())
 
 
 if Meteor.isServer
+
   Meteor.publish 'codingKeywords', () ->
     [
       Headers.find({archived: {$ne: true}})
