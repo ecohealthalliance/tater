@@ -118,6 +118,13 @@ FlowRouter.route '/authenticate',
       Meteor.loginWithToken(query.userAccessKey)
       FlowRouter.go '/'
 
+FlowRouter.route '/seed',
+  action: (params, query) ->
+    Meteor.call 'seed', query, (err, ok) ->
+      unless err instanceof Meteor.Error
+        toastr.success 'Success'
+        FlowRouter.go '/'
+
 loggedIn.route '/admin',
   name: 'admin'
   action: () ->

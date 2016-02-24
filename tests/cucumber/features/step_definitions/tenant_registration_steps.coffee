@@ -1,4 +1,5 @@
 do ->
+
   'use strict'
 
   _ = require('underscore')
@@ -30,3 +31,13 @@ do ->
     @When 'I submit the tenant registration form', ->
       @browser
         .submitForm('#tenant-registration')
+
+    @When 'I seed the database with the test tenant record via URL', ->
+      @browser
+        .url(url.resolve(process.env.ROOT_URL, '/seed?fullName=Test User&emailAddress=test@example.com&orgName=Test Org&stripeCustomerId=nothing'))
+        .pause(100)
+        .then =>
+          @server
+            .call 'setUserAccountPasswordFixture',
+              email: 'test@example.com'
+              password: 'password'

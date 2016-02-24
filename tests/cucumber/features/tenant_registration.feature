@@ -22,3 +22,22 @@ Feature: Tenant Registration
     When I add my credit card information
     And I submit the tenant registration form
     Then I should see content "Thank you for registering."
+
+  @tenantRegistration
+  Scenario: Seed the database with initial tenant record
+    When I seed the database with the test tenant record via URL
+    Then I should see a "Success" toast
+    When I log in as the test user
+    Then I am logged in
+    And I am logged in as an admin user
+
+  @tenantRegistration
+  Scenario: Fail to seed the database with initial tenant record the second time
+    When I seed the database with the test tenant record via URL
+    Then I should see a "Success" toast
+    When I log in as the test user
+    Then I am logged in
+    And I am logged in as an admin user
+    Then I log out
+    And I seed the database with the test tenant record via URL
+    Then I should not see a "Success" toast
