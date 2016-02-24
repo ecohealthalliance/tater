@@ -3,20 +3,19 @@ template(name="admin")
     .fluid-container
       .view-header.primary-bg
         .container
-          h1 Admin
-      .container
-        h1 Admin
-        nav.admin-menu
-          ul.nav
-            li(class="{{isActiveRoute 'groups'}}")
-              a(href="{{path route='groups'}}")
-                i.fa.fa-files-o
-                | Document Groups
-            li(class="{{isActiveRoute 'users'}}")
-              a(href="{{path route='users'}}")
-                i.fa.fa-user
-                | Users
-            li(class="{{isActiveRoute 'codingKeywords'}}")
-              a(href="{{path route='codingKeywords'}}")
-                i.fa.fa-list
-                | Coding Keywords
+          .row
+            h1 Admin
+            nav.admin-menu
+              ul.nav
+                li(class="{{isActiveRoute 'groups'}}")
+                  a(href="{{path route='groups'}}")
+                    i.fa.fa-files-o
+                    | Document Groups
+                li(class="{{isActiveRoute 'users'}}")
+                  a(href="{{path route='users'}}")
+                    i.fa.fa-user
+                    | Users
+                li(class="{{isActiveRoute 'codingKeywords'}}")
+                  a(href="{{path route='codingKeywords'}}")
+                    i.fa.fa-list
+                    | Coding Keywords
