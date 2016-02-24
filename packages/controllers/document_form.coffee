@@ -41,6 +41,7 @@ if Meteor.isClient
   Template.documentForm.onCreated ->
     @subscribe 'groups'
     @codeAccessible = new ReactiveVar(false)
+    @showDropZone = @data.showDropZone
 
   Template.documentForm.onRendered ->
     $("[data-toggle='tooltip']").tooltip()
@@ -53,6 +54,9 @@ if Meteor.isClient
         Groups.find({}, { sort: { name: 1 } })
     codeAccessible: ->
       Template.instance().codeAccessible.get()
+    showDropZone: ->
+      Template.instance().showDropZone and not UI._globalHelpers.onBSVEInstance()
+
 
   Template.documentForm.events
     'change .drop-zone input': (event, instance) ->

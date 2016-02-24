@@ -13,8 +13,8 @@ if Meteor.isServer
   Meteor.publish 'recentDocuments', ->
     user = Meteor.users.findOne({_id: @userId})
     if user?.admin
-      Documents.find({}, {sort: {createdAt: -1}, limit: 12})
+      Documents.find({}, {sort: {createdAt: -1}, limit: 10})
     else if user
-      Documents.find({groupId: user.group}, {sort: {createdAt: -1}, limit: 12})
+      Documents.find({groupId: user.group}, {sort: {createdAt: -1}, limit: 10})
     else
       @ready()

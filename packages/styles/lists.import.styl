@@ -26,6 +26,16 @@
       background $background-secondary
       text-decoration none
       color $secondary-dark
+    &.view-all
+      background $background-primary
+      text-align center
+      font-weight 600
+      padding-top 10px
+      padding-bottom 10px
+      padding-right 0
+      &:hover
+        background darken($background-secondary, 5%)
+
   .btn-list
     i
       cursor pointer
@@ -44,11 +54,6 @@
     &:hover
       text-decoration none
       background $background-secondary
-
-.list
-.list-simple
-  .view-all
-    background $background-secondary
 
 .list-table
   addBorder('top', 1, $border-primary)
