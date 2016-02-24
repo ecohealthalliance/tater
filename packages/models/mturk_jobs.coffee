@@ -1,4 +1,29 @@
-xml2json = (xml) -> xml2js.parseStringSync(xml, explicitArray: false)
+if Meteor.isServer
+  ### Shared constants ###
+  if process.env.ROOT_URL.match("localhost")
+    rootUrl = "https://staging.tater.io"
+  else
+    rootUrl = process.env.ROOT_URL
+  # Note: rootUrl cannot be localhost or calls to mturk will fail
+  if process.env.MTURK_URL
+    mturkUrl = process.env.MTURK_URL
+  else
+    console.log "MTURK_URL is not defined, defaulting to the sandbox API"
+    mturkUrl = "https://mechanicalturk.sandbox.amazonaws.com"
+  if process.env.MTURK_WORKER_URL
+    mturkWorkerUrl = process.env.MTURK_WORKER_URL
+  else
+    console.log "MTURK_WORKER_URL is not defined, defaulting to the sandbox API"
+    mturkWorkerUrl = "https://workersandbox.mturk.com"
+  service = "AWSMechanicalTurkRequester"
+
+  ### Common functions ###
+  xml2json = (xml) -> xml2js.parseStringSync(xml, explicitArray: false)
+  sign = (service, operation, timestamp) ->
+    CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(
+      service + operation + timestamp,
+      Meteor.settings.private.AWS_SECRET_KEY
+    ))
 
 MTurkJobs = new Mongo.Collection('mturkJobs')
 MTurkJob = Astro.Class
@@ -16,9 +41,7 @@ MTurkJob = Astro.Class
       ]
     description:
       type: 'string'
-      default: """
-      Highlight spans of text and assign coding keywords to them.
-      """
+      default: "Highlight spans of text and assign coding keywords to them."
       validator: [
         Validators.required()
         Validators.maxLength(2000, 'Mechanical Turk does not allow descriptions longer than 2000 characters.')
@@ -43,7 +66,7 @@ MTurkJob = Astro.Class
       type: 'number'
       default: 30 * 24 * 60 * 60 # 30 days
       validator: [
-        Validators.gte(30, 'HIT lifetime must be greater than 30 seconds.')
+        Validators.gte(30, 'HIT lifetime must be equal to at least 30 seconds.')
         Validators.lte(31536000, 'HIT lifetime cannot exceed 31536000 seconds.')
       ]
     maxAssignments:
@@ -67,23 +90,9 @@ MTurkJob = Astro.Class
           return
         # Parameters documented here:
         # http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_CreateHITOperation.html
-        service   = "AWSMechanicalTurkRequester"
         operation = "CreateHIT"
         timestamp = new Date().toISOString()
-        signature = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(
-          service + operation + timestamp,
-          Meteor.settings.private.AWS_SECRET_KEY
-        ))
-        # rootUrl cannot be localhost or calls to mturk will fail.
-        if process.env.ROOT_URL.match("localhost")
-          rootUrl = "https://staging.tater.io"
-        else
-          rootUrl = process.env.ROOT_URL
-        if process.env.MTURK_URL
-          mturkUrl = process.env.MTURK_URL
-        else
-          console.log "MTURK_URL is not defined, defaulting to the sandbox API."
-          mturkUrl = "https://mechanicalturk.sandbox.amazonaws.com"
+        signature = sign(service, operation, timestamp)
         response = HTTP.post(mturkUrl, {
           params:
             Service: service
@@ -125,6 +134,28 @@ MTurkJob = Astro.Class
         @save()
 
   methods:
+    inProgress: ->
+      if Meteor.isServer and @createHITResponse
+        unless Meteor.settings.private.AWS_ACCESS_KEY
+          throw new Meteor.Error "AWS_ACCESS_KEY is not defined, cannot call mechanical turk API."
+        # API reference:
+        # http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_GetHITOperation.html
+        operation = "GetHIT"
+        timestamp = new Date().toISOString()
+        signature = sign(service, operation, timestamp)
+        response = HTTP.post(mturkUrl, {
+          params:
+            Service: service
+            AWSAccessKeyId: Meteor.settings.private.AWS_ACCESS_KEY
+            Version: "2014-08-15"
+            Operation: operation
+            Signature: signature
+            Timestamp: timestamp
+            HITId: @HITId
+        })
+        GetHITResponseJSON = xml2json(response.content).GetHITResponse
+        GetHITResponseJSON.HIT.HITStatus is 'Unassignable'
+
     descriptionWithHash: ->
       @description + " " +  Random.id()
 
@@ -136,27 +167,14 @@ MTurkJob = Astro.Class
     cancel: ->
       if Meteor.isServer and @createHITResponse
         unless Meteor.settings.private.AWS_ACCESS_KEY
-          console.log "AWS_ACCESS_KEY is not defined, cannot call mechanical turk API."
-          return
+          throw new Meteor.Error "AWS_ACCESS_KEY is not defined, cannot call mechanical turk API."
+        if @inProgress()
+          throw new Meteor.Error "This HIT has active worker sessions."
         # Parameters documented here:
         # http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_DisableHITOperation.html
-        service   = "AWSMechanicalTurkRequester"
         operation = "DisableHIT"
         timestamp = new Date().toISOString()
-        signature = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(
-          service + operation + timestamp,
-          Meteor.settings.private.AWS_SECRET_KEY
-        ))
-        # rootUrl cannot be localhost or calls to mturk will fail.
-        if process.env.ROOT_URL.match("localhost")
-          rootUrl = "https://staging.tater.io"
-        else
-          rootUrl = process.env.ROOT_URL
-        if process.env.MTURK_URL
-          mturkUrl = process.env.MTURK_URL
-        else
-          console.log "MTURK_URL is not defined, defaulting to the sandbox API."
-          mturkUrl = "https://mechanicalturk.sandbox.amazonaws.com"
+        signature = sign(service, operation, timestamp)
         response = HTTP.post(mturkUrl, {
           params:
             Service: service
@@ -168,15 +186,14 @@ MTurkJob = Astro.Class
             HITId: @HITId
         })
         DisableHITResponseJSON = xml2json(response.content).DisableHITResponse
-        @set('disableHITResponse', DisableHITResponseJSON)
         responseRequest = DisableHITResponseJSON.DisableHITResult?.Request
         # Note: the cancel operation should be considered successful if we got both 'True' and "HITDoesNotExist" responses.
         if responseRequest?.IsValid is 'True'
           ok = true
         else if responseRequest?.Errors?.Error?.Code is 'AWS.MechanicalTurk.HITDoesNotExist'
           ok = true
-        otherJobForTheSameDocument = MTurkJobs.findOne(documentId: @documentId, _id: $ne: @_id)
-        if ok and not otherJobForTheSameDocument
+        otherMturkJobsForThisDocument = MTurkJobs.findOne(documentId: @documentId, _id: {$ne: @_id})
+        if ok and not otherMturkJobsForThisDocument
           document = Documents.findOne(@documentId)
           document.set('mTurkEnabled', false)
           document.save()
@@ -188,9 +205,4 @@ MTurkJob = Astro.Class
         unless Meteor.settings.private.AWS_ACCESS_KEY
           console.log "AWS_ACCESS_KEY is not defined, cannot call mechanical turk API."
           return
-        if process.env.MTURK_WORKER_URL
-          mturkWorkerUrl = process.env.MTURK_WORKER_URL
-        else
-          console.log "MTURK_URL is not defined, defaulting to the sandbox API."
-          mturkWorkerUrl = "https://workersandbox.mturk.com"
-        "#{mturkWorkerUrl}/mturk/externalSubmit?assignmentId=#{assignmentId}&t=#{(Date.now())}"
+        "#{mturkWorkerUrl}/mturk/externalSubmit?assignmentId=#{assignmentId}&t=#{Date.now()}"
