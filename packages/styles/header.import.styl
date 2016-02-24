@@ -20,37 +20,6 @@ header
   background $header-BG
   if $header-text-shadow
     @extend .dark-shadow
-  .btn
-  .btn-default
-    padding 6px 12px
-    margin-left 5px
-    border 0
-    font-size 13px
-    text-shadow none
-    color $body-text
-    line-height 1.42857143
-    buttonHover($header-link-hover, $white-trans)
-    transition()
-    &.new-document
-      float left
-      margin-left 12px
-      margin-top 12px
-      @extend .dark-shadow
-      &:hover
-      &:focus
-        color white
-      +below(2)
-        float none
-        width 60%
-        margin 10px auto
-    &.sign-in
-      position absolute
-      top 0
-      right 15px
-      border 1px solid $secondary
-      color lighten($dd-gray, 10%)
-      +below(1)
-        margin-right 0
 
 .nav
   float right
@@ -73,15 +42,48 @@ header
     margin-right 0
     margin-top 0
   > li
+    &::after
+      position absolute
+      height 2px
+      bottom -2px
+      left 0
+      right 1px
+      background-color transparent
+      content ' '
+      display block
+    &:hover
+      background $secondary
+      > a
+        color white
+      &::after
+        background $secondary
+    &.active
+      background $header-link-selected
+      outline 0
+      &::after
+        background-color $header-link-selected
+      &.dropdown
+        &:focus
+        &:hover
+          background $header-link-hover
+          &::after
+            background-color $header-link-hover
+          > a
+            color white
+      > a
+        color white
+    > a
+      color $header-link-text
     > a
     > a:focus
       buttonHover($header-link-hover, none, false)
       transition all 0s
-      color $header-link-text
       line-height 14px
       padding 12px 30px
       addBorder('right', 1, white)
       outline none
+      &:hover
+        background none
       +above(1)
         padding 20px 10px
       +above(4)
@@ -93,52 +95,6 @@ header
         .fa
           margin-left 3px
           margin-right -3px
-    > a.navbar-btn
-      margin-top 11px
-      margin-left 15px
-      padding 9px 10px
-      border-radius 5px
-      background $secondary
-      text-align center
-      color white
-      line-height 100%
-      i
-      span
-        vAlign()
-      i
-        font-size 1.2em
-        line-height 0
-      &:hover
-        transition(background-color)
-        background $primary
-        &::after
-          display none
-      +below(1)
-        float none
-        width 50%
-        margin 10px auto
-        padding 12px inherit
-    > a.active
-    > a.active:focus
-      background $header-link-selected
-      color white
-      outline 0
-    > a:hover
-    > a.active
-    > a.active:hover
-    > a.active:focus
-      &::after
-        position absolute
-        height 2px
-        bottom -2px
-        left 0
-        right 0
-        background-color $header-link-selected
-        content ' '
-        display block
-    > a:hover
-      &::after
-        background $secondary
   li
     &.open
       +below(1)
@@ -210,6 +166,57 @@ header
             color white
             centerPosition(0,0)
             position static
+
+.navbar-btn
+  margin-top 12px
+  margin-left 15px
+  padding 8px 12px
+  border-radius 5px
+  text-align center
+  color white
+  line-height 100%
+  font-size 13px
+  buttonHover($primary, $secondary)
+  i
+  span
+    vAlign()
+  i
+    font-size 1.2em
+    line-height 0
+  &:hover
+    background $primary
+    &::after
+      display none
+  +below(1)
+    float none
+    width 50%
+    margin 10px auto
+    padding 12px inherit
+  &.new-document
+    float left
+    @extend .dark-shadow
+    &:hover
+    &:focus
+      color white
+      border-color darken($primary, 10%)
+    +below(2)
+      float none
+      width 60%
+      margin 10px auto
+  &.sign-in
+    centerVertically()
+    right 15px
+    margin 0
+    addBorder(false, 2,$secondary)
+    color lighten($dd-gray, 10%)
+    text-align center
+    background none
+    span
+      margin-right -3px
+    &:hover
+      background $background-secondary
+    +below(1)
+      margin-right 0
 
 .navbar-brand
   display block
@@ -293,6 +300,9 @@ header
   margin-right 0
 
 .dropdown
+  &.active
+    &:hover
+      background $secondary
   .dropdown-toggle
     span
     i
