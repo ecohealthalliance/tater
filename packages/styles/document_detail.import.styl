@@ -128,36 +128,26 @@
   position relative
   text-shadow none
 
-  .document-annotations
+  > .document-text
+  > .document-annotations
     position absolute
-    color transparent
-    line-height 1.6em
     font-size 1em
-    top 0
-    z-index -1
-    text-shadow none
-    pre
-      color transparent
-
-  pre
-    padding 0 0 100px 0
-    margin 0
-    overflow hidden
-    background none
-    border 0
-    text-align left
     line-height 1.6em
     white-space pre-wrap
     word-wrap break-word
     word-break break-word
-    body-font()
-    font-size 1em
-    &::selection
-      background-color $selection-color
-      color $body-text
 
-  > pre
-      position absolute
+  > .document-annotations
+    color transparent
+    top 0
+    z-index -1
+    text-shadow none
+
+  > .document-text
+      padding 0 0 100px 0
+      &::selection
+        background-color $selection-color
+        color $body-text
 
 .annotation-container
   right 0
