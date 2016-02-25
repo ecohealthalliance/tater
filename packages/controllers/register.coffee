@@ -74,6 +74,23 @@ if Meteor.isServer
         tenant.set(tenantProps)
         if tenant.validate()
           tenant.save()
+
+          jenkinsSettings = Meteor.settings.private.jenkins
+
+          if jenkinsSettings
+            jenkins = new Jenkins
+              jenkinsUrl: jenkinsSettings.url
+              user: jenkinsSettings.user
+              key: jenkinsSettings.key
+
+            jenkins.triggerBuildWithParameters(
+              'provision-new-tater-instance',
+              jenkinsSettings.buildKey, {
+                instance_name: tenant.tenantName,
+                instance_port: '8021'
+              }
+            )
+
           Email.send
             to: 'tater-beta@ecohealthalliance.org'
             from: 'no-reply@tater.io'

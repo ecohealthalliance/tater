@@ -103,6 +103,7 @@ tater:data@0.0.1
 tater:fixtures@0.0.1
 tater:headers@0.0.1
 tater:helpers@0.0.1
+tater:jenkins@0.0.1
 tater:models@0.0.1
 tater:query-helpers@0.0.1
 tater:route-helpers@0.0.1
