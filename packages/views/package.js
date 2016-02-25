@@ -24,7 +24,7 @@ Package.onUse(function(api) {
   api.addFiles('splash_page.jade', 'client');
   api.addFiles('profile_edit.jade', 'client');
   api.addFiles('profile_detail.jade', 'client');
-  api.addFiles('admin.jade', 'client');
+  api.addFiles('admin_nav.jade', 'client');
   api.addFiles('groups.jade', 'client');
   api.addFiles('group_form.jade', 'client');
   api.addFiles('users.jade', 'client');
