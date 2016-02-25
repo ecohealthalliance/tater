@@ -18,7 +18,7 @@ server:
 	meteor --settings settings-development.json
 
 model:
-	spacejam test-packages packages/models/
+	@./packages/models/tests/test-in-console.sh
 
 test:
 	TAGS=~@ignore ./.scripts/run-tests.sh

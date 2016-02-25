@@ -4,7 +4,6 @@
   "description": "Annotation app",
   "private": true,
   "dependencies": {
-    "spacejam": "1.2.1",
     "chimp": "0.25.1"
   }
 }
