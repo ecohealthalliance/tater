@@ -8,7 +8,7 @@ Feature: Documents
   Scenario: Viewing group documents as a non-admin
     When I log in as the test user
     When there are 2 documents in the "fakegroupid" group
-    And I navigate to the admin page
+    And I navigate to "/groups"
     And I create a user account for "non@admin.com"
     And I log out
     And I log in as "non@admin.com"
@@ -18,7 +18,7 @@ Feature: Documents
   @documents
   Scenario: Adding a group document as a non-admin
     When I log in as the test user
-    And I navigate to the admin page
+    And I navigate to "/groups"
     And I create a user account for "non@admin.com"
     And I log out
     And I log in as "non@admin.com"
@@ -43,7 +43,7 @@ Feature: Documents
   Scenario: Viewing one group's documents as an admin
     And there is a document with title "Test Doc" in the test group
     When I log in as the test user
-    And I navigate to "/admin"
+    And I navigate to "/groups"
     And I click on the test group
     Then I should see content "Test Doc"
 
@@ -52,7 +52,7 @@ Feature: Documents
     And there are 15 documents in the "fakegroupid" group
     And there are 2 documents in the "test2" group
     When I log in as the test user
-    And I navigate to "/admin"
+    And I navigate to "/groups"
     And I click on the test group
     Then I should see 10 documents
     When I go to the next page of documents
@@ -65,7 +65,7 @@ Feature: Documents
     And I fill out the new document form with title "Test Document" and select the test group
     And I should see a "Success" toast
     And I should see content "Test Document"
-    When I navigate to "/admin"
+    When I navigate to "/groups"
     And I click on the test group
     Then I should see content "Test Document"
 
@@ -77,7 +77,7 @@ Feature: Documents
     And I fill out the new document form with title "Test Document" and select the test group
     And I should see a "Success" toast
     And I should see content "Test Document"
-    When I navigate to "/admin"
+    When I navigate to "/groups"
     And I click on the test group
     Then I should see content "Test Document"
 
@@ -86,7 +86,7 @@ Feature: Documents
     Given there is a test group in the database
     And there is a document with title "Test Document" in the test group
     When I log in as the test user
-    When I navigate to "/admin"
+    When I navigate to "/groups"
     And I click on the test group
     Then I should see content "Test Document"
     When I click on the Delete Document button

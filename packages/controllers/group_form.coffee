@@ -16,7 +16,7 @@ if Meteor.isClient
             toastr.error('Unknown Error')
         else
           toastr.success("Success")
-          go 'admin'
+          go 'groups'
 
 
 

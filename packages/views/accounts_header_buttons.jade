@@ -1,7 +1,7 @@
 template(name="accountsHeaderButtons")
   if Template.subscriptionsReady
-    li.dropdown.block-events
-      a.dropdown-toggle.admin-settings(href='#' data-toggle='dropdown' aria-expanded='false')
+    li.dropdown
+      a.dropdown-toggle.account-settings(href='#' data-toggle='dropdown' aria-expanded='false')
         span=currentUserName
         i.fa.fa-angle-down
       ul.dropdown-menu(role='menu')

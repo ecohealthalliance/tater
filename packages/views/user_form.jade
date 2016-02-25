@@ -37,11 +37,11 @@ template(name="userForm")
 
           span.groups.hidden
             label.space-top-1.space-btm-05 Choose a Document Group
-            .row
-              .col-sm-8
-                select.form-control.document_groups
-                  each groups
-                    option(value="#{_id}") #{name}
+              .row
+                .col-sm-8
+                  select.form-control.document_groups
+                    each groups
+                      option(value="#{_id}") #{name}
 
     .modal-buttons
       input.btn.btn-default.cancel(type="button" value="Cancel" data-dismiss="modal")

@@ -17,3 +17,4 @@ template(name="groups")
                 +reactiveTable collection=groups settings=settings filters=filters
           else
             .loading.center-v
+  +userModal(group=selectedGroup)

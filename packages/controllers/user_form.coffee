@@ -1,5 +1,8 @@
 if Meteor.isClient
 
+  Template.userForm.onCreated ->
+    @subscribe('groups')
+
   Template.userForm.helpers
     typeIsAdmin: () ->
       not Template.instance().data.group.get()?
@@ -8,7 +11,7 @@ if Meteor.isClient
       Groups.find()
 
     group: () ->
-      Template.instance().data.group.get()
+      Groups.findOne(Template.instance().data.group.get())
 
   Template.userForm.events
     'click .user-group': (event, template) ->
