@@ -3,6 +3,7 @@ if Meteor.isClient
   Template.users.onCreated ->
     @userToDeleteId = new ReactiveVar()
     @userToDeleteEmail = new ReactiveVar()
+    @selectedGroup = new ReactiveVar()
     @subscribe('userProfiles')
 
   Template.users.helpers
@@ -47,8 +48,13 @@ if Meteor.isClient
       Meteor.users.find()
     userToDeleteEmail: ->
       Template.instance().userToDeleteEmail.get()
+    selectedGroup: ->
+      Template.instance().selectedGroup
 
   Template.users.events
+    'click .users-container .add-admin': (event, template) ->
+      template.selectedGroup.set null
+
     'click .remove-user': (event, instance) ->
       event.stopPropagation()
       userId = $(event.currentTarget).data("id")

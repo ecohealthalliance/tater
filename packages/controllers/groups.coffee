@@ -34,7 +34,7 @@ if Meteor.isClient
       noDataTmpl: Template.noUsers
     groups: ->
       Groups.find({}, sort: name: 1)
-    group: ->
+    selectedGroup: ->
       Template.instance().selectedGroup
 
   Template.groups.events

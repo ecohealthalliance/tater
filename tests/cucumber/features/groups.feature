@@ -6,7 +6,7 @@ Feature: Groups
   @groups
   Scenario: Creating a new group
     When I log in as the test user
-    When I navigate to "/admin"
+    When I navigate to "/groups"
     And I click the new group link
     And I fill out the new group form with name "Test Group"
     Then I should see a "Success" toast

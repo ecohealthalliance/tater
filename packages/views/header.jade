@@ -13,35 +13,44 @@ template(name="header")
                 i.fa.fa-sign-in
         if currentUser
           .navbar-collapse.collapse
-            ul.nav.navbar-nav.navbar-left
-              li
-                a.btn.navbar-btn.new-document(href="{{path route='newDocument'}}")
-                  i.fa.fa-file-text-o.icon-left
-                  span New Document
+            a.btn.btn-primary.navbar-btn.new-document(href="{{path route='newDocument'}}")
+              i.fa.fa-file-text-o.icon-left
+              span New Document
             ul.nav.navbar-nav.navbar-right
               if isAdmin
-                li
-                  a.header-documents-link(href="{{path route='documents'}}" class="{{isActiveRoute 'documents'}}")
+                li(class="{{isActiveRoute 'documents'}}")
+                  a.header-documents-link(href="{{path route='documents'}}")
                     span Documents
               else
                 li
                   a.header-documents-link(href="{{path route='groupDocuments' params=documentsLinkParams}}" class="{{isActiveRoute 'groupDocuments'}}")
                     span Documents
-              li
-                a(href="{{path route='annotations'}}" class="{{isActiveRoute 'annotations'}}")
+              li(class="{{isActiveRoute 'annotations'}}")
+                a(href="{{path route='annotations'}}")
                   span Annotations
               if isAdmin
                 unless onBSVEInstance
-                  li
-                    a(href="{{path route='admin'}}" class="{{isActiveRoute 'admin'}}")
+                  li.dropdown(class="{{isActiveRoute regex='admin|groups|users|codingKeywords'}}")
+                    a.dropdown-toggle.admin-settings(href="{{path route='admin'}}" data-toggle='dropdown' aria-expanded='false')
                       span Admin
-                li
-                  a(href="{{path route='codingKeywords'}}" class="{{isActiveRoute 'codingKeywords'}}")
-                    span Coding Keywords
+                      i.fa.fa-angle-down
+                    ul.dropdown-menu(role='menu')
+                      li
+                        a(href="{{path route='groups'}}")
+                          span Document Groups
+                          i.fa.fa-files-o
+                      li
+                        a(href="{{path route='users'}}")
+                          span Users
+                          i.fa.fa-users
+                      li
+                        a(href="{{path route='codingKeywords'}}")
+                          span Coding Keywords
+                          i.fa.fa-list
               unless onBSVEInstance
                 +accountsHeaderButtons state=accountsState
-              li
-                a(href="{{path route='help'}}" class="{{isActiveRoute 'help'}}" title='Help')
+              li(class="{{isActiveRoute 'help'}}")
+                a(href="{{path route='help'}}" title='Help')
                   i.fa.fa-question-circle
 
   +accountsModal state=accountsState

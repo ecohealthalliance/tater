@@ -1,9 +1,9 @@
 template(name="accountsHeaderButtons")
   if Template.subscriptionsReady
     li.dropdown
-      a.dropdown-toggle.admin-settings(href='#' data-toggle='dropdown' aria-expanded='false')
+      a.dropdown-toggle.account-settings(href='#' data-toggle='dropdown' aria-expanded='false')
         span=currentUserName
-        i.fa.fa-sort-desc
+        i.fa.fa-angle-down
       ul.dropdown-menu(role='menu')
         li
           a(href="{{path route='profileEdit'}}")

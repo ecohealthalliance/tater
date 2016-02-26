@@ -11,9 +11,8 @@ Feature: Admin page
     When I fill out the profile edit form as "John Doe"
     Then I should see a "Success" toast
 
-    When I navigate to the admin page
-    Then I should see the "Admin" link highlighted in the header
-    When I click on the test user
+    When I navigate to "/users"
+    And I click on the test user
     Then I should be on the user profile page
     And I should see content "John Doe"
     And I should see content "test@example.com"

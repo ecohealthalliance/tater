@@ -58,6 +58,8 @@ button
   transition()
   &:hover
     transition()
+
+.btn
   .fa
     margin-right 5px
 
@@ -69,10 +71,12 @@ a
 
 .btn
   border-width 2px
+  font-weight 600
   .fa
     vAlign()
     font-size 110%
     line-height 0
+    margin-right 5px
 
 .fa
   &.icon-right
@@ -109,6 +113,12 @@ a
 .header-btn
   display inline-block
   margin-left 15px
+  background none
+  addBorder(false, 1, $secondary)
+  color $secondary
+  text-shadow none
+  &:hover
+    background $secondary
   +below(1)
     display block
     margin 15px 0 10px 0

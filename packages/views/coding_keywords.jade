@@ -1,10 +1,10 @@
 template(name="codingKeywords")
   if isAdmin
-    .view-header.primary-bg
-      .container
-        h1 Coding Keywords
-          a.help-link(href="{{path route='help?topic=coding-keyword-management'}}")
-            +tooltipIcon icon='question-circle' placement='right'
+    +adminNav page="codingKeywords"
+    .container.secondary-title
+      h2 Coding Keywords
+        a.help-link(href="{{path route='help?topic=coding-keyword-management'}}")
+          +tooltipIcon icon='question-circle' placement='right'
 
     .container.code-management-container
       if Template.subscriptionsReady

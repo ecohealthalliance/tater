@@ -1,28 +1,41 @@
 template(name="users")
-  #add-admin-modal.modal.fade(tabindex="-1" role="dialog")
-    .modal-dialog
-      .modal-content
-        .modal-header
-          button(type="button" class="close" data-dismiss="modal" aria-label="Close")
-            i.fa.fa-times-circle
-  .table-wrap.users-table.no-filter
-    .container-list.list-table
-      if Template.subscriptionsReady
-        +reactiveTable collection=usersCollection settings=settings filters=filters
-      else
-        .loading.center-v
-  #remove-user-modal.modal.fade(tabindex="-1" role="dialog")
-    .modal-dialog
-      .modal-content
-        .modal-header
-          button(type="button" class="close" data-dismiss="modal" aria-label="Close")
-            i.fa.fa-times-circle
-        .modal-body
-          h3#myModalLabel Confirmation
-          p Remove {{userToDeleteEmail}}?
-        .modal-footer
-          button.btn.btn-default(data-dismiss='modal', aria-hidden='true') Close
-          button.btn.btn-danger.confirm-remove-user Remove
+  if isAdmin
+    +adminNav
+    .container
+      .row
+        .users-container
+          .table-header.clearfix
+            h2.pull-left Users
+              a.help-link(href="{{path route='help?topic=users'}}")
+                +tooltipIcon icon='question-circle' placement='right'
+            a.btn.btn-primary.new-user-link.header-btn.add-admin.pull-right(data-toggle="modal" data-target="#add-user-modal")
+              i.fa.fa-user-plus
+              span Add User
+          #add-admin-modal.modal.fade(tabindex="-1" role="dialog")
+            .modal-dialog
+              .modal-content
+                .modal-header
+                  button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+                    i.fa.fa-times-circle
+          .table-wrap.users-table.no-filter
+            .container-list.list-table
+              if Template.subscriptionsReady
+                +reactiveTable collection=usersCollection settings=settings filters=filters
+              else
+                .loading.center-v
+          #remove-user-modal.modal.fade(tabindex="-1" role="dialog")
+            .modal-dialog
+              .modal-content
+                .modal-header
+                  button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+                    i.fa.fa-times-circle
+                .modal-body
+                  h3#myModalLabel Confirmation
+                  p Remove {{userToDeleteEmail}}?
+                .modal-footer
+                  button.btn.btn-default(data-dismiss='modal', aria-hidden='true') Close
+                  button.btn.btn-danger.confirm-remove-user Remove
+    +userModal(group=selectedGroup)
 
 template(name="noUsers")
   p No Users Found

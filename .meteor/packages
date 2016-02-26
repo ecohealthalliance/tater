@@ -12,7 +12,6 @@ tater:accounts
 tater:data
 tater:headers
 aslagle:reactive-table
-zimme:active-route
 standard-minifiers
 meteor-base
 mobile-experience

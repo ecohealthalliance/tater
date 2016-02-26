@@ -27,7 +27,6 @@ Package.onUse(function(api) {
   api.use('alethes:pages@1.8.4');
   api.use('mrgalaxy:stripe@2.2.1');
   api.use('email');
-  api.addFiles('admin.coffee', ['client', 'server']);
   api.addFiles('delete_document_modal.coffee', ['client', 'server']);
   api.addFiles('delete_keyword_modal.coffee', ['client', 'server']);
   api.addFiles('delete_subheader_modal.coffee', ['client', 'server']);

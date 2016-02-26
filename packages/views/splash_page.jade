@@ -1,27 +1,28 @@
 template(name="splashPage")
   if currentUser
-    if isAdmin
-      unless onBSVEInstance
-        .groups-users
-          +admin
-    .container.spash-user-content.space-top-3
-      .row
-        .col-sm-8
-          h4 Add a New Document
-            a.help-link(href="{{path route='help?topic=uploading-documents'}}")
-              i.fa.fa-question-circle
-          +documentForm
-
-        .col-sm-3.col-sm-offset-1
-            if documentsExist
-              h4 Recent Documents
-              if Template.subscriptionsReady
-                ul.recent-documents.list-simple.list-unstyled.list
-                  each recentDocuments
-                    li.document
-                      a.link-list(href="{{path route='documentDetail' params=this}}")= title
-                a.btn.btn-primary.btn-block.view-all(href="{{path route='documents'}}") View All Documents
-              else
-                .loading
+    .fluid-container
+        .view-header.primary-bg
+          .container
+            .row
+              .col-sm-8
+                h4 Add a New Document
+              if documentsExist
+                .col-sm-4
+                  h4 Recent Documents
+        .container
+          .row
+            .col-sm-8.space-top-2.new-document-splash
+              +documentForm showDropZone=false
+            .col-sm-4
+              if documentsExist
+                if Template.subscriptionsReady
+                  ul.recent-documents.list.document-list.list-unstyled
+                    each recentDocuments
+                      li.document
+                        a.list-link(href="{{path route='documentDetail' params=this}}")= title
+                    li
+                      a.view-all.list-link(href="{{path route='documents'}}") View All Documents
+                else
+                  .loading
   else
     +marketingPage

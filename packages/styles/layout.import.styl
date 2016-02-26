@@ -138,8 +138,42 @@
   &.no-border
     border-bottom 0
   h1
+    flex 1 1 auto
     margin 0
     text-shadow 0 1px 0 rgba(255,255,255,.8)
+  nav
+    position absolute
+    right 0
+    bottom 0
+    a
+      padding 10px 20px
+      color $primary
+      font-weight 600
+    li
+      float left
+      margin-left 2px
+      > a
+        border-bottom 1px solid transparent
+      &:hover
+        > a
+          background-color $border-primary
+          border-color $border-primary
+      &.active
+      &.active:hover
+      &.active:focus
+        margin-bottom -1px
+        > a
+          background-color white
+          color darken($primary, 5%)
+          font-weight 700
+          border 1px solid $border-primary
+          border-bottom-color white
+          margin-bottom 0
+      .fa
+        margin-right 5px
+      > a
+        border-top-left-radius 4px
+        border-top-right-radius 4px
 
 .view-header-search
   position absolute
@@ -158,6 +192,18 @@
     position relative
   input
     padding-left 28px
+
+.secondary-title
+  background-color white
+  padding 15px
+  containerShadow()
+  addBorder('right', 1, $border-gray)
+  addBorder('left', 1, $border-gray)
+  h2
+    margin 0
+    font-weight 700
+    font-size 1.75em
+    color $primary-light
 
 .connection-status
   position fixed

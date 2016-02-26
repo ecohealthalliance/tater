@@ -79,11 +79,6 @@ do ->
       @client
         .url(url.resolve(process.env.ROOT_URL, relativePath))
 
-    @When 'I navigate to the admin page', ->
-      @client
-        .waitForExist('a[href="/admin"]')
-        .click('a[href="/admin"]')
-
     @Then /^I should see the "([^"]*)" link highlighted in the header$/,
     (linkText) ->
       @client
