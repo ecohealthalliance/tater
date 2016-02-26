@@ -261,16 +261,17 @@ if Meteor.isClient
       workerId = instance.workerId
       Meteor.call 'finishAssignment', documentId, assignmentId, workerId, (error, submitUrl) ->
         if error
-          toastr.error("""
-          Unable to finish the annotation:
-          #{error.message}""")
+          toastr.error("Unable to finish the annotation: #{error.message}")
         else
           form = $('<form method="POST" id="mturkForm">')
           form.attr('action', submitUrl)
           form.submit()
 
     'click #cancel-mturk-job': (event, instance) ->
-      Meteor.call('cancelMechTurkJobs', instance.data.documentId)
+      Meteor.call 'cancelMechTurkJobs', instance.data.documentId, (error, res) ->
+        if error
+          toastr.error("Unable to cancel this job")
+
 
   Template.documentDetailAnnotation.helpers
     header: ->
@@ -426,6 +427,7 @@ Meteor.methods
     check documentId, String
     if Meteor.user()?.admin
       Documents.findOne(documentId)?.removeAllRelatedMTurkJobs()
+
 
 if Meteor.isServer
 
