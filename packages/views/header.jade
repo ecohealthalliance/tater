@@ -22,8 +22,8 @@ template(name="header")
                   a.header-documents-link(href="{{path route='documents'}}")
                     span Documents
               else
-                li
-                  a.header-documents-link(href="{{path route='groupDocuments' params=documentsLinkParams}}" class="{{isActiveRoute 'groupDocuments'}}")
+                li(class="{{isActiveRoute 'groupDocuments'}}")
+                  a.header-documents-link(href="{{path route='groupDocuments' params=documentsLinkParams}}")
                     span Documents
               li(class="{{isActiveRoute 'annotations'}}")
                 a(href="{{path route='annotations'}}")
