@@ -121,8 +121,9 @@
     font-weight 600
 
 .document-body
-  max-width 900px
-  margin 20px 5%
+  width 100%
+  max-width 1000px
+  margin 0 auto
 
 .document-wrapper
   position relative
@@ -131,11 +132,15 @@
   > .document-text
   > .document-annotations
     position absolute
+    padding 20px 5% 100px 5%
     font-size 1em
     line-height 1.6em
     white-space pre-wrap
     word-wrap break-word
     word-break break-word
+    +above(4)
+      padding-left 10%
+      padding-right 10%
 
   > .document-annotations
     color transparent
@@ -144,7 +149,6 @@
     text-shadow none
 
   > .document-text
-      padding 0 0 100px 0
       &::selection
         background-color $selection-color
         color $body-text
@@ -153,7 +157,7 @@
   right 0
   padding-top 85px
   .annotations
-    position relative
+    positgit ion relative
     margin-right 15px
     li
       position relative

@@ -36,7 +36,8 @@ template(name="documentDetail")
           #documentContainer
             #documentBody.document-body
               .document-wrapper
-                .document-text= document.body
+                .document-text
+                  p= document.body
                 if Template.subscriptionsReady
                   each annotationLayers
                     .document-annotations= this
