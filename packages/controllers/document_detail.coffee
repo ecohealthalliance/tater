@@ -48,6 +48,7 @@ if Meteor.isClient
       documentTextToScrollToTop += documentCrowdsourceDetailsHeight
       documentTextToScrollToTop -= documentContainerPaneHeadHeight
       documentTextToScrollToTop += documentBodyTopMargin
+      annotationPartiallyVisible = documentTextToScrollToTop < documentContainerPaneHeadHeight + documentContainerTopPadding
       # The annotation labels on the right
       $annotationContainer = $ '.annotation-container'
       annotationContainerHeight = $annotationContainer.innerHeight()
@@ -69,7 +70,10 @@ if Meteor.isClient
         $documentContainer.stop().animate { scrollTop: documentTextToScrollToTop }, 1000, 'easeInOutQuint'
       else if scrollTheList
         if sameLine
-          annotationToScrollToTop -= documentTextToScrollToTop - $documentContainer.scrollTop()
+          if annotationPartiallyVisible
+            annotationToScrollToTop -= 10
+          else
+            annotationToScrollToTop -= documentTextToScrollToTop - $documentContainer.scrollTop()
         $annotationContainer.stop().animate { scrollTop: annotationToScrollToTop }, 1000, 'easeInOutQuint'
       else if scrollTheText
         if sameLine
