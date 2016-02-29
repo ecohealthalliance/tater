@@ -1,3 +1,3 @@
 StringHelpers = {}
-StringHelpers.escapeRegex = (string) -> 
+StringHelpers.escapeRegex = (string) ->
   string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
