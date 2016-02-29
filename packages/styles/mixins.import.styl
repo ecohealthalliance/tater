@@ -74,7 +74,7 @@ addBorder($w=false, $h, $color)
     border unit($h, 'px') solid $color
 
 makeButton($color, $text = white, $dark = false, $noOutline = false, $hoverColor = white, $transition=true)
-  addBorder(false, 1, darken($color, 10%))
+  addBorder(false, 2, darken($color, 10%))
   background $color
   if $dark
     @extend .light-shadow
@@ -83,13 +83,14 @@ makeButton($color, $text = white, $dark = false, $noOutline = false, $hoverColor
   else
     @extend .dark-shadow
   color $text
+  font-weight 400
   &:hover
   &:focus
+  &:focus:active
   &:active
+    background darken($color, 10%)
     border-color darken($color, 30%)
-    background darken($color, 20%)
     color $text
-    background darken($color, 20%)
   &:disabled
     background desaturate($color, 50%)
     border-color darken($color, 30%)

@@ -8,7 +8,7 @@ template(name="users")
             h2.pull-left Users
               a.help-link(href="{{path route='help?topic=users'}}")
                 +tooltipIcon icon='question-circle' placement='right'
-            a.btn.btn-primary.new-user-link.header-btn.add-admin.pull-right(data-toggle="modal" data-target="#add-user-modal")
+            a.btn.btn-primary.new-user-link.secondary-header-btn.add-admin.pull-right(data-toggle="modal" data-target="#add-user-modal")
               i.fa.fa-user-plus
               span Add User
           #add-admin-modal.modal.fade(tabindex="-1" role="dialog")

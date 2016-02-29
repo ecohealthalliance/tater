@@ -3,9 +3,9 @@ template(name="profileDetail")
     .container
       if itsYou
         h1.inline Your Profile
-        a.btn.btn-primary.profile-detail-link.header-btn(href= "{{path route='profileEdit' params=userProfile}}")
-          span Edit
+        a.btn.btn-primary.profile-detail-link.secondary-header-btn(href= "{{path route='profileEdit' params=userProfile}}")
           i.fa.fa-edit
+          span Edit
       else
         h1.inline User Profile
 

@@ -81,7 +81,7 @@ header
       line-height 14px
       padding 12px 30px
       addBorder('right', 1, white)
-      outline none
+      outline 0
       &:hover
         background none
       +above(1)
@@ -117,7 +117,7 @@ header
         &:hover
           background $primary
         &.dropdown-toggle
-          color: white
+          color white
           background $primary
       .dropdown-menu
         > li
@@ -164,19 +164,19 @@ header
           color $d-gray
           +below(1)
             color white
-            centerPosition(0,0)
+            centerPosition(0, 0)
             position static
 
 .navbar-btn
-  margin-top 12px
+  margin-top 11px
   margin-left 15px
   padding 8px 12px
   border-radius 5px
   text-align center
-  color white
   line-height 100%
   font-size 13px
-  buttonHover($primary, $secondary)
+  font-weight 400
+  @extend .dark-shadow
   i
   span
     vAlign()
@@ -184,7 +184,6 @@ header
     font-size 1.2em
     line-height 0
   &:hover
-    background $primary
     &::after
       display none
   +below(1)
@@ -194,11 +193,6 @@ header
     padding 12px inherit
   &.new-document
     float left
-    @extend .dark-shadow
-    &:hover
-    &:focus
-      color white
-      border-color darken($primary, 10%)
     +below(2)
       float none
       width 60%
@@ -207,14 +201,17 @@ header
     centerVertically()
     right 15px
     margin 0
-    addBorder(false, 2,$secondary)
+    addBorder(false, 2, $secondary)
     color lighten($dd-gray, 10%)
     text-align center
     background none
+    text-shadow none
     span
-      margin-right -3px
+      margin-right -6px
     &:hover
-      background $background-secondary
+      background $secondary
+      color white
+      @extend .dark-shadow
     +below(1)
       margin-right 0
 
@@ -233,12 +230,12 @@ header
     span
     h1
       transition(.2s, color)
-      color lighten($secondary,80%)
+      color lighten($secondary, 80%)
   h1
     vAlign()
     margin 0
     padding-left 3px
-    bg('../../images/tater-logo', $brand-width, $brand-height,'png')
+    bg('../../images/tater-logo', $brand-width, $brand-height, 'png')
     transition(.2s, color)
     color white
     font-weight 600

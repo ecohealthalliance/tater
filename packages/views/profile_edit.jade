@@ -5,9 +5,9 @@ template(name="profileEdit")
         .view-header.primary-bg.space-btm-2
           .container
             h1.inline Edit Profile
-            a.btn.btn-primary.profile-detail-link.header-btn(href= "{{path route='profileDetail' params=userProfile}}")
-              span View Public Profile
+            a.btn.btn-primary.profile-detail-link.secondary-header-btn(href= "{{path route='profileDetail' params=userProfile}}")
               i.fa.fa-user
+              span View Public Profile
         form#edit-profile-form
           .container
             .row
