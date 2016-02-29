@@ -30,21 +30,20 @@
       &:hover
         background-color lighten($background-secondary, 20%)
 
-
-.table-wrap
-  &.no-filter
-    .reactive-table-options
-      display none
-
 .table-header
   background white
   padding 15px
   box-shadow 0 1px 2px rgba(100,100,100,0.2)
   h2
-    margin 0
+    display block
+    margin 0 0 20px 0
     font-weight 600
     font-size 1.75em
     color $primary-light
+    +above(3)
+      display inline-block
+      margin-bottom 0
+      vertical-align middle
 
 .reactive-table
   padding-left 0
@@ -71,11 +70,18 @@
     position absolute
     left 15px
 
+
+
 .reactive-table-options
   padding 0 15px
-  margin-top -10px
+  margin-top -50px
   margin-bottom 15px
-  margin-right -15px
+  margin-right 0
+  width 100%
+  +above(2)
+    width 50%
+  +above(3)
+    width 30%
   .dropdown-toggle
     &::before,
     &::after
@@ -85,6 +91,19 @@
       content '\f0db'
       padding-right 5px
       font-size 16px
+  .reactive-table-filter
+    width 100%
+    padding-left 0
+  .form-control:last-child
+  input[type=text]
+    border-top-left-radius 4px
+    border-bottom-left-radius 4px
+  .input-group-addon
+    display none
+  .input-group
+    width 100%
+    searchIcon()
+
 
 .reactive-table-navigation
   label
@@ -113,6 +132,3 @@
 .keyword-table
   .reactive-table-options
     width 35%
-
-  .reactive-table-filter
-    width 100%

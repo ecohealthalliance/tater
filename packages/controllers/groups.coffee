@@ -28,10 +28,10 @@ if Meteor.isClient
             </a>
           """)
       showColumnToggles: false
-      showFilter: false
+      showFilter: true
       showRowCount: true
       fields: fields
-      noDataTmpl: Template.noUsers
+      noDataTmpl: Template.noGroups
     groups: ->
       Groups.find({}, sort: name: 1)
     selectedGroup: ->

@@ -5,10 +5,10 @@ template(name="users")
       .row
         .users-container
           .table-header.clearfix
-            h2.pull-left Users
+            h2 Users
               a.help-link(href="{{path route='help?topic=users'}}")
-                +tooltipIcon icon='question-circle' placement='right'
-            a.btn.btn-primary.new-user-link.secondary-header-btn.add-admin.pull-right(data-toggle="modal" data-target="#add-user-modal")
+                +tooltipIcon icon='question-circle' placement='top'
+            a.btn.btn-primary.btn-sm.new-user-link.secondary-header-btn.add-admin(data-toggle="modal" data-target="#add-user-modal")
               i.fa.fa-user-plus
               span Add User
           #add-admin-modal.modal.fade(tabindex="-1" role="dialog")
@@ -17,7 +17,7 @@ template(name="users")
                 .modal-header
                   button(type="button" class="close" data-dismiss="modal" aria-label="Close")
                     i.fa.fa-times-circle
-          .table-wrap.users-table.no-filter
+          .table-wrap.users-table
             .container-list.list-table
               if Template.subscriptionsReady
                 +reactiveTable collection=usersCollection settings=settings filters=filters
@@ -38,4 +38,5 @@ template(name="users")
     +userModal(group=selectedGroup)
 
 template(name="noUsers")
-  p No Users Found
+  .no-results
+    p Sorry, no users found.

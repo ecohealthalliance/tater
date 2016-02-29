@@ -40,7 +40,7 @@ if Meteor.isClient
           """)
 
       showColumnToggles: false
-      showFilter: false
+      showFilter: true
       showRowCount: true
       fields: fields
       noDataTmpl: Template.noUsers

@@ -5,18 +5,22 @@ template(name="groups")
       .row
         .groups-container
           .table-header.clearfix
-            h2.pull-left Document Groups
+            h2 Document Groups
               a.help-link(href="{{path route='help?topic=document-groups'}}")
-                +tooltipIcon icon='question-circle' placement='right'
-            a.btn.btn-primary.new-group-link.secondary-header-btn.pull-right(data-toggle="modal" data-target="#add-group-modal")
+                +tooltipIcon icon='question-circle' placement='top'
+            a.btn.btn-primary.new-group-link.secondary-header-btn(data-toggle="modal" data-target="#add-group-modal")
               i.fa.fa-plus
               span Add Document Group
           .container-list
             if Template.subscriptionsReady
               if groups
-                .group-list.list-table.groups-table.no-filter.table-wrap
+                .group-list.list-table.groups-table.table-wrap
                   +reactiveTable collection=groups settings=settings filters=filters
             else
               .loading.center-v
     +userModal(group=selectedGroup)
     +groupModal
+
+template(name="noGroups")
+  .no-results
+    p Sorry, no document groups found.

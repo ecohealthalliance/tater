@@ -225,3 +225,18 @@ icon()
 
 containerShadow()
   box-shadow 0 1px 2px rgba(100,100,100,.15)
+
+
+searchIcon()
+  position relative
+  &::before
+    icon()
+    content '\f002'
+    position absolute
+    top 50%
+    left 10px
+    transform translate(0,-50%)
+    layerBtm()
+    color $d-gray
+  input
+    padding-left 28px
