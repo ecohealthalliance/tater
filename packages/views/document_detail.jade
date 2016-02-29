@@ -11,7 +11,7 @@ template(name="documentDetail")
           .document-options
             unless onBSVEInstance
               if crowdsourceDoc document
-                a.btn.btn-primary.crowdsource-btn(data-toggle="modal" data-document-id=document._id data-target="#create-mturk-job-modal" )
+                a.btn.btn-primary.btn-sm.crowdsource-btn(data-toggle="modal" data-document-id=document._id data-target="#create-mturk-job-modal" )
                   i.fa.fa-users
                   | Crowdsource
             a.help-link.help-link-document.pull-right(href="{{path route='/help?topic=annotating-documents'}}")
@@ -27,7 +27,7 @@ template(name="documentDetail")
                   .admin-details
                     i.fa.fa-cogs
                     p Document has been submitted for annotation and is being processed.
-                    a.btn.btn-primary#cancel-mturk-job Cancel this job
+                    a.btn.btn-default.btn-sm#cancel-mturk-job Cancel
             else if currentUser
               .crowdsource-details
                 .user-details

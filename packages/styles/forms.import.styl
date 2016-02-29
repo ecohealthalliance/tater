@@ -13,7 +13,6 @@ textarea#document-body
   min-height 300px
 
 input[type="submit"]
-  margin 20px 0
   font-size 1em !important
   font-weight 400 !important
   +above(1)
@@ -26,9 +25,6 @@ input[type="submit"]
     font-size 110%
 
 form
-  .form-group
-    &:last-of-type
-      margin 0
   textarea
     &:last-child
       margin-bottom 0
@@ -71,7 +67,7 @@ select
 
 .required-text
   color $d-gray
-  font-size 110%
+  font-size 90%
   span
     color $deny
     font-weight bold
@@ -111,7 +107,7 @@ select
     min-height 300px
   input
     display inline
-    outline none
+    outline 0
     max-width 100%
     display none
   &.active

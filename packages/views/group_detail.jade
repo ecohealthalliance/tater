@@ -4,11 +4,7 @@ template(name="groupDetail")
       .view-header.secondary-bg
         .container
           h1.inline #{group.name}
-          a.group-documents-link.btn.header-btn.btn-primary(href="{{path route='groupDocuments' params=groupDocumentsParams}}")
-            span Documents
-            i.fa.fa-files-o
       .container
         .row
           .col-sm-10
             +paragraphText text=group.description
-

@@ -110,15 +110,12 @@ a
   color $body-text
   text-shadow none
 
-.header-btn
+.secondary-header-btn
   display inline-block
   margin-left 15px
-  background none
-  addBorder(false, 1, $secondary)
-  color $secondary
   text-shadow none
-  &:hover
-    background $secondary
+  font-weight 400
+  @extend .dark-shadow
   +below(1)
     display block
     margin 15px 0 10px 0

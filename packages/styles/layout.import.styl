@@ -144,30 +144,27 @@
   nav
     position absolute
     right 0
-    bottom 0
+    bottom -1px
     a
       padding 10px 20px
-      color $primary
+      color $primary-light
       font-weight 600
     li
       float left
       margin-left 2px
       > a
-        border-bottom 1px solid transparent
+        border-bottom 3px solid transparent
       &:hover
         > a
-          background-color $border-primary
-          border-color $border-primary
+          border-color $secondary-light
+          background none
       &.active
       &.active:hover
       &.active:focus
-        margin-bottom -1px
         > a
-          background-color white
-          color darken($primary, 5%)
+          color $primary
           font-weight 700
-          border 1px solid $border-primary
-          border-bottom-color white
+          border-bottom-color $primary
           margin-bottom 0
       .fa
         margin-right 5px

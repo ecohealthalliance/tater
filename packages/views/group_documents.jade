@@ -2,15 +2,11 @@ template(name="groupDocuments")
   .group-documents.documents
     .view-header.primary-bg
       .container
-        h1.inline Documents
+        h1.inline Group Documents
           a.help-link(href="../../help?topic=documents")
             +tooltipIcon icon='question-circle' placement='right'
-        if showNewDocumentLink
-          a.new-document-link.btn.header-btn.btn-primary(href="{{path route='newDocument' params=newDocumentParams}}")
-            span Add Document
-            i.fa.fa-file-text-o
         p.group-name
-          span Document Group:
+          span Document Group: 
           | #{group.name}
     .container.container-list
       +documentList group=group
