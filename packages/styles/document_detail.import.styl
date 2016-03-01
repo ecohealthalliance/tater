@@ -75,13 +75,24 @@
   align-items center
   justify-content flex-end
   a
-    margin-left 15px
-  .help-link-document
+    margin-left 10px
+    margin-right 10px
+    color $secondary-light
     font-size 1.5em
+    pointer()
+  .help-link-document
+    font-size 1.25em
+    margin 0 0 0 20px
+    color lighten($secondary-light, 20%)
 
 .finished-annotating
   centerVertically()
   right 20px
+
+.add-note
+  color $d-gray
+  .icon-right
+    margin-right -1px
 
 .completion-code
   color $d-gray

@@ -3,23 +3,38 @@ template(name="documentDetail")
     if mechanicalTurkPreview
       +mTurkPreview
     else
+      +finishAnnotationModal document=document
       +createMTurkJobModal document=document
+      +documentNoteModal document=document
       .document-detail-container
         +documentDetailCodingKeywords
         .document-heading.pane-head.pane-head-m
-          h1.document-title= document.title
+          h1.document-title
+            if document.finishedAt
+              i.fa.fa-check-circle
+            | #{document.title}
           .document-options
             unless onBSVEInstance
               if crowdsourceDoc document
-                a.btn.btn-primary.btn-sm.crowdsource-btn(data-toggle="modal" data-document-id=document._id data-target="#create-mturk-job-modal" )
-                  i.fa.fa-users
-                  | Crowdsource
+                a.crowdsource-btn(data-toggle="modal" data-document-id=document._id data-target="#create-mturk-job-modal" )
+                  +tooltipIcon icon='users' placement='bottom' title='Crowdsource Annotation'
+                  
+              unless document.finishedAt
+                a.finished-btn(data-toggle="modal" data-target="#finish-annotation-modal" )
+                  +tooltipIcon icon='check-circle' placement='bottom' title='Mark document as finished'
+                  
+              if mTurkAnnotating
+                a.finished-annotating
+                  i.fa.fa-check-circle.icon-left
+                  span Finish Annotating
+                  
+              unless document.note
+                a(data-toggle="modal" data-state='add' data-target="#document-note-modal")
+                  +tooltipIcon icon='sticky-note' placement='bottom' title='Add Note'
+              
             a.help-link.help-link-document.pull-right(href="{{path route='/help?topic=annotating-documents'}}")
-              +tooltipIcon icon='question-circle' placement='left'
-            if mTurkAnnotating
-              button.finished-annotating.btn.btn-primary
-                i.fa.fa-check-circle.icon-left
-                span Finish Annotating
+              +tooltipIcon icon='question-circle' placement='bottom'
+              
         .document-container.pane.pane-middle
           if document.mTurkEnabled
             if isAdmin

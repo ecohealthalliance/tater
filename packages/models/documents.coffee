@@ -22,6 +22,9 @@ Document = Astro.Class
     mTurkEnabled:
       type: 'boolean'
       default: false
+    finishedAt:
+      type: 'date'
+    note: 'string'
     createdAt: 'date'
   behaviors: ['timestamp']
 
@@ -77,3 +80,8 @@ Document = Astro.Class
           @set(mTurkEnabled: false)
           @save()
         ok
+
+    finish: ->
+      if Meteor.isServer
+        @set finishedAt: new Date()
+        @save()

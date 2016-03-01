@@ -56,8 +56,10 @@ Package.onUse(function(api) {
   api.addFiles('eula.jade', 'client');
   api.addFiles('tooltip_icon.jade', 'client');
   api.addFiles('create_mturk_job_modal.jade', 'client');
-  api.addFiles('connection_status.jade', ['client']);
-  api.addFiles('m_turk_preview.jade', ['client']);
-  api.addFiles('password_fields.jade', ['client']);
+  api.addFiles('connection_status.jade', 'client');
+  api.addFiles('m_turk_preview.jade', 'client');
+  api.addFiles('password_fields.jade', 'client');
+  api.addFiles('finish_annotation_modal.jade', 'client');
   api.addFiles('group_modal.jade', ['client']);
+  api.addFiles('document_note_modal.jade', 'client');
 });

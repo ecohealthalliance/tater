@@ -35,6 +35,10 @@ describe 'Document', ->
   it 'includes mTurkEnabled', ->
     expect(document.mTurkEnabled).to.eq(false)
 
+  it 'includes note', ->
+    document.set 'note', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed haec in pueris; Alterum significari idem, ut si diceretur, officia media omnia aut pleraque servantem vivere. At modo dixeras nihil in istis rebus esse, quod interesset. Respondent extrema primis, media utrisque, omnia omnibus. Hoc sic expositum dissimile est superiori. Duo Reges: constructio interrete. Summus dolor plures dies manere non potest? Sed tamen intellego quid velit.'
+    expect(document.note).to.eq('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed haec in pueris; Alterum significari idem, ut si diceretur, officia media omnia aut pleraque servantem vivere. At modo dixeras nihil in istis rebus esse, quod interesset. Respondent extrema primis, media utrisque, omnia omnibus. Hoc sic expositum dissimile est superiori. Duo Reges: constructio interrete. Summus dolor plures dies manere non potest? Sed tamen intellego quid velit.')
+
   describe '#textWithAnnotation', =>
     it 'returns the text with the given annotations represented with spans', ->
       headerId = Headers.insert(color: 2)
