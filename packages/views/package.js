@@ -59,4 +59,5 @@ Package.onUse(function(api) {
   api.addFiles('connection_status.jade', ['client']);
   api.addFiles('m_turk_preview.jade', ['client']);
   api.addFiles('password_fields.jade', ['client']);
+  api.addFiles('group_modal.jade', ['client']);
 });
