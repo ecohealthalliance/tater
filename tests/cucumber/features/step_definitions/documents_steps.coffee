@@ -178,3 +178,34 @@ do ->
       @browser
         .waitForVisible('#create-mturk-job')
         .click('#create-mturk-job')
+
+    @When "I submit the Crowdsource Annotation form", ->
+      @browser
+        .waitForVisible('#create-mturk-job')
+        .click('#create-mturk-job')
+
+    @When /^I add the note "([^"]*)" to the test document$/, (note) ->
+      @browser
+        .waitForExist('.add-note')
+        .click('.add-note')
+        .waitForVisible('#document-note-modal')
+        .setValue('#note', note)
+        .submitForm('#document-note')
+
+    @When /^I update the note to "([^"]*)"$/, (note) ->
+      @browser
+        .waitForExist('.edit-note')
+        .click('.edit-note')
+        .waitForVisible('#document-note-modal')
+        .setValue('#note', note)
+        .submitForm('#document-note')
+
+    @When "I finish annotating a document with note", ->
+      @browser
+        .waitForExist('a.finished-btn')
+        .click('a.finished-btn')
+        .waitForVisible('#finish-annotation-modal')
+        .click('.toggle-add-note')
+        .waitForVisible('.form-control')
+        .setValue('#finished-note', 'A note')
+        .submitForm('#finish-annotation')

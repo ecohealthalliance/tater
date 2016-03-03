@@ -58,3 +58,8 @@ describe 'Document', ->
 
       document.set('groupId', group._id)
       expect(document.groupName()).to.eq('Test Group Name')
+
+  describe '#finish', =>
+    it 'marks the document as finished', ->
+      document.finish()
+      expect(document.finishedAt).to.be.ok
