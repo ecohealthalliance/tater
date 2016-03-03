@@ -20,6 +20,7 @@ if Meteor.isClient
     @searching = new ReactiveVar(false)
     @temporaryAnnotation = new ReactiveVar(new Annotation())
     @selectedAnnotation = new ReactiveVar(id: @data.annotationId, onLoad: true)
+    @noteActive = new ReactiveVar false
 
     annotationSpanElement = (annotationId) ->
       @.$ "div.document-annotations span[data-annotation-id='#{annotationId}']"
@@ -41,6 +42,7 @@ if Meteor.isClient
       documentCrowdsourceDetailsHeight = @.$('.crowdsource-details').height()
       documentBodyTopMargin = parseInt $documentContainer.find('.document-body').css('margin-top')
       documentContainerPaneHeadHeight = parseInt $('.document-heading').innerHeight()
+      documentContainerDetailsHeight = parseInt $('.document-details').innerHeight()
       $documentTextToScrollTo = $documentContainer.find "div.document-annotations span[data-annotation-id='#{annotationId}']"
       documentTextToScrollToHeight = $documentTextToScrollTo.innerHeight()
       documentTextToScrollToTop = $documentTextToScrollTo.position()?.top
@@ -48,6 +50,7 @@ if Meteor.isClient
       documentTextToScrollToTop += documentCrowdsourceDetailsHeight
       documentTextToScrollToTop -= documentContainerPaneHeadHeight
       documentTextToScrollToTop += documentBodyTopMargin
+      documentTextToScrollToTop += documentContainerDetailsHeight
       annotationPartiallyVisible = documentTextToScrollToTop < documentContainerPaneHeadHeight + documentContainerTopPadding
       # The annotation labels on the right
       $annotationContainer = $ '.annotation-container'
@@ -145,12 +148,22 @@ if Meteor.isClient
     searching: ->
       Template.instance().searching.get()
 
-    crowdsourceDoc: (document) ->
+    crowdsourceDoc: ->
       Meteor.user().admin and not Documents.findOne(@documentId).mTurkEnabled
 
-    mTurkAnnotating: (document) ->
+    mTurkAnnotating: ->
       Template.instance().assignmentId and
         Template.instance().assignmentId isnt 'ASSIGNMENT_ID_NOT_AVAILABLE'
+
+    showDetails: ->
+      document = Documents.findOne(@documentId)
+      (document.note or document.finishedAt) and not Template.instance().assignmentId
+
+    noteActive: ->
+      Template.instance().noteActive.get()
+
+    date: (date) ->
+      date.toString().substr(0, 15)
 
   Template.documentDetail.events
     'mousedown .document-container': (event, instance) ->
@@ -275,6 +288,11 @@ if Meteor.isClient
         if error
           toastr.error("Unable to cancel this job")
 
+    'click .view-note': (event, instance) ->
+      instance.noteActive.set not instance.noteActive.get()
+
+    'click .close-note': (event, instance) ->
+      instance.noteActive.set false
 
   Template.documentDetailAnnotation.helpers
     header: ->

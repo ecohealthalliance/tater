@@ -10,7 +10,7 @@ template(name="finishAnnotationModal")
             h4 Confirmation
             p Are you sure you want to mark this document as finished?
             unless addNote
-              button.btn.btn-sm.btn-default.toggle-add-note.add-note(type='button')
+              button.btn.btn-sm.btn-default.toggle-add-note(type='button')
                 if document.note
                   | Edit note
                 else
@@ -21,7 +21,7 @@ template(name="finishAnnotationModal")
                 span.clear-input.pull-right.toggle-add-note.space-btm-1
                   i.fa.fa-times-circle
                   | Cancel
-                textarea.form-control(name='note' placeholder='Enter a note about the document')=document.note
+                textarea.form-control#finished-note(name='note' placeholder='Enter a note about the document')=document.note
           .modal-footer
             button.btn.btn-default(data-dismiss='modal' aria-hidden='true' type='button') Cancel
             button.btn.btn-primary(type='subit') Finish Annotation

@@ -9,45 +9,60 @@ template(name="documentDetail")
       .document-detail-container
         +documentDetailCodingKeywords
         .document-heading.pane-head.pane-head-m
-          h1.document-title
-            if document.finishedAt
-              i.fa.fa-check-circle
-            | #{document.title}
+          h1.document-title= document.title
           .document-options
             unless onBSVEInstance
-              if crowdsourceDoc document
-                a.crowdsource-btn(data-toggle="modal" data-document-id=document._id data-target="#create-mturk-job-modal" )
-                  +tooltipIcon icon='users' placement='bottom' title='Crowdsource Annotation'
-                  
-              unless document.finishedAt
-                a.finished-btn(data-toggle="modal" data-target="#finish-annotation-modal" )
-                  +tooltipIcon icon='check-circle' placement='bottom' title='Mark document as finished'
-                  
               if mTurkAnnotating
-                a.finished-annotating
+                button.finished-annotating.btn.btn-primary.btn-sm
                   i.fa.fa-check-circle.icon-left
                   span Finish Annotating
-                  
-              unless document.note
-                a(data-toggle="modal" data-state='add' data-target="#document-note-modal")
-                  +tooltipIcon icon='sticky-note' placement='bottom' title='Add Note'
-              
+              else
+                if crowdsourceDoc
+                  a.crowdsource-btn(data-toggle="modal" data-document-id=document._id data-target="#create-mturk-job-modal" )
+                    +tooltipIcon icon='users' placement='bottom' title='Crowdsource Annotation'
+
+                unless document.note
+                  a.add-note(data-toggle="modal" data-target="#document-note-modal")
+                    +tooltipIcon icon='sticky-note' placement='bottom' title='Add Note'
+
+                unless document.finishedAt
+                  a.finished-btn(data-toggle="modal" data-target="#finish-annotation-modal" )
+                    +tooltipIcon icon='check-circle' placement='bottom' title='Finish Annotation'
+
             a.help-link.help-link-document.pull-right(href="{{path route='/help?topic=annotating-documents'}}")
               +tooltipIcon icon='question-circle' placement='bottom'
-              
-        .document-container.pane.pane-middle
-          if document.mTurkEnabled
-            if isAdmin
-              .crowdsource-details
-                  .admin-details
-                    i.fa.fa-cogs
-                    p Document has been submitted for annotation and is being processed.
-                    a.btn.btn-default.btn-sm#cancel-mturk-job Cancel
-            else if currentUser
-              .crowdsource-details
-                .user-details
-                  i.fa.fa-exclamation-triangle
-                  p This document has been crowdsourced and does not require annotation.
+
+        .document-container.pane.pane-m
+          if showDetails
+            .pane-actions.document-details(class="{{#if noteActive}} active {{/if}}")
+              if document.finishedAt
+                .finished
+                  i.fa.fa-check-circle
+                  span(data-toggle='tooltip' title='{{date document.finishedAt}}' data-placement='bottom') Finished
+              if document.mTurkEnabled
+                .finished
+                  if isAdmin
+                    .crowdsource-details
+                      .admin-details
+                        i.fa.fa-cogs
+                        span Crowdsourced
+                        a.btn.btn-default.btn-sm.cancel#cancel-mturk-job Cancel
+                  else if currentUser
+                    .crowdsource-details
+                      .user-details
+                        i.fa.fa-exclamation-triangle
+                        p This document has been crowdsourced and does not require annotation.
+
+              if document.note
+                .document-note
+                  i.fa.fa-sticky-note.view-note
+                  span=document.note
+                  .note-options
+                    if noteActive
+                      i.fa.fa-times-circle.close-note
+                    .edit-note(data-toggle="modal" data-target="#document-note-modal")
+                      +tooltipIcon icon='edit' title='Edit note' placement='bottom'
+
           #documentContainer
             #documentBody.document-body
               .document-wrapper

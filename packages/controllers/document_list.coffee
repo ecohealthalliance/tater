@@ -154,7 +154,7 @@ if Meteor.isClient
       "#{@annotated} annotation#{plural(@annotated)}"
 
     finishedTitle: ->
-      "Complete with #{@annotated} annotation#{plural(@annotated)}"
+      "Finished with #{@annotated} annotation#{plural(@annotated)}"
 
     showing: ->
       if Template.instance().docOptionsShowing.get()

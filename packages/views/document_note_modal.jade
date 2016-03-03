@@ -9,7 +9,7 @@ template(name="documentNoteModal")
           .modal-body
             h4.space-btm-2 Document Note
             .form-group
-              textarea.form-control(name='note' placeholder='Enter a note about the document')
+              textarea.form-control#note(name='note' placeholder='Enter a note about the document')=document.note
           .modal-footer
             button.btn.btn-default(data-dismiss='modal' aria-hidden='true' type='button') Cancel
             button.btn.btn-primary(type='subit') Save
