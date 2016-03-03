@@ -5,11 +5,12 @@ class Jenkins
     @key = attributes.key
 
   authenticatedUrl: ->
-    "http://#{@user}:#{@key}@#{@jenkinsUrl}"
+    "https://#{@user}:#{@key}@#{@jenkinsUrl}"
 
   getCrumb: (callback) ->
     url = "#{@authenticatedUrl()}/crumbIssuer/api/xml"
-    request.get url, {}, (error, response) ->
+    console.log(url)
+    request.get url, {rejectUnauthorized: false}, (error, response) ->
       crumb = xml2js.parseString response.body, (error, response) ->
         callback(response.defaultCrumbIssuer)
 
@@ -22,6 +23,6 @@ class Jenkins
       for key, value of parameters
         url += "&#{key}=#{value}"
 
-      request.post url, {headers: {"#{crumbField}": crumbValue}}, (error, response) ->
+      request.post url, {rejectUnauthorized: false, headers: {"#{crumbField}": crumbValue}}, (error, response) ->
         console.log(error)
         console.log(response)

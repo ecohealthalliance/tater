@@ -84,10 +84,13 @@ if Meteor.isServer
               key: jenkinsSettings.key
 
             jenkins.triggerBuildWithParameters(
-              'provision-new-tater-instance',
+              'provision-tater-instance-with-seeds',
               jenkinsSettings.buildKey, {
                 instance_name: tenant.tenantName,
-                instance_port: '8021'
+                full_name: tenant.fullName,
+                email_address: tenant.emailAddress,
+                organization_name: tenant.orgName,
+                stripe_customer_id: tenant.stripeCustomerId,
               }
             )
 
