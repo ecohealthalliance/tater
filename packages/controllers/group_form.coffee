@@ -16,8 +16,7 @@ if Meteor.isClient
             toastr.error('Unknown Error')
         else
           toastr.success("Success")
-          go 'groups'
-
+          $('#add-group-modal').modal('hide')
 
 
 Meteor.methods

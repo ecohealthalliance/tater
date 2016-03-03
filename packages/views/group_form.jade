@@ -1,21 +1,16 @@
 template(name="groupForm")
-  .view-header.primary-bg.space-btm-2
-    .container
-      h1 Add a Document Group
-  .container
-    .row
-      .col-sm-8
-        form#new-group-form
-          .row.form-group
-            .col-sm-8
-              label
-                span.required.space-btm-0 Name
-                span.requirements (Must contain at least 5 characters)
-                input#group-name.form-control(name="name" type="text" )
-          .row.form-group
-            .col-sm-12
-              label
-                span Description
-                textarea#group-description.form-control(name="description")
-          input.btn.btn-primary(type="submit" value="Add Document Group")
-          p.required-text.space-btm-1 #[span *] Indicates required field
+  h4 Add a Document Group
+  form#new-group-form.clearfix.space-top-2
+    .form-group
+      label
+        span.required.space-btm-0 Name
+        span.requirements (Must contain at least 5 characters)
+        input#group-name.form-control(name="name" type="text" )
+    .form-group
+      label
+        span Description
+        textarea#group-description.form-control(name="description")
+    p.required-text.space-btm-1 #[span *] Indicates required field
+    .modal-buttons
+      input.btn.btn-default.cancel(type="button" value="Cancel" data-dismiss="modal")
+      input.btn.btn-primary(type="submit" value="Add Document Group")

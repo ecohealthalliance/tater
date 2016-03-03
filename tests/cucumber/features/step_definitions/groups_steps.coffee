@@ -18,7 +18,7 @@ do ->
 
     @When /^I fill out the new group form with name "([^"]*)"$/, (name) ->
       @browser
-        .waitForExist('#new-group-form')
+        .waitForVisible('#new-group-form')
         .setValue('#group-name', name)
         .setValue('#group-description', 'This is an group.')
         .submitForm('#new-group-form')
