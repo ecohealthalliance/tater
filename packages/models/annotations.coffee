@@ -17,8 +17,10 @@ Annotation = Astro.Class
   events:
     afterSave: () ->
       @setDocumentCounts()
+      @updateUsage()
     afterRemove: () ->
       @setDocumentCounts()
+      @updateUsage()
 
   methods:
     _codingKeyword: ->
@@ -35,6 +37,11 @@ Annotation = Astro.Class
     setDocumentCounts: ->
       annoCount = Annotations.find({documentId: @documentId}).count()
       Documents.update({_id: @documentId}, {$set: {annotated: annoCount}})
+
+    updateUsage: ->
+      if Meteor.isServer
+        keyword = CodingKeywords.findOne(@codeId)
+        keyword?.recountUsage()
 
     overlapsWithOffsets: (startOffset, endOffset) ->
       (startOffset >= @startOffset and startOffset < @endOffset) or

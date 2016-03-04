@@ -80,6 +80,15 @@ do ->
         .elements selector, (error, elements) ->
           assert(elements.value.length == parseInt(number), "Expected #{elements.value.length} to equal #{number}")
 
+    @When 'I rename a keyword to "$what"', (what) ->
+      @client
+        .waitForVisible('.level-3 .edit-keyword-button')
+        .click('.level-3 .edit-keyword-button')
+        .waitForVisible('input#keyword-edit')
+        .setValue("input#keyword-edit", what)
+        .click('.accept-edit-keyword-button')
+        .waitForVisible('.toast-success')
+
     @When 'I delete a keyword', ->
       @client
         .waitForVisible('.level-3 .fa-trash-o')

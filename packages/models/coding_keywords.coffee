@@ -8,6 +8,9 @@ CodingKeyword = Astro.Class
     label: 'string'
     caseCount: 'boolean'
     archived: 'boolean'
+    used:
+      type: 'number'
+      default: 0
   behaviors: ['timestamp']
   methods:
     _subHeader: ->
@@ -20,3 +23,8 @@ CodingKeyword = Astro.Class
       @_header().label
     subHeaderLabel: ->
       @_subHeader().label
+    recountUsage: ->
+      count = Annotations.find(codeId: @_id).count()
+      @set('used', count)
+      @save()
+      count

@@ -212,3 +212,18 @@ Feature: Coding Keywords
     And I click the first document
     Then I should see 1 keywords
     And I should see 1 annotations
+
+    @codingKeywords
+    Scenario: Edit coding keyword that is not in use
+    And there is a coding keyword with header "Test Header", sub-header "Test Sub-Header" and keyword "Test Keyword1" in the database
+    When I log in as the test user
+    And I navigate to "/codingKeywords"
+    Then I should see content "Test Header"
+    When I click on a "header"
+    Then I should see content "Test Sub-Header"
+    When I click on a "sub-header"
+    Then I should see 1 keyword
+    When I rename a keyword to "badBoy"
+    When I navigate to "/documents"
+    And I click the first document
+    Then I should see content "badBoy"
