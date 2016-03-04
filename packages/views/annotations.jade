@@ -60,7 +60,8 @@ template(name="annotations")
 
       if documentSelected
         unless annotationsLoaded
-          p.no-results.text-center No annotations found.
+          .no-results
+            p No annotations found.
         +pages
         +pagesNav
       else

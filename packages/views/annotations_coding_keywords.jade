@@ -38,13 +38,9 @@ template(name="annotationsCodingKeywords")
         else
           if searching
             .no-results
-              i.fa.fa-search
               p Sorry, no codes found.
           else
-            .no-results
-              p No codes currently present.
-        unless selectableHeaders
-          p.text-center Select a group or document to view keywords
+            p.text-center.muted-text.space-top-5 Select a group or document to view keywords.
 
       else
         .loading.space-top-5

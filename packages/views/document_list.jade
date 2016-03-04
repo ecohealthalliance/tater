@@ -46,9 +46,8 @@ template(name="documentList")
   .document-list-container
     if Template.subscriptionsReady
       if noDocumentsFound
-        .no-results.space-top-3
-          i.fa.fa-search
-          .no-documents-found.centered Sorry, no documents found.
+        .no-results
+          p.no-documents-found.centered Sorry, no documents found.
       else
         ul.list.document-list.list-unstyled
           each documents
