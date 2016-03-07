@@ -38,7 +38,6 @@ ADD run.sh /run.sh
 LABEL app="tater-frontend"
 EXPOSE 3000
 VOLUME /shared
-ENV MAIL_URL="smtp://AKIAIE2YD4YI4TQOU3QQ:AgELzBJTKCMedBlCfMafPzVBbvbEO8R5Sdm7on2+7v8y@email-smtp.us-east-1.amazonaws.com:465"
 
 #Start application
 CMD /bin/bash /run.sh
