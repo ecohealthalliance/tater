@@ -15,10 +15,9 @@ template(name="annotationsCodingKeywords")
           else
             i.fa.fa-chevron-circle-down
             | Show codes
-        if selectedCodes
-          button.btn-plain.clear-selected-codes
-            i.fa.fa-times-circle
-            | Clear Selection
+        button.btn-plain.clear-selected-codes(disabled="{{#unless selectedCodes}} disabled {{/unless}}")
+          i.fa.fa-times-circle
+          | Clear Selection
       if Template.subscriptionsReady
         each selectableHeaders
           li.code-header.selectable(class="code-header-#{color}" )
