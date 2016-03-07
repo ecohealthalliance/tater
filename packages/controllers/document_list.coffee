@@ -143,18 +143,15 @@ if Meteor.isClient
     @document = new Document(_.pick(@data, _.keys(Document.getFields())))
     @docOptionsShowing = new ReactiveVar false
 
-  plural = (count) ->
-    if count > 1 then 's' else ''
-
   Template.document.helpers
     groupName: ->
       Template.instance().document.groupName()
 
     annotatedTitle: ->
-      "#{@annotated} annotation#{plural(@annotated)}"
+      "#{@annotated} #{StringHelpers.pluralize('annotation', @annotated)}"
 
     finishedTitle: ->
-      "Finished with #{@annotated} annotation#{plural(@annotated)}"
+      "Finished with #{@annotated} #{StringHelpers.pluralize('annotation', @annotated)}"
 
     showing: ->
       if Template.instance().docOptionsShowing.get()
