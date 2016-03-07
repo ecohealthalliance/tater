@@ -212,18 +212,17 @@ if Meteor.isClient
       instance.startOffset.set null
       instance.endOffset.set null
 
-    'click .document-container': (event, instance) ->
+    'click .document-text': (event, instance) ->
       temporaryAnnotation = instance.temporaryAnnotation.get()
 
       elementClassName = 'document-text'
       selection = window.getSelection()
       if selection.type != 'Range' then return
       range = selection.getRangeAt(0)
-      selectionInDocument = selection.anchorNode.parentElement.getAttribute('class') == elementClassName
       textHighlighted = range and (range.endOffset > range.startOffset or range.endOffset == 0)
       lastCharOffset = $(".#{elementClassName}").first().text().length
 
-      if selectionInDocument and textHighlighted
+      if textHighlighted
         startOffset = range.startOffset
         endOffset = range.endOffset or lastCharOffset
 
