@@ -1,28 +1,36 @@
 class Jenkins
-  constructor: (attributes) ->
-    @jenkinsUrl = attributes.jenkinsUrl
-    @user = attributes.user
-    @key = attributes.key
+  constructor: (attributes={}) ->
+    @jenkinsUrl = attributes.jenkinsUrl if attributes.jenkinsUrl?
+    @user = attributes.user if attributes.user?
+    @key = attributes.key if attributes.key?
 
-  authenticatedUrl: ->
-    "https://#{@user}:#{@key}@#{@jenkinsUrl}"
+    protocol = if attributes.https? then "https" else "http"
+    @authenticatedUrl = "#{protocol}://#{@user}:#{@key}@#{@jenkinsUrl}"
 
-  getCrumb: (callback) ->
-    url = "#{@authenticatedUrl()}/crumbIssuer/api/xml"
-    console.log(url)
-    request.get url, {rejectUnauthorized: false}, (error, response) ->
-      crumb = xml2js.parseString response.body, (error, response) ->
-        callback(response.defaultCrumbIssuer)
+  buildPath: (jobName, jobToken, parameters) ->
+    withParameters = if parameters then "WithParameters" else ""
+    path = "/job/#{jobName}/build#{withParameters}?token=#{jobToken}"
+    for key, value of parameters
+      path += "&#{key}=#{value}"
+    path
 
-  triggerBuildWithParameters: (jobName, jobToken, parameters) ->
-    @getCrumb (crumbIssuer) =>
+  postToUrl: (url) ->
+    @_getCrumb (crumbIssuer) =>
       crumbValue = crumbIssuer.crumb[0]
       crumbField = crumbIssuer.crumbRequestField[0]
 
-      url = "#{@authenticatedUrl()}/job/#{jobName}/buildWithParameters?token=#{jobToken}"
-      for key, value of parameters
-        url += "&#{key}=#{value}"
+      request.post url, {rejectUnauthorized: false, headers: {"#{crumbField}": crumbValue}}
 
-      request.post url, {rejectUnauthorized: false, headers: {"#{crumbField}": crumbValue}}, (error, response) ->
-        console.log(error)
-        console.log(response)
+  triggerBuild: (jobName, jobToken, parameters) ->
+    url = "#{@authenticatedUrl}#{@buildPath(jobName, jobToken, parameters)}"
+    @postToUrl(url)
+
+  triggerBuildWithParameters: (jobName, jobToken, parameters) ->
+    url = "#{@authenticatedUrl}#{@buildPath(jobName, jobToken, parameters)}"
+    @postToUrl(url)
+
+  _getCrumb: (callback) ->
+    url = "#{@authenticatedUrl}/crumbIssuer/api/xml"
+    crumbXml = request.getSync url, {rejectUnauthorized: false}
+    xml2js.parseString crumbXml.body, (error, response) ->
+      callback(response.defaultCrumbIssuer)
