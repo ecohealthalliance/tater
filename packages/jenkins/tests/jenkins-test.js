@@ -20,7 +20,7 @@ Tinytest.add('#authenticatedUrl - uses https if specified', function (test) {
   test.equal(jenkinsHttps.authenticatedUrl, expectedUrl)
 });
 
-Tinytest.add('#buildPath - hits the build endpoint', function (test) {
+Tinytest.add('#buildPath - constructs the build endpoint', function (test) {
   var expectedPath = "/job/testJob/build?token=testToken"
   var realPath = jenkins.buildPath('testJob', 'testToken');
   test.equal(realPath, expectedPath)

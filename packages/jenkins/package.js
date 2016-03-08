@@ -7,10 +7,9 @@ Package.describe({
 
 Package.onUse(function(api) {
   api.versionsFrom('1.1.0.2');
-  api.use('coffeescript');
   api.use('froatsnook:request')
   api.use('peerlibrary:xml2js')
-  api.addFiles('jenkins.coffee', 'server');
+  api.addFiles('jenkins.js', 'server');
   api.export('Jenkins', 'server');
 });
 
