@@ -18,7 +18,7 @@ Package.onUse(function(api) {
   api.use('tater:query-helpers');
   api.use('tater:helpers');
   api.use('tater:string-helpers');
-  api.use('tater:jenkins');
+  api.use('eha:jenkins');
   api.use('accounts-password');
   api.use('useraccounts:core');
   api.use('chrismbeckett:toastr');
@@ -28,7 +28,6 @@ Package.onUse(function(api) {
   api.use('alethes:pages@1.8.4');
   api.use('mrgalaxy:stripe@2.2.1');
   api.use('email');
-  api.use('http');
   api.addFiles('admin.coffee', ['client', 'server']);
   api.addFiles('delete_document_modal.coffee', ['client', 'server']);
   api.addFiles('delete_keyword_modal.coffee', ['client', 'server']);

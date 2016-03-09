@@ -31,6 +31,7 @@ deps@1.0.9
 diff-sequence@1.0.1
 ecmascript@0.1.6
 ecmascript-runtime@0.2.6
+eha:jenkins@0.0.1
 ejson@1.0.7
 email@1.0.8
 fastclick@1.0.7
@@ -103,7 +104,6 @@ tater:data@0.0.1
 tater:fixtures@0.0.1
 tater:headers@0.0.1
 tater:helpers@0.0.1
-tater:jenkins@0.0.1
 tater:models@0.0.1
 tater:query-helpers@0.0.1
 tater:route-helpers@0.0.1
