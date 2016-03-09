@@ -18,6 +18,7 @@ Package.onUse(function(api) {
   api.use('tater:query-helpers');
   api.use('tater:helpers');
   api.use('tater:string-helpers');
+  api.use('eha:jenkins');
   api.use('accounts-password');
   api.use('useraccounts:core');
   api.use('chrismbeckett:toastr');

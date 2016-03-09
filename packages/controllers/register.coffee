@@ -74,6 +74,26 @@ if Meteor.isServer
         tenant.set(tenantProps)
         if tenant.validate()
           tenant.save()
+
+          jenkinsSettings = Meteor.settings.private.jenkins
+
+          if jenkinsSettings
+            jenkins = new Jenkins
+              jenkinsUrl: jenkinsSettings.url
+              user: jenkinsSettings.user
+              key: jenkinsSettings.key
+
+            jenkins.triggerBuildWithParameters(
+              'provision-tater-instance-with-seeds',
+              jenkinsSettings.buildKey, {
+                instance_name: tenant.tenantName,
+                full_name: tenant.fullName,
+                email_address: tenant.emailAddress,
+                organization_name: tenant.orgName,
+                stripe_customer_id: tenant.stripeCustomerId,
+              }
+            )
+
           Email.send
             to: 'tater-beta@ecohealthalliance.org'
             from: 'no-reply@tater.io'
