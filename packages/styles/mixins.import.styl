@@ -67,14 +67,16 @@ vAlign()
   display inline-block
   vertical-align middle
 
-addBorder($w=false, $h, $color)
-  if $w
-    border-{$w} unit($h,'px') solid $color
-  else
+addBorder($sides, $h, $color)
+  if $sides == all
     border unit($h, 'px') solid $color
+  else
+    for $side in $sides
+      border-{$side} unit($h,'px') solid $color
+
 
 makeButton($color, $text = white, $dark = false, $noOutline = false, $hoverColor = white, $transition=true)
-  addBorder(false, 2, darken($color, 10%))
+  addBorder(all, 2, darken($color, 10%))
   background $color
   if $dark
     @extend .light-shadow
