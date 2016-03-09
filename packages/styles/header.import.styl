@@ -80,7 +80,6 @@ header
       transition all 0s
       line-height 14px
       padding 12px 30px
-      addBorder('right', 1, white)
       outline 0
       &:hover
         background none
@@ -300,7 +299,11 @@ header
   &.active
     &:hover
       background $secondary
-  .dropdown-toggle
+  .account-settings
+    addBorder('left', 1, $border-primary)
+    addBorder('right', 1, $border-primary)
+    padding-left 15px
+    padding-right 15px
     span
     i
       display none
@@ -310,6 +313,9 @@ header
       icon()
       font-size 1.2em
   +above(3)
+    .account-settings
+      padding-left 15px
+      padding-right 15px
     &:hover
       &
         background $secondary
@@ -323,7 +329,7 @@ header
       pointer()
 
   +above(4)
-    .dropdown-toggle
+    .account-settings
       &::before
         content ''
       &:hover
