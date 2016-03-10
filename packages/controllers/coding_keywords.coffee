@@ -339,48 +339,22 @@ Meteor.methods
 
   unarchiveKeyword: (keywordId) ->
     if Meteor.users.findOne(@userId)?.admin
-      CodingKeywords.update keywordId,
-        $set:
-          archived: false
+      keyword = CodingKeywords.findOne(keywordId)
+      keyword.unarchive()
     else
       throw new Meteor.Error 'unauthorized', 'You are not authorized to unarchive headers'
 
   unarchiveSubHeader: (subHeaderId) ->
     if Meteor.users.findOne(@userId)?.admin
-      SubHeaders.update subHeaderId,
-        $set:
-          archived: false
-      CodingKeywords.update {subHeaderId: subHeaderId},
-        {
-          $set:
-            archived: false
-        },
-        {multi: true}
+      subHeader = SubHeaders.findOne(subHeaderId)
+      subHeader.unarchive()
     else
       throw new Meteor.Error 'unauthorized', 'You are not authorized to unarchive sub-headers'
 
   unarchiveHeader: (headerId) ->
     if Meteor.users.findOne(@userId)?.admin
-      Headers.update headerId,
-        $set:
-          archived: false
-      SubHeaders.update {headerId: headerId},
-        {
-          $set:
-            archived: false
-        },
-        {multi: true}
-      CodingKeywords.update {
-          # The headerId property is undefined in some cases
-          # so for now we're using the subHeaderIds
-          subHeaderId:
-            $in: SubHeaders.find(headerId: headerId).map (x)-> x._id
-        },
-        {
-          $set:
-            archived: false
-        },
-        {multi: true}
+      header = Headers.findOne(headerId)
+      header.unarchive()
     else
       throw new Meteor.Error 'unauthorized', 'You are not authorized to unarchive headers'
 

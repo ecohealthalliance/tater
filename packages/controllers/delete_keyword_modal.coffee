@@ -20,17 +20,10 @@ Meteor.methods
   deleteKeyword: (keywordId) ->
     user = Meteor.user()
     if user?.admin
-      codingKeyword = CodingKeywords.findOne(keywordId)
-      timesUsed = Annotations.find
-        codeId: keywordId
-      .count()
-      if !codingKeyword
+      codingKeyword = CodingKeywords.findOne keywordId
+      if not codingKeyword
         throw new Meteor.Error 'not-found', 'Keyword does not exist.'
-      else if timesUsed > 0
-        CodingKeywords.update codingKeyword._id,
-          $set:
-            archived: true
       else
-        CodingKeywords.remove codingKeyword._id
+        codingKeyword.archive()
     else
       throw new Meteor.Error 'unauthorized', 'Only admins can delete keywords.'

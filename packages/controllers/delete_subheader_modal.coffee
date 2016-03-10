@@ -16,17 +16,8 @@ Meteor.methods
       throw new Meteor.Error 'unauthorized', 'You must be an admin to delete a subheader.'
     if not _.isString(id)
       throw new Meteor.Error 'invalid', 'You must specify a subheader id.'
-    subheader = SubHeaders.findOne(id)
-    codingKeyword = CodingKeywords.findOne(subHeaderId: id)
+    subHeader = SubHeaders.findOne(id)
     if not subheader
       throw new Meteor.Error 'not-found', 'Subheader does not exist.'
-    else if codingKeyword
-      SubHeaders.update id,
-        $set:
-          archived: true
-      CodingKeywords.update {subHeaderId: id},
-        {$set:
-          archived: true}
-        {multi: true}
     else
-      SubHeaders.remove(id)
+      subHeader.archive()

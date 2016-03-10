@@ -20,3 +20,13 @@ CodingKeyword = Astro.Class
       @_header().label
     subHeaderLabel: ->
       @_subHeader().label
+    archive: ->
+      used = Annotations.findOne codeId: @_id
+      if used
+        @set archived: true
+        @save()
+      else
+        @remove()
+    unarchive: ->
+      @set archived: false
+      @save()
