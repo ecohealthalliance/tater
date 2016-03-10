@@ -82,6 +82,7 @@ if Meteor.isServer
               jenkinsUrl: jenkinsSettings.url
               user: jenkinsSettings.user
               key: jenkinsSettings.key
+              https: true
 
             jenkins.triggerBuildWithParameters(
               'provision-tater-instance-with-seeds',
