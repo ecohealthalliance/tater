@@ -208,8 +208,7 @@ if Meteor.isClient
         'data:text/csv;charset=utf-8,' + encodeURIComponent(csvData)
 
     showGroup: ->
-      Template.instance().selectedGroups.findOne(@_id)
-
+      Template.instance().selectedGroups.findOne({id: @_id})
 
   # Commmon functions for template events
   resetKeywords = () ->

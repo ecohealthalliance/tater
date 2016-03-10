@@ -105,8 +105,11 @@
     i
       top 5px
       color $primary-light
+      transition transform .2s
       &:hover
         color $primary-dark
+      &.up
+        transform rotate(90deg)
     > span
       pointer()
       padding 5px 10px 5px 5px
