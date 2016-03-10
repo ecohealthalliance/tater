@@ -32,8 +32,7 @@
 .pane-m
   width 55%
   left 22.5%
-  addBorder('left', 1, $border-primary-l)
-  addBorder('right', 1, $border-primary-l)
+  addBorder(left right, 1, $border-primary-l)
 
 .pane-r
   right 0
@@ -46,7 +45,7 @@
   z-index $top-layer
   width 22.5%
   padding 15px
-  addBorder('bottom', 1, $border-primary)
+  addBorder(bottom, 1, $border-primary)
   input
     margin-bottom 0
   h1
@@ -67,8 +66,7 @@
   width 55%
   left 22.5%
   padding 15px 20px 10px 20px
-  addBorder('left', 1, $border-primary-l)
-  addBorder('right', 1, $border-primary-l)
+  addBorder(left right, 1, $border-primary-l)
   background $sub-header-BG
 
 .pane-head-m-options
@@ -92,7 +90,7 @@
   padding-bottom 10px
   padding-left 15px
   padding-right 15px
-  addBorder('bottom', 1, lighten($border-primary-l, 20%))
+  addBorder(bottom, 1, lighten($border-primary-l, 20%))
   &.pane-actions-middle
     padding-left 20px
     padding-right 20px
@@ -194,8 +192,7 @@
   background-color white
   padding 15px
   containerShadow()
-  addBorder('right', 1, $border-gray)
-  addBorder('left', 1, $border-gray)
+  addBorder(right left, 1, $border-gray)
   h2
     margin 0
     font-weight 700
@@ -218,7 +215,7 @@
   font-weight 600
   min-height $header-height+1
   @extend .light-shadow
-  addBorder('bottom', 2, darken(alpha($warning, 50%), 20%))
+  addBorder(bottom, 2, darken(alpha($warning, 50%), 20%))
   .fa
     color darken($warning, 30%)
   .logo
@@ -249,13 +246,13 @@
   right 10px
   padding-top 5px
   padding-bottom 5px
-  addBorder(false, 2, $secondary)
+  addBorder(all, 2, $secondary)
   font-size .95em
   &:hover
   &:focus
     background white
     color black
-    addBorder(false, 2, $secondary)
+    addBorder(all, 2, $secondary)
 
 .no-header
   .connection-status

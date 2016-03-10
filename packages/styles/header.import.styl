@@ -15,7 +15,7 @@ header
   min-height $header-height
   margin-bottom 0
   border 0
-  addBorder('bottom', 2, $border-primary-d)
+  addBorder(bottom, 2, $border-primary-d)
   border-radius 0
   background $header-BG
   if $header-text-shadow
@@ -47,7 +47,7 @@ header
       height 2px
       bottom -2px
       left 0
-      right 1px
+      right 0
       background-color transparent
       content ' '
       display block
@@ -80,7 +80,6 @@ header
       transition all 0s
       line-height 14px
       padding 12px 30px
-      addBorder('right', 1, white)
       outline 0
       &:hover
         background none
@@ -201,7 +200,7 @@ header
     centerVertically()
     right 15px
     margin 0
-    addBorder(false, 2, $secondary)
+    addBorder(all, 2, $secondary)
     color lighten($dd-gray, 10%)
     text-align center
     background none
@@ -300,7 +299,10 @@ header
   &.active
     &:hover
       background $secondary
-  .dropdown-toggle
+  .account-settings
+    addBorder(left right, 1, $border-primary)
+    padding-left 15px
+    padding-right 15px
     span
     i
       display none
@@ -310,6 +312,9 @@ header
       icon()
       font-size 1.2em
   +above(3)
+    .account-settings
+      padding-left 15px
+      padding-right 15px
     &:hover
       &
         background $secondary
@@ -323,7 +328,7 @@ header
       pointer()
 
   +above(4)
-    .dropdown-toggle
+    .account-settings
       &::before
         content ''
       &:hover
