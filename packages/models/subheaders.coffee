@@ -10,14 +10,23 @@ SubHeaders = Astro.Class
   methods:
     codingKeywords: ->
       CodingKeywords.find subHeaderId: @_id
+    used: ->
+      i = 0
+      @codingKeywords().forEach (codingKeyword)->
+        if codingKeyword.used()
+          i++
+      i
 
     archive: ->
       codingKeywords = @codingKeywords()
       if codingKeywords.count()
-        @set archived: true
-        @save()
         codingKeywords.forEach (codingKeyword)->
           codingKeyword.archive()
+        if @used()
+          @set archived: true
+          @save()
+        else
+          @remove()
       else
         @remove()
 

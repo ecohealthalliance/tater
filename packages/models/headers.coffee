@@ -11,6 +11,13 @@ Headers = Astro.Class
     subHeaders: ->
       SubHeaders.find(headerId: @_id)
 
+    used: ->
+      i = 0
+      @subHeaders().forEach (subHeader)->
+        if subHeader.used()
+          i++
+      i
+
     archive: ->
       subHeaders = @subHeaders()
       if subHeaders
@@ -18,6 +25,11 @@ Headers = Astro.Class
         @save()
         subHeaders.forEach (subHeader)->
           subHeader.archive()
+        if @used()
+          @set archived: true
+          @save()
+        else
+          @remove()
       else
         @remove()
 
