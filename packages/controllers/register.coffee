@@ -24,6 +24,9 @@ if Meteor.isClient
       name = target.value.replace /[^a-zA-Z0-9-]$/, ''
       $(target).val(name)
 
+    'click #test-button': (event, template) ->
+      Meteor.call('testJenkins')
+
     'submit #tenant-registration': (event, template) ->
       event.preventDefault()
       form = event.target
@@ -58,6 +61,27 @@ if Meteor.isClient
 
 if Meteor.isServer
   Meteor.methods
+    'testJenkins': ->
+      jenkinsSettings = Meteor.settings.private.jenkins
+
+      if jenkinsSettings
+        jenkins = new Jenkins
+          jenkinsUrl: jenkinsSettings.url
+          user: jenkinsSettings.user
+          key: jenkinsSettings.key
+          https: true
+
+        jenkins.triggerBuildWithParameters(
+          'provision-tater-instance-with-seeds',
+          jenkinsSettings.buildKey, {
+            instance_name: 'testprovisioning',
+            full_name: 'Test Name',
+            email_address: jenkinsSettings.user,
+            organization_name: 'Test Organization',
+            stripe_customer_id: 'asdfadsf',
+          }
+        )
+
     'createStripeCustomer': (token, email) ->
       Future = Npm.require('fibers/future')
       StripeServer = StripeAPI(Meteor.settings.private.stripe.secretKey)
