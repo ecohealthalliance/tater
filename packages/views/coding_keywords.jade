@@ -31,11 +31,10 @@ template(name="codingKeywords")
                         button.btn-plain.delete-header-button.header-button(data-toggle="modal" data-header-id=_id data-target="#confirm-delete-header-modal")
                           i.fa.fa-trash-o
           .code-management-list-wrap.col-sm-4
-            unless currentlySelectedHeader
-              +curtain
             .code-management-list-header
               h4 Sub-Headers
-              i.add-code.add-subHeader.fa.fa-plus(data-level="subHeader" class="{{#if addingCode 'subHeader'}}active{{/if}}")
+              if currentlySelectedHeader
+                i.add-code.add-subHeader.fa.fa-plus(data-level="subHeader" class="{{#if addingCode 'subHeader'}}active{{/if}}")
             .code-management-list-container
               if currentlySelectedHeader
                 if subHeadersLoading
@@ -54,12 +53,12 @@ template(name="codingKeywords")
                         else
                           button.btn-plain.delete-subheader-button.subheader-button(data-toggle="modal" data-subheader-id=_id data-target="#confirm-delete-subheader-modal")
                             i.fa.fa-trash-o
-          .code-management-list-wrap.col-sm-4
-            unless currentlySelectedSubHeader
+            unless currentlySelectedHeader
               +curtain
+          .code-management-list-wrap.col-sm-4
             .code-management-list-header
               h4 Keywords
-              unless addingKeyword
+              if currentlySelectedSubHeader
                 i.add-code.add-keyword.fa.fa-plus(data-level="keyword" class="{{#if addingCode 'keyword'}}active{{/if}}")
             .code-management-list-container
               if currentlySelectedSubHeader
@@ -72,13 +71,27 @@ template(name="codingKeywords")
                   ul.code-list.list.list-unstyled.level-3
                     each keywords
                       li.code.code-level-3.not-clickable(class="{{#if archived}}disabled{{/if}}")
-                        span= label
+                        if keywordIdToEdit _id
+                          input#keyword-edit(value=label class="form-control code" type="text")
+                        else
+                          span= label
+                        unless used
+                          if keywordIdToEdit _id
+                            button.btn-plain.cancel-edit-keyword-button(data-keyword-id=_id)
+                              i.fa.fa-undo
+                            button.btn-plain.accept-edit-keyword-button(data-keyword-id=_id)
+                              i.fa.fa-check-circle-o
+                          else
+                            button.btn-plain.edit-keyword-button(data-keyword-id=_id)
+                              i.fa.fa-pencil
                         if restorable
                           button.btn-plain.unarchive-keyword-button.keyword-button(data-keyword-id=_id)
                             i.fa.fa-reply
                         else if unarchived
                           button.btn-plain.delete-keyword-button.keyword-button(data-toggle="modal" data-keyword-id=_id data-target="#confirm-delete-keyword-modal" )
                             i.fa.fa-trash-o
+            unless currentlySelectedSubHeader
+              +curtain
       else
         .loading
 

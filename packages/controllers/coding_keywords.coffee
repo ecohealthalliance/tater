@@ -3,6 +3,7 @@ if Meteor.isClient
   Template.codingKeywords.onCreated ->
     @selectedCodes = new ReactiveDict()
     @addingCode = new ReactiveDict()
+    @keywordIdToEdit = new ReactiveVar()
     @keywordToDelete = new ReactiveVar()
     @subHeaderToDelete = new ReactiveVar()
     @headerToDelete = new ReactiveVar()
@@ -45,7 +46,7 @@ if Meteor.isClient
 
     keywords: ->
       selectedSubHeaderId = Template.instance().selectedCodes.get('subHeaderId')
-      CodingKeywords.find({subHeaderId: selectedSubHeaderId}, {sort: {archived: 1}})
+      CodingKeywords.find({subHeaderId: selectedSubHeaderId}, {sort: {archived: 1, _id: 1}})
 
     selected: (level) ->
       if level == 'header'
@@ -55,8 +56,7 @@ if Meteor.isClient
         if @_id == Template.instance().selectedCodes.get('subHeaderId')
           'selected'
 
-    unarchived: ->
-      !@archived
+    unarchived: -> not @archived
 
     restorable: ->
       header = Headers.findOne(Template.instance().selectedCodes.get('headerId'))
@@ -75,14 +75,17 @@ if Meteor.isClient
     addingCode: (level) ->
       Template.instance().addingCode.get(level)
 
-    keywordToDelete: ->
-      Template.instance().keywordToDelete.get()
-
     subHeaderToDelete: ->
       Template.instance().subHeaderToDelete.get()
 
     headerToDelete: ->
       Template.instance().headerToDelete.get()
+
+    keywordToDelete: ->
+      Template.instance().keywordToDelete.get()
+
+    keywordIdToEdit: (keywordId) ->
+      keywordId is Template.instance().keywordIdToEdit.get()
 
     codeColor: ->
       Template.instance().codeColor
@@ -115,19 +118,42 @@ if Meteor.isClient
         instance.addingCode.set('keyword', false)
 
     'click .delete-header-button': (event, instance) ->
-      headerId = event.target.parentElement.getAttribute("data-header-id")
+      headerId = event.currentTarget.getAttribute("data-header-id")
       instance.headerToDelete.set(Headers.findOne(headerId))
 
     'click .delete-subheader-button': (event, instance) ->
-      subHeaderId = event.target.parentElement.getAttribute("data-subheader-id")
+      subHeaderId = event.currentTarget.getAttribute("data-subheader-id")
       instance.subHeaderToDelete.set(SubHeaders.findOne(subHeaderId))
 
     'click .delete-keyword-button': (event, instance) ->
-      keywordId = event.target.parentElement.getAttribute("data-keyword-id")
+      keywordId = event.currentTarget.getAttribute("data-keyword-id")
       instance.keywordToDelete.set(CodingKeywords.findOne(keywordId))
 
+    'click .edit-keyword-button': (event, instance) ->
+      keywordId = event.currentTarget.getAttribute("data-keyword-id")
+      instance.keywordIdToEdit.set(keywordId)
+
+    'click .cancel-edit-keyword-button': (event, instance) ->
+      instance.keywordIdToEdit.set(null)
+
+    'click .accept-edit-keyword-button': (event, instance) ->
+      keywordId = event.currentTarget.getAttribute("data-keyword-id")
+      input = instance.$('input#keyword-edit')
+      data = {
+        _id:   keywordId
+        label: input.val().trim()
+      }
+      instance.keywordIdToEdit.set(null)
+      unless input.val().trim() is CodingKeywords.findOne(keywordId)?.label
+        Meteor.call('editCodingKeyword', data, (error, result) ->
+          if error
+            toastr.error 'Unable to edit the keyword'
+          else
+            toastr.success 'Keyword updated'
+        )
+
     'click .unarchive-keyword-button': (event, instance) ->
-      keywordId = event.target.parentElement.getAttribute("data-keyword-id")
+      keywordId = event.currentTarget.getAttribute("data-keyword-id")
       Meteor.call 'unarchiveKeyword', keywordId, (error, instance) ->
         if error
           toastr.error("Error: #{error.message}")
@@ -135,7 +161,7 @@ if Meteor.isClient
           toastr.success("Keyword restored")
 
     'click .unarchive-subheader-button': (event, instance) ->
-      subHeaderId = event.target.parentElement.getAttribute("data-subheader-id")
+      subHeaderId = event.currentTarget.getAttribute("data-subheader-id")
       Meteor.call 'unarchiveSubHeader', subHeaderId, (error, instance) ->
         if error
           toastr.error("Error: #{error.message}")
@@ -143,7 +169,7 @@ if Meteor.isClient
           toastr.success("Sub-Header restored")
 
     'click .unarchive-header-button': (event, instance) ->
-      headerId = event.target.parentElement.getAttribute("data-header-id")
+      headerId = event.currentTarget.getAttribute("data-header-id")
       Meteor.call 'unarchiveHeader', headerId, (error, instance) ->
         if error
           toastr.error("Error: #{error.message}")
@@ -337,6 +363,21 @@ Meteor.methods
     else
       throw new Meteor.Error('Unauthorized')
 
+  editCodingKeyword: (keywordProps) ->
+    if Meteor.user()?.admin
+      check keywordProps, {_id: String, label: String}
+      if keywordProps.label.trim().length < 1
+        throw new Meteor.Error 'Label can\'t be empty'
+      _keywordProps =
+        _id:   keywordProps._id
+        label: keywordProps.label
+      keywordToEdit = CodingKeywords.findOne({_id: _keywordProps._id, $or: [{used: 0}, {used: null}]})
+      if keywordToEdit
+        keywordToEdit.set('label', _keywordProps.label)
+        keywordToEdit.save()
+      else
+        throw new Meteor.Error 'Unable to edit the keyword'
+
   unarchiveKeyword: (keywordId) ->
     if Meteor.users.findOne(@userId)?.admin
       CodingKeywords.update keywordId,
@@ -383,6 +424,7 @@ Meteor.methods
         {multi: true}
     else
       throw new Meteor.Error('Unauthorized')
+
 
 if Meteor.isServer
 
