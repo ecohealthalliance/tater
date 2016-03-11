@@ -16,6 +16,7 @@
     },
     "accounts": {
       "loginToken": "wVCLfs9kttmBF5M6L8ABSMiPZJh8HwKjXZdvxDTs4I8"
-    }
+    },
+    "MAIL_URL": "smtp://USER:PASS@dummy-server.com:8080"
   }
 }

@@ -71,4 +71,5 @@ Package.onUse(function(api) {
   api.addFiles('reactive_table.coffee', 'client');
   api.addFiles('finish_annotation_modal.coffee', ['client', 'server']);
   api.addFiles('document_note_modal.coffee', ['client', 'server']);
+  api.addFiles('environment.coffee', 'server');
 });
