@@ -69,4 +69,6 @@ Package.onUse(function(api) {
   api.addFiles('password_field.coffee', 'client');
   api.addFiles('marketing_page.coffee', 'client');
   api.addFiles('reactive_table.coffee', 'client');
+  api.addFiles('finish_annotation_modal.coffee', ['client', 'server']);
+  api.addFiles('document_note_modal.coffee', ['client', 'server']);
 });

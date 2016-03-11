@@ -44,6 +44,7 @@ if Meteor.isClient
         newShadowDocument.annotated = originalDocument.annotated
         newShadowDocument.groupName = originalDocument.groupName()
         newShadowDocument.mTurkEnabled = originalDocument.mTurkEnabled
+        newShadowDocument.finishedAt = originalDocument.finishedAt
         # upsert
         if shadowDocuments.findOne(originalDocument._id) is undefined
           #insert
@@ -147,7 +148,10 @@ if Meteor.isClient
       Template.instance().document.groupName()
 
     annotatedTitle: ->
-      "#{@annotated} annotations"
+      "#{@annotated} #{StringHelpers.pluralize('annotation', @annotated)}"
+
+    finishedTitle: ->
+      "Finished with #{@annotated} #{StringHelpers.pluralize('annotation', @annotated)}"
 
     showing: ->
       if Template.instance().docOptionsShowing.get()
@@ -195,6 +199,7 @@ if Meteor.isServer
     groupId: true
     annotated: true
     mTurkEnabled: true
+    finishedAt: true
 
   Meteor.publish 'documents', (group, searchText)->
     if @userId

@@ -95,6 +95,36 @@ Feature: Documents
     And I should not see content "Test Document"
 
   @documents
+  Scenario: Adding a note to a document
+    Given there is a test group in the database
+    And there is a document with title "Test Document" in the test group
+    When I log in as the test user
+    And I navigate to the test document
+    And I add the note "Good job" to the test document
+    Then I should see content "Good job"
+
+  @documents
+  Scenario: Editing the note on a document
+    Given there is a test group in the database
+    And there is a document with title "Test Document" in the test group
+    When I log in as the test user
+    And I navigate to the test document
+    And I add the note "Good job" to the test document
+    Then I should see content "Good job"
+    When I update the note to "Great job"
+    Then I should see content "Great job"
+
+  @documents
+  Scenario: Mark a document as finished
+    Given there is a test group in the database
+    And there is a document with title "Test Document" in the test group
+    When I log in as the test user
+    And I navigate to the test document
+    And I finish annotating a document with note
+    Then I should see content "Finished"
+    And I should see content "A note"
+
+  @documents
   Scenario: Displaying crowdsource price
     Given there is a test group in the database
     And there is a document with title "Test Document" in the test group

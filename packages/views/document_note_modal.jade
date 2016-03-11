@@ -1,0 +1,15 @@
+template(name="documentNoteModal")
+  #document-note-modal.modal.fade(tabindex="-1" role="dialog")
+    .modal-dialog
+      .modal-content
+        form#document-note
+          .modal-header
+            button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+              i.fa.fa-times-circle
+          .modal-body
+            h4.space-btm-2 Document Note
+            .form-group
+              textarea.form-control#note(name='note' placeholder='Enter a note about the document')=document.note
+          .modal-footer
+            button.btn.btn-default(data-dismiss='modal' aria-hidden='true' type='button') Cancel
+            button.btn.btn-primary(type='subit') Save

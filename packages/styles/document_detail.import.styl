@@ -75,13 +75,90 @@
   align-items center
   justify-content flex-end
   a
-    margin-left 15px
-  .help-link-document
+    margin-left 10px
+    margin-right 10px
+    color $secondary-light
     font-size 1.5em
+    pointer()
+  .help-link-document
+    font-size 1.25em
+    margin 0 0 0 20px
+    color $primary-light
 
 .finished-annotating
   centerVertically()
   right 20px
+
+button.add-note-toggle
+  color $d-gray
+  .icon-right
+    margin-right -1px
+
+.document-container
+  .document-details
+    align-items stretch
+    &.active
+      .finished
+      .document-note
+        padding-top 5px
+        align-items baseline
+      .document-note
+        span
+          white-space normal
+          color $body-text
+          padding-bottom 10px
+        .edit
+          display block
+        .note-options
+          align-self baseline
+        .edit-note
+          margin-bottom 10px
+          i
+            margin 0
+            font-size 16px
+
+.document-details
+  .document-note
+  .finished
+    display flex
+    align-items center
+    flex 1 1 auto
+
+  .finished
+    flex-grow 0
+    margin-right 20px
+    padding-right 20px
+    color desaturate($secondary-light, 30%)
+    border-right 1px solid $border-primary-l
+    white-space nowrap
+
+  .document-note
+    overflow hidden
+    text-overflow ellipsis
+    span
+      width 95%
+      white-space nowrap
+      overflow hidden
+      text-overflow ellipsis
+    .note-options
+      margin 0 0 0 10px
+      flex-direction column
+      justify-content center
+    .view-note
+      margin-right 8px
+    .edit-note
+    .view-note
+    .close-note
+      pointer()
+      &:hover
+        color $secondary
+    .close-note
+    .edit-note
+      margin-bottom 5px
+      margin-right 0
+      color $primary-light
+      font-size 18px
+      line-height 18px
 
 .completion-code
   color $d-gray
@@ -91,39 +168,23 @@
 
 .crowdsource-details
   .admin-details
-  .user-details
-    min-height 50px
-    padding 15px 20px
-  .admin-details
-    position relative
-    background $border-primary//lighten($secondary-light,20%)
-    addBorder 'bottom', 1, $border-primary-d
-    color $primary
+    color $primary-light
     .btn
-      position absolute
-      centerVertically()
-      right 20px
+      padding 2px 10px
+      margin-left 10px
+      border-width 1px
       border-color $primary-light
       background none
-      color $primary
+      color $primary-light
+      font-size .75em
       &:hover
         background $border-primary-d
         color white
         @extend .dark-shadow
-  .user-details
-    background $deny
-    color white
-    @extend .dark-shadow
-  .fa
-    margin-right 10px
-    vertical-align middle
-    font-size 1.5em
-  p
-    display inline-block
-    margin-bottom 0
-    vertical-align middle
-    font-weight 600
-    width 70%
+    .cancel
+      &:hover
+        background $deny
+        border-color darken($deny, 20%)
 
 .document-body
   width 100%

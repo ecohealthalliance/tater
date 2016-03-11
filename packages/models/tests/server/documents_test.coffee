@@ -35,6 +35,10 @@ describe 'Document', ->
   it 'includes mTurkEnabled', ->
     expect(document.mTurkEnabled).to.eq(false)
 
+  it 'includes note', ->
+    document.set 'note', 'Lorem ipsum dolor sit amet.'
+    expect(document.note).to.eq('Lorem ipsum dolor sit amet.')
+
   describe '#textWithAnnotation', =>
     it 'returns the text with the given annotations represented with spans', ->
       headerId = Headers.insert(color: 2)
@@ -54,3 +58,8 @@ describe 'Document', ->
 
       document.set('groupId', group._id)
       expect(document.groupName()).to.eq('Test Group Name')
+
+  describe '#finish', =>
+    it 'marks the document as finished', ->
+      document.finish()
+      expect(document.finishedAt).to.be.ok

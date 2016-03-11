@@ -6,14 +6,13 @@ if Meteor.isClient
     reconnectIntervalStep = 0
     reconnectingIn = 0 # seconds
 
-    pluralize = (unit, amount) -> if amount isnt 1 then "#{unit}s" else unit
     tock = ->
       if status.status is 'connecting'
         $('.reconnecting-in').text ''
         return
       if reconnectingIn > 0
         $('.reconnecting-in').text """Attempting to reconnect
-        in #{reconnectingIn} #{pluralize("second", reconnectingIn)}"""
+        in #{reconnectingIn} #{StringHelpers.pluralize("second", reconnectingIn)}"""
       else
         Meteor.reconnect()
         $('.reconnecting-in').text ''

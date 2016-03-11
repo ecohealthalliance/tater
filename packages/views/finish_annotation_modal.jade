@@ -1,0 +1,27 @@
+template(name="finishAnnotationModal")
+  #finish-annotation-modal.modal.fade(tabindex="-1" role="dialog")
+    .modal-dialog
+      .modal-content
+        form#finish-annotation
+          .modal-header
+            button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+              i.fa.fa-times-circle
+          .modal-body
+            h4 Confirmation
+            p Are you sure you want to mark this document as finished?
+            unless addNote
+              button.btn.btn-sm.btn-default.toggle-add-note(type='button')
+                if document.note
+                  | Edit note
+                else
+                  | Add a note
+                i.fa.fa-sticky-note.icon-right
+            if addNote
+              .form-group.space-top--2
+                span.clear-input.pull-right.toggle-add-note.space-btm-1
+                  i.fa.fa-times-circle
+                  | Cancel
+                textarea.form-control#finished-note(name='note' placeholder='Enter a note about the document')=document.note
+          .modal-footer
+            button.btn.btn-default(data-dismiss='modal' aria-hidden='true' type='button') Cancel
+            button.btn.btn-primary(type='subit') Finish Annotation
