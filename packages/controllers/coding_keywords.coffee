@@ -6,10 +6,11 @@ if Meteor.isClient
     @keywordToDelete = new ReactiveVar()
     @subHeaderToDelete = new ReactiveVar()
     @headerToDelete = new ReactiveVar()
-    @codeColor = new ReactiveVar('')
-    @headersLoading = new ReactiveVar(true)
-    @subHeadersLoading = new ReactiveVar(true)
-    @keywordsLoading = new ReactiveVar(false)
+    @codeColor = new ReactiveVar ''
+    @headersLoading = new ReactiveVar true
+    @subHeadersLoading = new ReactiveVar true
+    @keywordsLoading = new ReactiveVar false
+    @archiving = new ReactiveVar false
 
   Template.codingKeywords.onRendered ->
     instance = Template.instance()
@@ -96,6 +97,9 @@ if Meteor.isClient
     keywordsLoading: ->
       Template.instance().keywordsLoading.get()
 
+    archiving: ->
+      Template.instance().archiving
+
   Template.codingKeywords.events
     'click .code-level-1': (event, instance) ->
       selectedHeaderId = event.currentTarget.getAttribute('data-id')
@@ -128,27 +132,33 @@ if Meteor.isClient
 
     'click .unarchive-keyword-button': (event, instance) ->
       keywordId = event.target.parentElement.getAttribute("data-keyword-id")
+      instance.archiving.set true
       Meteor.call 'unarchiveKeyword', keywordId, (error, instance) ->
         if error
           ErrorHelpers.handleError error
         else
           toastr.success("Keyword restored")
+          instance.archiving.set false
 
     'click .unarchive-subheader-button': (event, instance) ->
       subHeaderId = event.target.parentElement.getAttribute("data-subheader-id")
+      instance.archiving.set true
       Meteor.call 'unarchiveSubHeader', subHeaderId, (error, instance) ->
         if error
           ErrorHelpers.handleError error
         else
           toastr.success("Sub-Header restored")
+          instance.archiving.set false
 
     'click .unarchive-header-button': (event, instance) ->
       headerId = event.target.parentElement.getAttribute("data-header-id")
+      instance.archiving.set true
       Meteor.call 'unarchiveHeader', headerId, (error, instance) ->
         if error
           ErrorHelpers.handleError error
         else
           toastr.success("Header restored")
+          instance.archiving.set false
 
     'click .add-code': (event, instance) ->
       level = $(event.target).data('level')

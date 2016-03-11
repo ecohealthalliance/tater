@@ -26,8 +26,16 @@ CodingKeyword = Astro.Class
       if @used()
         @set archived: true
         @save()
+        @documents().forEach (document)->
+          document?.updateAnnotationCount()
       else
         @remove()
     unarchive: ->
       @set archived: false
       @save()
+      @documents().forEach (document)->
+        document?.updateAnnotationCount()
+    documents: ->
+      annotations = Annotations.find(codeId: @_id).fetch()
+      documentIds = _.unique _.pluck annotations, 'documentId'
+      Documents.find {_id: {$in: documentIds}}

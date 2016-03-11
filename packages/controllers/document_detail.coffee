@@ -475,7 +475,7 @@ if Meteor.isServer
       group = Groups.findOne(document.groupId)
       user = Meteor.users.findOne(@userId)
       if group?.viewableByUser(user)
-        Annotations.find(documentId: documentId)
+        document.annotations()
       else
         @ready()
     else if userToken

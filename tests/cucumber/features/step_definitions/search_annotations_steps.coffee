@@ -69,7 +69,7 @@ do ->
 
     @Then /^I should see a link that downloads the generated CSV with header "([^"]*)", subHeader "([^"]*)" and key "([^"]*)"$/, (header, subHeader, keyword) ->
       csvData = """\uFEFFdocumentId,userEmail,header,subHeader,keyword,text,flagged,createdAt\r
-      fakedocumentid,,#{header},#{subHeader},#{keyword},T,false,"""
+      fakeDocumentId,,#{header},#{subHeader},#{keyword},T,false,"""
       @browser
         .waitForExist '#download-csv-modal .btn-primary'
         .getHTML '#download-csv-modal .btn-primary', (error, response) ->

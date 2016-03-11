@@ -94,7 +94,7 @@ Feature: Coding Keywords
     Then I should see 2 keywords
     And I should see 0 annotations
 
-  @codingKeywords
+  @dev
   Scenario: Archiving sub-headers that are in use
     Given there is an annotation with codingKeyword header "Test Header", subHeader "Test Sub-Header" and key "Test Keyword1"
     And there is a coding keyword with header "Test Header", sub-header "Test Sub-Header" and keyword "Test Keyword2" in the database
@@ -111,14 +111,14 @@ Feature: Coding Keywords
     When I delete a sub-header
     Then I should see 1 sub-headers
     And I should see 1 archived sub-headers
-    And I should see 3 archived keywords
+    And I should see 1 archived keywords
     When I navigate to "/documents"
     And I click the first document
     Then I should see 1 keywords
     And I should see 0 annotations
 
 
-  @codingKeywords
+  @dev
   Scenario: Archiving headers that are in use
     Given there is an annotation with codingKeyword header "Test Header", subHeader "Test Sub-Header" and key "Test Keyword1"
     And there is a coding keyword with header "Test Header", sub-header "Test Sub-Header" and keyword "Test Keyword2" in the database
@@ -134,7 +134,7 @@ Feature: Coding Keywords
     And I should see 0 archived keywords
     When I delete a header
     Then I should see 1 archived sub-headers
-    And I should see 3 archived keywords
+    And I should see 1 archived keywords
     When I navigate to "/documents"
     And I click the first document
     Then I should see 1 keywords

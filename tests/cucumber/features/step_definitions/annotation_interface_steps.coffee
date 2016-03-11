@@ -7,7 +7,7 @@ do ->
 
     url = require('url')
 
-    _test_document = {title: "Test Document", body: "This is a doc for testing", _id: "fakedocumentid"}
+    _test_document = {title: "Test Document", body: "This is a doc for testing", _id: "fakeDocumentId"}
 
     @Given 'there is a test document in the database', ->
       @server.call('createTestDocumentFixture', _test_document)

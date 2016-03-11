@@ -14,7 +14,7 @@ Headers = Astro.Class
     used: ->
       i = 0
       @subHeaders().forEach (subHeader)->
-        if subHeader.used()
+        if subHeader?.used()
           i++
       i
 
@@ -24,7 +24,7 @@ Headers = Astro.Class
         @set archived: true
         @save()
         subHeaders.forEach (subHeader)->
-          subHeader.archive()
+          subHeader?.archive()
         if @used()
           @set archived: true
           @save()
@@ -38,4 +38,4 @@ Headers = Astro.Class
       @save()
       subHeaders = @subHeaders()
       subHeaders.forEach (subHeader)->
-        subHeader.unarchive()
+        subHeader?.unarchive()

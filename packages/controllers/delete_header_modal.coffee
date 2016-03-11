@@ -1,7 +1,15 @@
 if Meteor.isClient
+  Template.deleteHeaderModal.onCreated ->
+    @archiving = new ReactiveVar false
+
+  Template.deleteHeaderModal.helpers
+    archiving: ->
+      Template.instance().archiving.get()
+
   Template.deleteHeaderModal.events
     'click #confirm-delete-header': (event, instance) ->
       headerId = instance.data.headerToDelete.get()?._id
+      instance.archiving.set true
       Meteor.call 'deleteHeader', headerId, (error) ->
         if error
           ErrorHelpers.handleError error
@@ -10,6 +18,8 @@ if Meteor.isClient
           unless Headers.findOne headerId
             instance.data.selectedCodes.set 'headerId', null
           toastr.success 'Success'
+          instance.archiving.set true
+          $('#confirm-delete-subheader-modal').modal('hide')
 
 if Meteor.isServer
   Meteor.methods

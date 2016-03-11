@@ -10,4 +10,9 @@ template(name="deleteSubHeaderModal")
           p Delete subheader "{{subHeaderToDelete.label}}"?
         .modal-footer
           button.btn.btn-default(data-dismiss='modal' aria-hidden='true') Close
-          button.btn.btn-danger#confirm-delete-subheader(data-dismiss='modal' aria-hidden='true') Delete
+          button.btn.btn-danger#confirm-delete-subheader(
+            aria-hidden='true' 
+            disabled='{{#if archiving}} disabled {{/if}}') 
+            | Delete
+            if archiving
+              i.fa.fa-spinner.fa-pulse

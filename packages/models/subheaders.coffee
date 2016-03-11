@@ -13,7 +13,7 @@ SubHeaders = Astro.Class
     used: ->
       i = 0
       @codingKeywords().forEach (codingKeyword)->
-        if codingKeyword.used()
+        if codingKeyword?.used()
           i++
       i
 
@@ -21,7 +21,7 @@ SubHeaders = Astro.Class
       codingKeywords = @codingKeywords()
       if codingKeywords.count()
         codingKeywords.forEach (codingKeyword)->
-          codingKeyword.archive()
+          codingKeyword?.archive()
         if @used()
           @set archived: true
           @save()
@@ -34,4 +34,4 @@ SubHeaders = Astro.Class
       @set archived: false
       @save()
       @codingKeywords().forEach (codingKeyword)->
-        codingKeyword.unarchive()
+        codingKeyword?.unarchive()

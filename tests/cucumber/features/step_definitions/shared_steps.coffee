@@ -8,7 +8,7 @@ do ->
     url = require 'url'
 
     _test_document =
-      _id:   'fakedocumentid'
+      _id:   'fakeDocumentId'
       title: 'Test Document'
       body:  'This is a doc for testing'
 

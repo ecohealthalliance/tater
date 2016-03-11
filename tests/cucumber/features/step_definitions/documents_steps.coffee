@@ -11,10 +11,10 @@ do ->
       @server.call 'createTestDocumentFixture', title: title, groupId: groupId
 
     @Given 'there is a test document with title "$title" in the database', (title) ->
-      @server.call 'createTestDocumentFixture', title: title, groupId: 'fakegroupid', _id: 'fakedocid'
+      @server.call 'createTestDocumentFixture', title: title, groupId: 'fakegroupid', _id: 'fakeDocumentId'
 
     @Given /^there is a document with title "([^"]*)" in the test group$/, (title) ->
-      @server.call 'createTestDocumentFixture', title: title, groupId: 'fakegroupid', _id: 'fakedocid'
+      @server.call 'createTestDocumentFixture', title: title, groupId: 'fakegroupid', _id: 'fakeDocumentId'
 
     @Given /^there are (\d+) documents in the "([^"]*)" group$/, (number, groupId, callback) ->
       _(number).times (index)=>
@@ -45,19 +45,19 @@ do ->
 
     @When 'I navigate to the test document', ->
       @browser
-        .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid"))
+        .url(url.resolve(process.env.ROOT_URL, "/documents/fakeDocumentId"))
         .waitForExist('.document-container')
 
     @When "I stub out HIT request for the test document", ->
-      @server.call('setHIDIdFixture', 'fakedocid')
+      @server.call('setHIDIdFixture', 'fakeDocumentId')
 
     @When 'I preview the test document using hitId', ->
       @browser
-        .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid?assignmentId=ASSIGNMENT_ID_NOT_AVAILABLE&hitId=fakeHITId&noHeader=1"))
+        .url(url.resolve(process.env.ROOT_URL, "/documents/fakeDocumentId?assignmentId=ASSIGNMENT_ID_NOT_AVAILABLE&hitId=fakeHITId&noHeader=1"))
 
     @When 'I navigate to the test document using hitId', ->
       @browser
-        .url(url.resolve(process.env.ROOT_URL, "/documents/fakedocid?assignmentId=X&hitId=fakeHITId&noHeader=1"))
+        .url(url.resolve(process.env.ROOT_URL, "/documents/fakeDocumentId?assignmentId=X&hitId=fakeHITId&noHeader=1"))
         .waitForExist('.document-container')
 
     @When 'I click on the New Document link', ->
