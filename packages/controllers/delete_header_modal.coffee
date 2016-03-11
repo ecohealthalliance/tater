@@ -13,13 +13,14 @@ if Meteor.isClient
       Meteor.call 'deleteHeader', headerId, (error) ->
         if error
           ErrorHelpers.handleError error
+          instance.archiving.set false
         else
           # only reset headerId if it was deleted and not archived
           unless Headers.findOne headerId
             instance.data.selectedCodes.set 'headerId', null
           toastr.success 'Success'
-          instance.archiving.set true
-          $('#confirm-delete-subheader-modal').modal('hide')
+          instance.archiving.set false
+          $('#confirm-delete-header-modal').modal 'hide'
 
 if Meteor.isServer
   Meteor.methods

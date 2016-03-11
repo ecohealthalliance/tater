@@ -13,7 +13,7 @@ template(name="deleteKeywordModal")
           button.btn.btn-danger#confirm-delete-keyword(
             aria-hidden='true' 
             data-keyword-id=keywordId
-            disabled='{{#unless archiving}} disabled {{/unless}}') 
+            disabled='{{#if archiving}} disabled {{/if}}') 
             | Delete
-            unless archiving
-              i.fa.fa-spinner.fa-pulse
+            if archiving
+              i.fa.fa-spinner.fa-pulse.space-left-1

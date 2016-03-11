@@ -92,13 +92,10 @@ if Meteor.isClient
       Template.instance().headersLoading.get()
 
     subHeadersLoading: ->
-      Template.instance().subHeadersLoading.get()
+      Template.instance().subHeadersLoading.get() or Template.instance().archiving.get()
 
     keywordsLoading: ->
-      Template.instance().keywordsLoading.get()
-
-    archiving: ->
-      Template.instance().archiving
+      Template.instance().keywordsLoading.get() or Template.instance().archiving.get()
 
   Template.codingKeywords.events
     'click .code-level-1': (event, instance) ->
@@ -133,9 +130,10 @@ if Meteor.isClient
     'click .unarchive-keyword-button': (event, instance) ->
       keywordId = event.target.parentElement.getAttribute("data-keyword-id")
       instance.archiving.set true
-      Meteor.call 'unarchiveKeyword', keywordId, (error, instance) ->
+      Meteor.call 'unarchiveKeyword', keywordId, (error, response) ->
         if error
           ErrorHelpers.handleError error
+          instance.archiving.set false
         else
           toastr.success("Keyword restored")
           instance.archiving.set false
@@ -143,9 +141,10 @@ if Meteor.isClient
     'click .unarchive-subheader-button': (event, instance) ->
       subHeaderId = event.target.parentElement.getAttribute("data-subheader-id")
       instance.archiving.set true
-      Meteor.call 'unarchiveSubHeader', subHeaderId, (error, instance) ->
+      Meteor.call 'unarchiveSubHeader', subHeaderId, (error, response) ->
         if error
           ErrorHelpers.handleError error
+          instance.archiving.set false
         else
           toastr.success("Sub-Header restored")
           instance.archiving.set false
@@ -153,9 +152,10 @@ if Meteor.isClient
     'click .unarchive-header-button': (event, instance) ->
       headerId = event.target.parentElement.getAttribute("data-header-id")
       instance.archiving.set true
-      Meteor.call 'unarchiveHeader', headerId, (error, instance) ->
+      Meteor.call 'unarchiveHeader', headerId, (error, response) ->
         if error
           ErrorHelpers.handleError error
+          instance.archiving.set false
         else
           toastr.success("Header restored")
           instance.archiving.set false

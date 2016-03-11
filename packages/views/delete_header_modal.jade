@@ -12,7 +12,7 @@ template(name="deleteHeaderModal")
           button.btn.btn-default(data-dismiss='modal' aria-hidden='true') Close
           button.btn.btn-danger#confirm-delete-header(
             aria-hidden='true'
-            disabled='{{#unless archiving}} disabled {{/unless}}') 
+            disabled='{{#if archiving}} disabled {{/if}}') 
             | Delete
-            unless archiving
-              i.fa.fa-spinner.fa-pulse
+            if archiving
+              i.fa.fa-spinner.fa-pulse.space-left-1

@@ -8,26 +8,27 @@ if Meteor.isClient
 
   Template.deleteSubHeaderModal.events
     'click #confirm-delete-subheader': (event, instance) ->
-      id = instance.data.subHeaderToDelete.get()?._id
+      subHeaderId = instance.data.subHeaderToDelete.get()?._id
       instance.archiving.set true
-      Meteor.call 'deleteSubHeader', id, (error) ->
+      Meteor.call 'deleteSubHeader', subHeaderId, (error) ->
         if error
           ErrorHelpers.handleError error
+          instance.archiving.set false
         else
-          unless SubHeaders.findOne(id)
-            instance.data.selectedCodes.set('subHeaderId', null)
+          unless SubHeaders.findOne subHeaderId
+            instance.data.selectedCodes.set 'subHeaderId', null
           toastr.success 'Success'
           instance.archiving.set false
-          $('#confirm-delete-subheader-modal').modal('hide')
+          $('#confirm-delete-subheader-modal').modal 'hide'
 
 Meteor.methods
-  deleteSubHeader: (id) ->
+  deleteSubHeader: (subHeaderId) ->
     if not Meteor.user()?.admin
       throw new Meteor.Error 'unauthorized', 'You must be an admin to delete a subheader.'
-    if not _.isString(id)
+    if not _.isString subHeaderId
       throw new Meteor.Error 'invalid', 'You must specify a subheader id.'
-    subHeader = SubHeaders.findOne(id)
-    if not subheader
+    subHeader = SubHeaders.findOne subHeaderId
+    if not subHeader
       throw new Meteor.Error 'not-found', 'Subheader does not exist.'
     else
       subHeader.archive()
