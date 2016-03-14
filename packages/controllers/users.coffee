@@ -7,26 +7,16 @@ if Meteor.isClient
     @subscribe('userProfiles')
 
   Template.users.helpers
-    filters: ->
-      filters = []
-      filters
     settings: ->
       fields = []
 
       fields.push
         key: 'email'
         label: 'Email'
-        fn: (val, object) ->
-          object.emails[0].address
 
       fields.push
         key: 'group'
         label: 'Group'
-        fn: (val, object) ->
-          if object.admin
-            'Admins'
-          else
-            Groups.findOne(_id: val)?.name
 
       fields.push
         key: "controls"
@@ -34,7 +24,7 @@ if Meteor.isClient
         hideToggle: true
         fn: (val, obj) ->
           new Spacebars.SafeString("""
-            <a class="control remove remove-user" data-id="#{obj._id}" data-email="#{obj.emails[0].address}" title="Remove">
+            <a class="control remove remove-user" data-id="#{obj.userId}" data-email="#{obj.email}" title="Remove">
               <i class='fa fa-user-times'></>
             </a>
           """)
@@ -44,8 +34,20 @@ if Meteor.isClient
       showRowCount: true
       fields: fields
       noDataTmpl: Template.noUsers
+
     usersCollection: ->
-      Meteor.users.find()
+      users = new Meteor.Collection null
+      Meteor.users.find().forEach (user)->
+        if user.admin
+          group = 'Admins'
+        else
+          group = Groups.findOne(_id: user.group)?.name
+        users.insert
+          email: user.emails[0].address
+          group: group
+          userId: user._id
+      users
+
     userToDeleteEmail: ->
       Template.instance().userToDeleteEmail.get()
     selectedGroup: ->
@@ -75,7 +77,7 @@ if Meteor.isClient
         instance.userToDeleteEmail.set(null)
 
     'click .users-table .reactive-table tbody tr': ->
-      profileId = UserProfiles.findOne({userId: @_id})._id
+      profileId = UserProfiles.findOne({userId: @userId})._id
       go 'profileDetail', {_id: profileId}
 
 
