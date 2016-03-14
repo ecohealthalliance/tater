@@ -11,6 +11,10 @@ if Meteor.isClient
       fields = []
 
       fields.push
+        key: 'name'
+        label: 'Name'
+
+      fields.push
         key: 'email'
         label: 'Email'
 
@@ -46,6 +50,7 @@ if Meteor.isClient
           email: user.emails[0].address
           group: group
           userId: user._id
+          name: UserProfiles.findOne({userId: user._id}).fullName
       users
 
     userToDeleteEmail: ->
