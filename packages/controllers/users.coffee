@@ -67,7 +67,7 @@ if Meteor.isClient
       userId = instance.userToDeleteId.get()
       Meteor.call 'removeUser', userId, (error, response) ->
         if error
-          toastr.error("Error")
+          ErrorHelpers.handleError error
         else
           toastr.success("User removed")
         $('#remove-user-modal').modal('hide')
@@ -84,7 +84,7 @@ Meteor.methods
     if Meteor.users.findOne(@userId)?.admin
       Meteor.users.remove userId
     else
-      throw new Meteor.Error 'Unauthorized'
+      throw new Meteor.Error 'unauthorized', 'You are not authorized to remove users'
 
 
 if Meteor.isServer

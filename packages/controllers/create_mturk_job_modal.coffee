@@ -31,11 +31,7 @@ if Meteor.isClient
       }
       Meteor.call 'createMTurkJob', fields, (error, response) ->
         if error
-          if _.isObject error.reason
-            for key, value of error.reason
-              toastr.error('Error: ' + value)
-          else
-            toastr.error('Unknown Error')
+          ErrorHelpers.handleError error
         else
           toastr.success('Success')
           $('#create-mturk-job-modal').modal('hide')
@@ -48,7 +44,7 @@ if Meteor.isServer
       check properties, documentId: String, title: String, description: String
       user = Meteor.user()
       if MTurkJobs.findOne(paymentFailed: true)
-        throw new Meteor.Error """
+        throw new Meteor.Error 'processing-error', """
         Your last charge could not be processed so you cannot create more
         mechanical turk jobs.
         Please email tater-bugs@ecohealthalliance.org to resolve your payment problems.
@@ -65,6 +61,6 @@ if Meteor.isServer
           job.throwValidationException()
         job.save()
         if not job.HITId
-          throw new Meteor.Error 'Unable to create Mechanical Turk task'
+          throw new Meteor.Error 'invalid', 'Unable to create Mechanical Turk task'
       else
-        throw new Meteor.Error 'Unauthorized'
+        throw new Meteor.Error 'unauthorized', 'You are not authorized to crowdsource annotation'

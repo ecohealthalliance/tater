@@ -36,7 +36,7 @@ Meteor.startup ->
               subHeaderId: subHeaderId
               label: keywordLabel or 'Keyword'
           else
-            throw new Meteor.Error('Already have codes in the database')
+            throw new Meteor.Error 'invalid', 'Already have codes in the database'
 
         seedDatabase = (newTenantFields) ->
           tenant = createDefaultTenant(newTenantFields)
@@ -45,4 +45,4 @@ Meteor.startup ->
 
         seedDatabase(newTenantData)
       else
-        throw new Meteor.Error('Not allowed to perform the operation')
+        throw new Meteor.Error 'unauthorized', 'Not allowed to perform the operation'

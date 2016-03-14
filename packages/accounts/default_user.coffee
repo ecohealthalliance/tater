@@ -18,6 +18,6 @@ if Meteor.isServer
             admin: true
           Accounts.sendEnrollmentEmail(newUserId)
         else
-          throw new Meteor.Error "Please provide a valid email"
+          throw new Meteor.Error 'invalid', 'Please provide a valid email'
       else
-        throw new Meteor.Error "The system already has users"
+        throw new Meteor.Error 'invalid', 'The system already has users'

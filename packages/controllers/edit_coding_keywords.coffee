@@ -38,7 +38,7 @@ if Meteor.isClient
 
       Meteor.call 'addKeyword', keywordProps, (error, response) ->
         if error
-          toastr.error("Error: #{error.message}")
+          ErrorHelpers.handleError error
         else
           toastr.success("Keyword added")
         $('#remove-keyword-modal').modal('hide')

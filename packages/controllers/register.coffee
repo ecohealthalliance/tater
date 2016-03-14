@@ -48,11 +48,7 @@ if Meteor.isClient
             tenantProps.stripeCustomerId = response.id
             Meteor.call 'registerTenant', tenantProps, (error, response) ->
               if error
-                if error.reason
-                  for key, reason of error.reason
-                    toastr.error("Error: #{reason}")
-                else 
-                  toastr.error("Error: #{error.error}")
+                ErrorHelpers.handleError error
               else
                 template.registering.set(false)
 

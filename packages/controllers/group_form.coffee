@@ -9,11 +9,7 @@ if Meteor.isClient
       }
       Meteor.call 'createGroup', fields, (error, response) ->
         if error
-          if error.reason
-            for key, value of error.reason
-              toastr.error('Error: ' + value)
-          else
-            toastr.error('Unknown Error')
+          ErrorHelpers.handleError error
         else
           toastr.success("Success")
           $('#add-group-modal').modal('hide')
@@ -31,4 +27,4 @@ Meteor.methods
       else
         group.throwValidationException()
     else
-      throw new Meteor.Error('Not logged in')
+      throw new Meteor.Error 'unauthorized', 'Not logged in'

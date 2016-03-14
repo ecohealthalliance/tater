@@ -1,18 +1,8 @@
 if Meteor.isClient
 
-  handleError = (error) ->
-    reason = error.reason
-    if reason and _.isString(reason)
-      toastr.error('Error: ' + reason)
-    else if reason
-      for key, value of reason
-        toastr.error('Error: ' + value)
-    else
-      toastr.error('Unknown Error')
-
   handleUploadedFile = (files) ->
     if !files or files.length < 1
-      throw new Meteor.Error 'No files provided'
+      throw new Meteor.Error 'upload-error', 'No files provided'
 
     file = files[0]
 
@@ -93,7 +83,7 @@ if Meteor.isClient
 
       Meteor.call 'createDocument', fields, (error, response) ->
         if error
-          handleError(error)
+          ErrorHelpers.handleError error
         else
           toastr.success('Success')
           go 'documentDetail', { _id: response }
@@ -103,7 +93,7 @@ Meteor.methods
   createDocument: (fields) ->
     check fields, Object
     unless fields.groupId
-      throw new Meteor.Error('Required', ['A document group has not been selected'])
+      throw new Meteor.Error 'required', 'A document group has not been selected'
     check fields.groupId, String
     if @userId
       group = Groups.findOne(fields.groupId)
@@ -116,9 +106,9 @@ Meteor.methods
         else
           document.throwValidationException()
       else
-        throw new Meteor.Error('Unauthorized', 'You cannot upload documents to this group')
+        throw new Meteor.Error 'unauthorized', 'You cannot upload documents to this group'
     else
-      throw new Meteor.Error('Unauthorized', 'You must be logged in to add documents')
+      throw new Meteor.Error 'unauthorized', 'You must be logged in to add documents'
 
 
 if Meteor.isServer
@@ -141,4 +131,4 @@ if Meteor.isServer
       if plainText.length
         plainText
       else
-        throw new Meteor.Error('Upload error', 'Unable to process the document')
+        throw new Meteor.Error 'upload-error', 'Unable to process the document'

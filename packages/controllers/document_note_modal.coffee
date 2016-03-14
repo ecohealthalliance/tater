@@ -8,7 +8,7 @@ if Meteor.isClient
       if note
         Meteor.call 'addDocumentNote', docId, note, (error, response) ->
           if error
-            toastr.error("Error: #{error.message}")
+            ErrorHelpers.handleError error
           else
 
             $('#document-note-modal').modal('hide')

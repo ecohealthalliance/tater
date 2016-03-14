@@ -137,7 +137,7 @@ MTurkJob = Astro.Class
     inProgress: ->
       if Meteor.isServer and @createHITResponse
         unless Meteor.settings.private.AWS_ACCESS_KEY
-          throw new Meteor.Error "AWS_ACCESS_KEY is not defined, cannot call mechanical turk API."
+          throw new Meteor.Error 'undefined', 'AWS_ACCESS_KEY is not defined, cannot call mechanical turk API.'
         # API reference:
         # http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_GetHITOperation.html
         operation = "GetHIT"
@@ -167,9 +167,9 @@ MTurkJob = Astro.Class
     cancel: ->
       if Meteor.isServer and @createHITResponse
         unless Meteor.settings.private.AWS_ACCESS_KEY
-          throw new Meteor.Error "AWS_ACCESS_KEY is not defined, cannot call mechanical turk API."
+          throw new Meteor.Error 'undefined', 'AWS_ACCESS_KEY is not defined, cannot call mechanical turk API.'
         if @inProgress()
-          throw new Meteor.Error "This HIT has active worker sessions."
+          throw new Meteor.Error 'invalid', 'This HIT has active worker sessions.'
         # Parameters documented here:
         # http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_DisableHITOperation.html
         operation = "DisableHIT"

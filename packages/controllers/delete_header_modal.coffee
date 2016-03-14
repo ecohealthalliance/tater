@@ -4,25 +4,24 @@ if Meteor.isClient
       id = instance.data.headerToDelete.get()?._id
       Meteor.call 'deleteHeader', id, (error) ->
         if error
-          toastr.error("Error: #{error.message}")
-          console.log error
+          ErrorHelpers.handleError error
         else
           # only reset headerId if it was deleted and not archived
           unless Headers.findOne(id)
             instance.data.selectedCodes.set('headerId', null)
-          toastr.success("Success")
+          toastr.success 'Success'
 
 if Meteor.isServer
   Meteor.methods
     deleteHeader: (id) ->
       if not Meteor.user()?.admin
-        throw new Meteor.Error("You must be an admin to delete a header.")
+        throw new Meteor.Error 'unauthorized', 'You must be an admin to delete a header.'
       if not _.isString(id)
-        throw new Meteor.Error("You must specify a header id.")
+        throw new Meteor.Error 'invalid', 'You must specify a header id.'
       header = Headers.findOne(id)
       subHeaders = SubHeaders.find(headerId: id).fetch()
       if not header
-        throw new Meteor.Error("Header does not exist.")
+        throw new Meteor.Error 'not-found', 'Header does not exist.'
       else if subHeaders.length > 0
         Headers.update id,
           $set:

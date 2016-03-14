@@ -16,8 +16,7 @@ if Meteor.isClient
       event.preventDefault()
       form = event.target
       if not form.fullName.value or form.fullName.value.trim() is ''
-        toastr.error("Full name is required")
-        return
+        toastr.error 'Full name is required'
       fields = {
         fullName: form.fullName?.value
         jobTitle: form.jobTitle?.value
@@ -32,7 +31,7 @@ if Meteor.isClient
       }
       Meteor.call 'updateProfile', fields, (error, response) ->
         if error
-          toastr.error("Error")
+          ErrorHelpers.handleError error
         else
           toastr.success("Success")
 

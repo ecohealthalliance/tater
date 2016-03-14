@@ -130,7 +130,7 @@ if Meteor.isClient
       keywordId = event.target.parentElement.getAttribute("data-keyword-id")
       Meteor.call 'unarchiveKeyword', keywordId, (error, instance) ->
         if error
-          toastr.error("Error: #{error.message}")
+          ErrorHelpers.handleError error
         else
           toastr.success("Keyword restored")
 
@@ -138,7 +138,7 @@ if Meteor.isClient
       subHeaderId = event.target.parentElement.getAttribute("data-subheader-id")
       Meteor.call 'unarchiveSubHeader', subHeaderId, (error, instance) ->
         if error
-          toastr.error("Error: #{error.message}")
+          ErrorHelpers.handleError error
         else
           toastr.success("Sub-Header restored")
 
@@ -146,7 +146,7 @@ if Meteor.isClient
       headerId = event.target.parentElement.getAttribute("data-header-id")
       Meteor.call 'unarchiveHeader', headerId, (error, instance) ->
         if error
-          toastr.error("Error: #{error.message}")
+          ErrorHelpers.handleError error
         else
           toastr.success("Header restored")
 
@@ -176,7 +176,7 @@ if Meteor.isClient
 
       Meteor.call 'addHeader', headerProps, (error, response) ->
         if error
-          toastr.error("Error: #{error.message}")
+          ErrorHelpers.handleError error
         else
           toastr.success("Header added")
           form.reset()
@@ -193,7 +193,7 @@ if Meteor.isClient
 
       Meteor.call 'addSubHeader', subHeaderProps, (error, response) ->
         if error
-          toastr.error("Error: #{error.message}")
+          ErrorHelpers.handleError error
         else
           toastr.success("Sub-Header added")
           form.subHeader.value = ''
@@ -211,7 +211,7 @@ if Meteor.isClient
 
       Meteor.call 'addKeyword', keywordProps, (error, response) ->
         if error
-          toastr.error("Error: #{error.message}")
+          ErrorHelpers.handleError error
         else
           toastr.success("Keyword added")
           instance.addingCode.set('keyword', true)
@@ -244,23 +244,23 @@ if Meteor.isClient
 
 _validateHeader = (headerId) ->
   if not Headers.findOne(headerId)
-    throw new Meteor.Error("""The header does not exist.
-  Omit the keyword and sub-header fields to create it before adding the keyword.""")
+    throw new Meteor.Error 'invalid', """The header does not exist.
+  Omit the keyword and sub-header fields to create it before adding the keyword."""
 
 _validateSubheader = (headerId, subHeaderId) ->
   if not SubHeaders.findOne(
     _id: subHeaderId
     headerId: headerId
-  ) then throw new Meteor.Error("""The sub-header does not belong to the
-  given header or does not exist.""")
+  ) then throw new Meteor.Error 'invalid', """The sub-header does not belong to the
+  given header or does not exist."""
 
 _validateKeywordProperties = (keywordProps) ->
   if not keywordProps.label
-    throw new Meteor.Error('Keyword is empty')
+    throw new Meteor.Error 'empty', 'Keyword is empty'
   if not keywordProps.headerId
-    throw new Meteor.Error('Header is required')
+    throw new Meteor.Error 'required', 'Header is required'
   if not keywordProps.subHeaderId
-    throw new Meteor.Error('Sub-header is required')
+    throw new Meteor.Error 'required', 'Sub-header is required'
 
   _validateHeader(keywordProps.headerId)
   _validateSubheader(keywordProps.headerId, keywordProps.subHeaderId)
@@ -269,34 +269,34 @@ _validateKeywordProperties = (keywordProps) ->
     headerId: keywordProps.headerId
     subHeaderId: keywordProps.subHeaderId
     label: keywordProps.label
-  ) then throw new Meteor.Error('Duplicate keyword')
+  ) then throw new Meteor.Error 'duplicate keyword', 'Coding keyword already exiits'
 
   true
 
 _validateSubHeaderProperties = (subHeaderProps) ->
   if not subHeaderProps.label
-    throw new Meteor.Error('Sub-Header is empty')
+    throw new Meteor.Error 'empty', 'Sub-Header is empty'
   if not subHeaderProps.headerId
-    throw new Meteor.Error('Header is required')
+    throw new Meteor.Error 'required', 'Header is required'
 
   _validateHeader(subHeaderProps.headerId)
 
   if SubHeaders.findOne(
     headerId: subHeaderProps.headerId
     label: subHeaderProps.label
-  ) then throw new Meteor.Error('Duplicate sub-header')
+  ) then throw new Meteor.Error 'duplicate', 'Duplicate sub-header'
 
   true
 
 _validateHeaderProperties = (headerProps) ->
   if not headerProps.label
-    throw new Meteor.Error('Header is empty')
+    throw new Meteor.Error 'empty', 'Header is empty'
   if not headerProps.color
-    throw new Meteor.Error('Header color has not been chosen')
+    throw new Meteor.Error 'undefined', 'Header color has not been chosen'
 
   if Headers.findOne(
     label: headerProps.label
-  ) then throw new Meteor.Error('Duplicate header')
+  ) then throw new Meteor.Error 'duplicate', 'Duplicate header'
 
   true
 
@@ -312,7 +312,7 @@ Meteor.methods
       if _validateHeaderProperties(_headerProps)
         Headers.insert _headerProps
     else
-      throw new Meteor.Error('Unauthorized')
+      throw new Meteor.Error 'unauthorized', 'You are not authorized to add headers'
 
   addSubHeader: (subHeaderProps) ->
     if Meteor.users.findOne(@userId)?.admin
@@ -323,7 +323,7 @@ Meteor.methods
       if _validateSubHeaderProperties(_subHeaderProps)
         SubHeaders.insert _subHeaderProps
     else
-      throw new Meteor.Error('Unauthorized')
+      throw new Meteor.Error 'unauthorized', 'You are not authorized to add sub-headers'
 
   addKeyword: (keywordProps) ->
     if Meteor.users.findOne(@userId)?.admin
@@ -335,7 +335,7 @@ Meteor.methods
       if _validateKeywordProperties(_keywordProps)
         CodingKeywords.insert _keywordProps
     else
-      throw new Meteor.Error('Unauthorized')
+      throw new Meteor.Error 'unauthorized', 'You are not authorized to add coding keywords'
 
   unarchiveKeyword: (keywordId) ->
     if Meteor.users.findOne(@userId)?.admin
@@ -343,7 +343,7 @@ Meteor.methods
         $set:
           archived: false
     else
-      throw new Meteor.Error('Unauthorized')
+      throw new Meteor.Error 'unauthorized', 'You are not authorized to unarchive headers'
 
   unarchiveSubHeader: (subHeaderId) ->
     if Meteor.users.findOne(@userId)?.admin
@@ -357,7 +357,7 @@ Meteor.methods
         },
         {multi: true}
     else
-      throw new Meteor.Error('Unauthorized')
+      throw new Meteor.Error 'unauthorized', 'You are not authorized to unarchive sub-headers'
 
   unarchiveHeader: (headerId) ->
     if Meteor.users.findOne(@userId)?.admin
@@ -382,7 +382,7 @@ Meteor.methods
         },
         {multi: true}
     else
-      throw new Meteor.Error('Unauthorized')
+      throw new Meteor.Error 'unauthorized', 'You are not authorized to unarchive headers'
 
 if Meteor.isServer
 
