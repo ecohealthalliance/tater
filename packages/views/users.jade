@@ -20,7 +20,7 @@ template(name="users")
           .table-wrap.users-table
             .container-list.list-table
               if Template.subscriptionsReady
-                +reactiveTable collection=usersCollection settings=settings filters=filters
+                +reactiveTable collection=usersCollection settings=settings
               else
                 .loading.center-v
           #remove-user-modal.modal.fade(tabindex="-1" role="dialog")
