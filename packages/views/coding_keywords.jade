@@ -10,13 +10,13 @@ template(name="codingKeywords")
       if Template.subscriptionsReady
         .row
           .code-management-list-wrap.col-sm-4
+            if headersLoading
+              +curtain loading=true
             .code-management-list-header
               h4 Headers
               i.add-code.add-header.fa.fa-plus(data-level="header" class="{{#if addingCode 'header'}}active{{/if}}")
             .code-management-list-container
-              if headersLoading
-                .loading
-              else
+              unless headersLoading
                 if addingCode 'header'
                   .adding-code.clearfix
                     +newHeaderForm headers=headers codeColor=codeColor
@@ -33,14 +33,14 @@ template(name="codingKeywords")
           .code-management-list-wrap.col-sm-4
             unless currentlySelectedHeader
               +curtain
+            if subHeadersLoading
+              +curtain loading=true
             .code-management-list-header
               h4 Sub-Headers
               i.add-code.add-subHeader.fa.fa-plus(data-level="subHeader" class="{{#if addingCode 'subHeader'}}active{{/if}}")
             .code-management-list-container
               if currentlySelectedHeader
-                if subHeadersLoading
-                  .loading
-                else
+                unless subHeadersLoading
                   if addingCode 'subHeader'
                     .adding-code.clearfix
                       +newSubheaderForm
@@ -57,15 +57,14 @@ template(name="codingKeywords")
           .code-management-list-wrap.col-sm-4
             unless currentlySelectedSubHeader
               +curtain
+            if keywordsLoading
+              +curtain loading=true
             .code-management-list-header
               h4 Keywords
-              unless addingKeyword
-                i.add-code.add-keyword.fa.fa-plus(data-level="keyword" class="{{#if addingCode 'keyword'}}active{{/if}}")
+              i.add-code.add-keyword.fa.fa-plus(data-level="keyword" class="{{#if addingCode 'keyword'}}active{{/if}}")
             .code-management-list-container
               if currentlySelectedSubHeader
-                if keywordsLoading
-                  .loading
-                else
+                unless keywordsLoading
                   if addingCode 'keyword'
                     .adding-code.clearfix
                       +newKeywordForm
@@ -88,6 +87,8 @@ template(name="codingKeywords")
 
 template(name="curtain")
   .curtain-white
+  if loading
+    .loading
 
 template(name="newHeaderForm")
   form(id="new-header-form")

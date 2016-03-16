@@ -8,6 +8,7 @@ if Meteor.isClient
 
   Template.deleteSubHeaderModal.events
     'click #confirm-delete-subheader': (event, instance) ->
+      event.preventDefault()
       subHeaderId = instance.data.subHeaderToDelete.get()?._id
       instance.archiving.set true
       Meteor.call 'deleteSubHeader', subHeaderId, (error) ->

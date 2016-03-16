@@ -8,7 +8,7 @@ if Meteor.isClient
     @headerToDelete = new ReactiveVar()
     @codeColor = new ReactiveVar ''
     @headersLoading = new ReactiveVar true
-    @subHeadersLoading = new ReactiveVar true
+    @subHeadersLoading = new ReactiveVar false
     @keywordsLoading = new ReactiveVar false
     @archiving = new ReactiveVar false
 
@@ -19,22 +19,25 @@ if Meteor.isClient
       instance.headersLoading.set(false)
     @autorun ->
       selectedHeaderId = instance.selectedCodes.get('headerId')
-      Meteor.subscribe 'subHeaders', selectedHeaderId, ->
-        instance.subHeadersLoading.set(false)
-        if SubHeaders.findOne({ headerId: selectedHeaderId})
-          instance.addingCode.set('subHeader', false)
-        else
-          instance.addingCode.set('subHeader', true)
+      if selectedHeaderId
+        instance.subHeadersLoading.set(true)
+        Meteor.subscribe 'subHeaders', selectedHeaderId, ->
+          instance.subHeadersLoading.set(false)
+          if SubHeaders.findOne({ headerId: selectedHeaderId})
+            instance.addingCode.set('subHeader', false)
+          else
+            instance.addingCode.set('subHeader', true)
 
     @autorun ->
       selectedSubHeaderId = instance.selectedCodes.get('subHeaderId')
-      instance.keywordsLoading.set(true)
-      Meteor.subscribe 'keywords', selectedSubHeaderId, ->
-        instance.keywordsLoading.set(false)
-        if CodingKeywords.findOne({ subHeaderId: selectedSubHeaderId})
-          instance.addingCode.set('keyword', false)
-        else
-          instance.addingCode.set('keyword', true)
+      if selectedSubHeaderId
+        instance.keywordsLoading.set(true)
+        Meteor.subscribe 'keywords', selectedSubHeaderId, ->
+          instance.keywordsLoading.set(false)
+          if CodingKeywords.findOne({ subHeaderId: selectedSubHeaderId})
+            instance.addingCode.set('keyword', false)
+          else
+            instance.addingCode.set('keyword', true)
 
   Template.codingKeywords.helpers
     headers: ->

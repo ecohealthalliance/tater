@@ -14,6 +14,7 @@ if Meteor.isClient
 
   Template.deleteKeywordModal.events
     'click #confirm-delete-keyword': (event, instance) ->
+      event.preventDefault()
       instance.archiving.set true
       keywordId = event.target.getAttribute 'data-keyword-id'
       Meteor.call 'deleteKeyword', keywordId, (error) ->
