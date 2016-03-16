@@ -33,7 +33,7 @@ Document = Astro.Class
       if Meteor.isServer
         if not @removeAllRelatedMTurkJobs()
           event.preventDefault()
-          throw new Meteor.Error 'Failed to cancel all related HITs'
+          throw new Meteor.Error 'failure', 'Failed to cancel all related HITs'
 
   methods:
     groupName: ->

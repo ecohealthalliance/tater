@@ -277,7 +277,7 @@ if Meteor.isClient
       workerId = instance.workerId
       Meteor.call 'finishAssignment', documentId, assignmentId, workerId, (error, submitUrl) ->
         if error
-          toastr.error("Unable to finish the annotation: #{error.message}")
+          toastr.error 'Unable to finish the annotation: #{error.reason}'
         else
           form = $('<form method="POST" id="mturkForm">')
           form.attr('action', submitUrl)
@@ -393,7 +393,7 @@ Meteor.methods
       else
         annotation.throwValidationException()
     else
-      throw new Meteor.Error 'Unauthorized'
+      throw new Meteor.Error 'unauthorized'
 
   deleteAnnotation: (annotationId, userToken) ->
     @unblock()
@@ -419,11 +419,11 @@ Meteor.methods
         if annotation.userToken is _userToken
           annotation.remove()
         else
-          throw new Meteor.Error 'Not authorized'
+          throw new Meteor.Error 'unauthorized', 'You are not authorized to delete this annotaiton'
       else if user # regular user
         annotation.remove()
     else
-      throw new Meteor.Error 'Unauthorized'
+      throw new Meteor.Error 'unauthorized', 'You are not authorized to delete this annotaiton'
 
   toggleAnnotationFlag: (annotationId) ->
     @unblock()
@@ -441,7 +441,7 @@ Meteor.methods
       annotation.set(flagged: not annotation.flagged)
       annotation.save()
     else
-      throw new Meteor.Error 'Unauthorized'
+      throw new Meteor.Error 'unauthorized', 'You are not authorized to flag this annotaiton'
 
   cancelMechTurkJobs: (documentId) ->
     @unblock()
@@ -500,7 +500,7 @@ if Meteor.isServer
     finishAssignment: (documentId, assignmentId, workerId) ->
       mTurkJob = MTurkJobs.findOne(documentId: documentId)
       if mTurkJob.chargeDetails
-        throw new Meteor.Error('The assignment has already been finished.')
+        throw new Meteor.Error 'finished', 'The assignment has already been finished.'
       if mTurkJob
         mTurkJob.set('completionTimestamp', new Date())
         mTurkJob.set('workerId', workerId)
@@ -533,4 +533,4 @@ if Meteor.isServer
         document.save()
         mTurkJob.obtainSubmitUrl(assignmentId)
       else
-        throw new Meteor.Error('The task has not been found')
+        throw new Meteor.Error 'not-found', 'The task has not been found'

@@ -16,7 +16,7 @@ if Meteor.isClient
       docId = instance.data.document._id
       Meteor.call 'finishAnnotating', docId, note, (error, response) ->
         if error
-          toastr.error("Error: #{error.message}")
+          ErrorHelpers.handleError error
         else
           $('#finish-annotation-modal').modal('hide')
 

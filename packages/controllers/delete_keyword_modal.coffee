@@ -11,7 +11,7 @@ if Meteor.isClient
       keywordId = event.target.getAttribute('data-keyword-id')
       Meteor.call 'deleteKeyword', keywordId, (error) ->
         if error
-          toastr.error(error.message)
+          ErrorHelpers.handleError error
         else
           toastr.success("Success")
 
@@ -25,7 +25,7 @@ Meteor.methods
         codeId: keywordId
       .count()
       if !codingKeyword
-        throw new Meteor.Error("Keyword does not exist.")
+        throw new Meteor.Error 'not-found', 'Keyword does not exist.'
       else if timesUsed > 0
         CodingKeywords.update codingKeyword._id,
           $set:
@@ -33,4 +33,4 @@ Meteor.methods
       else
         CodingKeywords.remove codingKeyword._id
     else
-      throw new Meteor.Error("Only admins can delete keywords.")
+      throw new Meteor.Error 'unauthorized', 'Only admins can delete keywords.'

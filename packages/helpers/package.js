@@ -10,5 +10,7 @@ Package.onUse(function(api) {
   api.use('coffeescript');
   api.use('tater:models');
   api.addFiles('tenant_helper.coffee', ['server']);
+  api.addFiles('error_helper.coffee', ['client']);
   api.export('TenantHelpers', ['server']);
+  api.export('ErrorHelpers', ['client']);
 });

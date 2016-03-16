@@ -3,7 +3,7 @@ if Meteor.isClient
     'click .accept-eula': (event) ->
       Meteor.call 'acceptEULA', (error, response) ->
         if error
-          toastr.error("Error")
+          ErrorHelpers.handleError error
         else
           go '/'
 
@@ -13,4 +13,4 @@ if Meteor.isServer
       if @userId
         Meteor.users.update({_id: @userId}, {$set: {'acceptedEULA': true}})
       else
-        throw new Meteor.Error("Not logged in")
+        throw new Meteor.Error 'unauthorized', 'Not logged in'

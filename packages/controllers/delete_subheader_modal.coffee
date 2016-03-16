@@ -4,23 +4,22 @@ if Meteor.isClient
       id = instance.data.subHeaderToDelete.get()?._id
       Meteor.call 'deleteSubHeader', id, (error) ->
         if error
-          toastr.error("Error: #{error.message}")
-          console.log error
+          ErrorHelpers.handleError error
         else
           unless SubHeaders.findOne(id)
             instance.data.selectedCodes.set('subHeaderId', null)
-          toastr.success("Success")
+          toastr.success 'Success'
 
 Meteor.methods
   deleteSubHeader: (id) ->
     if not Meteor.user()?.admin
-      throw new Meteor.Error("You must be an admin to delete a subheader.")
+      throw new Meteor.Error 'unauthorized', 'You must be an admin to delete a subheader.'
     if not _.isString(id)
-      throw new Meteor.Error("You must specify a subheader id.")
+      throw new Meteor.Error 'invalid', 'You must specify a subheader id.'
     subheader = SubHeaders.findOne(id)
     codingKeyword = CodingKeywords.findOne(subHeaderId: id)
     if not subheader
-      throw new Meteor.Error("Subheader does not exist.")
+      throw new Meteor.Error 'not-found', 'Subheader does not exist.'
     else if codingKeyword
       SubHeaders.update id,
         $set:

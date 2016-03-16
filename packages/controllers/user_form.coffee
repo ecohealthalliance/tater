@@ -43,8 +43,7 @@ if Meteor.isClient
 
       Meteor.call 'addUser', fields, (error, response) ->
         if error
-          toastr.error("Error")
-          console.log error
+          ErrorHelpers.handleError error
         else
           toastr.success("Success")
           form.reset()
