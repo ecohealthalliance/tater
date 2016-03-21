@@ -4,21 +4,14 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-tater:router
-tater:server-router
-tater:models
-tater:fixtures
-tater:accounts
-tater:data
-tater:headers
-aslagle:reactive-table
+# Core packages
+jquery
 standard-minifiers
 meteor-base
 mobile-experience
 mongo
 blaze-html-templates
 session
-jquery
 tracker
 logging
 reload
@@ -27,8 +20,20 @@ ejson
 spacebars
 check
 reactive-dict
-okgrow:analytics
-froatsnook:request
 accounts-password
 accounts-base
+
+# 3rd-party packages
 tmeasday:presence
+aslagle:reactive-table
+okgrow:analytics
+froatsnook:request
+
+# Tater packages
+tater:router
+tater:server-router
+tater:models
+tater:fixtures
+tater:accounts
+tater:data
+tater:headers
