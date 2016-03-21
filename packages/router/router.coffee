@@ -18,7 +18,7 @@ eulaTracker = null
   # Autorun is needed to wait for the user profile to become available.
   # if the user profile is available they are sent to the EULA
   # if they have not accepted it.
-  eulaTracker = Tracker.autorun ->
+  eulaTracker = Meteor.autorun ->
     user = Meteor.user()
     # Check for admin property because the user object might exist with missing
     # properties at first.

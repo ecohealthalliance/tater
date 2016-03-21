@@ -12,7 +12,7 @@ if Meteor.isClient
     @currentPageNumber = new ReactiveVar 1
 
     @subscribe 'groups'
-    Tracker.autorun =>
+    Meteor.autorun =>
       @subscribe 'documents', @data?.group?._id, @searchText.get()
 
     cleanUpRemovedDocuments = ->
@@ -26,7 +26,7 @@ if Meteor.isClient
           shadowDocuments.remove shadowDocument._id
         i++
 
-    Tracker.autorun =>
+    Meteor.autorun =>
       # clean-up no longer existing documents within shadowDocuments
       cleanUpRemovedDocuments()
       # (re-)populate the minimongo collection
