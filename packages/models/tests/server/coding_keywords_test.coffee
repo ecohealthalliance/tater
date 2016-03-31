@@ -3,6 +3,7 @@ describe 'CodingKeyword', ->
 
   beforeEach ->
     codingKeyword = new CodingKeyword()
+    Annotations.remove({})
 
   describe '#subHeaderLabel', ->
     it 'returns the label of the associated subHeader', ->
@@ -27,3 +28,41 @@ describe 'CodingKeyword', ->
 
       codingKeyword.set('subHeaderId', subHeaderId)
       expect(codingKeyword.color()).to.eq(2)
+
+  describe '#archive', ->
+    it 'removes the coding keyword if there are no annotations', ->
+      codingKeyword.archive()
+      expect(codingKeyword._id).not.to.be.ok
+
+    it 'archives the coding keyword if there are annotations', ->
+      Annotations.insert {codeId: codingKeyword._id}
+      codingKeyword.archive()
+      expect(codingKeyword.archived).to.be.ok
+
+  describe '#unarchive', ->
+    it 'unarchives the coding keyword', ->
+      Annotations.insert {codeId: codingKeyword._id}
+      codingKeyword.unarchive()
+      expect(codingKeyword.archived).not.to.be.ok
+
+  describe '#used', ->
+    it 'returns undefined if the coding keyword has not been used in annotation', ->
+      expect(codingKeyword.used()).to.be.an('undefined')
+
+    it 'checks if a coding keyword has been used in annotation', ->
+      annotation = new Annotation({codeId: codingKeyword._id})
+      annotation.save()
+      expect(codingKeyword.used()).not.to.be.an('undefined')
+
+  describe '#documents', ->
+    it 'returns empty collection if no documents are found with annotations using coding keyword', ->
+      documentId = Documents.insert({title: 'Test'})
+      documentCount = codingKeyword.documents().count()
+      expect(documentCount).to.be.eq(0)
+
+    it 'returns the documents that use a coding keyword', ->
+      documentId = Documents.insert({title: 'Test'})
+      annotation = new Annotation({documentId:documentId, codeId: codingKeyword._id})
+      annotation.save()
+      documentCount = codingKeyword.documents().count()
+      expect(documentCount).to.be.eq(1)

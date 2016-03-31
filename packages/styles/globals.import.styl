@@ -226,18 +226,22 @@ a
 .pagesLoadingDefault
   display none !important
 
+
+$sides = {
+  top: top
+  bottom: btm
+  left: left
+  right: right
+}
+
 for $num in -3 -2 -1 0 1 2 3 4 5 6
-  .space-btm-{$num}
-    margin-bottom $num*10px
+  for prop, className in $sides
+    .space-{className}-{$num}
+      margin-{prop} $num*10px
 
-  .space-top-{$num}
-    margin-top $num*10px
-
-.space-btm-05
-  margin-bottom 5px
-
-.space-top-05
-  margin-top 5px
+for prop, className in $sides
+  .space-{className}-05
+    margin-{prop} 5px
 
 for $num in 1 2 3
   .border-btm-{$num}

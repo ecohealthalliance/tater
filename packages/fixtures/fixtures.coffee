@@ -86,7 +86,7 @@ do ->
 
     createTestAnnotationFixture: (attributes) ->
       annotation = new Annotation()
-      attributes['documentId'] ?= 'fakedocumentid'
+      attributes['documentId'] ?= 'fakeDocumentId'
       attributes['userId'] ?= 'fakeuserid'
       attributes['startOffset'] ?= 0
       attributes['endOffset'] ?= 1

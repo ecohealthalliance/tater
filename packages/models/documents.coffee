@@ -85,3 +85,15 @@ Document = Astro.Class
       if Meteor.isServer
         @set finishedAt: new Date()
         @save()
+
+    annotations: ->
+      Annotations.find documentId: @_id
+
+    updateAnnotationCount: ->
+      i = 0
+      @annotations().forEach (docAnnotation)->
+        annotationCodingKeyword = docAnnotation?._codingKeyword()
+        unless annotationCodingKeyword?.archived
+          i++
+      @set annotated: i
+      @save()

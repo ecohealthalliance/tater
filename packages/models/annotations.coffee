@@ -16,9 +16,9 @@ Annotation = Astro.Class
 
   events:
     afterSave: () ->
-      @setDocumentCounts()
+      @document()?.updateAnnotationCount()
     afterRemove: () ->
-      @setDocumentCounts()
+      @document()?.updateAnnotationCount()
 
   methods:
     _codingKeyword: ->
@@ -31,10 +31,6 @@ Annotation = Astro.Class
       @_codingKeyword()?.label
     color: ->
       @_codingKeyword()?.color()
-
-    setDocumentCounts: ->
-      annoCount = Annotations.find({documentId: @documentId}).count()
-      Documents.update({_id: @documentId}, {$set: {annotated: annoCount}})
 
     overlapsWithOffsets: (startOffset, endOffset) ->
       (startOffset >= @startOffset and startOffset < @endOffset) or

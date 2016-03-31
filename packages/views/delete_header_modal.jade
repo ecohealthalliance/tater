@@ -10,4 +10,9 @@ template(name="deleteHeaderModal")
           p Delete header "{{headerToDelete.label}}"?
         .modal-footer
           button.btn.btn-default(data-dismiss='modal' aria-hidden='true') Close
-          button.btn.btn-danger#confirm-delete-header(data-dismiss='modal' aria-hidden='true') Delete
+          button.btn.btn-danger#confirm-delete-header(
+            aria-hidden='true'
+            disabled='{{#if archiving}} disabled {{/if}}') 
+            | Delete
+            if archiving
+              i.fa.fa-spinner.fa-pulse.space-left-1

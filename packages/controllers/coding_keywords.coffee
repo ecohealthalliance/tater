@@ -6,10 +6,11 @@ if Meteor.isClient
     @keywordToDelete = new ReactiveVar()
     @subHeaderToDelete = new ReactiveVar()
     @headerToDelete = new ReactiveVar()
-    @codeColor = new ReactiveVar('')
-    @headersLoading = new ReactiveVar(true)
-    @subHeadersLoading = new ReactiveVar(true)
-    @keywordsLoading = new ReactiveVar(false)
+    @codeColor = new ReactiveVar ''
+    @headersLoading = new ReactiveVar true
+    @subHeadersLoading = new ReactiveVar false
+    @keywordsLoading = new ReactiveVar false
+    @archiving = new ReactiveVar false
 
   Template.codingKeywords.onRendered ->
     instance = Template.instance()
@@ -18,22 +19,25 @@ if Meteor.isClient
       instance.headersLoading.set(false)
     @autorun ->
       selectedHeaderId = instance.selectedCodes.get('headerId')
-      Meteor.subscribe 'subHeaders', selectedHeaderId, ->
-        instance.subHeadersLoading.set(false)
-        if SubHeaders.findOne({ headerId: selectedHeaderId})
-          instance.addingCode.set('subHeader', false)
-        else
-          instance.addingCode.set('subHeader', true)
+      if selectedHeaderId
+        instance.subHeadersLoading.set(true)
+        Meteor.subscribe 'subHeaders', selectedHeaderId, ->
+          instance.subHeadersLoading.set(false)
+          if SubHeaders.findOne({ headerId: selectedHeaderId})
+            instance.addingCode.set('subHeader', false)
+          else
+            instance.addingCode.set('subHeader', true)
 
     @autorun ->
       selectedSubHeaderId = instance.selectedCodes.get('subHeaderId')
-      instance.keywordsLoading.set(true)
-      Meteor.subscribe 'keywords', selectedSubHeaderId, ->
-        instance.keywordsLoading.set(false)
-        if CodingKeywords.findOne({ subHeaderId: selectedSubHeaderId})
-          instance.addingCode.set('keyword', false)
-        else
-          instance.addingCode.set('keyword', true)
+      if selectedSubHeaderId
+        instance.keywordsLoading.set(true)
+        Meteor.subscribe 'keywords', selectedSubHeaderId, ->
+          instance.keywordsLoading.set(false)
+          if CodingKeywords.findOne({ subHeaderId: selectedSubHeaderId})
+            instance.addingCode.set('keyword', false)
+          else
+            instance.addingCode.set('keyword', true)
 
   Template.codingKeywords.helpers
     headers: ->
@@ -91,10 +95,10 @@ if Meteor.isClient
       Template.instance().headersLoading.get()
 
     subHeadersLoading: ->
-      Template.instance().subHeadersLoading.get()
+      Template.instance().subHeadersLoading.get() or Template.instance().archiving.get()
 
     keywordsLoading: ->
-      Template.instance().keywordsLoading.get()
+      Template.instance().keywordsLoading.get() or Template.instance().archiving.get()
 
   Template.codingKeywords.events
     'click .code-level-1': (event, instance) ->
@@ -128,27 +132,36 @@ if Meteor.isClient
 
     'click .unarchive-keyword-button': (event, instance) ->
       keywordId = event.target.parentElement.getAttribute("data-keyword-id")
-      Meteor.call 'unarchiveKeyword', keywordId, (error, instance) ->
+      instance.archiving.set true
+      Meteor.call 'unarchiveKeyword', keywordId, (error, response) ->
         if error
           ErrorHelpers.handleError error
+          instance.archiving.set false
         else
           toastr.success("Keyword restored")
+          instance.archiving.set false
 
     'click .unarchive-subheader-button': (event, instance) ->
       subHeaderId = event.target.parentElement.getAttribute("data-subheader-id")
-      Meteor.call 'unarchiveSubHeader', subHeaderId, (error, instance) ->
+      instance.archiving.set true
+      Meteor.call 'unarchiveSubHeader', subHeaderId, (error, response) ->
         if error
           ErrorHelpers.handleError error
+          instance.archiving.set false
         else
           toastr.success("Sub-Header restored")
+          instance.archiving.set false
 
     'click .unarchive-header-button': (event, instance) ->
       headerId = event.target.parentElement.getAttribute("data-header-id")
-      Meteor.call 'unarchiveHeader', headerId, (error, instance) ->
+      instance.archiving.set true
+      Meteor.call 'unarchiveHeader', headerId, (error, response) ->
         if error
           ErrorHelpers.handleError error
+          instance.archiving.set false
         else
           toastr.success("Header restored")
+          instance.archiving.set false
 
     'click .add-code': (event, instance) ->
       level = $(event.target).data('level')
@@ -339,48 +352,22 @@ Meteor.methods
 
   unarchiveKeyword: (keywordId) ->
     if Meteor.users.findOne(@userId)?.admin
-      CodingKeywords.update keywordId,
-        $set:
-          archived: false
+      keyword = CodingKeywords.findOne(keywordId)
+      keyword.unarchive()
     else
       throw new Meteor.Error 'unauthorized', 'You are not authorized to unarchive headers'
 
   unarchiveSubHeader: (subHeaderId) ->
     if Meteor.users.findOne(@userId)?.admin
-      SubHeaders.update subHeaderId,
-        $set:
-          archived: false
-      CodingKeywords.update {subHeaderId: subHeaderId},
-        {
-          $set:
-            archived: false
-        },
-        {multi: true}
+      subHeader = SubHeaders.findOne(subHeaderId)
+      subHeader.unarchive()
     else
       throw new Meteor.Error 'unauthorized', 'You are not authorized to unarchive sub-headers'
 
   unarchiveHeader: (headerId) ->
     if Meteor.users.findOne(@userId)?.admin
-      Headers.update headerId,
-        $set:
-          archived: false
-      SubHeaders.update {headerId: headerId},
-        {
-          $set:
-            archived: false
-        },
-        {multi: true}
-      CodingKeywords.update {
-          # The headerId property is undefined in some cases
-          # so for now we're using the subHeaderIds
-          subHeaderId:
-            $in: SubHeaders.find(headerId: headerId).map (x)-> x._id
-        },
-        {
-          $set:
-            archived: false
-        },
-        {multi: true}
+      header = Headers.findOne(headerId)
+      header.unarchive()
     else
       throw new Meteor.Error 'unauthorized', 'You are not authorized to unarchive headers'
 

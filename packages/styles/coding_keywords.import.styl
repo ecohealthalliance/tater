@@ -242,6 +242,7 @@ checkMark(center=false)
   border-bottom-left-radius 4px
   overflow hidden
   .curtain-white
+    layerMid()
     &:last-of-type
       border-bottom-right-radius 4px
 
@@ -252,6 +253,8 @@ checkMark(center=false)
   addBorder(right, 1, $border-primary)
   &:last-of-type
     border-right 0
+  .loading
+    layerTop()
 
 .code-management-list-container
   overflow-x auto
@@ -262,7 +265,7 @@ checkMark(center=false)
   right 0
   padding-top 50px
   padding-bottom 75px
-  z-index $bottom-layer
+  layerPage()
   background white
   .code-list
     margin-bottom 0
@@ -301,7 +304,7 @@ checkMark(center=false)
 .code-management-list-header
   position absolute
   min-height 50px
-  z-index $mid-layer
+  layerBtm()
   top 0
   left 0
   right 0
@@ -361,10 +364,18 @@ checkMark(center=false)
   right 0
 
 .disabled
-  color lighten($primary-light, 70%) !important
+  span
+    &
+    &:hover
+    &:focus
+    &:active
+      color lighten($primary-light, 50%)
 
-.disabled span::after
-  content ' (archived)'
+.disabled span::before
+  content '\f187'
+  display inline-block
+  margin-right 4px
+  icon()
 
 .adding-code
   padding 15px 10px
