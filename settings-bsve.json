@@ -1,21 +1,30 @@
 {
   "public": {
     "stripe": {
-      "publishableKey": "pk_test_XXXX"
+      "publishableKey": "pk_live_CHANGEME"
     },
     "analyticsSettings": {
-      "Google Analytics" : {"trackingId": "UA-XXXX"}
+      "Google Analytics" : {"trackingId": "UA-CHANGEME"}
     },
     "accounts": {
-      "tokenUser": "bsve-user@ecohealthalliance.org"
+      "tokenUser": "CHANGEME@CHANGEME.org"
     }
   },
   "private": {
+    "AWS_ACCESS_KEY": "CHANGEME",
+    "AWS_SECRET_KEY": "CHANGEME",
     "stripe": {
-      "secretKey": "sk_test_XXX"
+      "secretKey": "sk_live_CHANGEME"
     },
     "accounts": {
-      "loginToken": "wVCLfs9kttmBF5M6L8ABSMiPZJh8HwKjXZdvxDTs4I8"
+      "loginToken": "CHANGEME"
+    },
+    "MAIL_URL":"smtp://CHANGEME",
+    "jenkins": {
+      "url": "CHANGEME",
+      "user": "CHANGEME",
+      "key": "CHANGEME",
+      "buildKey": "CHANGEME"
     }
   }
 }
