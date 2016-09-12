@@ -29,12 +29,12 @@ template(name="header")
                 a(href="{{path route='annotations'}}")
                   span Annotations
               if isAdmin
-                unless onBSVEInstance
-                  li.dropdown(class="{{isActiveRoute regex='admin|groups|users|codingKeywords'}}")
-                    a.dropdown-toggle.admin-settings(href="{{path route='admin'}}" data-toggle='dropdown' aria-expanded='false')
-                      span Admin
-                      i.fa.fa-angle-down
-                    ul.dropdown-menu(role='menu')
+                li.dropdown(class="{{isActiveRoute regex='admin|groups|users|codingKeywords'}}")
+                  a.dropdown-toggle.admin-settings(href="{{path route='admin'}}" data-toggle='dropdown' aria-expanded='false')
+                    span Admin
+                    i.fa.fa-angle-down
+                  ul.dropdown-menu(role='menu')
+                    unless onBSVEInstance
                       li
                         a(href="{{path route='groups'}}")
                           span Document Groups
@@ -43,10 +43,10 @@ template(name="header")
                         a(href="{{path route='users'}}")
                           span Users
                           i.fa.fa-users
-                      li
-                        a(href="{{path route='codingKeywords'}}")
-                          span Coding Keywords
-                          i.fa.fa-list
+                    li
+                      a(href="{{path route='codingKeywords'}}")
+                        span Coding Keywords
+                        i.fa.fa-list
               unless onBSVEInstance
                 +accountsHeaderButtons state=accountsState
               li(class="{{isActiveRoute 'help'}}")
