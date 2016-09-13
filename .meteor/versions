@@ -100,7 +100,7 @@ srp@1.0.4
 standard-minifiers@1.0.2
 tater:accounts@0.0.1
 tater:controllers@0.0.1
-tater:data@0.0.1
+tater:data@0.0.2
 tater:fixtures@0.0.1
 tater:headers@0.0.1
 tater:helpers@0.0.1
