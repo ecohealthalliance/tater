@@ -6,13 +6,14 @@ template(name="adminNav")
           h1 Admin
           nav.admin-menu
             ul.nav
-              li(class="{{isActiveRoute 'groups'}}")
-                a(href="{{path route='groups'}}")
-                  i.fa.fa-files-o
-                  | Document Groups
-              li(class="{{isActiveRoute 'users'}}")
-                a(href="{{path route='users'}}")
-                  i.fa.fa-users
+              unless onBSVEInstance
+                li(class="{{isActiveRoute 'groups'}}")
+                  a(href="{{path route='groups'}}")
+                    i.fa.fa-files-o
+                    | Document Groups
+                li(class="{{isActiveRoute 'users'}}")
+                  a(href="{{path route='users'}}")
+                    i.fa.fa-users
                   | Users
               li(class="{{isActiveRoute 'codingKeywords'}}")
                 a(href="{{path route='codingKeywords'}}")
