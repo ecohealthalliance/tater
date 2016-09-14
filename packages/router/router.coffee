@@ -137,12 +137,6 @@ loggedIn.route '/users',
     BlazeLayout.render 'layout',
       main: 'users'
 
-loggedIn.route '/editCodingKeywords',
-  name: 'editCodingKeywords'
-  action: () ->
-    BlazeLayout.render 'layout',
-      main: 'editCodingKeywords'
-
 loggedIn.route '/groups/',
   name: 'groups'
   action: () ->

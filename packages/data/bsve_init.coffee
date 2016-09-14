@@ -1,23 +1,26 @@
 Meteor.startup ->
   if process.env.ALLOW_TOKEN_ACCESS is 'true'
+    console.log 'Tater started in BSVE mode'
     if not Groups.findOne(name: "BSVE")
       group = new Group(
         name: "BSVE"
       )
       group.save()
-    if CodingKeywords.find().count() == 0
-      headerId = Headers.insert
-        label: "Disease"
-        color: 1
-      subHeaderId = SubHeaders.insert
-        headerId: headerId
-        label: "Fever"
-      CodingKeywords.insert
-        subHeaderId: subHeaderId
-        label: "Ebola Hemorrhagic Fever"
-      CodingKeywords.insert
-        subHeaderId: subHeaderId
-        label: "Dengue Fever"
+    unless CodingKeywords.find().count()
+      colorId = 0
+      for H, Header of BSVEinitialData
+        colorId = colorLoop(colorId++)
+        headerId = Headers.insert
+          label: H
+          color: colorId
+        for SH, SubHeader of Header
+          subHeaderId = SubHeaders.insert
+            headerId: headerId
+            label: SH
+          for Keyword in SubHeader
+            CodingKeywords.insert
+              subHeaderId: subHeaderId
+              label: Keyword
 
     email = Meteor.settings.public.accounts?.tokenUser
     token = Meteor.settings.private.accounts?.loginToken

@@ -1,9 +1,11 @@
+@colorLoop = (currentColor) -> if currentColor > 7 then 1 else ++currentColor
+
 Meteor.startup ->
   hasUsers = Meteor.users.find().count() > 0
 
   Meteor.methods
     seed: (newTenantData) ->
-      unless hasUsers || process.env.ALLOW_TOKEN_ACCESS
+      if !hasUsers and !process.env.ALLOW_TOKEN_ACCESS
         createDefaultTenant = (tenantFields) ->
           check tenantFields, Object
           check tenantFields.emailAddress, String
@@ -25,16 +27,21 @@ Meteor.startup ->
           Accounts.sendEnrollmentEmail(newUserId)
 
         createDefaultCodes = (headerLabel, subHeaderLabel, keywordLabel) ->
-          if Headers.find().count() == 0
-            headerId = Headers.insert
-              label: headerLabel or 'Header'
-              color: 1
-            subHeaderId = SubHeaders.insert
-              headerId: headerId
-              label: subHeaderLabel or 'Sub-Header'
-            CodingKeywords.insert
-              subHeaderId: subHeaderId
-              label: keywordLabel or 'Keyword'
+          unless Headers.find().count()
+            colorId = 0
+            for H, Header of initialData
+              colorId = colorLoop(colorId++)
+              headerId = Headers.insert
+                label: H
+                color: colorId
+              for SH, SubHeader of Header
+                subHeaderId = SubHeaders.insert
+                  headerId: headerId
+                  label: SH
+                for Keyword in SubHeader
+                  CodingKeywords.insert
+                    subHeaderId: subHeaderId
+                    label: Keyword
           else
             throw new Meteor.Error 'invalid', 'Already have codes in the database'
 
