@@ -227,21 +227,19 @@ if Meteor.isClient
 
     'click .document-text': (event, instance) ->
       temporaryAnnotation = instance.temporaryAnnotation.get()
-
       elementClassName = 'document-text'
       selection = window.getSelection()
-      if selection.type != 'Range' then return
+      if selection.RangeCount > 0 then return
       range = selection.getRangeAt(0)
-      textHighlighted = range and (range.endOffset > range.startOffset or range.endOffset == 0)
+      if not range then return
+      textHighlighted = not (range.endOffset == 0 and range.startOffset == 0)
       lastCharOffset = $(".#{elementClassName}").first().text().length
-
       if textHighlighted
         startOffset = range.startOffset
         endOffset = range.endOffset or lastCharOffset
-
         temporaryAnnotation.set(startOffset: startOffset, endOffset: endOffset)
         instance.temporaryAnnotation.set(temporaryAnnotation)
-        selection.empty()
+        window.getSelection().removeAllRanges()
 
     'click .code-keyword .selectable-code': (event, instance) ->
       temporaryAnnotation = instance.temporaryAnnotation.get()
