@@ -1,4 +1,4 @@
-FROM ubuntu:14.04.3
+FROM ubuntu:14.04
 
 # Replace shell with bash so we can source files
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
