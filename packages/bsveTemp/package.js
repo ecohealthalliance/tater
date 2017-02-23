@@ -1,5 +1,5 @@
 Package.describe({
-  name:    'tater:BSVE',
+  name:    'tater:bsve',
   version: '0.0.1',
   summary: 'BSVE related code'
 });
