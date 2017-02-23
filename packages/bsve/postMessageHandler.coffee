@@ -1,8 +1,10 @@
 postMessageHandler = (event)->
+  console.log "PostMessageHandler", event
   if not event.origin.match(/^https:\/\/([\w\-]+\.)*bsvecosystem\.net/) then return
   try
     request = JSON.parse(event.data)
-  catch
+  catch e
+    console.log "Exception in postMessageHandler", e
     return
   if request.type == "eha.dossierRequest"
     title = "TATER"
