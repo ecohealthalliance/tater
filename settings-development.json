@@ -14,6 +14,12 @@
     "stripe": {
       "secretKey": "sk_test_N55I0q6h0EBZKyQZSMZ3yHyc"
     },
+    "jenkins": {
+      "url": "jenkins.eha.io",
+      "user": "EMAIL",
+      "key": "API_KEY",
+      "buildKey": "osmoQa8jYttca8"
+    },
     "accounts": {
       "loginToken": "wVCLfs9kttmBF5M6L8ABSMiPZJh8HwKjXZdvxDTs4I8"
     }
